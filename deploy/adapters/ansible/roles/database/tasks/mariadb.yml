@@ -1,0 +1,39 @@
+---
+- name: install python-mysqldb
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
+  with_items: maridb_packages
+
+- name: create mysql log directy
+  file: path=/var/log/mysql state=directory owner=mysql group=mysql mode=0755
+
+- name: update mariadb my.cnf
+  template: src=my.cnf dest=/etc/mysql/my.cnf backup=yes
+
+- name: update galera wsrep.cnf
+  template: src=wsrep.cnf dest=/etc/mysql/conf.d/wsrep.cnf backup=yes
+
+- name: update wsrep_sst_rsync uid 
+  lineinfile: dest=/usr/bin/wsrep_sst_rsync state=absent regexp="\s*uid = \$MYUID$"  backup=yes
+
+- name: update wsrep_sst_rsync gid 
+  lineinfile: dest=/usr/bin/wsrep_sst_rsync state=absent regexp="\s*gid = \$MYGID$"  backup=yes
+
+- name: manually restart mysql server
+  service: name=mysql state=restarted enabled=yes
+  register: result
+  until: result|success
+  retries: 5
+  delay: 5
+  tags:
+    - mysql_restart
+
+- name: generate mysql service list
+  shell: echo {{ item }} >> /opt/service
+  with_items:
+   - mysql
+
+- name: create database/user
+  shell: /opt/data.sh
+  when: HA_CLUSTER[inventory_hostname] == ''
+  tags:
+    - mysql_user
