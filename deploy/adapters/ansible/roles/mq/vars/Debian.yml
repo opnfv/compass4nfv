@@ -1,0 +1,6 @@
+---
+packages:
+  - rabbitmq-server 
+
+services:
+  - "rabbitmq-server"
