@@ -6,7 +6,6 @@ packages:
   - nova-consoleauth
   - nova-novncproxy
   - nova-scheduler
-  - python-novaclient
   - python-oslo.rootwrap
 
 services:

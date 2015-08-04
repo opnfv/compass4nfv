@@ -1,15 +1,9 @@
 ---
 - name: install cinder packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: packages | union(packages_noarch)
 
-- name: generate cinder service list
+- name: generate common cinder service list
   shell: echo {{ item }} >> /opt/service
-  with_items: services
-
-- name: upload cinder conf
-  template: src=cinder.conf dest=/etc/cinder/cinder.conf
-  notify:
-    - restart cinder-scheduler
-    - restart cinder-api
+  with_items: services | union(services_noarch)
 

@@ -1,22 +1,22 @@
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- name: install keepalived xinet haproxy 
+- name: install keepalived xinet haproxy
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: packages
-   
+  with_items: packages | union(packages_noarch)
+
 - name: generate ha service list
   shell: echo {{ item }} >> /opt/service
-  with_items: services
+  with_items: services | union(services_noarch)
 
 - name: install pexpect
-  pip: name=pexpect state=present
+  pip: name=pexpect state=present extra_args='--pre'
 
 - name: activate ip_nonlocal_bind
   sysctl: name=net.ipv4.ip_nonlocal_bind value=1
           state=present reload=yes
 
-- name: set net.ipv4.tcp_keepalive_intvl 
+- name: set net.ipv4.tcp_keepalive_intvl
   sysctl: name=net.ipv4.tcp_keepalive_intvl value=1
           state=present reload=yes
 
@@ -37,6 +37,7 @@
               regexp="ENABLED=*"
               line="ENABLED=1"
   notify: restart haproxy
+  when: ansible_os_family == "Debian"
 
 - name: set haproxy log
   lineinfile: dest=/etc/rsyslog.conf state=present
@@ -58,7 +59,7 @@
 
 - name: copy notify file
   copy: src=notify.sh dest=/usr/local/bin/notify.sh mode=0777
-  
+
 - name: copy notify template file
   template: src=failover.j2 dest=/usr/local/bin/failover.py mode=0777
 
@@ -76,6 +77,7 @@
   lineinfile: dest=/etc/default/keepalived state=present
               regexp="^DAEMON_ARGS=*"
               line="DAEMON_ARGS=\"-D -d -S 1\""
+  when: ansible_os_family == "Debian"
 
 - name: set keepalived log
   lineinfile: dest=/etc/rsyslog.conf state=present

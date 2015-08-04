@@ -6,5 +6,6 @@
   retries: 5
   delay: 3
   notify:
-    - restart neutron-server
+    - restart neutron controll services
 
+- meta: flush_handlers

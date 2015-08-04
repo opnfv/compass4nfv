@@ -1,0 +1,14 @@
+---
+packages:
+  - openstack-neutron-ml2
+  - openstack-neutron-openvswitch
+
+services:
+  - openvswitch
+  - neutron-openvswitch-agent
+
+openvswitch_agent: neutron-openvswitch-agent
+
+xorp_packages:
+  - openssl098e
+  - xorp

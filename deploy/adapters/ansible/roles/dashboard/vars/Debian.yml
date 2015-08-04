@@ -1,6 +1,8 @@
 ---
 packages:
   - apache2
-  - memcached
   - libapache2-mod-wsgi
-  - openstack-dashboard
+
+services:
+  - apache2
+  - memcached

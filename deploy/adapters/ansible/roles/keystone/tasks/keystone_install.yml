@@ -2,11 +2,12 @@
 - include_vars: "{{ ansible_os_family }}.yml"
 
 - name: install keystone packages
-  action: "{{ ansible_pkg_mgr }} name=keystone state=present force=yes"
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: packages | union(packages_noarch)
 
 - name: generate keystone service list
   shell: echo {{ item }} >> /opt/service
-  with_items: services
+  with_items: services | union(services_noarch)
 
 - name: update keystone conf
   template: src=keystone.conf dest=/etc/keystone/keystone.conf backup=yes
@@ -15,10 +16,10 @@
   shell: rm /var/lib/keystone/keystone.db || echo sqllite database already removed
 
 - name: cron job to purge expired tokens hourly
-  shell: (crontab -l -u keystone 2>&1 | grep -q token_flush) || echo '@hourly /usr/bin/keystone-manage token_flush > /var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
+  shell: (crontab -l -u keystone 3>&1 | grep -q token_flush) || echo '@hourly /usr/bin/keystone-manage token_flush > /var/log/keystone/keystone-tokenflush.log 2>&1' >> {{ cron_path }}/keystone
 
 - name: modify keystone cron rights
-  file: path=/var/spool/cron/crontabs/keystone mode=0600
+  file: path={{ cron_path }}/keystone mode=0600
 
 - name: keystone source files
   template: src={{ item }} dest=/opt/{{ item }}
@@ -26,5 +27,6 @@
     - admin-openrc.sh
     - demo-openrc.sh
 
-- name: manually start keystone
-  service: name=keystone state=restarted enabled=yes
+- name: restart keystone services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services | union(services_noarch)

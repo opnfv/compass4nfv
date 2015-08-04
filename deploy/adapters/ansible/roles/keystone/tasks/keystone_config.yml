@@ -12,5 +12,5 @@
 - name: run keystone_init
   shell: /opt/keystone_init && touch keystone_init_complete || keystone_init_failed
   args:
-    creates: keystone_init_complete 
+    creates: keystone_init_complete
 

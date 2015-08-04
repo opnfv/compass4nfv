@@ -2,22 +2,17 @@
 - include_vars: "{{ ansible_os_family }}.yml"
 
 - name: install nova related packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: packages | union(packages_noarch)
 
 - name: generate nova controll service list
   shell: echo {{ item }} >> /opt/service
-  with_items: services
+  with_items: services | union(services_noarch)
 
 - name: update nova conf
   template: src=nova.conf
             dest=/etc/nova/nova.conf
             backup=yes
   notify:
-    - restart nova-api
-    - restart nova-cert
-    - restart nova-consoleauth
-    - restart nova-scheduler
-    - restart nova-conductor
-    - restart nova-novncproxy
+    - restart nova service
     - remove nova-sqlite-db

@@ -1,7 +1,7 @@
 ---
-- name: install packages 
-  action: "{{ ansible_pkg_mgr }} name=nfs-common state=present"
-  with_items: nfs-packages
+- name: install packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: nfs_packages
 
 - name: install nfs
   local_action: yum  name=nfs-utils state=present
@@ -29,7 +29,7 @@
   register: mount_info
 
 - name: get nfs server
-  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf 
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
   register: ip_info
 
 - name: mount image directory

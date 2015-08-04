@@ -1,7 +1,6 @@
 ---
 packages:
   - cinder-volume
-  - lvm2 
 
 services:
   - cinder-volume

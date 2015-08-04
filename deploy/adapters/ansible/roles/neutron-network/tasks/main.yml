@@ -14,65 +14,47 @@
           value=0 state=present reload=yes
 
 - name: install neutron network related packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: packages | union(packages_noarch)
 
-- name: install neutron openvswitch agent
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: neutron_plugin_openvswitch_agent_packages
-  when: "'openvswitch' in {{ NEUTRON_MECHANISM_DRIVERS }}"
-
-- name: generate neutron service list
+- name: generate neutron network service list
   shell: echo {{ item }} >> /opt/service
-  with_items: services
+  with_items: services | union(services_noarch)
 
-- name: generate neutron-plugin-openvswitch-agent service list
-  shell: echo {{ item }} >> /opt/service
-  with_items: neutron-plugin-openvswitch-agent-services
-  when: "'openvswitch' in {{ NEUTRON_MECHANISM_DRIVERS }}"
-
-- name: config neutron
-  template: src=neutron-network.conf
-            dest=/etc/neutron/neutron.conf backup=yes
-  notify:
-    - restart neutron-plugin-openvswitch-agent
-    - restart neutron-l3-agent
-    - kill dnsmasq
-    - restart neutron-dhcp-agent
-    - restart neutron-metadata-agent
+- name: fix openstack neutron plugin config file
+  shell: |
+    sed -i 's,plugins/openvswitch/ovs_neutron_plugin.ini,plugin.ini,g' /usr/lib/systemd/system/neutron-openvswitch-agent.service
+    systemctl daemon-reload
+  when: ansible_os_family == 'RedHat'
 
 - name: config l3 agent
   template: src=l3_agent.ini dest=/etc/neutron/l3_agent.ini
             backup=yes
-  notify:
-    - restart neutron-l3-agent
 
 - name: config dhcp agent
   template: src=dhcp_agent.ini dest=/etc/neutron/dhcp_agent.ini
             backup=yes
-  notify:
-    - kill dnsmasq
-    - restart neutron-dhcp-agent
 
 - name: update dnsmasq-neutron.conf
   template: src=dnsmasq-neutron.conf
             dest=/etc/neutron/dnsmasq-neutron.conf
-  notify:
-    - kill dnsmasq
-    - restart neutron-dhcp-agent
 
 - name: config metadata agent
   template: src=metadata_agent.ini
             dest=/etc/neutron/metadata_agent.ini backup=yes
-  notify:
-    - restart neutron-metadata-agent
 
 - name: config ml2 plugin
   template: src=ml2_conf.ini
             dest=/etc/neutron/plugins/ml2/ml2_conf.ini
             backup=yes
+
+- name: config neutron
+  template: src=neutron-network.conf
+            dest=/etc/neutron/neutron.conf backup=yes
   notify:
-    - restart neutron-plugin-openvswitch-agent
+    - restart common neutron network relation service
+    - restart neutron network relation service
+    - kill dnsmasq
 
 - meta: flush_handlers
 
@@ -80,8 +62,16 @@
   openvswitch_bridge: bridge=br-int state=present
 
 - name: add br-ex
-  openvswitch_bridge: bridge=br-ex state=present 
+  openvswitch_bridge: bridge=br-ex state=present
   when: "'openvswitch' in {{ NEUTRON_MECHANISM_DRIVERS }}"
+
+- name: ln plugin.ini
+  file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
+
+- name: restart openvswitch-agent service
+  service: name={{ openvswitch_agent }} state=restarted enabled=yes
+
+- meta: flush_handlers
 
 - name: assign a port to br-ex for physical ext interface
   openvswitch_port: bridge=br-ex port={{ INTERFACE_NAME }}
@@ -89,7 +79,7 @@
   when: "'openvswitch' in {{ NEUTRON_MECHANISM_DRIVERS }}"
 
 - include: igmp-router.yml
-  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
+  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }} and ansible_os_family == 'Debian'"
 
 - name: assert kernel support for vxlan
   command: modinfo -F version vxlan
@@ -103,8 +93,3 @@
 
 - include: odl.yml
   when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
-
-- name: restart ovs service
-  service: name=openvswitch-switch state=restarted enabled=yes
-
-- meta: flush_handlers

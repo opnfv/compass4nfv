@@ -1,6 +1,7 @@
 ---
 - name: init glance db version
   shell: glance-manage db_version_control 0
+  when: ansible_os_family == "Debian"
 
 - name: sync glance db
   shell: sleep 15; su -s /bin/sh -c "glance-manage db_sync" glance
@@ -9,8 +10,7 @@
   retries: 5
   delay: 3
   notify:
-    - restart glance-registry
-    - restart glance-api
+    - restart glance services
 
 - meta: flush_handlers
 
