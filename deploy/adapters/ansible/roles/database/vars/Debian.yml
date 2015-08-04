@@ -1,4 +1,5 @@
 ---
+
 mysql_packages:
   - python-mysqldb
   - mysql-server
@@ -10,3 +11,10 @@ maridb_packages:
   - python-mysqldb
   - mysql-server-wsrep
   - galera
+
+services: []
+
+mysql_config_file_path: "/etc/mysql"
+mysql_config_file_name: "my.cnf"
+wsrep_config_file_path: "/etc/mysql/conf.d"
+wsrep_provider_file: "/usr/lib/galera/libgalera_smm.so"

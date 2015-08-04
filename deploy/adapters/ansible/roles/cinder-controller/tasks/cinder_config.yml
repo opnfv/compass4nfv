@@ -1,4 +1,7 @@
 ---
+- name: upload cinder conf
+  template: src=cinder.conf dest=/etc/cinder/cinder.conf
+
 - name: sync cinder db
   shell: su -s /bin/sh -c "cinder-manage db sync" cinder && cinder
   register: result
@@ -6,8 +9,7 @@
   retries: 5
   delay: 3
   notify:
-    - restart cinder-scheduler
-    - restart cinder-api
+    - restart cinder controll serveice
 
 - meta: flush_handlers
 

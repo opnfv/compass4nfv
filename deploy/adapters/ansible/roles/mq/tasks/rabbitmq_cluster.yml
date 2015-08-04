@@ -1,7 +1,7 @@
 ---
 - name: stop rabbitmq app
   command: rabbitmqctl stop_app
-  when: HA_CLUSTER[inventory_hostname] != '' 
+  when: HA_CLUSTER[inventory_hostname] != ''
 
 - name: rabbitmqctl reset
   command: rabbitmqctl reset

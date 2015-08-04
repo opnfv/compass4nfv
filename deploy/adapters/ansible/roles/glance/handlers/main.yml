@@ -1,6 +1,4 @@
 ---
-- name: restart glance-api
-  service: name=glance-api state=restarted enabled=yes
-
-- name: restart glance-registry
-  service: name=glance-registry state=restarted enabled=yes
+- name: restart glance services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services | union(services_noarch)

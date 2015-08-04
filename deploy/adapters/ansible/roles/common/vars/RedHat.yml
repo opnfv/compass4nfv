@@ -1,0 +1,5 @@
+---
+packages:
+  - python-devel
+
+ntp_service: ntpd

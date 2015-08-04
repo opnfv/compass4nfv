@@ -12,4 +12,4 @@ service mysqlchk
     wait        = no
     server      = /usr/local/bin/galera_chk
     port        = 9200
-}    
+}

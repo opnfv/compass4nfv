@@ -1,6 +1,10 @@
 ---
 - name: Install XORP to provide IGMP router functionality
-  apt: pkg=xorp
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: xorp_packages
+
+- name: create xorp directory
+  file: path=/etc/xorp state=directory
 
 - name: configure xorp
   template: src=etc/xorp/config.boot dest=/etc/xorp/config.boot
@@ -8,7 +12,7 @@
     - restart xorp
 
 - name: set xorp defaults
-  lineinfile: dest=/etc/default/xorp regexp=^RUN= line=RUN=yes
+  copy: src=xorp dest=/etc/default/xorp
   notify:
     - restart xorp
 

@@ -2,8 +2,8 @@
 - include_vars: "{{ ansible_os_family }}.yml"
 
 - name: install nova-compute related packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: packages | union(packages_noarch)
 
 - name: update nova-compute conf
   template: src={{ item }} dest=/etc/nova/{{ item }}
@@ -11,11 +11,11 @@
     - nova.conf
     - nova-compute.conf
   notify:
-    - restart nova-compute
+    - restart nova-compute services
 
 - name: generate neutron controll service list
   shell: echo {{ item }} >> /opt/service
-  with_items: services
+  with_items: services | union(services_noarch)
 
 - meta: flush_handlers
 

@@ -6,11 +6,6 @@
   retries: 5
   delay: 3
   notify:
-    - restart nova-api
-    - restart nova-cert
-    - restart nova-consoleauth
-    - restart nova-scheduler
-    - restart nova-conductor
-    - restart nova-novncproxy
+    - restart nova service
 
 - meta: flush_handlers

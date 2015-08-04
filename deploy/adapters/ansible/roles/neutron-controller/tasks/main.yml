@@ -3,7 +3,7 @@
   tags:
     - install
     - neutron_install
-    - neutron 
+    - neutron
 
 - include: neutron_config.yml
   when: HA_CLUSTER is not defined or HA_CLUSTER[inventory_hostname] == ''

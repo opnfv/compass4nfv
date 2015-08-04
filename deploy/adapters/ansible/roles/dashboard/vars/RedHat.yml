@@ -1,0 +1,8 @@
+---
+packages:
+  - httpd
+  - mod_wsgi
+  - python-memcached
+
+services:
+  - httpd

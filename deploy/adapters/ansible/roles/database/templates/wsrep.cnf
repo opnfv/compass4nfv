@@ -39,7 +39,7 @@ bind-address={{ HA_VIP }}
 ##
 
 # Full path to wsrep provider library or 'none'
-wsrep_provider=/usr/lib/galera/libgalera_smm.so
+wsrep_provider={{ wsrep_provider_file }}
 
 # Provider specific configuration options
 #wsrep_provider_options=
