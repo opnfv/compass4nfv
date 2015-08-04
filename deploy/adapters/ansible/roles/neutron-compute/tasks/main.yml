@@ -14,39 +14,39 @@
           value=0 state=present reload=yes
 
 - name: install compute-related neutron packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: packages | union(packages_noarch)
 
-- name: install neutron openvswitch agent
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: neutron_plugin_openvswitch_agent_packages
-  when: "'opendaylight' not in {{ NEUTRON_MECHANISM_DRIVERS }}"
+- name: fix openstack neutron plugin config file
+  shell: |
+    sed -i 's,plugins/openvswitch/ovs_neutron_plugin.ini,plugin.ini,g' /usr/lib/systemd/system/neutron-openvswitch-agent.service
+    systemctl daemon-reload
+  when: ansible_os_family == 'RedHat'
 
 - name: generate neutron computer service list
   shell: echo {{ item }} >> /opt/service
-  with_items: neutron-plugin-openvswitch-agent-services
-  when: "'opendaylight' not in {{ NEUTRON_MECHANISM_DRIVERS }}"
-
-- name: config neutron
-  template: src=neutron-network.conf
-            dest=/etc/neutron/neutron.conf backup=yes
-  notify:
-    - restart neutron-plugin-openvswitch-agent
+  with_items: services | union(services_noarch)
 
 - name: config ml2 plugin
   template: src=ml2_conf.ini
             dest=/etc/neutron/plugins/ml2/ml2_conf.ini
             backup=yes
+
+- name: ln plugin.ini
+  file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
+
+- name: config neutron
+  template: src=neutron-network.conf
+            dest=/etc/neutron/neutron.conf backup=yes
   notify:
-    - restart neutron-plugin-openvswitch-agent 
+    - restart neutron computer service
+    - restart nova-compute services
+
+- meta: flush_handlers
 
 - name: add br-int
   openvswitch_bridge: bridge=br-int state=present
-  notify:
-    - restart neutron-plugin-openvswitch-agent
-    - restart nova-compute
 
 - include: ../../neutron-network/tasks/odl.yml
   when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
 
-- meta: flush_handlers

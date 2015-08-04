@@ -1,6 +1,5 @@
 ---
-- name: restart cinder-scheduler
-  service: name=cinder-scheduler state=restarted enabled=yes
-- name: restart cinder-api
-  service: name=cinder-api state=restarted enabled=yes
+- name: restart cinder controll serveice
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services | union(services_noarch)
 

@@ -1,11 +1,11 @@
 ---
-glance_packages:
-  - glance
-  - python-glanceclient
 
-glance_services:
+packages:
+  - glance
+
+nfs_packages:
+  - nfs-common
+
+services:
   - glance-registry
   - glance-api
-
-nfs-packages:
-  - nfs-common 

@@ -1,21 +1,22 @@
 ---
 - name: install python-mysqldb
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: maridb_packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: maridb_packages | union(packages_noarch)
 
 - name: create mysql log directy
   file: path=/var/log/mysql state=directory owner=mysql group=mysql mode=0755
 
-- name: update mariadb my.cnf
-  template: src=my.cnf dest=/etc/mysql/my.cnf backup=yes
+- name: update mariadb config file
+  template: src={{ item }} dest={{ mysql_config_file_path }}/{{ item }} backup=yes
+  with_items: mysql_config_file_name
 
 - name: update galera wsrep.cnf
-  template: src=wsrep.cnf dest=/etc/mysql/conf.d/wsrep.cnf backup=yes
+  template: src=wsrep.cnf dest={{ wsrep_config_file_path }}/wsrep.cnf backup=yes
 
-- name: update wsrep_sst_rsync uid 
+- name: update wsrep_sst_rsync uid
   lineinfile: dest=/usr/bin/wsrep_sst_rsync state=absent regexp="\s*uid = \$MYUID$"  backup=yes
 
-- name: update wsrep_sst_rsync gid 
+- name: update wsrep_sst_rsync gid
   lineinfile: dest=/usr/bin/wsrep_sst_rsync state=absent regexp="\s*gid = \$MYGID$"  backup=yes
 
 - name: manually restart mysql server
@@ -29,8 +30,7 @@
 
 - name: generate mysql service list
   shell: echo {{ item }} >> /opt/service
-  with_items:
-   - mysql
+  with_items: services_noarch
 
 - name: create database/user
   shell: /opt/data.sh

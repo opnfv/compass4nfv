@@ -1,7 +1,6 @@
 ---
 packages:
-  - ubuntu-cloud-keyring 
-  - python-pip
+  - ubuntu-cloud-keyring
   - python-dev
-  - python-mysqldb
-  - ntp
+
+ntp_service: ntp
