@@ -39,7 +39,7 @@
     </signature-handling>
     <mode>
       <confirm config:type="boolean">false</confirm>
-      <final_reboot config:type="boolean">true</final_reboot>	
+      <final_reboot config:type="boolean">true</final_reboot>
     </mode>
   </general>
   $SNIPPET('hosts.xml')
