@@ -32,8 +32,8 @@ PIDFILE=/tmp/chef_client_run.pid
 if [ -f \\$PIDFILE ]; then
     pid=\\$(cat \\$PIDFILE)
     if [ -f /proc/\\$pid/exe ]; then
-        echo "there are chef_client_run.sh running with pid \\$pid" >> /var/log/chef.log 2>&1
-        exit 1
+    echo "there are chef_client_run.sh running with pid \\$pid" >> /var/log/chef.log 2>&1
+    exit 1
     fi
 fi
 echo \\$$ > \\$PIDFILE
@@ -45,13 +45,15 @@ while true; do
         break
     else
         echo "knife search nodes" >> /var/log/chef.log 2>&1
+# use knife node list here to check if node has been registered because knife search node
+# doesn't work as expected.
         USER=root HOME=/root knife node list |grep \\$HOSTNAME. >> /var/log/chef.log 2>&1
         nodes=\\$(USER=root HOME=/root knife node list |grep \\$HOSTNAME.)
         echo "found nodes \\$nodes" >> /var/log/chef.log 2>&1
-        all_nodes_success=1
+        let all_nodes_success=1
         for node in \\$nodes; do
             mkdir -p /var/log/chef/\\$node
-            if [ ! -f /etc/chef/\\$node.json ]; then
+        if [ ! -f /etc/chef/\\$node.json ]; then
                 cat << EOL > /etc/chef/\\$node.json
 {
     "local_repo": "$local_repo_url",
@@ -87,7 +89,7 @@ EOL
             fi
             if [ "\\$?" != "0" ]; then
                 echo "chef-client --node-name \\$node run failed"  >> /var/log/chef.log 2>&1
-                all_nodes_success=0
+                let all_nodes_success=0
             else
                 echo "chef-client --node-name \\$node run success" >> /var/log/chef.log 2>&1
                 touch /etc/chef/\\$node.done
@@ -103,3 +105,4 @@ EOL
 done
 EOF
 chmod +x /etc/chef/chef_client_run.sh
+
