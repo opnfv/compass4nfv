@@ -1,0 +1,12 @@
+---
+mysql_packages:
+  - python-mysqldb
+  - mysql-server
+
+maridb_packages:
+  - libaio1
+  - libssl0.9.8
+  - mysql-client-5.5
+  - python-mysqldb
+  - mysql-server-wsrep
+  - galera

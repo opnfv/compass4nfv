@@ -1,0 +1,10 @@
+---
+packages:
+  - keepalived
+  - xinetd
+  - haproxy
+
+services:
+  - keepalived
+  - xinetd
+  - haproxy

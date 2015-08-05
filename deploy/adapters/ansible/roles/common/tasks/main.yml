@@ -1,0 +1,45 @@
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: first update pkgs
+  apt: update_cache=yes
+
+- name: install packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest"
+  with_items: packages
+
+- name: update hosts files to all hosts
+  template: src=hosts
+            dest=/etc/hosts
+            backup=yes
+
+- name: get compass-core hostname
+  local_action: shell hostname
+  register: name
+
+- name: get compass-core addr
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: ip
+
+- name: update compass-core name and ip to  hosts files
+  shell: echo "# compass\n"{{ ip.stdout_lines[0] }} {{ name.stdout_lines[0] }} >> /etc/hosts
+
+- name: create pip config directory
+  file: path=~/.pip state=directory
+
+- name: get pip source server addr
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: COMPASS_SERVER
+
+- name: update pip.conf
+  template: src=pip.conf dest=~/.pip/pip.conf
+
+- name: restart ntp
+  command: su -s /bin/sh -c "service ntp stop; ntpd -gq; hwclock --systohc"
+  ignore_errors: True
+
+- name: update ntp conf
+  template: src=ntp.conf dest=/etc/ntp.conf backup=yes
+
+- name: restart ntp
+  service: name=ntp state=restarted enabled=yes
