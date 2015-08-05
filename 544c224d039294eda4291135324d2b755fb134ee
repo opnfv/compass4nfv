@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da3975d1_1a03e174",
+        "filename": "deploy/adapters/cobbler/conf/tftpd.template",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please delete tap,here",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_faf7fd8a",
+        "filename": "deploy/adapters/cobbler/kickstarts/default.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please delete tabs here!",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_7a2b0dec",
+        "filename": "deploy/adapters/cobbler/snippets/hosts.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please align it.",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_5a304956",
+        "filename": "deploy/adapters/cobbler/snippets/kdump.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please align",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_3a358546",
+        "filename": "deploy/adapters/cobbler/snippets/keep_cfengine_keys",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please delete tabs",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_1a3ac136",
+        "filename": "deploy/adapters/cobbler/snippets/networking.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please delete tabs",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_da3b1937",
+        "filename": "deploy/adapters/cobbler/snippets/preseed_ntp",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please delete tabs",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_ba4855cd",
+        "filename": "deploy/adapters/cobbler/snippets/preseed_post_apt_repo_config",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please delete tabs",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_9a4591b5",
+        "filename": "deploy/adapters/cobbler/snippets/preseed_post_install_network_config",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please delete tabs",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da3975d1_7a12edb5",
+        "filename": "deploy/adapters/cobbler/snippets/preseed_pre_partition_disks",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-05T02:51:40Z",
+      "side": 1,
+      "message": "please delete tabs",
+      "revId": "544c224d039294eda4291135324d2b755fb134ee",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
