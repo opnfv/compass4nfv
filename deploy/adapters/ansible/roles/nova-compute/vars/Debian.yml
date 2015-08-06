@@ -1,7 +1,7 @@
 ---
+
 packages:
   - nova-compute-kvm
 
 services:
   - nova-compute
-

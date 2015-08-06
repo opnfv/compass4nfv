@@ -28,7 +28,7 @@ def ssh_get_hostname(ip):
         return result.split(os.linesep)[1]
     except pxssh.ExceptionPxssh as e:
         LOG.error("pxssh failed on login.")
-    raise
+        raise
 
 def failover(mode):
     config = ConfigParser.ConfigParser()

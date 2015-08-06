@@ -7,7 +7,7 @@
 
 - name: install rabbitmq-server
   action: "{{ ansible_pkg_mgr }} name=rabbitmq-server state=present"
-  with_items: packages
+  with_items: packages | union(packages_noarch)
 
 - name: stop rabbitmq-server
   service: name=rabbitmq-server
@@ -27,7 +27,7 @@
 
 - name: generate mq service list
   shell: echo {{ item }} >> /opt/service
-  with_items: services
+  with_items: services_noarch
 
 - name: modify rabbitmq password
   command: rabbitmqctl change_password guest {{ RABBIT_PASS }}

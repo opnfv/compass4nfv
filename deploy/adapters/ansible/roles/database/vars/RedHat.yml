@@ -1,0 +1,16 @@
+---
+mysql_packages:
+  - python-mysqldb
+  - mysql-server
+
+maridb_packages:
+  - MariaDB-client
+  - MariaDB-server
+  - galera
+
+services: []
+
+mysql_config_file_path: "/etc/my.cnf.d"
+mysql_config_file_name: ["my-huge.cnf", "server.cnf"]
+wsrep_config_file_path: "/etc/my.cnf.d"
+wsrep_provider_file: "/usr/lib64/galera/libgalera_smm.so"
