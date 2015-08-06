@@ -2,11 +2,11 @@
 - include_vars: "{{ ansible_os_family }}.yml"
 
 - name: first update pkgs
-  apt: update_cache=yes
+  shell: "{{ ansible_pkg_mgr }}  update"
 
 - name: install packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest"
-  with_items: packages
+  with_items: packages | union(packages_noarch)
 
 - name: update hosts files to all hosts
   template: src=hosts
@@ -22,7 +22,9 @@
   register: ip
 
 - name: update compass-core name and ip to  hosts files
-  shell: echo "# compass\n"{{ ip.stdout_lines[0] }} {{ name.stdout_lines[0] }} >> /etc/hosts
+  shell: |
+    echo "# compass" >> /etc/hosts
+    echo {{ ip.stdout_lines[0] }} {{ name.stdout_lines[0] }} >> /etc/hosts
 
 - name: create pip config directory
   file: path=~/.pip state=directory
@@ -34,12 +36,12 @@
 - name: update pip.conf
   template: src=pip.conf dest=~/.pip/pip.conf
 
-- name: restart ntp
-  command: su -s /bin/sh -c "service ntp stop; ntpd -gq; hwclock --systohc"
+- name: sync betweent sys clock and hard clock
+  command: su -s /bin/sh -c "service {{ ntp_service }} stop; ntpd -gq; hwclock --systohc"
   ignore_errors: True
 
 - name: update ntp conf
   template: src=ntp.conf dest=/etc/ntp.conf backup=yes
 
 - name: restart ntp
-  service: name=ntp state=restarted enabled=yes
+  service: name={{ ntp_service }} state=restarted enabled=yes

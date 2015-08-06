@@ -1,0 +1,6 @@
+---
+packages_noarch:
+  - memcached
+  - openstack-dashboard
+
+services_noarch: []

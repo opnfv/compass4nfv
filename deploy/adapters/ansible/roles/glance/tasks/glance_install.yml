@@ -1,13 +1,11 @@
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
-
 - name: install glance packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest force=yes"
-  with_items: glance_packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest"
+  with_items: packages | union(packages_noarch)
 
 - name: generate glance service list
   shell: echo {{ item }} >> /opt/service
-  with_items: glance_services
+  with_items: services | union(services_noarch)
 
 - name: update glance conf
   template: src={{ item }} dest=/etc/glance/{{ item }}
@@ -16,8 +14,7 @@
     - glance-api.conf
     - glance-registry.conf
   notify:
-    - restart glance-registry
-    - restart glance-api
+    - restart glance services
 
 - name: remove default sqlite db
   shell: rm /var/lib/glance/glance.sqlite || touch glance.sqllite.db.removed

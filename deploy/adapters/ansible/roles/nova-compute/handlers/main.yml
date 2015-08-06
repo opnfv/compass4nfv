@@ -1,3 +1,4 @@
 ---
-- name: restart nova-compute
-  service: name=nova-compute state=restarted enabled=yes
+- name: restart nova-compute services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services | union(services_noarch)
