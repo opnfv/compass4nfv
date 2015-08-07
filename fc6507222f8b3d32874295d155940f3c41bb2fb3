@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3e81b7_b054f8ca",
+        "filename": "deploy/adapters/ansible/roles/cinder-controller/handlers/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "it should be \"control\"?",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_9051f4da",
+        "filename": "deploy/adapters/ansible/roles/cinder-controller/tasks/cinder_config.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "should be \"control\" or \"controller\"?",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_705e90eb",
+        "filename": "deploy/adapters/ansible/roles/cinder-volume/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "maybe \"replace\"? and what is meaning of \"st\"",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_50638cb1",
+        "filename": "deploy/adapters/ansible/roles/common/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "Extra space",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_305808fa",
+        "filename": "deploy/adapters/ansible/roles/common/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "should be \"between\"",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_f0716078",
+        "filename": "deploy/adapters/ansible/roles/database/files/my.cnf",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "please make equal-signs into a column,thanks.",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_d06e5c96",
+        "filename": "deploy/adapters/ansible/roles/database/templates/my-huge.cnf",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "please make equal-signs into a column",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_b06bd884",
+        "filename": "deploy/adapters/ansible/roles/keystone/tasks/keystone_install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "\"3\" is impossible for output.",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_9068d488",
+        "filename": "deploy/adapters/ansible/roles/mq/vars/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "please delete \"\"",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_700570c1",
+        "filename": "deploy/adapters/ansible/roles/neutron-compute/handlers/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "may be \"compute\"",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_500a6cd3",
+        "filename": "deploy/adapters/ansible/roles/neutron-controller/handlers/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "should be \"control\"",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3e81b7_300fe8e3",
+        "filename": "deploy/adapters/ansible/roles/neutron-controller/tasks/neutron_config.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-07T02:29:19Z",
+      "side": 1,
+      "message": "should be \"control\"",
+      "revId": "fc6507222f8b3d32874295d155940f3c41bb2fb3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
