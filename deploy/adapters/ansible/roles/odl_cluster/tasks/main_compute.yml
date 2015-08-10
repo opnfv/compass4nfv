@@ -1,0 +1,16 @@
+---
+- name: shut down and disable Neutron's agent services
+  service: name=neutron-plugin-openvswitch-agent state=stopped
+
+- name: Stop the Open vSwitch service and clear existing OVSDB
+  shell: >
+    service openvswitch-switch stop ;
+    rm -rf /var/log/openvswitch/* ;
+    rm -rf /etc/openvswitch/conf.db ;
+    service openvswitch-switch start ;
+
+- name: Set OpenDaylight as the manager
+  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{odl_controller}}:6640;"
+
+- name: start and disable Neutron's agent services
+  service: name=neutron-plugin-openvswitch-agent state=started

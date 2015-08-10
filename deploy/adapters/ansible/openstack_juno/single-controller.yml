@@ -30,3 +30,9 @@
     - common
     - nova-compute
     - neutron-compute
+
+- hosts: odl
+  remote_user: root
+  sudo: True
+  roles:
+    - odl
