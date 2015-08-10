@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_4f040d15",
+        "filename": "deploy/adapters/ansible/roles/cinder-volume/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-10T01:47:47Z",
+      "side": 1,
+      "message": "It should be \"replace\".",
+      "revId": "bd4eaede4fea19eb251d14e59c64b3a56fe733cb",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_2f09c92c",
+        "filename": "deploy/adapters/ansible/roles/neutron-compute/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-10T01:47:47Z",
+      "side": 1,
+      "message": "it should be \"compute\".",
+      "revId": "bd4eaede4fea19eb251d14e59c64b3a56fe733cb",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
