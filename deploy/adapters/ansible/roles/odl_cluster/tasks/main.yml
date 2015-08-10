@@ -1,0 +1,11 @@
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install ODL Cluster on Controller
+  include: main_controller.yml
+  when: inventory_hostname in groups['controller']
+
+- name: Install ODL Cluster on Compute
+  include: main_compute.yml
+  when: inventory_hostname in groups['compute'] 
+   
