@@ -1,0 +1,9 @@
+---
+- name: Install ODL Cluster on Controller
+  include: main_controller.yml
+  when: host in groups['controller']
+
+- name: Install ODL Cluster on Compute
+  include: main_compute.yml
+  when: host in groups['compute'] 
+   
