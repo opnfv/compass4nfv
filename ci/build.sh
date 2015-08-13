@@ -18,7 +18,10 @@ cd $WORK_DIR
 wget -O centos_base.iso $PACKAGE_URL/centos_base.iso
 
 # get ubuntu ppa package
-wget -O ubuntu_ppa.tar.gz $PACKAGE_URL/ubuntu_ppa.tar.gz
+#wget -O ubuntu_ppa.tar.gz $PACKAGE_URL/ubuntu_ppa.tar.gz
+
+# generate repo from deloyment script
+./make_repo.sh ../deploy/adapters/ansible/
 
 # get ubuntu iso
 wget -O Ubuntu-14.04-x86_64.iso $PACKAGE_URL/Ubuntu-14.04-x86_64.iso
@@ -42,7 +45,7 @@ chmod 755 ./new -R
 
 # main process
 mkdir -p new/repos new/compass new/bootstrap new/pip new/guestimg
-cp ubuntu_ppa.tar.gz new/repos
+cp ./repo/trusty-juno-ppa.tar.gz new/repos
 cp Ubuntu-14.04-x86_64.iso new/repos
 cp CentOS-7-x86_64-Minimal-1503-01.iso new/repos
 cp centos_7_1_common_ppa_repo.tar.gz new/repos
@@ -65,4 +68,4 @@ rm -rf new/.rr_moved
 sudo mkisofs -quiet -r -J -R -b isolinux/isolinux.bin  -no-emul-boot -boot-load-size 4 -boot-info-table -hide-rr-moved -x "lost+found:" -o compass.iso new/
 
 # delete tmp file
-sudo rm -rf new base ubuntu_ppa.tar.gz centos_base.iso Ubuntu-14.04-x86_64.iso
+sudo rm -rf new base trusty-juno-ppa.tar.gz centos_base.iso Ubuntu-14.04-x86_64.iso
