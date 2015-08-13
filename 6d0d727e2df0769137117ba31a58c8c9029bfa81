@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_7504407e",
+        "filename": "ci/build.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1330
+      },
+      "writtenOn": "2015-08-13T07:35:46Z",
+      "side": 1,
+      "message": "path is invalid",
+      "revId": "6d0d727e2df0769137117ba31a58c8c9029bfa81",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
