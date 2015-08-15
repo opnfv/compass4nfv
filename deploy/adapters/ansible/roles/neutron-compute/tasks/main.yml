@@ -36,7 +36,7 @@
   file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
 
 - name: config neutron
-  template: src=neutron-network.conf
+  template: src=templates/neutron-network.conf
             dest=/etc/neutron/neutron.conf backup=yes
   notify:
     - restart neutron compute service

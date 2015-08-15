@@ -14,7 +14,7 @@
   register: NOVA_ADMIN_TENANT_ID
 
 - name: update neutron conf
-  template: src=neutron.conf dest=/etc/neutron/neutron.conf backup=yes
+  template: src=templates/neutron.conf dest=/etc/neutron/neutron.conf backup=yes
 
 - name: update ml2 plugin conf
   template: src=ml2_conf.ini dest=/etc/neutron/plugins/ml2/ml2_conf.ini backup=yes
