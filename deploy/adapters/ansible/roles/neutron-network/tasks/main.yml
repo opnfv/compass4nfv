@@ -36,7 +36,7 @@
             backup=yes
 
 - name: update dnsmasq-neutron.conf
-  template: src=dnsmasq-neutron.conf
+  template: src=templates/dnsmasq-neutron.conf
             dest=/etc/neutron/dnsmasq-neutron.conf
 
 - name: config metadata agent
@@ -49,7 +49,7 @@
             backup=yes
 
 - name: config neutron
-  template: src=neutron-network.conf
+  template: src=templates/neutron-network.conf
             dest=/etc/neutron/neutron.conf backup=yes
   notify:
     - restart common neutron network relation service
