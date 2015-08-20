@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a288981_31448a73",
+        "filename": "deploy/adapters/ansible/roles/odl_cluster/tasks/main.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-20T10:54:44Z",
+      "side": 1,
+      "message": "trailing space",
+      "revId": "4044c2cb46376e398bb423eac3df606df804cf14",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a288981_11498e8b",
+        "filename": "deploy/adapters/ansible/roles/odl_cluster/tasks/main_controller.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-20T10:54:44Z",
+      "side": 1,
+      "message": "trailing space",
+      "revId": "4044c2cb46376e398bb423eac3df606df804cf14",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
