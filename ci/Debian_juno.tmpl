@@ -9,13 +9,17 @@ sudo add-apt-repository -y cloud-archive:juno
 sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 D669017EBC19DDBA
 sudo add-apt-repository 'deb http://releases.galeracluster.com/ubuntu trusty main'
 
+# add oracle java8 ppa
+sudo add-apt-repository ppa:webupd8team/java
+
 sudo apt-get update
 
 sudo apt-get install reprepro -y
 
 #download packages
-#set packages = $getVar('packages', [])
+sudo apt-get -d install openssh-server -y
 
+#set packages = $getVar('packages', [])
 #for pkg in $packages
 sudo apt-get -d install $pkg -y
 #end for
