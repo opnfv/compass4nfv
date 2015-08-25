@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a288981_c21fb2b6",
+        "filename": "ci/build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-25T01:39:42Z",
+      "side": 1,
+      "message": "if set -e, the script will exit when errors, maybe it is no useful for [[$? -ne 0]]",
+      "revId": "ba91fba71475017bcf75f8bff97aaeff90bf56c9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a288981_0226da16",
+        "filename": "ci/build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-08-25T01:39:42Z",
+      "side": 1,
+      "message": "need install genisoimage before using mkisofs",
+      "revId": "ba91fba71475017bcf75f8bff97aaeff90bf56c9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
