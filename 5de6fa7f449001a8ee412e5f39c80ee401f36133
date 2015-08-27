@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a288981_c3ac548f",
+        "filename": "ci/build.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2015-08-27T08:39:30Z",
+      "side": 1,
+      "message": "adding a input parameter of $BUILD_DIRECTORY would be better?",
+      "range": {
+        "startLine": 6,
+        "startChar": 26,
+        "endLine": 6,
+        "endChar": 31
+      },
+      "revId": "5de6fa7f449001a8ee412e5f39c80ee401f36133",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a288981_03ca5c4f",
+        "filename": "ci/build.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2015-08-27T08:39:30Z",
+      "side": 1,
+      "message": "please define a varible for this name, and make it to be a input parameter.\nIs it more agile?",
+      "range": {
+        "startLine": 124,
+        "startChar": 11,
+        "endLine": 124,
+        "endChar": 18
+      },
+      "revId": "5de6fa7f449001a8ee412e5f39c80ee401f36133",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
