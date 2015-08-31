@@ -5,7 +5,7 @@ After=network.service
 
 [Service]
 Type=forking
-ExecStart=/opt/opendaylight-0.2.2/bin/start
+ExecStart=/opt/opendaylight-0.3.0/bin/start
 User=odl
 Group=odl
 

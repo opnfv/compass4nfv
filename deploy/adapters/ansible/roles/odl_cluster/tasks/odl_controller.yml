@@ -1,5 +1,5 @@
 ---
-- name: install jdk packages
+- name: install java packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: packages | union(packages_noarch)
 
@@ -15,7 +15,7 @@
 #    group: root
 #    owner: root
 #    mode: 0755
-
+ 
 - name: create odl group
   group: name=odl system=yes state=present
 
@@ -28,8 +28,15 @@
     system: "yes"
     shell: "/bin/false"
 
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
 - name: download odl package
-  get_url: url={{ odl_pkg_url }} dest=/opt/{{ odl_pkg_name }}
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/odl/{{ odl_pkg_url }}"  dest=/opt/{{ odl_pkg_name }}
+
+#- name: download odl package
+#  get_url: url={{ odl_pkg_url }} dest=/opt/{{ odl_pkg_name }}
 
 # TODO: unarchive doesn't support strip-component at the moment
 # TODO: switch to use untar after support is added.
@@ -39,18 +46,21 @@
   notify:
     - restart odl service
 
-#- name: opendaylight systemd file
-#  template: src=opendaylight.service dest=/usr/lib/systemd/system/opendaylight.service mode=0644
+- name: opendaylight system file
+  template: 
+    src: "{{ service_file.src }}"
+    dest: "{{ service_file.dst }}"
+    mode: 0644
 
-- name: create karaf config
-  template:
-    src: org.apache.karaf.features.cfg
-    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
-    owner: odl
-    group: odl
-    mode: 0775
-  notify:
-    - restart odl service
+#- name: create karaf config
+#  template:
+#    src: org.apache.karaf.features.cfg
+#    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
+#    owner: odl
+#    group: odl
+#    mode: 0775
+#  notify:
+#    - restart odl service
 
 - name: create tomcat config
   template:
@@ -84,13 +94,46 @@
   notify:
     - restart odl service
 
-- name: copy Jolokia-OSGi config
-  shell: >
-    cp -r jolokia {{ odl_home }}/system/org/;
+#- name: copy Jolokia-OSGi config
+#  shell: >
+#    cp -r jolokia {{ odl_home }}system/org/;
+
+#- name: copy Jolokia-OSGi config
+#  template:
+#    src: jolokia
+#    dest: "{{ odl_home }}/system/org/"
+#  notify:
+#    - restart odl service
+
+
+#- name: mkdir Jolokia-OSGi directory
+#  shell: >
+#     mkdir -p {{ odl_home }}system/org/jolokia;
+#     mkdir -p {{ odl_home }}system/org/jolokia/jolokia-osgi;
+#     mkdir -p {{ odl_home }}system/org/jolokia/jolokia-osgi/1.1.5;
+
+
+#- name: copy Jolokia-OSGi config
+#  template: src={{ item.src }} dest={{ item.dest }}
+#  with_items:
+#      - src: "jolokia-osgi-1.1.5-features.xml"
+#        dest: "{{ odl_home }}/system/org/jolokia/jolokia-osgi/1.1.5/jolokia-osgi-1.1.5-features.xml"
+#      - src: "jolokia-osgi-1.1.5.jar.sha1"
+#        dest: "{{ odl_home }}/system/org/jolokia/jolokia-osgi/1.1.5/jolokia-osgi-1.1.5.jar.sha1"
+#      - src: "jolokia-osgi-1.1.5.jar"
+#        dest: "{{ odl_home }}/system/org/jolokia/jolokia-osgi/1.1.5/jolokia-osgi-1.1.5.jar"
+
+#- name: copy Jolokia-OSGi jar config
+#  copy: src=roles/odl_cluster/templates/jolokia-osgi-1.1.5.jar  dest="{{ odl_home }}/system/org/jolokia/jolokia-osgi/1.1.5/"
 
 - name: remove KARAF Data Directory
   shell: >
     rm -rf {{ odl_home }}/data/*;
+
+- name: chown OpenDaylight Directory and Files
+  shell: >
+    chown -R odl:odl "{{ odl_home }}";
+    chown odl:odl "{{ service_file.dst }}";
 
 
 ##########################################################################################################
@@ -99,42 +142,29 @@
 - name: Turn off neutron-server on control node
   service: name=neutron-server state=stopped
 
-- name: shut down and disable Neutron's agent services
-  service: name=neutron-plugin-openvswitch-agent state=stopped
-
-- name: Stop the Open vSwitch service and clear existing OVSDB
-  shell: >
-    service openvswitch-switch stop ;
-    rm -rf /var/log/openvswitch/* ;
-    rm -rf /etc/openvswitch/conf.db ;
-    service openvswitch-switch start ;
-
-- name: Set OpenDaylight as the manager
-  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{odl_controller}}:6640;"
-
-- name: start and disable Neutron's agent services
-  service: name=neutron-plugin-openvswitch-agent state=started
-
 - name: Install Crudini
   apt: name={{ item }} state=present
   with_items:
     - crudini
 
-- name: Configure Neutron1
-  shell: >
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
+- name: Run OpenVSwitch Script
+  include: openvswitch.yml
 
-- name: Create ML2 Configuration File
-  template:
-    src: ml2_conf.sh
-    dest: "/opt/ml2_conf.sh"
-    mode: 0777
+#- name: Configure Neutron1
+#  shell: >
+#    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight;
+#    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
+
+#- name: Create ML2 Configuration File
+#  template:
+#    src: ml2_conf.sh
+#    dest: "/opt/ml2_conf.sh"
+#    mode: 0777
+
+#- name: Execute ML2 Configuration File
+#  command: su -s /bin/sh -c "/opt/ml2_conf.sh;"
 
 - name: Configure Neutron2
-  command: su -s /bin/sh -c "/opt/ml2_conf.sh;"
-
-- name: Configure Neutron3
   shell: >
     mysql -e "drop database if exists neutron_ml2;";
     mysql -e "create database neutron_ml2 character set utf8;";
@@ -143,7 +173,3 @@
 
 - name: Restart neutron-server
   service: name=neutron-server state=started
-
-
-
-
