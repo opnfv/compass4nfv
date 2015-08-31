@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="framework-3.0.1">
-    <repository>mvn:org.jolokia/jolokia-osgi/1.1.5/xml/features</repository>
-    <feature name="jolokia-osgi" version="1.1.5" description="Jolokia Agent">
-        <bundle start-level="5" start="true">mvn:org.jolokia/jolokia-osgi/1.1.5</bundle>
-    </feature>
-</features>
-

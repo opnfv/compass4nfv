@@ -34,7 +34,7 @@
     - neutron-compute
     - cinder-volume
 
-- hosts: odl
+- hosts: all
   remote_user: root
   sudo: True
   roles:
