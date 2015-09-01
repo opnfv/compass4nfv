@@ -1,28 +1,24 @@
 #set -x
-WORK_DIR=$COMPASS_DIR/ci/work
+WORK_DIR=$COMPASS_DIR/ci/work/deploy
 
-if [[ $# -ge 1 ]];then
-    CONF_NAME=$1
-else
-    CONF_NAME=cluster
-fi
+mkdir -p $WORK_DIR/script
 
 source ${COMPASS_DIR}/ci/log.sh
-source ${COMPASS_DIR}/deploy/conf/${CONF_NAME}.conf
+source ${COMPASS_DIR}/ci/deploy_parameter.sh
+source $(process_default_para $*) || exit 1
+source $(process_input_para $*) || exit 1
+source ${COMPASS_DIR}/deploy/conf/${FLAVOR}.conf
+source ${COMPASS_DIR}/deploy/conf/${TYPE}.conf
+source ${COMPASS_DIR}/deploy/conf/base.conf
 source ${COMPASS_DIR}/deploy/prepare.sh
 source ${COMPASS_DIR}/deploy/network.sh
-
-if [[ ! -z $VIRT_NUMBER ]];then
-    source ${COMPASS_DIR}/deploy/host_vm.sh
-else
-    source ${COMPASS_DIR}/deploy/host_baremetal.sh
-fi
-
+source ${COMPASS_DIR}/deploy/host_${TYPE}.sh
 source ${COMPASS_DIR}/deploy/compass_vm.sh
 source ${COMPASS_DIR}/deploy/deploy_host.sh
 
 ######################### main process
-
+if true
+then
 if ! prepare_env;then
     echo "prepare_env failed"
     exit 1
@@ -47,6 +43,10 @@ fi
 if ! launch_compass;then
     log_error "launch_compass failed"
     exit 1
+fi
+else
+# test code
+export machines="'00:00:01:c9:03:34','00:00:7c:8e:1e:c6','00:00:00:ec:6f:ca','00:00:7c:7a:91:cb','00:00:0e:82:79:08'"
 fi
 if [[ ! -z $VIRT_NUMBER ]];then
     if ! launch_host_vms;then

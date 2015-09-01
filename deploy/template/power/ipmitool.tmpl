@@ -1,0 +1,25 @@
+#set default_ipmiUser=$getVar('ipmiUser', '')
+#set default_ipmiPass=$getVar('ipmiPass', '')
+#set hosts=$getVar('hosts', [])
+#set fail_list=""
+#for host in $hosts
+#set host_name=$host.get('name', '')
+#set ipmiIp=$host.get('ipmiIp', '')
+#set ipmiUser=$host.get('ipmiUser', $default_ipmiUser)
+#set ipmiPass=$host.get('ipmiPass', $default_ipmiPass)
+#if not ($ipmiIp and $ipmiUser and $ipmiPass)
+#set fail_list=$fail_list + $host_name + " "
+#end if
+#end for
+#if  fail_list
+echo $fail_list.strip() ipmi config is not right
+exit 1
+#else
+#for host in $hosts
+#set ipmiIp=$host.get('ipmiIp', '')
+#set ipmiUser=$host.get('ipmiUser', $default_ipmiUser)
+#set ipmiPass=$host.get('ipmiPass', $default_ipmiPass)
+ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe
+ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power reset
+#end for
+#end if

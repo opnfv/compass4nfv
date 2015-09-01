@@ -25,7 +25,7 @@ function launch_host_vms() {
         mkdir -p $vm_dir
         sudo qemu-img create -f raw $vm_dir/disk.img ${VIRT_DISK}
         # create vm xml
-        sed -e "s/REPLACE_MEM/$VIRT_MEM/g" \
+     	sed -e "s/REPLACE_MEM/$VIRT_MEM/g" \
           -e "s/REPLACE_CPU/$VIRT_CPUS/g" \
           -e "s/REPLACE_NAME/$host/g" \
           -e "s#REPLACE_IMAGE#$vm_dir/disk.img#g" \
@@ -36,7 +36,7 @@ function launch_host_vms() {
           -e "s/REPLACE_BRIDGE_STORAGE/br_install/g" \
           $COMPASS_DIR/deploy/template/vm/host.xml\
           > $vm_dir/libvirt.xml
-
+	
         sudo virsh define $vm_dir/libvirt.xml
         sudo virsh start $host
         let i=i+1
