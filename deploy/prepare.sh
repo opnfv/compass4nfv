@@ -1,22 +1,25 @@
+
 function prepare_env() {
     export PYTHONPATH=/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages
     sudo apt-get update -y
-    sudo apt-get install mkisofs bc
+    sudo apt-get install mkisofs bc curl
     sudo apt-get install git python-pip python-dev -y
     sudo apt-get install libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev -y
     sudo pip install --upgrade pip
     sudo pip install --upgrade ansible
     sudo pip install --upgrade virtualenv
+    sudo pip install --upgrade netaddr
+    sudo pip install --upgrade oslo.config
     sudo service libvirt-bin restart
-
     # prepare work dir
-    sudo rm -rf $WORK_DIR
-    mkdir -p $WORK_DIR
+
+    rm -rf $WORK_DIR/{installer,vm,network,iso,venv}
     mkdir -p $WORK_DIR/installer
     mkdir -p $WORK_DIR/vm
     mkdir -p $WORK_DIR/network
     mkdir -p $WORK_DIR/iso
     mkdir -p $WORK_DIR/venv
+    mkdir -p $WORK_DIR/cache
 
     if [[ ! -f centos.iso ]];then
         wget -O $WORK_DIR/iso/centos.iso $ISO_URL
