@@ -1,0 +1,23 @@
+#!/bin/bash
+set -x
+yum install tar -y
+
+#download packages
+#set packages = $getVar('default_packages', [])
+#for pkg in $packages
+yum -y install $pkg
+#end for
+#set packages = $getVar('packages', [])
+#for pkg in $packages
+yum -y install $pkg
+#end for
+
+#make repo
+
+mkdir -p /centos6-package
+
+find /var/cache/yum/ -name *.rpm | xargs -i cp {} /centos6-package
+
+find /centos6-package  -size 0 -name *.rpm | xargs rm -f
+
+tar -zcvf /centos6-package.tar.gz /centos6-package

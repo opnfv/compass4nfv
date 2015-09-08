@@ -1,26 +1,14 @@
 function deploy_host(){
-    cd $WORK_DIR/installer/compass-core
-    source $WORK_DIR/venv/bin/activate
-    if pip --help | grep -q trusted; then
-        pip install -i http://pypi.douban.com/simple -e . --trusted-host pypi.douban.com
-    else
-        pip install -i http://pypi.douban.com/simple -e .
-    fi
+    NETWORK_FILE=${COMPASS_DIR}/deploy/conf/network_cfg.yaml
+    NEUTRON_FILE=${COMPASS_DIR}/deploy/conf/neutron_cfg.yaml
 
-    sudo mkdir -p /var/log/compass
-    sudo chown -R 777 /var/log/compass
-
-    sudo mkdir -p /etc/compass
-    sudo cp -rf conf/setting /etc/compass/.
-
-    cp bin/switch_virtualenv.py.template bin/switch_virtualenv.py
-    sed -i "s|\$PythonHome|$VIRTUAL_ENV|g" bin/switch_virtualenv.py
+    pip install oslo.config
     ssh $ssh_args root@${COMPASS_SERVER} mkdir -p /opt/compass/bin/ansible_callbacks
     scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${COMPASS_SERVER}:/opt/compass/bin/ansible_callbacks/status_callback.py
 
     reboot_hosts
 
-    bin/client.py --logfile= --loglevel=debug --logdir= --compass_server="${COMPASS_SERVER_URL}" \
+    python ${COMPASS_DIR}/deploy/client.py --compass_server="${COMPASS_SERVER_URL}" \
     --compass_user_email="${COMPASS_USER_EMAIL}" --compass_user_password="${COMPASS_USER_PASSWORD}" \
     --cluster_name="${CLUSTER_NAME}" --language="${LANGUAGE}" --timezone="${TIMEZONE}" \
     --hostnames="${HOSTNAMES}" --partitions="${PARTITIONS}" --subnets="${SUBNETS}" \
@@ -37,5 +25,6 @@ function deploy_host(){
     --host_roles="${HOST_ROLES}" --default_roles="${DEFAULT_ROLES}" --switch_ips="${SWITCH_IPS}" \
     --machines=${machines//\'} --switch_credential="${SWITCH_CREDENTIAL}" \
     --deployment_timeout="${DEPLOYMENT_TIMEOUT}" --${POLL_SWITCHES_FLAG} --dashboard_url="${DASHBOARD_URL}" \
-    --cluster_vip="${VIP}"
+    --cluster_vip="${VIP}" --network_cfg="$NETWORK_FILE" --neutron_cfg="$NEUTRON_FILE"
+
 }
