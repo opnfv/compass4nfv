@@ -1,0 +1,43 @@
+#!/bin/bash
+set -ex
+
+# add openstack kilo repo
+sudo apt-get update && apt-get install -y software-properties-common
+sudo add-apt-repository -y cloud-archive:kilo
+
+# add galeracluster repo
+sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 D669017EBC19DDBA
+sudo add-apt-repository 'deb http://releases.galeracluster.com/ubuntu trusty main'
+# add oracle java8 ppa
+sudo add-apt-repository ppa:webupd8team/java
+# add open java7 repo
+sudo add-apt-repository 'deb http://security.ubuntu.com/ubuntu trusty-security main'
+
+sudo apt-get update
+
+sudo apt-get install reprepro -y
+
+#download packages
+#set packages = $getVar('default_packages', [])
+#for pkg in $packages
+sudo apt-get -d install $pkg -y
+#end for
+#set packages = $getVar('packages', [])
+#for pkg in $packages
+sudo apt-get -d install $pkg -y
+#end for
+
+#make repo
+mkdir -p trusty-kilo-ppa/conf
+cat <<EOF > trusty-kilo-ppa/conf/distributions
+Codename: trusty
+Components: main
+Architectures: amd64
+EOF
+
+mkdir deb
+find /var/cache/apt/ -name *.deb | xargs -i cp {} deb
+
+reprepro -b trusty-kilo-ppa includedeb trusty deb/*.deb
+
+tar -zcvf /trusty-kilo-ppa.tar.gz ./trusty-kilo-ppa

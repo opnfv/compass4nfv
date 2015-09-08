@@ -1,32 +1,62 @@
-function destroy_nets() {
-    sudo virsh net-destroy mgmt > /dev/null 2>&1
-    sudo virsh net-undefine mgmt > /dev/null 2>&1
+function destroy_nat() {
+    sudo virsh net-destroy $1  2>&1
+    sudo virsh net-undefine $1 2>&1
+    rm -rf $COMPASS_DIR/deploy/work/network/$1.xml
+}
 
-    sudo virsh net-destroy install > /dev/null 2>&1
-    sudo virsh net-undefine install > /dev/null 2>&1
-    rm -rf $COMPASS_DIR/deploy/work/network/*.xml
+function destroy_bridge()
+{
+    bridge=$1
+    nic=$2
+    ips=$(ip addr show $bridge | grep 'inet ' | awk -F' ' '{print $2}')
+    routes=$(ip route show | grep $bridge)
+
+    ip link set $bridge down
+
+    brctl delbr $bridge
+
+    for ip in $ips; do
+        ip addr add $ip dev $nic
+    done
+
+    echo "$routes" | while read line; do
+        echo $line | sed "s/$bridge/$nic/g" | xargs ip route add | true
+    done
+}
+
+function create_bridge()
+{
+    bridge=$1
+    nic=$2
+    ips=$(ip addr show $nic | grep 'inet ' | awk -F' ' '{print $2}')
+    routes=$(ip route show | grep $nic)
+
+    ip addr flush $nic
+
+    brctl addbr $bridge
+    brctl addif $bridge $nic
+    ip link set $bridge up
+
+    for ip in $ips; do
+        ip addr add $ip dev $bridge
+    done
+
+    mask=`echo $INSTALL_MASK | awk -F'.' '{print ($1*(2^24)+$2*(2^16)+$3*(2^8)+$4)}'`
+    mask_len=`echo "obase=2;${mask}"|bc|awk -F'0' '{print length($1)}'`
+    ip addr add $INSTALL_GW/$mask_len dev $bridge
+
+    echo "$routes" | while read line; do
+        echo $line | sed "s/$nic/$bridge/g" | xargs ip route add | true
+    done
 }
 
 function setup_om_bridge() {
-    local device=$1
-    local gw=$2
-    ip link set br_install down
-    ip addr flush $device
-    brctl delbr br_install
-
-    brctl addbr br_install
-    brctl addif br_install $device
-    ip link set br_install up
-
-    shift;shift
-    for ip in $*;do
-        ip addr add $ip dev br_install
-    done
-
-    route add default gw $gw
+    destroy_bridge br_install $OM_NIC
+    create_bridge br_install $OM_NIC
 }
 
 function setup_om_nat() {
+    destroy_nat install
     # create install network
     sed -e "s/REPLACE_BRIDGE/br_install/g" \
         -e "s/REPLACE_NAME/install/g" \
@@ -42,8 +72,7 @@ function setup_om_nat() {
 }
 
 function create_nets() {
-    destroy_nets
-
+    destroy_nat mgmt
     # create mgmt network
     sed -e "s/REPLACE_BRIDGE/br_mgmt/g" \
         -e "s/REPLACE_NAME/mgmt/g" \
@@ -61,10 +90,7 @@ function create_nets() {
     if [[ ! -z $VIRT_NUMBER ]];then
         setup_om_nat
     else
-        mask=`echo $INSTALL_MASK | awk -F'.' '{print ($1*(2^24)+$2*(2^16)+$3*(2^8)+$4)}'`
-        mask_len=`echo "obase=2;${mask}"|bc|awk -F'0' '{print length($1)}'`
-        setup_om_bridge $OM_NIC $OM_GW $INSTALL_GW/$mask_len $OM_IP
+        setup_om_bridge
     fi
-
 }
 
