@@ -25,7 +25,7 @@
     - glance
     - neutron-common
     - neutron-network
-    - ext-network
+#    - ext-network
     - dashboard
 
 - hosts: compute
@@ -41,6 +41,13 @@
   sudo: True
   roles:
     - odl_cluster
+
+- hosts: controller
+  remote_user: root
+  sudo: True
+  roles:
+    - ext-network
+
 
 - hosts: all
   remote_user: root
