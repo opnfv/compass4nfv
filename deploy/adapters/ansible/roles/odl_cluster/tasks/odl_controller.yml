@@ -1,7 +1,21 @@
 ---
-- name: install java packages
+
+- name: install controller  packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: packages | union(packages_noarch)
+  with_items: controller_packages | union(controller_packages_noarch)
+
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
+- name: download oracle-jdk8 package file
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_pkg_name }}"  dest=/opt/{{ jdk8_pkg_name }}
+  
+- name: upload install_jdk8 scripts
+  unarchive: src=install_jdk8.tar dest=/opt/
+  
+- name: install install_jdk8 package
+  command: su -s /bin/sh -c "/opt/install_jdk8/install_jdk8.sh"
 
 #- name: install opendaylight packages
 #  apt: name={{ item }} state=present
@@ -15,7 +29,7 @@
 #    group: root
 #    owner: root
 #    mode: 0755
-
+ 
 - name: create odl group
   group: name=odl system=yes state=present
 
@@ -28,9 +42,9 @@
     system: "yes"
     shell: "/bin/false"
 
-- name: get image http server
-  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
-  register: http_server
+#- name: get image http server
+#  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+#  register: http_server
 
 - name: download odl package
   get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/odl/{{ odl_pkg_url }}"  dest=/opt/{{ odl_pkg_name }}
@@ -47,7 +61,7 @@
     - restart odl service
 
 - name: opendaylight system file
-  template:
+  template: 
     src: "{{ service_file.src }}"
     dest: "{{ service_file.dst }}"
     mode: 0644
@@ -142,10 +156,10 @@
 - name: Turn off neutron-server on control node
   service: name=neutron-server state=stopped
 
-- name: Install Crudini
-  apt: name={{ item }} state=present
-  with_items:
-    - crudini
+#- name: Install Crudini
+#  apt: name={{ item }} state=present
+#  with_items:
+#    - crudini
 
 - name: Run OpenVSwitch Script
   include: openvswitch.yml
