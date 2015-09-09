@@ -1,7 +1,10 @@
 ---
 
-packages:
-  - openjdk-7-jdk
+controller_packages:
+#  - openjdk-7-jdk
+  - crudini
+
+compute_packages:
   - crudini
 
 service_file:

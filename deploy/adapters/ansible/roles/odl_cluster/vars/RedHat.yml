@@ -1,9 +1,13 @@
 ---
 
-packages:
-  - java-1.7.0-openjdk
+controller_packages:
+#  - java-1.7.0-openjdk
   - crudini
 
+compute_packages:
+  - crudini
+
+
 service_file:
-  - src: opendaylight.service
-    dst: /usr/lib/systemd/system/opendaylight.service
+   src: opendaylight.service
+   dst: /usr/lib/systemd/system/opendaylight.service
