@@ -4,6 +4,7 @@
   sudo: True
   roles:
     - common
+    - setup-network
 
 - hosts: ha
   remote_user: root
@@ -24,6 +25,7 @@
     - glance
     - neutron-common
     - neutron-network
+    - ext-network
     - dashboard
 
 - hosts: compute

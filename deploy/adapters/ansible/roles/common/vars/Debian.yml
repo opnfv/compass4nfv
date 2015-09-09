@@ -2,5 +2,9 @@
 packages:
   - ubuntu-cloud-keyring
   - python-dev
+  - openvswitch-datapath-dkms
+  - openvswitch-switch
+
+services: []
 
 ntp_service: ntp

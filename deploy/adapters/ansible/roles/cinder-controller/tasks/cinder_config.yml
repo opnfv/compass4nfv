@@ -5,6 +5,7 @@
 - name: sync cinder db
   shell: su -s /bin/sh -c "cinder-manage db sync" cinder && cinder
   register: result
+  run_once: True
   until: result.rc == 0
   retries: 5
   delay: 3
@@ -18,5 +19,6 @@
 
 - name: run cinder register script
   shell: for i in {0..5}; do /opt/cinder_init.sh && touch cinder_init_complete; if [ $? != 0 ]; then sleep 5; else break; fi; done
+  run_once: True
   args:
     creates: cinder_init_complete

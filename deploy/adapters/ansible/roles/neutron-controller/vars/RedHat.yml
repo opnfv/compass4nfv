@@ -3,5 +3,4 @@ packages:
   - openstack-neutron
   - openstack-neutron-ml2
 
-services:
-  - neutron-server
+services: []

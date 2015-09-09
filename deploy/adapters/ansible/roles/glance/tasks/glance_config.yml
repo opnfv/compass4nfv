@@ -1,10 +1,12 @@
 ---
 - name: init glance db version
   shell: glance-manage db_version_control 0
+  run_once: True
   when: ansible_os_family == "Debian"
 
 - name: sync glance db
   shell: sleep 15; su -s /bin/sh -c "glance-manage db_sync" glance
+  run_once: True
   register: result
   until: result.rc == 0
   retries: 5
@@ -28,6 +30,7 @@
   wait_for: host={{ image_host }} port=9292 delay=5
 
 - name: run image upload
+  run_once: True
   shell: for i in {0..5}; do /opt/image_upload.sh && touch image_upload_completed; if [ $? != 0 ] ;then sleep 5; else break;fi;done
   args:
     creates: image_upload_completed

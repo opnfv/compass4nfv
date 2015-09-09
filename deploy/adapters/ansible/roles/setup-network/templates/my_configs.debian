@@ -1,0 +1,16 @@
+{%- for intf in host_ip_settings %}
+
+auto {{ intf["alias"] }}
+iface {{ intf["alias"] }} inet static
+    address {{ intf["ip"] }}
+    netmask {{ intf["netmask"] }}
+{% if "gw" in intf %}
+    gateway {{ intf["gw"] }}
+{% endif %}
+{% for sys_intf in network_cfg["sys_intf_mappings"] %}
+{% if "vlan_tag" in sys_intf and sys_intf["name"] == intf["alias"] %}
+    pre-up ip link set {{ sys_intf["interface"] }} up
+    pre-up ip link add link {{ sys_intf["interface"] }} name {{ sys_intf["name"] }} type vlan id {{ sys_intf["vlan_tag"] }}
+{% endif %}
+{% endfor %}
+{% endfor %}

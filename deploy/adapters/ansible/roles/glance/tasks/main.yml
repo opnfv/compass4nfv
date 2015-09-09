@@ -12,7 +12,7 @@
     - nfs
 
 - include: glance_config.yml
-  when: HA_CLUSTER is not defined or HA_CLUSTER[inventory_hostname] == ''
+  run_once: True
   tags:
     - config
     - glance_config

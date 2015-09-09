@@ -48,7 +48,7 @@ wsrep_provider={{ wsrep_provider_file }}
 wsrep_cluster_name="my_wsrep_cluster"
 
 # Group communication system handle
-wsrep_cluster_address=gcomm://{{ HA_CLUSTER[inventory_hostname] }}
+wsrep_cluster_address=gcomm://{{ haproxy_hosts.values()|join(",") }}
 
 # Human-readable node name (non-unique). Hostname by default.
 #wsrep_node_name=
@@ -56,7 +56,7 @@ wsrep_cluster_address=gcomm://{{ HA_CLUSTER[inventory_hostname] }}
 # Base replication <address|hostname>[:port] of the node.
 # The values supplied will be used as defaults for state transfer receiving,
 # listening ports and so on. Default: address of the first network interface.
-wsrep_node_address={{ hostvars[inventory_hostname]['ansible_' + INTERNAL_INTERFACE].ipv4.address }}
+wsrep_node_address={{ internal_ips[inventory_hostname] }}
 
 # Address for incoming client connections. Autodetect by default.
 #wsrep_node_incoming_address=

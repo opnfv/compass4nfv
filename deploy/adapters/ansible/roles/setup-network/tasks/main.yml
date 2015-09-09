@@ -1,0 +1,43 @@
+---
+- name: add ovs bridge
+  openvswitch_bridge: bridge={{ item["name"] }} state=present
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: 'item["type"] == "ovs"'
+
+- name: add ovs uplink
+  openvswitch_port: bridge={{ item["name"] }} port={{ item["interface"] }} state=present
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: 'item["type"] == "ovs"'
+
+- name: add ovs uplink
+  shell: ip link set {{ item["interface"] }} up
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: 'item["type"] == "ovs"'
+
+- name: setup sys intf
+  shell: ip link del {{ item["name"] }}; \
+         ip link add link {{ item["interface"] }} name {{ item["name"] }} type vlan id {{ item["vlan_tag"] }}; \
+         ip link set {{ item["interface"] }} up
+  when: '"vlan_tag" in item'
+  with_items: "{{ network_cfg['sys_intf_mappings'] }}"
+
+
+- name: set sys intf ip
+  shell: ip addr del {{ item["ip"] }}/{{ item["netmask"] }} dev {{ item["alias"] }}; \
+         ip addr add {{ item["ip"] }}/{{ item["netmask"] }} dev {{ item["alias"] }}; \
+         ip link set {{ item["alias"] }} up
+  with_items: "{{ host_ip_settings }}"
+
+- name: set gateway
+  shell: ip route del default; \
+         ip route add default via {{ item["gw"] }} dev {{ item["alias"] }}
+  when: '"gw" in item'
+  with_items: "{{ host_ip_settings }}"
+
+- name: copy net config
+  template:  src=my_configs.debian dest=/etc/network/interfaces.d/my_configs.cfg
+  when: ansible_os_family == "Debian"
+
+- name: source net config
+  lineinfile: dest=/etc/network/interfaces line='source /etc/network/interfaces.d/my_configs.cfg'
+  when: ansible_os_family == "Debian"

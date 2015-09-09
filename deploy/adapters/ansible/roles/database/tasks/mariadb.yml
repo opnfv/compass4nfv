@@ -1,4 +1,9 @@
 ---
+#- name: delete default maridb-libs
+#  action: "{{ ansible_pkg_mgr }} name=mariadb-libs state=absent"
+#  when: ansible_os_family == "RedHat"
+#  ignore_errors: True
+
 - name: install python-mysqldb
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: maridb_packages | union(packages_noarch)
@@ -19,8 +24,19 @@
 - name: update wsrep_sst_rsync gid
   lineinfile: dest=/usr/bin/wsrep_sst_rsync state=absent regexp="\s*gid = \$MYGID$"  backup=yes
 
-- name: manually restart mysql server
+- name: restart first mysql server
+  shell: service mysql restart --wsrep-cluster-address="gcomm://"
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+  register: result
+  until: result|success
+  retries: 5
+  delay: 5
+  tags:
+    - mysql_restart
+
+- name: restart other mysql server
   service: name=mysql state=restarted enabled=yes
+  when: inventory_hostname != haproxy_hosts.keys()[0]
   register: result
   until: result|success
   retries: 5
@@ -34,6 +50,6 @@
 
 - name: create database/user
   shell: /opt/data.sh
-  when: HA_CLUSTER[inventory_hostname] == ''
+  run_once: True
   tags:
     - mysql_user

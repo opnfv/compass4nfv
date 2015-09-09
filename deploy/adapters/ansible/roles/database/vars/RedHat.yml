@@ -4,8 +4,8 @@ mysql_packages:
   - mysql-server
 
 maridb_packages:
+  - MariaDB-Galera-server
   - MariaDB-client
-  - MariaDB-server
   - galera
 
 services: []

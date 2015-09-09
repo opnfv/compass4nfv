@@ -45,3 +45,7 @@
 
 - name: restart ntp
   service: name={{ ntp_service }} state=restarted enabled=yes
+
+- name: restart openvswitch
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services

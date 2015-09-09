@@ -44,7 +44,7 @@
             dest=/etc/neutron/metadata_agent.ini backup=yes
 
 - name: config ml2 plugin
-  template: src=ml2_conf.ini
+  template: src=templates/ml2_conf.ini
             dest=/etc/neutron/plugins/ml2/ml2_conf.ini
             backup=yes
 
@@ -58,13 +58,6 @@
 
 - meta: flush_handlers
 
-- name: add br-int
-  openvswitch_bridge: bridge=br-int state=present
-
-- name: add br-ex
-  openvswitch_bridge: bridge=br-ex state=present
-  when: "'openvswitch' in {{ NEUTRON_MECHANISM_DRIVERS }}"
-
 - name: ln plugin.ini
   file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
 
@@ -72,11 +65,6 @@
   service: name={{ openvswitch_agent }} state=restarted enabled=yes
 
 - meta: flush_handlers
-
-- name: assign a port to br-ex for physical ext interface
-  openvswitch_port: bridge=br-ex port={{ INTERFACE_NAME }}
-                    state=present
-  when: "'openvswitch' in {{ NEUTRON_MECHANISM_DRIVERS }}"
 
 - include: igmp-router.yml
   when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }} and ansible_os_family == 'Debian'"

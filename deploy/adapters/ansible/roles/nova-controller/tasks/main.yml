@@ -6,7 +6,6 @@
     - nova
 
 - include: nova_config.yml
-  when: HA_CLUSTER is not defined or HA_CLUSTER[inventory_hostname] == ''
   tags:
     - config
     - nova_config

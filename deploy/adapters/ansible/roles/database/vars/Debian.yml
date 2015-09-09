@@ -7,10 +7,9 @@ mysql_packages:
 maridb_packages:
   - libaio1
   - libssl0.9.8
-  - mysql-client-5.5
   - python-mysqldb
-  - mysql-wsrep-server
-  - galera
+  - mysql-wsrep-server-5.5
+  - galera-3
 
 services: []
 

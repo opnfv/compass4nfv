@@ -7,8 +7,8 @@
     - mysql_user
 
 - include: mysql.yml
-  when: HA_CLUSTER is not defined
+  when: haproxy_hosts is not defined
 
 - include: mariadb.yml
-  when: HA_CLUSTER is defined
+  when: haproxy_hosts is defined
 

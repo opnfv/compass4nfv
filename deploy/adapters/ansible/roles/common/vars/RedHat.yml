@@ -1,5 +1,9 @@
 ---
 packages:
   - python-devel
+  - openvswitch
+
+services:
+  - openvswitch
 
 ntp_service: ntpd

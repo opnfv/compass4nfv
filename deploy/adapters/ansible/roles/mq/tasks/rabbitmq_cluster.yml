@@ -1,11 +1,11 @@
 ---
 - name: stop rabbitmq app
   command: rabbitmqctl stop_app
-  when: HA_CLUSTER[inventory_hostname] != ''
+  run_once: True
 
 - name: rabbitmqctl reset
   command: rabbitmqctl reset
-  when: HA_CLUSTER[inventory_hostname] != ''
+  run_once: True
 
 - name: stop  rabbitmq
   shell:  rabbitmqctl stop

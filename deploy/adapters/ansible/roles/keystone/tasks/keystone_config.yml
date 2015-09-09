@@ -2,6 +2,7 @@
 - name: keystone-manage db-sync
   shell: su -s /bin/sh -c "keystone-manage db_sync"
   register: result
+  run_once: True
   until: result.rc == 0
   retries: 5
   delay: 3
@@ -10,6 +11,7 @@
   template: src=keystone_init dest=/opt/keystone_init mode=0744
 
 - name: run keystone_init
+  run_once: True
   shell: /opt/keystone_init && touch keystone_init_complete || keystone_init_failed
   args:
     creates: keystone_init_complete

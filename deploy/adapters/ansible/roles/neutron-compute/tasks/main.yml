@@ -28,7 +28,7 @@
   with_items: services | union(services_noarch)
 
 - name: config ml2 plugin
-  template: src=ml2_conf.ini
+  template: src=templates/ml2_conf.ini
             dest=/etc/neutron/plugins/ml2/ml2_conf.ini
             backup=yes
 
@@ -43,9 +43,6 @@
     - restart nova-compute services
 
 - meta: flush_handlers
-
-- name: add br-int
-  openvswitch_bridge: bridge=br-int state=present
 
 - include: ../../neutron-network/tasks/odl.yml
   when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
