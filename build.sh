@@ -91,15 +91,17 @@ function copy_file()
     new=$1
 
     # main process
-    sudo mkdir -p $new/repos $new/compass $new/bootstrap $new/pip $new/guestimg $new/app_packages $new/ansible
+    sudo mkdir -p $new/compass $new/bootstrap $new/pip $new/guestimg $new/app_packages $new/ansible
+    sudo mkdir -p $new/repos/cobbler/{ubuntu,centos}/{iso,ppa}
 
     sudo cp -rf $SCRIPT_DIR/util/ks.cfg $new/isolinux/ks.cfg
 
     sudo rm -rf $new/.rr_moved
 
-    for i in $TRUSTY_JUNO_PPA $UBUNTU_ISO $CENTOS_ISO $CENTOS7_JUNO_PPA; do
-        sudo cp $CACHE_DIR/`basename $i` $new/repos/ -rf
-    done
+    sudo cp $CACHE_DIR/`basename $UBUNTU_ISO` $new/repos/cobbler/ubuntu/iso/ -rf
+    sudo cp $CACHE_DIR/`basename $TRUSTY_JUNO_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
+    sudo cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
+    sudo cp $CACHE_DIR/`basename $CENTOS7_JUNO_PPA` $new/repos/cobbler/centos/ppa/ -rf
 
     sudo cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1
     sudo cp $CACHE_DIR/`basename $CIRROS` $new/guestimg/ -rf || exit 1

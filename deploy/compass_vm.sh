@@ -30,7 +30,7 @@ function install_compass_core() {
 function wait_ok() {
     log_info "wait_compass_ok enter"
     retry=0
-    until timeout 1s ssh $ssh_args root@$MGMT_IP "exit" 2>/dev/null
+    until timeout 1s ssh $ssh_args root@$MGMT_IP "exit" >/dev/null 2>&1
     do
         log_progress "os install time used: $((retry*100/$1))%"
         sleep 1
