@@ -17,7 +17,7 @@ function prepare_env()
     for i in createrepo genisoimage curl; do
         sudo $i --version >/dev/null 2>&1
         if [[ $? -ne 0 ]]; then
-            sudo apt-get install $i -y
+            sudo apt-get install  -y --force-yes  $i
         fi
     done
     set -e

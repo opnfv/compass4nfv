@@ -6,7 +6,7 @@ for i in python-cheetah python-yaml screen; do
     if [[ `dpkg-query -l $i` == 0 ]]; then
         continue
     fi
-    sudo apt-get install $i
+    sudo apt-get install -y --force-yes  $i
 done
 
 screen -ls |grep deploy|awk -F. '{print $1}'|xargs kill -9

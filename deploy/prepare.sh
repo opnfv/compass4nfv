@@ -19,9 +19,9 @@ function download_iso()
 function prepare_env() {
     export PYTHONPATH=/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages
     sudo apt-get update -y
-    sudo apt-get install mkisofs bc curl
-    sudo apt-get install git python-pip python-dev -y
-    sudo apt-get install libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev -y
+    sudo apt-get install -y --force-yes mkisofs bc curl
+    sudo apt-get install -y --force-yes git python-pip python-dev
+    sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
     sudo pip install --upgrade pip
     sudo pip install --upgrade ansible
     sudo pip install --upgrade virtualenv
