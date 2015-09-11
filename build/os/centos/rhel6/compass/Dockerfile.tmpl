@@ -4,7 +4,7 @@ MAINTAINER Chigang(Justin) <chigang@huawei.com>
 # TODO: Is there some easy way to get the fastest/closest mirror?
 # RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list
 RUN rm -f /etc/yum.repos.d/*
-ADD ./centos6/base.repo /etc/yum.repos.d/
+ADD ./rhel6/base.repo /etc/yum.repos.d/
 RUN yum update -y
 
 # set cache enable
