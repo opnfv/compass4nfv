@@ -152,6 +152,11 @@ function make_all_repo()
               --special-package ""
 }
 
+function gen_repo_id()
+{
+    git log -1|grep commit|awk '{print $2}' > ${WORK_PATH}/work/repo/packages.id
+}
+
 function main()
 {
     process_env
@@ -161,6 +166,7 @@ function main()
     else
         make_repo $*
     fi
+    gen_repo_id
 }
 
 main $*

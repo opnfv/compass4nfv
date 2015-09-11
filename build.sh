@@ -176,6 +176,7 @@ function process_param()
 
 function copy_iso()
 {
+   git log -1|grep commit|awk '{print $2}' > ${ISO_DIR}/${ISO_NAME}.id
    if [[ $ISO_DIR/$ISO_NAME == $WORK_DIR/compass.iso ]]; then
       return
    fi
