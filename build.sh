@@ -174,13 +174,26 @@ function process_param()
     export ISO_NAME=${ISO_NAME:-"compass.iso"}
 }
 
+function generate_id()
+{
+    (
+    echo "git url: $(git config --get remote.origin.url)"
+    echo "git sha1: $(git rev-parse HEAD)"
+    ) > ${ISO_DIR}/${ISO_NAME}.id
+}
+
 function copy_iso()
 {
-   if [[ $ISO_DIR/$ISO_NAME == $WORK_DIR/compass.iso ]]; then
-      return
-   fi
+    if [[ $ISO_DIR/$ISO_NAME == $WORK_DIR/compass.iso ]]; then
+        generate_id
+        return
+    fi
 
-   cp $WORK_DIR/compass.iso $ISO_DIR/$ISO_NAME -f
+    if [[ ! -d ${ISO_DIR} ]]; then
+        mkdir -p ${ISO_DIR}
+    fi
+    cp $WORK_DIR/compass.iso $ISO_DIR/$ISO_NAME -f
+    generate_id
 }
 
 process_param $*
