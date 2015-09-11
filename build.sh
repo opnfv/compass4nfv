@@ -15,7 +15,7 @@ function prepare_env()
 {
     set +e
     for i in createrepo genisoimage curl; do
-        sudo $i --version >/dev/null 2>&1
+        $i --version >/dev/null 2>&1
         if [[ $? -ne 0 ]]; then
             sudo apt-get install  -y --force-yes  $i
         fi
@@ -29,29 +29,22 @@ function prepare_env()
 
 function download_git()
 {
-    if [[ -d $CACHE_DIR/${1%.*} ]]; then
-       if [[  -d $CACHE_DIR/${1%.*}/.git ]]; then
-
-            cd $CACHE_DIR/${1%.*}
-
-            git fetch origin master
-            git checkout origin/master
-
-            cd -
-
-            return
-        fi
-
-        sudo rm -rf $CACHE_DIR/${1%.*}
+    file_dir=$CACHE_DIR/${1%.*} 
+    if [[ -d $file_dir/.git ]]; then
+        cd $file_dir
+        git fetch origin master
+        git checkout origin/master
+        cd -
+    else
+        rm -rf $CACHE_DIR/$file_dir
+        git clone $2 $file_dir
     fi
-
-    git clone $2 $CACHE_DIR/`basename $i | sed 's/.git//g'`
 }
 
 function download_url()
 {
-    sudo rm -f $CACHE_DIR/$1.md5
-    curl --connect-timeout 10 -o $CACHE_DIR/$1.md5 $2.md5
+    rm -f $CACHE_DIR/$1.md5
+    curl --connect-timeout 10 -o $CACHE_DIR/$1.md5 $2.md5 2>/dev/null
     if [[ -f $CACHE_DIR/$1 ]]; then
         local_md5=`md5sum $CACHE_DIR/$1 | cut -d ' ' -f 1`
         repo_md5=`cat $CACHE_DIR/$1.md5 | cut -d ' ' -f 1`
@@ -91,71 +84,71 @@ function copy_file()
     new=$1
 
     # main process
-    sudo mkdir -p $new/compass $new/bootstrap $new/pip $new/guestimg $new/app_packages $new/ansible
-    sudo mkdir -p $new/repos/cobbler/{ubuntu,centos}/{iso,ppa}
+    mkdir -p $new/compass $new/bootstrap $new/pip $new/guestimg $new/app_packages $new/ansible
+    mkdir -p $new/repos/cobbler/{ubuntu,centos}/{iso,ppa}
 
-    sudo cp -rf $SCRIPT_DIR/util/ks.cfg $new/isolinux/ks.cfg
+    cp -rf $SCRIPT_DIR/util/ks.cfg $new/isolinux/ks.cfg
 
-    sudo rm -rf $new/.rr_moved
+    rm -rf $new/.rr_moved
 
-    sudo cp $CACHE_DIR/`basename $UBUNTU_ISO` $new/repos/cobbler/ubuntu/iso/ -rf
-    sudo cp $CACHE_DIR/`basename $TRUSTY_JUNO_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
-    sudo cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
-    sudo cp $CACHE_DIR/`basename $CENTOS7_JUNO_PPA` $new/repos/cobbler/centos/ppa/ -rf
+    cp $CACHE_DIR/`basename $UBUNTU_ISO` $new/repos/cobbler/ubuntu/iso/ -rf
+    cp $CACHE_DIR/`basename $TRUSTY_JUNO_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
+    cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
+    cp $CACHE_DIR/`basename $CENTOS7_JUNO_PPA` $new/repos/cobbler/centos/ppa/ -rf
 
-    sudo cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1
-    sudo cp $CACHE_DIR/`basename $CIRROS` $new/guestimg/ -rf || exit 1
-    sudo cp $CACHE_DIR/`basename $APP_PACKAGE` $new/app_packages/ -rf || exit 1
-    sudo cp $CACHE_DIR/`basename $ANSIBLE_MODULE | sed 's/.git//g'`  $new/ansible/ -rf || exit 1
+    cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1
+    cp $CACHE_DIR/`basename $CIRROS` $new/guestimg/ -rf || exit 1
+    cp $CACHE_DIR/`basename $APP_PACKAGE` $new/app_packages/ -rf || exit 1
+    cp $CACHE_DIR/`basename $ANSIBLE_MODULE | sed 's/.git//g'`  $new/ansible/ -rf || exit 1
 
     for i in $COMPASS_CORE $COMPASS_INSTALL $COMPASS_WEB; do
-        sudo cp $CACHE_DIR/`basename $i | sed 's/.git//g'` $new/compass/ -rf
+        cp $CACHE_DIR/`basename $i | sed 's/.git//g'` $new/compass/ -rf
     done
 
-    sudo cp $COMPASS_DIR/deploy/adapters $new/compass/compass-adapters -rf
+    cp $COMPASS_DIR/deploy/adapters $new/compass/compass-adapters -rf
 
-    sudo tar -zxvf $CACHE_DIR/pip.tar.gz -C $new/
+    tar -zxvf $CACHE_DIR/pip.tar.gz -C $new/
 
-    find $new/compass -name ".git" |xargs sudo rm -rf
+    find $new/compass -name ".git" |xargs rm -rf
 }
 
 function rebuild_ppa()
 {
     name=`basename $COMPASS_PKG`
-    sudo rm -rf ${name%%.*} $name
-    sudo cp $CACHE_DIR/$name $WORK_DIR
-    sudo cp $SCRIPT_DIR/build/os/centos/comps.xml $WORK_DIR
-    sudo tar -zxvf $name
-    sudo cp ${name%%.*}/*.rpm $1/Packages -f
-    sudo rm -rf $1/repodata/*
-    sudo createrepo -g $WORK_DIR/comps.xml $1
+    rm -rf ${name%%.*} $name
+    cp $CACHE_DIR/$name $WORK_DIR
+    cp $SCRIPT_DIR/build/os/centos/comps.xml $WORK_DIR
+    tar -zxvf $name
+    cp ${name%%.*}/*.rpm $1/Packages -f
+    rm -rf $1/repodata/*
+    createrepo -g $WORK_DIR/comps.xml $1
 }
 
 function make_iso()
 {
     download_packages
     name=`basename $CENTOS_BASE`
-    sudo cp  $CACHE_DIR/$name ./ -f
+    cp  $CACHE_DIR/$name ./ -f
     # mount base iso
-    sudo mkdir -p base new
-    sudo mount -o loop $name base
-    cd base;find .|sudo cpio -pd ../new ;cd -
-    sudo umount base
-    sudo chmod 755 ./new -R
+    mkdir -p base new
+    fuseiso $name base
+    cd base;find .|cpio -pd ../new ;cd -
+    fusermount -u base
+    chmod 755 ./new -R
 
     copy_file new
     rebuild_ppa new
 
-    sudo mkisofs -quiet -r -J -R -b isolinux/isolinux.bin \
-                 -no-emul-boot -boot-load-size 4 \
-                 -boot-info-table -hide-rr-moved \
-                 -x "lost+found:" \
-                 -o compass.iso new/
+    mkisofs -quiet -r -J -R -b isolinux/isolinux.bin \
+            -no-emul-boot -boot-load-size 4 \
+            -boot-info-table -hide-rr-moved \
+            -x "lost+found:" \
+            -o compass.iso new/
 
     md5sum compass.iso > compass.iso.md5
 
     # delete tmp file
-    sudo rm -rf new base $name
+    rm -rf new base $name
 }
 
 function process_param()
