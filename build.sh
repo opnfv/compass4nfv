@@ -4,19 +4,19 @@ set -ex
 SCRIPT_DIR=`cd ${BASH_SOURCE[0]%/*};pwd`
 COMPASS_DIR=${SCRIPT_DIR}
 WORK_DIR=$SCRIPT_DIR/work/building
+PACKAGES="fuse fuseiso createrepo genisoimage curl"
 
 source $SCRIPT_DIR/build/build.conf
 
 mkdir -p $WORK_DIR
 
 cd $WORK_DIR
-
 function prepare_env()
 {
     set +e
-    for i in createrepo genisoimage curl; do
-        $i --version >/dev/null 2>&1
-        if [[ $? -ne 0 ]]; then
+    for i in $PACKAGES; do
+        if ! apt --installed list 2>/dev/null |grep "\<$i\>"
+        then
             sudo apt-get install  -y --force-yes  $i
         fi
     done
