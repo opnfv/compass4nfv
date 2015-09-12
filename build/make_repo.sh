@@ -148,7 +148,7 @@ function make_all_repo()
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --tmpl RedHat_juno.tmpl \
-              --default-package "strace net-tools wget vim openssh-server dracut-config-rescue dracut-network" \
+              --default-package "rsyslog strace net-tools wget vim openssh-server dracut-config-rescue dracut-network" \
               --special-package ""
 }
 
