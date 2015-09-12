@@ -1,6 +1,6 @@
 ---
 mysql_packages:
-  - python-mysqldb
+  - MySQL-python
   - mysql-server
 
 maridb_packages:
