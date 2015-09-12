@@ -48,6 +48,6 @@ find /var/cache/yum/ -name *.rpm | xargs -i cp {} /centos7-juno-ppa/Packages/
 rm /centos7-juno-ppa/Packages/selinux-policy* -f
 rm /centos7-juno-ppa/Packages/systemd* -f
 
-cp /centos7-comps.xml /centos7-juno-ppa/
-createrepo -g centos7-comps.xml /centos7-juno-ppa
+cp /comps.xml /centos7-juno-ppa/
+createrepo -g comps.xml /centos7-juno-ppa
 tar -zcvf /centos7-juno-ppa.tar.gz /centos7-juno-ppa
