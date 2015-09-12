@@ -25,6 +25,16 @@ gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
 gpgcheck=1
 EOF
 
+cat <<EOF >/etc/yum.repos.d/syslog.repo
+[rsyslog_v7]
+name=rsyslog
+baseurl="http://rpms.adiscon.com/v7-stable/epel-7/x86_64"
+enabled=1
+gpgcheck=0
+gpgkey=http://rpms.adiscon.com/RPM-GPG-KEY-Adiscon
+protect=1
+EOF
+
 yum update -y
 yum install createrepo -y
 yum install tar -y
