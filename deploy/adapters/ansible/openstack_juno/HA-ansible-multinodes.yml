@@ -53,4 +53,5 @@
   remote_user: root
   sudo: True
   roles:
+    - ceph-deploy
     - monitor
