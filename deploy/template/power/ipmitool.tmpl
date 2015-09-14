@@ -19,7 +19,27 @@ exit 1
 #set ipmiIp=$host.get('ipmiIp', '')
 #set ipmiUser=$host.get('ipmiUser', $default_ipmiUser)
 #set ipmiPass=$host.get('ipmiPass', $default_ipmiPass)
-ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe
-ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power reset
+reset_flag=fail
+for i in {1..3}; do
+    ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe >/dev/null 2>1&
+    if [[ $? -ne 0 ]]; then
+        continue
+    fi
+    sleep 1
+    ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power reset >/dev/null 2>&1
+    if [[ $? -ne 0 ]]; then
+        continue
+    fi
+    sleep 1
+    reset_flag=success
+    break
+done
+if [[ \$reset_flag == success ]]; then
+    echo "reset $ipmiIp successsully"
+else
+    echo "reset $ipmiIp fail"
+    exit 1
+fi
 #end for
+
 #end if
