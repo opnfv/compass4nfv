@@ -1,3 +1,4 @@
+source \${COMPASS_DIR}/util/log.sh
 #set default_ipmiUser=$getVar('ipmiUser', '')
 #set default_ipmiPass=$getVar('ipmiPass', '')
 #set hosts=$getVar('hosts', [])
@@ -19,7 +20,32 @@ exit 1
 #set ipmiIp=$host.get('ipmiIp', '')
 #set ipmiUser=$host.get('ipmiUser', $default_ipmiUser)
 #set ipmiPass=$host.get('ipmiPass', $default_ipmiPass)
-ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe
-ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power reset
+for i in {1..5}; do
+    if ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe >/dev/null 2>&1
+    then
+        break
+    elif [[ i -lt 5 ]]
+    then
+        sleep 1
+    else
+        log_error "set $ipmiIp pxe fail"
+        exit 1
+    fi
+done
+sleep 1
+for i in {1..5}; do
+    if ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power reset >/dev/null 2>&1
+    then
+        break
+    elif [[ i -lt 5 ]]
+    then
+        sleep 1
+    else
+        log_error "reset $ipmiIp fail"
+        exit 1
+    fi
+done
+log_info "set pxe and reset $ipmiIp successsully"
+sleep 1
 #end for
 #end if
