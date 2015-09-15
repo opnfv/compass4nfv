@@ -34,7 +34,8 @@ def get_packages_name_list(file_list, special_packages):
 
     return package_name_list
 
-def generate_download_script(root, arch, tmpl, docker_tmpl, default_packages, special_packages, special_packages_dir):
+def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_packages="",
+                             special_packages="", special_packages_script_dir="", special_packages_dir=""):
     package_name_list = get_packages_name_list(get_file_list(root, arch), special_packages) if root else []
 
     tmpl = Template(file=tmpl, searchList={'packages':package_name_list, 'default_packages':default_packages})
@@ -44,12 +45,15 @@ def generate_download_script(root, arch, tmpl, docker_tmpl, default_packages, sp
     make_script = []
     for i in special_packages:
         name = 'make_' + i + '.sh'
-        if os.path.exists(os.path.join('.', arch, name)):
+        if os.path.exists(os.path.join(special_packages_script_dir, name)):
             make_script.append(name)
 
-    searchList = {'dir':os.path.join('.', arch), 'scripts':make_script}
+    searchList = {'scripts':make_script}
     if os.path.exists(special_packages_dir):
-        special_packages_names = [i for i in os.listdir(special_packages_dir) if os.path.isfile(i)]
+        special_packages_names=[]
+        for i in os.listdir(special_packages_dir):
+            if os.path.isfile(os.path.join(special_packages_dir, i)):
+                special_packages_names.append(i)
         searchList.update({'spcial_packages':special_packages_names})
 
     Dockerfile=os.path.basename(docker_tmpl).split('.')[0]
@@ -60,5 +64,5 @@ def generate_download_script(root, arch, tmpl, docker_tmpl, default_packages, sp
 if __name__=='__main__':
     # generate_download_script('ansible', 'Debian', 'Debian.tmpl')
     generate_download_script(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4],
-                             sys.argv[5].split(' '), sys.argv[6].split(' '), sys.argv[7])
+                             sys.argv[5].split(' '), sys.argv[6].split(' '), sys.argv[7], sys.argv[8])
 
