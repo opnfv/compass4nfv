@@ -9,12 +9,11 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list
 RUN rm -f /etc/apt/apt.conf.d/docker-clean
 #set packages = $getVar('spcial_packages', [])
 #for package in $packages
-ADD $packages /var/cache/apt/archives/
+ADD ./Debian/packages/$package /var/cache/apt/archives/
 #end for
 #set scripts = $getVar('scripts', [])
-#set dir = $getVar('dir', ".")
 #for script in $scripts
-ADD $dir/$script /tmp/chigang/$script
+ADD ./Debian/script/$script /tmp/chigang/$script
 RUN chmod +x /tmp/chigang/$script
 RUN /tmp/chigang/$script
 #end for
