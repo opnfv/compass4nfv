@@ -32,19 +32,16 @@ function make_repo()
     rm -f ${WORK_PATH}/work/repo/install_packages.sh
     rm -f ${WORK_PATH}/work/repo/Dockerfile
 
-    TEMP=`getopt -o h -l os-ver:,package-tag:,tmpl:,default-package:,special-package:,ansible-dir: -n 'make_repo.sh' -- "$@"`
+    option=`echo "os-ver:,package-tag:,tmpl:,default-package:, \
+            special-package:,special-package-script-dir:, \
+            special-package-dir:,ansible-dir:,special-package-dir" | sed 's/ //g'`
+
+    TEMP=`getopt -o h -l $option -n 'make_repo.sh' -- "$@"`
 
     if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
     eval set -- "$TEMP"
 
-    os_ver=""
-    package_tag=""
-    tmpl=""
-    default_package=""
-    special_package=""
-    special_package_dir=""
-    ansible_dir=""
     while :; do
         case "$1" in
             --os-ver) os_ver=$2; shift 2;;
@@ -52,19 +49,20 @@ function make_repo()
             --tmpl) tmpl=$2; shift 2;;
             --default-package) default_package=$2; shift 2;;
             --special-package) special_package=$2; shift 2;;
+            --special-package-script-dir) special_package_script_dir=$2; shift 2;;
             --special-package-dir) special_package_dir=$2; shift 2;;
             --ansible-dir) ansible_dir=$2; shift 2;;
             --) shift; break;;
-            *) echo "Internal error!" ; exit 1 ;;
+            *) echo "Internal error! $1" ; exit 1 ;;
         esac
     done
 
-    if [[ ! -z ${package_tag} && ${package_tag} == "pip" ]]; then
+    if [[ -n ${package_tag} && ${package_tag} == "pip" ]]; then
         make_pip_repo
         return
     fi
 
-    if [[ -z ${os_ver} || -z ${tmpl} || -z ${package_tag} ]]; then
+    if [[ -z ${os_ver} || -z ${package_tag} ]]; then
         echo "parameter is wrong"
         exit 1
     fi
@@ -79,25 +77,45 @@ function make_repo()
         os_name=centos
     fi
 
+    if [[ -z $arch ]]; then
+        echo "unsupported ${os_ver} os"
+        exit 1
+    fi
+
     dockerfile=Dockerfile
     docker_tmpl=${BUILD_PATH}/os/${os_name}/${os_ver}/${package_tag}/${dockerfile}".tmpl"
     docker_tag="${os_ver}/${package_tag}"
 
-    python ${BUILD_PATH}/gen_ins_pkg_script.py "${ansible_dir}" "${arch}" "${BUILD_PATH}/templates/${tmpl}" \
-               "${docker_tmpl}" "${default_package}" "${special_package}" "${special_package_dir}"
-
-    # copy make package script to work/repo dir
-    if [[ -n $arch && -d ${WORK_PATH}/build/templates/$arch ]]; then
-        rm -rf ${WORK_PATH}/work/repo/$arch
-        cp -rf ${WORK_PATH}/build/templates/$arch ${WORK_PATH}/work/repo/
+    if [[ ! -n ${tmpl} ]]; then
+        tmpl=${BUILD_PATH}/templates/${arch}_${package_tag}.tmpl
     fi
 
+    python ${BUILD_PATH}/gen_ins_pkg_script.py "${ansible_dir}" "${arch}" "${tmpl}" \
+          "${docker_tmpl}" "${default_package}" "${special_package}" \
+          "${WORK_PATH}/work/repo/$arch/script/" \
+          "${WORK_PATH}/work/repo/$arch/packages/"
+
+    rm -rf ${WORK_PATH}/work/repo/$arch
+    mkdir -p ${WORK_PATH}/work/repo/$arch/{script,packages}
+
+    # copy make package script to work dir
+    if [[ -n $special_package_script_dir && -d $special_package_script_dir ]]; then
+        cp -rf $special_package_script_dir/*  ${WORK_PATH}/work/repo/$arch/script/
+    fi
+
+    # copy special package to work dir
+    if [[ -n $special_package_dir && -d $special_package_dir ]]; then
+        cp -rf $special_package_dir/*  ${WORK_PATH}/work/repo/$arch/packages/
+    fi
+
+    # copy docker file to work dir
     if [[ -n $os_ver && -d ${WORK_PATH}/build/os/$os_name/$os_ver ]]; then
         rm -rf ${WORK_PATH}/work/repo/$os_ver
         cp -rf ${WORK_PATH}/build/os/$os_name/$os_ver ${WORK_PATH}/work/repo
     fi
 
-    if [[ -f ${WORK_PATH}/build/os/$os_name/comps.xml ]]; then
+    # copy centos comps.xml to work dir
+    if [[ $arch == RedHat && -f ${WORK_PATH}/build/os/$os_name/comps.xml ]]; then
         cp -rf ${WORK_PATH}/build/os/$os_name/comps.xml ${WORK_PATH}/work/repo
     fi
 
@@ -127,29 +145,27 @@ function make_pip_repo()
 
 function make_all_repo()
 {
-    make_pip_repo
+    make_repo --package-tag pip
 
     make_repo --os-ver rhel6 --package-tag compass \
-              --tmpl compass_core.tmpl \
+              --tmpl "${WORK_PATH}/build/templates/compass_core.tmpl" \
               --default-package "epel-release python-yaml python-jinja2 python-paramiko"
 
     make_repo --os-ver trusty --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
-              --tmpl Debian_juno.tmpl \
               --default-package "openssh-server" \
-              --special-package "openvswitch-datapath-dkms openvswitch-switch"
+              --special-package "openvswitch-datapath-dkms openvswitch-switch" \
+              --special-package-script-dir "${WORK_PATH}/build/arch/Debian"
 
     make_repo --os-ver trusty --package-tag kilo \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
-              --tmpl Debian_kilo.tmpl \
               --default-package "openssh-server" \
-              --special-package "openvswitch-datapath-dkms openvswitch-switch"
+              --special-package "openvswitch-datapath-dkms openvswitch-switch" \
+              --special-package-script-dir "${WORK_PATH}/build/arch/Debian"
 
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
-              --tmpl RedHat_juno.tmpl \
-              --default-package "rsyslog strace net-tools wget vim openssh-server dracut-config-rescue dracut-network" \
-              --special-package ""
+              --default-package "rsyslog strace net-tools wget vim openssh-server dracut-config-rescue dracut-network"
 }
 
 function main()
