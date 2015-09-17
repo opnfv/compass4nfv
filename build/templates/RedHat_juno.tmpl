@@ -7,7 +7,7 @@ wget -O /etc/yum.repos.d/CentOS7-Base-163.repo  http://mirrors.163.com/.help/Cen
 yum remove wget iptables-services -y
 rm -f /etc/yum.repos.d/CentOS-*.repo
 yum repolist
-yum cleanall
+yum clean all
 # add openstack juno repo
 yum install yum-plugin-priorities -y
 yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm -y

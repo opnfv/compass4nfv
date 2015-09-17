@@ -11,12 +11,11 @@ RUN yum update -y
 RUN sed -i 's/keepcache=0/keepcache=1/g' /etc/yum.conf
 #set packages = $getVar('spcial_packages', [])
 #for package in $packages
-ADD $packages /var/cache/yum/x86_64/7/base/packages/
+ADD ./RedHat/packages/$package /var/cache/yum/x86_64/6/base/packages/
 #end for
 #set scripts = $getVar('scripts', [])
-#set dir = $getVar('dir', ".")
 #for script in $scripts
-ADD $dir/$script /tmp/chigang/$script
+ADD ./RedHat/script/$script /tmp/chigang/$script
 RUN chmod +x /tmp/chigang/$script
 RUN /tmp/chigang/$script
 #end for
