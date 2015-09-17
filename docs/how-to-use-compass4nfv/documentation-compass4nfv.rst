@@ -298,6 +298,18 @@ package installed, to be continued...
 How to deploy baremetal and VMs
 ===============================
 
+Before deployment, there are some network configuration to be checked based on your real network topology. Compass4nfv network configuration file is "compass4nfv/deploy/conf/network_cfg.yaml".
+
+Based on default network configuration, the hosts(controller,compute) network is as following picture.
+
+
+.. image:: compass4nfv_host_network.png
+  :height: 500
+  :width: 700
+  :alt: OPNFV
+  :align: left
+|
+|
 
 * Deploy baremetal in HA mode:
 
