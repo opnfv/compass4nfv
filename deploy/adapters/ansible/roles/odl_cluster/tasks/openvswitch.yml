@@ -29,7 +29,7 @@
 #    service openvswitch-switch start ;
 
 - name: Set OpenDaylight as the manager
-  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ HA_VIP }}:6640;"
+  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
 
 #- name: start and disable Neutron's agent services
 #  service: name=neutron-plugin-openvswitch-agent state=started
