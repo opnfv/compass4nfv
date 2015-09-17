@@ -66,8 +66,8 @@
 
 - meta: flush_handlers
 
-- include: igmp-router.yml
-  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }} and ansible_os_family == 'Debian'"
+#- include: igmp-router.yml
+#  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }} and ansible_os_family == 'Debian'"
 
 - name: assert kernel support for vxlan
   command: modinfo -F version vxlan
