@@ -13,13 +13,13 @@ Prerequisite
 1. One jumpserver installed with Ubuntu14.04.
 
 
-2. If baremetal is target installed environment, the jumpserver needs 3 physical ethernet ports, 2 ports(for Managerment/Installation, IPMI) connect with baremetals, 1 ports connects with externel network. Baremetal neets to be same.
+2. If baremetal is target deployment environment, the jumpserver needs 3 physical ethernet ports, 2 ports(for Managerment/Installation, IPMI) connect with baremetals, 1 ports connects with externel network. Baremetal neets to be same.
 
 
 3. Pre-allocate IP addresses for baremetals, and get accounts and passwords of BMC on baremetals.
 
 
-4. If virtual machine is target installed environment, the jumpserver also needs 100G storage and 16G RAM.
+4. If virtual machines is target deployment environment, the jumpserver also needs 100G storage and 16G RAM.
 
 
 5. Gerrit: git clone https://gerrit.opnfv.org/gerrit/compass4nfv
@@ -28,7 +28,7 @@ Prerequisite
 6. Please don't git clone compass4nfv in the root directory.
 
 
-Attention: Compass4nfv does stick on the OPNFV communities' Operating System version requirement. For Brahmputra, Ubuntu14.04 or newer and Centos7.0 or newer are requested, so the target installed environment will be installed on Ubuntu14.04 or Centos7.0.
+Attention: Compass4nfv does stick on the OPNFV communities' Operating System version requirement. For Brahmputra, Ubuntu14.04 or newer and Centos7.0 or newer are requested, so the target deployment environment will be installed on Ubuntu14.04 or Centos7.0.
 
 
 
@@ -38,7 +38,7 @@ How to build a ISO
 If you want to use official ISO to deploy Compass4nfv, you can jump over this section. 
 
 
-This section indicates how to add new packages and how to build a new compass4nfv iso file so that Compass4nfv would install the packages automatically during the deployment.
+This section indicates how to add additional packages and how to build a new compass4nfv ISO file so that Compass4nfv would install the additional packages automatically during the deployment.
 
 
 * Approach 1 ----- apt/yum installation:
@@ -47,16 +47,15 @@ This section indicates how to add new packages and how to build a new compass4nf
 1. Confirm the targeted packages could be installed via apt-get(Ubuntu) and yum(Centos), you can verify on your own environment first by commands "apt-get install {targeted packages}" on Ubuntu and "yum install {targeted packages}" on Centos.
 
 
-2. Create a new role folder ({newrole}) in the compass4nfv/deploy/adapters/ansible/roles/, create a new folder named "vars" in the new role folder({newrole}), and create a file named "main.yml".
+2. Create a new role folder ({newrole}) in the compass4nfv/deploy/adapters/ansible/roles/, create a new folder named "vars" in the new role folder({newrole}), and create a file named "main.yml" and add "---" at the head of this file.
 
 
 3. If the targeted packages name are same in both Ubuntu and Centos, you just need edit main.yml. 
 
-The content:
+Add the packages' names as following:
 
 .. code-block:: bash
 
-    ---
     packages_noarch:
        - {targeted packages1}
        - {targeted packages2}
@@ -64,9 +63,9 @@ The content:
        ...
 
 
-4. If the targeted packages name are different, you need add "Debian.yml" and "RedHat.yml" in the same folder as "main.yml". 
+4. If the targeted packages' names are different, you need create "Debian.yml" and/or "RedHat.yml" in the same folder as "main.yml" and add "---" at the head of the files.
 
-The content in "Debian.yml" and "RedHat.yml" :
+Add the packages' names as following in the "Debian.yml" and/or "RedHat.yml" :
 
 .. code-block:: bash
 
@@ -153,10 +152,10 @@ CENTOS7_JUNO_PPA is packages path for Centos, TRUSTY_JUNO_PPA is packages path f
 * Approach 2 ---- source installation
 
 
-This section indicates to install packages from source codes. If the installing packages could not be installed from apt-get and yum but from source codes, please refer this section.
+This section indicates to install packages from source codes. If the targeted packages could not be installed from apt-get and yum but from source codes, please refer this section.
 
 
-1. Enter compass4nfv/build/arch/Debian or compass4nfv/build/arch/RedHat depend on which operating system you want to install package, create a bash(.sh) file which includes all the commands which install the packages from source codes.
+1. Enter folder "compass4nfv/build/arch/Debian" or "compass4nfv/build/arch/RedHat" that depend on operating system you want to install package, create a bash(.sh) file which includes all the commands which install the packages from source codes.
 
    Example:
 
@@ -183,16 +182,15 @@ This section indicates to install packages from source codes. If the installing 
 Please pay attention to the last second sentence, all the compiled packages need to be copied to the "/var/cache/apt/archives/"(Ubuntu) folder, and for Centos, the folder is ... to be continued .
 
 
-2. Add a new role so that Compass4nfv will install the packages during the deployment, create a new role folder ({newrole}) in the compass4nfv/deploy/adapters/ansible/roles/, create a new folder named "vars" in the new role folder({newrole}), and create a file named "main.yml".
+2. Add a new role so that Compass4nfv will install the packages during the deployment, create a new role folder ({newrole}) in the "compass4nfv/deploy/adapters/ansible/roles/", create a new folder named "vars" in the new role folder({newrole}), and create a file named "main.yml" and add "---" at the head of this file.
 
 
-3. If the packages name are same in both Ubuntu and Centos, you just need edit main.yml. 
+3. If the packages' names are same in both Ubuntu and Centos, you just need edit main.yml. 
 
-   the content:
+Add the packages' names as following:
 
 .. code-block:: bash
 
-    ---
     packages_noarch:
        - {targeted packages1}
        - {targeted packages2}
@@ -200,13 +198,12 @@ Please pay attention to the last second sentence, all the compiled packages need
        ...
 
 
-4. If the packages name are different, you need add "Debian.yml" and "RedHat.yml" in the same folder as "main.yml". 
+4. If the targeted packages' names are different, you need create "Debian.yml" and "RedHat.yml" in the same folder as "main.yml" and add "---" at the head of the files.
 
-The content in "Debian.yml" and "RedHat.yml" :
+Add the packages' names as following in the "Debian.yml" and/or "RedHat.yml" :
 
 .. code-block:: bash
 
-     ---
      packages:
         - {targeted Ubuntu/RedHat packages1}
         - {targeted Ubuntu/RedHat packages2}
@@ -285,7 +282,7 @@ CENTOS7_JUNO_PPA is packages path for Centos, TRUSTY_JUNO_PPA is packages path f
 
 
 
-9. Run compass4nfv/build.sh to build a new ISO, after finished, if there is a new ISO file compass.iso in the "compass4nfv/work/building" folder, that means building iso successfully.
+9. Run compass4nfv/build.sh to build a new ISO, after finished, if there is a new ISO file compass.iso in the "compass4nfv/work/building" folder, that means building ISO successfully.
 
 
 
@@ -297,6 +294,86 @@ package installed, to be continued...
 
 How to deploy baremetal and VMs
 ===============================
+
+Before deployment, there are some network configuration to be checked based on your reality network topology. Compass4nfv network configuration file is "compass4nfv/deploy/conf/network_cfg.yaml".
+
+Based on current default network configuration, the hosts(controller,compute) network is as following picture.
+
+.. image:: compass4nfv_host_network.png
+  :height: 500
+  :width: 700
+  :alt: OPNFV
+  :align: left
+|
+|
+
+network_cfg.yaml
+
+.. code-block:: bash
+
+    provider_net_mappings:
+      - name: br-prv
+        network: physnet
+        interface: eth1
+        type: ovs
+        role:
+          - controller
+          - compute
+    sys_intf_mappings:
+      - name: mgmt
+        interface: eth1
+        vlan_tag: 2
+        role:
+          - controller
+          - compute
+      - name: storage
+        interface: eth1
+        vlan_tag: 3
+        role:
+          - controller
+          - compute
+      - name: external
+        interface: br-prv
+        vlan_tag: 4
+        role:
+          - controller
+          - compute
+    ip_settings:
+      - name: mgmt
+        ip_ranges:
+        - - "172.16.1.1"
+          - "172.16.1.254"
+        cidr: "172.16.1.0/24"
+        role:
+          - controller
+          - compute
+      - name: storage
+        ip_ranges:
+        - - "172.16.2.1"
+          - "172.16.2.254"
+        cidr: "172.16.2.0/24"
+        role:
+          - controller
+          - compute
+      - name: external
+        ip_ranges:
+        - - "172.16.3.2"
+          - "172.16.3.100"
+        cidr: "172.16.3.0/24"
+        gw: "172.16.3.1"
+        role:
+          - controller
+          - compute
+
+
+
+"br-prv" is a bridge created by OpenvSwitch, "mgmt" "storage" and "external" are VLAN. 
+
+"mgmt" "stoarge" and "br-prv" can locate on any ethernet port("interface") as long as the host can communicate with other hosts via this ethernet. 
+
+"external" must locate on "br-prv".
+
+"mgmt" "storage" and "external" could be set subnet as you like , but must be in different subnets and "vlan_tag" also must be different.
 
 
 * Deploy baremetal in HA mode:
