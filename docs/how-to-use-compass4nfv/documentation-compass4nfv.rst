@@ -298,6 +298,86 @@ package installed, to be continued...
 How to deploy baremetal and VMs
 ===============================
 
+Before deployment, there are some network configuration to be checked based on your real network topology. Compass4nfv network configuration file is "compass4nfv/deploy/conf/network_cfg.yaml".
+
+Based on current default network configuration, the hosts(controller,compute) network is as following picture.
+
+.. image:: compass4nfv_host_network.png
+  :height: 500
+  :width: 700
+  :alt: OPNFV
+  :align: left
+|
+|
+
+network_cfg.yaml
+
+.. code-block:: bash
+
+    provider_net_mappings:
+      - name: br-prv
+        network: physnet
+        interface: eth1
+        type: ovs
+        role:
+          - controller
+          - compute
+    sys_intf_mappings:
+      - name: mgmt
+        interface: eth1
+        vlan_tag: 2
+        role:
+          - controller
+          - compute
+      - name: storage
+        interface: eth1
+        vlan_tag: 3
+        role:
+          - controller
+          - compute
+      - name: external
+        interface: br-prv
+        vlan_tag: 4
+        role:
+          - controller
+          - compute
+    ip_settings:
+      - name: mgmt
+        ip_ranges:
+        - - "172.16.1.1"
+          - "172.16.1.254"
+        cidr: "172.16.1.0/24"
+        role:
+          - controller
+          - compute
+      - name: storage
+        ip_ranges:
+        - - "172.16.2.1"
+          - "172.16.2.254"
+        cidr: "172.16.2.0/24"
+        role:
+          - controller
+          - compute
+      - name: external
+        ip_ranges:
+        - - "172.16.3.2"
+          - "172.16.3.100"
+        cidr: "172.16.3.0/24"
+        gw: "172.16.3.1"
+        role:
+          - controller
+          - compute
+
+
+
+"br-prv" is a bridge created by OpenvSwitch, "mgmt" "storage" and "external" are VLAN. 
+
+"mgmt" "stoarge" and "br-prv" can locate on any ethernet port("interface") as long as the host can communicate with other hosts via this ethernet. 
+
+"external" must locate on "br-prv".
+
+"mgmt" "storage" and "external" could be set subnet as you like , but must be in different subnet and "vlan_tag" also must be different.
+
 
 * Deploy baremetal in HA mode:
 
