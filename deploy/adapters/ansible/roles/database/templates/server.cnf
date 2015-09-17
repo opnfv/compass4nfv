@@ -15,7 +15,7 @@ max_connections    = 2000
 max_connect_errors = 8000
 skip-host-cache
 skip-name-resolve
-bind-address       = {{ HA_VIP }}
+bind-address       = {{ internal_vip.ip }}
 #
 # * Galera-related settings
 #
