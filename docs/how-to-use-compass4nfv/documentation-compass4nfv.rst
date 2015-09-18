@@ -13,29 +13,39 @@ Prerequisite
 1. One jumpserver installed with Ubuntu14.04.
 
 
-2. If baremetal is target deployment environment, the jumpserver needs 3 physical ethernet ports, 2 ports(for Managerment/Installation, IPMI) connect with baremetals, 1 ports connects with externel network. Baremetal neets to be same.
+2. If baremetal is targeted deployment environment, we suggest the environment as the following topology picture, jumpserver and baremetal need 3 ethernet ports, one ports(External/Tenant) connects to one switch, and two ports(IPMI/BMC, PXE/Installation) connects to another switch. 
+
+If jumpserver doesn't have enought ethernet ports, two ports is also acceptable that IPMI/BMC and PXE/Installation run through one ethernet port.
+
+If switches are not enough, one switch with 2 VLANs is also acceptable.
+
+.. image:: compass4nfv_network_topology.png
+  :height: 400
+  :width: 700
+  :alt: OPNFV
+  :align: left
+|
+|
+3. Pre-allocate BMC IP addresses for baremetals, and get accounts and passwords of BMC on baremetals.
 
 
-3. Pre-allocate IP addresses for baremetals, and get accounts and passwords of BMC on baremetals.
+4. If virtual machines is targeted deployment environment, the jumpserver also needs 100G storage and 16G RAM.
 
 
-4. If virtual machines is target deployment environment, the jumpserver also needs 100G storage and 16G RAM.
-
-
-5. Gerrit: git clone https://gerrit.opnfv.org/gerrit/compass4nfv
+5. Gerrit: git clone https://gerrit.opnfv.org/gerrit/compass4nfv to the jumpserver.
 
 
 6. Please don't git clone compass4nfv in the root directory.
 
 
-Attention: Compass4nfv does stick on the OPNFV communities' Operating System version requirement. For Brahmputra, Ubuntu14.04 or newer and Centos7.0 or newer are requested, so the target deployment environment will be installed on Ubuntu14.04 or Centos7.0.
+Attention: Compass4nfv does stick on the OPNFV communities' Operating System version requirement. For Brahmaputra, Ubuntu14.04 or newer and Centos7.0 or newer are requested, so the targeted deployment environment will be installed on Ubuntu14.04 or Centos7.1.
 
 
 
-How to build a ISO
-==================
+How to build a customized ISO
+=============================
 
-If you want to use official ISO to deploy Compass4nfv, you can jump over this section. 
+If you want to use official ISO to deploy Compass4nfv, you can jump over this section.
 
 
 This section indicates how to add additional packages and how to build a new compass4nfv ISO file so that Compass4nfv would install the additional packages automatically during the deployment.
@@ -376,6 +386,21 @@ network_cfg.yaml
 "mgmt" "storage" and "external" could be set subnet as you like , but must be in different subnets and "vlan_tag" also must be different.
 
 
+Also check the following items in file "compass4nfv/deploy/conf/base.conf"
+
+.. code-block:: bash
+    
+    export INSTALL_IP=${INSTALL_IP:-10.1.0.12}
+    export INSTALL_MASK=${INSTALL_MASK:-255.255.255.0}
+    export INSTALL_GW=${INSTALL_GW:-10.1.0.1}
+
+
+Item "INSTALL_IP" is used to install baremetal/VM during deployment. Compass4nfv on jumpserver creates a bridge with IP address "INSTALL_GW" and all baremetal/VM deployments are via this subnet. Please don't set this item as the same subnet as any other ip configuration in the jumpserver.
+
+
+
+
+
 * Deploy baremetal in HA mode:
 
 
@@ -446,15 +471,11 @@ Roles here includes controller compute network storage ha odl and onos.
 How to deploy without internet access
 =====================================
 
-If you have created your own ISO file(compass.iso), you realy could deploy without internet access, what you need to do is to edit compass4nfv/deploy/conf/base.conf file and assign item ISO_URL as your local path (export ISO_URL=file:///compass4nfv/work/building/compass.iso). Then Compass4nfv could deploy via local compass.iso without internet access.
+
+If you have created your own ISO file(compass.iso), you realy could deploy without internet access, edit "compass4nfv/deploy/conf/base.conf" file and assign item ISO_URL as your local ISO file path (export ISO_URL=file:///compass4nfv/work/building/compass.iso). Then execute "compass4nfv/deploy.sh" and Compass4nfv could deploy with local compass.iso without internet access.
 
 
-Except this, also you can download compass.iso first, you get compass.iso location in internet from "compass4nfv/deploy/conf/base.conf" file "ISO_URL" item.
-
-.. code-block:: bash
-    export ISO_URL=${ISO_URL:-http://58.251.166.184:9999/compass.iso}
-
-You can use wget command to download compass.iso in the same location as Compass4nfv, and modify "ISO_URL" item in "compass4nfv/deploy/conf/base.conf" file as the downloaded compass.iso location.
+Also you can download compass.iso first from OPNFV artifacts repository (http://artifacts.opnfv.org/, search compass4nfv and select an appropriate ISO file) via wget or curl. After this, edit "compass4nfv/deploy/conf/base.conf" file and assign item ISO_URL as your local ISO file path. Then execute "compass4nfv/deploy.sh" and Compass4nfv could deploy with local compass.iso without internet access.
 
 
 
