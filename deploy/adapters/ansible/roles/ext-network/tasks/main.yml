@@ -4,7 +4,7 @@
     login_username: ADMIN
     login_password: "{{ ADMIN_PASS }}"
     login_tenant_name: admin
-    auth_url: "http://{{ HA_VIP }}:35357/v2.0"
+    auth_url: "http://{{ internal_vip.ip }}:35357/v2.0"
     name: "{{ public_net_info.network }}"
     provider_network_type: "{{ public_net_info.type }}"
     provider_physical_network: "{{ public_net_info.provider_network }}"
@@ -20,7 +20,7 @@
     login_username: ADMIN
     login_password: "{{ ADMIN_PASS }}"
     login_tenant_name: admin
-    auth_url: "http://{{ HA_VIP }}:35357/v2.0"
+    auth_url: "http://{{ internal_vip.ip }}:35357/v2.0"
     name: "{{ public_net_info.subnet }}"
     network_name: "{{ public_net_info.network }}"
     cidr: "{{ public_net_info.floating_ip_cidr }}"
@@ -38,7 +38,7 @@
     login_username: ADMIN
     login_password: "{{ ADMIN_PASS }}"
     login_tenant_name: admin
-    auth_url: "http://{{ HA_VIP }}:35357/v2.0"
+    auth_url: "http://{{ internal_vip.ip }}:35357/v2.0"
     name: "{{ public_net_info.router }}"
     state: present
   run_once: true
@@ -49,7 +49,7 @@
     login_username: ADMIN
     login_password: "{{ ADMIN_PASS }}"
     login_tenant_name: admin
-    auth_url: "http://{{ HA_VIP }}:35357/v2.0"
+    auth_url: "http://{{ internal_vip.ip }}:35357/v2.0"
     router_name: "{{ public_net_info.router }}"
     network_name: "{{ public_net_info.network }}"
     state: present

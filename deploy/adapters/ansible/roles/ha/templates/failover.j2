@@ -11,7 +11,7 @@ except:
     pass
 
 LOG.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', filename=LOG_FILE,level=LOG.DEBUG)
-ha_vip = {{ HA_VIP }}
+ha_vip = {{ internal_vip.ip }}
 LOG.info("ha_vip: %s" % ha_vip)
 
 #ha_vip = "10.1.0.50"
