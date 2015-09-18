@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a2f8d8d_1f175353",
+        "filename": "deploy/adapters/ansible/roles/ha/templates/keepalived.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1317
+      },
+      "writtenOn": "2015-09-18T07:10:07Z",
+      "side": 1,
+      "message": "please delete blank",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 3
+      },
+      "revId": "a34dc2031dfea25013ef013fd678be59c4d13b7b",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a2f8d8d_3f120f63",
+        "filename": "deploy/adapters/ansible/roles/neutron-network/vars/RedHat.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1317
+      },
+      "writtenOn": "2015-09-18T07:10:07Z",
+      "side": 1,
+      "message": "this can\u0027t be installed",
+      "range": {
+        "startLine": 14,
+        "startChar": 2,
+        "endLine": 14,
+        "endChar": 3
+      },
+      "revId": "a34dc2031dfea25013ef013fd678be59c4d13b7b",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
