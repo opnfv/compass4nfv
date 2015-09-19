@@ -14,30 +14,32 @@
   with_items: "{{ network_cfg['provider_net_mappings'] }}"
   when: 'item["type"] == "ovs"'
 
-- name: setup sys intf
-  shell: ip link del {{ item.key }}; \
-         ip link add link {{ item.value["interface"] }} name {{ item.key }} type vlan id {{ item.value["vlan_tag"] }}; \
-         ip link set {{ item.value["interface"] }} up
-  when: '"vlan_tag" in item.value and item.value["type"] == "vlan"'
-  with_dict: "{{ sys_intf_mappings }}"
+- name: ensure script dir exist
+  shell: mkdir -p /opt/setup_networks
 
+- name: copy scripts
+  copy:  src={{ item }} dest=/opt/setup_networks
+  with_items:
+    - setup_networks/log.py
+    - setup_networks/setup_networks.py
 
-- name: set sys intf ip
-  shell: ip addr del {{ item.value["ip"] }}/{{ item.value["netmask"] }} dev {{ item.value["alias"] }}; \
-         ip addr add {{ item.value["ip"] }}/{{ item.value["netmask"] }} dev {{ item.value["alias"] }}; \
-         ip link set {{ item.value["alias"] }} up
-  with_dict: "{{ host_ip_settings }}"
+- name: copy boot scripts
+  copy:  src={{ item }} dest=/etc/init.d mode=0755
+  with_items:
+    - setup_networks/net_init
 
-- name: set gateway
-  shell: ip route del default; \
-         ip route add default via {{ item.value["gw"] }} dev {{ item.key }}
-  when: '"gw" in item.value'
-  with_dict: "{{ host_ip_settings }}"
+- name: copy config files
+  template: src=network.cfg dest=/opt/setup_networks
 
-- name: copy net config
-  template:  src=my_configs.debian dest=/etc/network/interfaces.d/my_configs.cfg
-  when: ansible_os_family == "Debian"
+- name: make sure python lib exist
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items:
+    - python-yaml
+    - python-netaddr
 
-- name: source net config
-  lineinfile: dest=/etc/network/interfaces line='source /etc/network/interfaces.d/my_configs.cfg'
+- name: run scripts
+  shell: python /opt/setup_networks/setup_networks.py
+
+- name: add to boot scripts
+  shell: update-rc.d net_init defaults 0 6
   when: ansible_os_family == "Debian"
