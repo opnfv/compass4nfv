@@ -26,7 +26,6 @@ If jumpserver doesn't have enought ethernet ports, two ports is also acceptable 
 If switches are not enough, one switch with 2 VLANs is also acceptable.
 
 
-
 3. Pre-allocate BMC IP addresses for baremetals, and get accounts and passwords of BMC on baremetals.
 
 
@@ -46,7 +45,7 @@ Attention: Compass4nfv does stick on the OPNFV communities' Operating System ver
 How to build a customized ISO
 =============================
 
-If you want to use official ISO to deploy Compass4nfv, you can jump over this section.
+If you want to use Compass4nfv official ISO to deploy the environment, you can jump over this section.
 
 
 This section indicates how to add additional packages and how to build a new compass4nfv ISO file so that Compass4nfv would install the additional packages automatically during the deployment.
