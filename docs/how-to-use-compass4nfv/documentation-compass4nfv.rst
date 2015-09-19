@@ -21,10 +21,9 @@ Prerequisite
   :alt: OPNFV
   :align: left
 
-If jumpserver doesn't have enought ethernet ports, two ports is also acceptable that IPMI/BMC and PXE/Installation run through one ethernet port.
+If jumpserver doesn't have enough ethernet ports, two ports is also acceptable(IPMI/BMC and PXE/Installation run through one ethernet port).
 
 If switches are not enough, one switch with 2 VLANs is also acceptable.
-
 
 
 3. Pre-allocate BMC IP addresses for baremetals, and get accounts and passwords of BMC on baremetals.
@@ -46,7 +45,7 @@ Attention: Compass4nfv does stick on the OPNFV communities' Operating System ver
 How to build a customized ISO
 =============================
 
-If you want to use official ISO to deploy Compass4nfv, you can jump over this section.
+If you want to use Compass4nfv official ISO to deploy the environment, you can jump over this section.
 
 
 This section indicates how to add additional packages and how to build a new compass4nfv ISO file so that Compass4nfv would install the additional packages automatically during the deployment.
@@ -61,7 +60,7 @@ This section indicates how to add additional packages and how to build a new com
 2. Create a new role folder ({newrole}) in the compass4nfv/deploy/adapters/ansible/roles/, create a new folder named "vars" in the new role folder({newrole}), and create a file named "main.yml" and add "---" at the head of this file.
 
 
-3. If the targeted packages name are same in both Ubuntu and Centos, you just need edit main.yml. 
+3. If the targeted packages names are same in both Ubuntu and Centos, you just need edit main.yml. 
 
 Add the packages' names as following:
 
@@ -74,7 +73,7 @@ Add the packages' names as following:
        ...
 
 
-4. If the targeted packages' names are different, you need create "Debian.yml" and/or "RedHat.yml" in the same folder as "main.yml" and add "---" at the head of the files.
+4. If the targeted packages' names are different in Ubuntu and Centos, you need create "Debian.yml" and/or "RedHat.yml" in the same folder as "main.yml" and add "---" at the head of the files.
 
 Add the packages' names as following in the "Debian.yml" and/or "RedHat.yml" :
 
@@ -88,10 +87,10 @@ Add the packages' names as following in the "Debian.yml" and/or "RedHat.yml" :
         ...
 
 
-Also you can refer compass4nfv/deploy/adapters/ansible/roles/glance/vars as example.
+Also you can refer "compass4nfv/deploy/adapters/ansible/roles/glance/vars" as example.
 
 
-5.1 Add the new role to ansible so that Compass4nfv will install the packages during the deployment : enter compass4nfv/deploy/adapters/ansible/openstack_juno/ and edit HA-ansible-multinodes.yml and/or single-controller.yml, add {newrole} at an appropriate position, please be aware of that compass4nfv deploys the roles in the order as list in HA-ansible-multinodes.yml/single-controller.yml, you can add a new section as the following::
+5.1 Add the new role to ansible so that Compass4nfv will install the packages during the deployment : "enter compass4nfv/deploy/adapters/ansible/openstack_juno/" and edit HA-ansible-multinodes.yml and/or single-controller.yml, add {newrole} at an appropriate position, please be aware of that compass4nfv deploys the roles in the order as list in HA-ansible-multinodes.yml/single-controller.yml, you can add a new section as the following::
 
      - hosts: all/controller/compute/ha
        remote_user: root
@@ -209,7 +208,7 @@ Add the packages' names as following:
        ...
 
 
-4. If the targeted packages' names are different, you need create "Debian.yml" and "RedHat.yml" in the same folder as "main.yml" and add "---" at the head of the files.
+4. If the targeted packages' names are different in Ubuntu and Centos, you need create "Debian.yml" and/or "RedHat.yml" in the same folder as "main.yml" and add "---" at the head of the files.
 
 Add the packages' names as following in the "Debian.yml" and/or "RedHat.yml" :
 
@@ -222,10 +221,10 @@ Add the packages' names as following in the "Debian.yml" and/or "RedHat.yml" :
         ...
 
 
-Also you can refer compass4nfv/deploy/adapters/ansible/roles/glance/vars as example.
+Also you can refer "compass4nfv/deploy/adapters/ansible/roles/glance/vars" as example.
 
 
-5.1 Enter compass4nfv/deploy/adapters/ansible/openstack_juno/ and edit HA-ansible-multinodes.yml and/or single-controller.yml, add {newrole} at an appropriate position, please be aware of that compass4nfv deploys the roles in the order as list in HA-ansible-multinodes.yml/single-controller.yml, you can add a new section as the following::
+5.1 Enter "compass4nfv/deploy/adapters/ansible/openstack_juno/" and edit HA-ansible-multinodes.yml and/or single-controller.yml, add {newrole} at an appropriate position, please be aware of that compass4nfv deploys the roles in the order as list in HA-ansible-multinodes.yml/single-controller.yml, you can add a new section as the following::
 
      - hosts: all/controller/compute/ha
        remote_user: root
