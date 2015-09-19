@@ -14,7 +14,7 @@ function deploy_host(){
     --hostnames="${HOSTNAMES}" --partitions="${PARTITIONS}" --subnets="${SUBNETS}" \
     --adapter_os_pattern="${ADAPTER_OS_PATTERN}" --adapter_name="${ADAPTER_NAME}" \
     --adapter_target_system_pattern="${ADAPTER_TARGET_SYSTEM_PATTERN}" \
-    --adapter_flavor_pattern="${ADAPTER_FLAVOR_PATTERN}" \
+    --adapter_flavor_pattern="${ADAPTER_FLAVOR_PATTERN}" --repo_name="${REPO_NAME}" \
     --http_proxy="${PROXY}" --https_proxy="${PROXY}" --no_proxy="${IGNORE_PROXY}" \
     --ntp_server="${NTP_SERVER}" --dns_servers="${NAMESERVERS}" --domain="${DOMAIN}" \
     --search_path="${SEARCH_PATH}" --default_gateway="${GATEWAY}" \
