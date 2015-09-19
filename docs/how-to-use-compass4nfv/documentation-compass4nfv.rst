@@ -25,6 +25,7 @@ If jumpserver doesn't have enought ethernet ports, two ports is also acceptable 
 
 If switches are not enough, one switch with 2 VLANs is also acceptable.
 
+Hello world
 
 
 3. Pre-allocate BMC IP addresses for baremetals, and get accounts and passwords of BMC on baremetals.
