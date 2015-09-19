@@ -213,6 +213,9 @@ opts = [
     cfg.StrOpt('cluster_prv_vip',
               help='cluster ip address',
               default=''),
+    cfg.StrOpt('repo_name',
+              help='repo name',
+              default=''),
 ]
 CONF.register_cli_opts(opts)
 
@@ -414,6 +417,7 @@ class CompassClient(object):
         http_proxy = CONF.http_proxy
         https_proxy = CONF.https_proxy
         local_repo_url = CONF.local_repo_url
+        repo_name = CONF.repo_name
         if not https_proxy and http_proxy:
             https_proxy = http_proxy
 
@@ -453,7 +457,6 @@ class CompassClient(object):
         if not default_gateway:
             raise Exception('default gateway is not defined')
 
-
         general_config = {
             'language': language,
             'timezone': timezone,
@@ -474,6 +477,8 @@ class CompassClient(object):
             general_config['search_path'] = search_path
         if local_repo_url:
             general_config['local_repo'] = local_repo_url
+        if repo_name:
+            general_config['repo_name'] = repo_name
 
         os_config["general"] = general_config
 
