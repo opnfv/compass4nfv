@@ -42,6 +42,12 @@
   roles:
     - odl_cluster
 
+- hosts: all
+  remote_user: root
+  sudo: True
+  roles:
+    - onos_cluster
+
 - hosts: controller
   remote_user: root
   sudo: True
