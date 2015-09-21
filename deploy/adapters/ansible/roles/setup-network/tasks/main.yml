@@ -41,5 +41,4 @@
   shell: python /opt/setup_networks/setup_networks.py
 
 - name: add to boot scripts
-  shell: update-rc.d net_init defaults 0 6
-  when: ansible_os_family == "Debian"
+  service: name=net_init enabled=yes

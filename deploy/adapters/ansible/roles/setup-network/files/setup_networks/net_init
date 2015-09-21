@@ -12,7 +12,7 @@
 #
 # anamon.init: Starts the cobbler post-install boot notification program
 #
-# chkconfig: 35 95 95
+# chkconfig: 35 0 6
 #
 # description: anamon runs the first time a machine is booted after
 #              installation.
