@@ -20,7 +20,7 @@ function process_env()
 cat <<EOF >${WORK_PATH}/work/repo/cp_repo.sh
 #!/bin/bash
 set -ex
-cp /*.tar.gz /result
+cp /*.tar.gz /result -f
 EOF
 
     sudo apt-get install python-yaml -y
@@ -130,6 +130,7 @@ function make_repo()
     # copy centos comps.xml to work dir
     if [[ $arch == RedHat && -f ${WORK_PATH}/build/os/$os_name/comps.xml ]]; then
         cp -rf ${WORK_PATH}/build/os/$os_name/comps.xml ${WORK_PATH}/work/repo
+        cp -rf ${WORK_PATH}/build/os/$os_name/ceph_key_release.asc ${WORK_PATH}/work/repo
     fi
 
     sudo docker build -t ${docker_tag} -f ${WORK_PATH}/work/repo/${dockerfile} ${WORK_PATH}/work/repo/
@@ -185,6 +186,11 @@ function main()
 
     if [[ $# -eq 0 ]]; then
         make_all_repo
+    elif [ "$1" = "rhel7" ]; then
+        echo "make rhel7"
+        make_repo --os-ver rhel7 --package-tag juno \
+                  --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+                  --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server dracut-config-rescue-033-241.el7_1.3 dracut-network-033-241.el7_1.3"
     else
         make_repo $*
     fi

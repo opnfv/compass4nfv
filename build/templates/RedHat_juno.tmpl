@@ -1,10 +1,13 @@
 #!/bin/bash
 set -x
 
+yum remove systemd -y
 # add 163 repo
 yum install wget -y
 wget -O /etc/yum.repos.d/CentOS7-Base-163.repo  http://mirrors.163.com/.help/CentOS7-Base-163.repo
+wget -O /epel-release-7-5.noarch.rpm http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
 yum remove wget iptables-services -y
+yum update -y
 rm -f /etc/yum.repos.d/CentOS-*.repo
 yum repolist
 yum clean all
@@ -35,6 +38,26 @@ gpgkey=http://rpms.adiscon.com/RPM-GPG-KEY-Adiscon
 protect=1
 EOF
 
+cat <<EOF >/etc/yum.repos.d/ceph.repo
+[ceph]
+name=Ceph packages for x86_64
+baseurl=http://ceph.com/rpm-hammer/rhel7/x86_64
+enabled=1
+priority=2
+gpgcheck=1
+type=rpm-md
+gpgkey=https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc
+
+[ceph-noarch]
+name=Ceph noarch packages
+baseurl=http://ceph.com/rpm-hammer/rhel7/noarch
+enabled=1
+priority=2
+gpgcheck=1
+type=rpm-md
+gpgkey=https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc
+EOF
+
 yum update -y
 yum install createrepo -y
 yum install tar -y
@@ -58,6 +81,12 @@ find /var/cache/yum/ -name *.rpm | xargs -i cp {} /centos7-juno-ppa/Packages/
 rm /centos7-juno-ppa/Packages/selinux-policy* -f
 rm /centos7-juno-ppa/Packages/systemd* -f
 
+mv /epel-release-7-5.noarch.rpm /centos7-juno-ppa/Packages/
 cp /comps.xml /centos7-juno-ppa/
+cp /ceph_key_release.asc /centos7-juno-ppa/
 createrepo -g comps.xml /centos7-juno-ppa
+mkdir /centos7-juno-ppa/noarch
+mkdir /centos7-juno-ppa/noarch/Packages
+cp -r /centos7-juno-ppa/Packages/ceph* /centos7-juno-ppa/noarch/Packages/
+cp -r /centos7-juno-ppa/repodata/ /centos7-juno-ppa/noarch/
 tar -zcvf /centos7-juno-ppa.tar.gz /centos7-juno-ppa
