@@ -36,12 +36,19 @@
 - name: update pip.conf
   template: src=pip.conf dest=~/.pip/pip.conf
 
-- name: sync between sys clock and hard clock
-  command: su -s /bin/sh -c "service {{ ntp_service }} stop; ntpd -gq; hwclock --systohc"
-  ignore_errors: True
-
 - name: update ntp conf
   template: src=ntp.conf dest=/etc/ntp.conf backup=yes
+
+- name: stop ntp
+  service: name={{ ntp_service }} state=stopped enabled=yes
+
+- name: use ntpdate once for initial sync time
+  shell: ntpdate {{ ntp_server }}
+  ignore_errors: True
+
+- name: sync sys clock to hard clock
+  shell: hwclock --systohc
+  ignore_errors: True
 
 - name: restart ntp
   service: name={{ ntp_service }} state=restarted enabled=yes
