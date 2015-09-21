@@ -17,6 +17,7 @@ RUN chmod +x /tmp/chigang/$script
 RUN /tmp/chigang/$script
 #end for
 ADD ./comps.xml /
+ADD ./ceph_key_release.asc /
 ADD ./install_packages.sh /tmp/chigang/install_packages.sh
 RUN chmod +x /tmp/chigang/install_packages.sh
 RUN /tmp/chigang/install_packages.sh

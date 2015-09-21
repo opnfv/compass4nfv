@@ -6,8 +6,14 @@
     - ceph_setup_env
     - ceph_install
 
-- include: ceph_install.yml
-  when: inventory_hostname == "{{ groups['controller'][0] }}"
+- include: ceph_install_Debian.yml
+  when: inventory_hostname == groups['controller'][0] and ansible_os_family == "Debian"
+  tags:
+    - ceph_deploy
+    - ceph_install
+
+- include: ceph_install_RedHat.yml
+  when: inventory_hostname == groups['controller'][0] and ansible_os_family == "RedHat"
   tags:
     - ceph_deploy
     - ceph_install
