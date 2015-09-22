@@ -9,10 +9,12 @@
   notify:
     - restart neutron control services
 
-- name: restart neutron-server
-  service: name=neutron-server  state=restarted enabled=yes
-  delegate_to: "{{ item }}"
-  run_once: True
-  with_items: groups['controller']
+- name: restart first neutron-server
+  service: name=neutron-server state=restarted enabled=yes
+  when: inventory_hostname == groups['controller'][0]
+
+- name: restart other neutron-server
+  service: name=neutron-server state=restarted enabled=yes
+  when: inventory_hostname != groups['controller'][0]
 
 - meta: flush_handlers
