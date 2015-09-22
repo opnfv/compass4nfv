@@ -43,6 +43,10 @@
   shell: losetup {{ first_lo.stdout }} /mnt/cinder-volumes
   when: cindervolumes.stdout != 'cinder-volumes'
 
+- name: destroy GPT lable
+  shell: dd if=/dev/urandom of=/dev/sdb bs=4M count=1
+  ignore_errors: True
+
 - name: create physical and group volumes
   lvg: vg=cinder-volumes pvs={{ physical_device }}
        vg_options=--force
