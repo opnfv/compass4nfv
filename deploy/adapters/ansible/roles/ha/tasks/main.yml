@@ -57,12 +57,6 @@
 - name: copy galera_chk file
   copy: src=galera_chk dest=/usr/local/bin/galera_chk mode=0777
 
-- name: copy notify file
-  copy: src=notify.sh dest=/usr/local/bin/notify.sh mode=0777
-
-- name: copy notify template file
-  template: src=failover.j2 dest=/usr/local/bin/failover.py mode=0777
-
 - name: add network service
   lineinfile: dest=/etc/services state=present
               line="mysqlchk          9200/tcp"

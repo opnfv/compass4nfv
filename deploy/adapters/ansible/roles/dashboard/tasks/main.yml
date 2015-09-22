@@ -5,6 +5,9 @@
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: packages | union(packages_noarch)
 
+- name: set apache2 config
+  template: src=ports.j2 dest=/etc/apache2/ports.conf backup=yes
+
 - name: remove ubuntu theme
   action: "{{ ansible_pkg_mgr }} name=openstack-dashboard-ubuntu-theme state=absent"
 
