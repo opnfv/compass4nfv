@@ -1,3 +1,0 @@
----
-- name: restart onos service
-  service: name=onos state=restarted enabled=yes
