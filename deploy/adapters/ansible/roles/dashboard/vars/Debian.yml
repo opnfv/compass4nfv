@@ -1,8 +1,13 @@
 ---
-packages:
+http_packages:
   - apache2
   - libapache2-mod-wsgi
 
+http_service: apache2
+
+packages: []
+
 services:
-  - apache2
   - memcached
+
+http_config_file: "/etc/apache2/ports.conf"
