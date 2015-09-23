@@ -9,5 +9,5 @@ compute_packages:
 
 
 service_file:
-   src: opendaylight.service
-   dst: /usr/lib/systemd/system/opendaylight.service
+   src: opendaylight
+   dst: /etc/init.d/opendaylight
