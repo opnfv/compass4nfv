@@ -1,5 +1,7 @@
 ---
-packages:
+packages: []
+
+http_packages:
   - httpd
   - mod_wsgi
   - python-memcached

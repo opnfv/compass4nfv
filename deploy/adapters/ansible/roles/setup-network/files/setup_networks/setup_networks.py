@@ -30,7 +30,8 @@ def add_ovs_port(ovs_br, ifname, vlan_id=None):
     cmd = "ovs-vsctl --may-exist add-port %s %s" % (ovs_br, ifname)
     if vlan_id:
         cmd += " tag=%s" % vlan_id
-    cmd += " -- set Interface %s type=internal" % ifname
+    cmd += " -- set Interface %s type=internal;" % ifname
+    cmd += "ip link set %s up;" % ifname
     LOG.info("add_ovs_port: cmd=%s" % cmd)
     os.system(cmd)
 
@@ -44,11 +45,14 @@ def setup_intfs(sys_intf_mappings):
         else:
             pass
 
-def setup_ips(ip_settings):
+def setup_ips(ip_settings, sys_intf_mappings):
     LOG.info("setup_ips enter")
     for intf_info in ip_settings.values():
         network = netaddr.IPNetwork(intf_info["cidr"])
-        intf_name = intf_info["alias"]
+        if sys_intf_mappings[intf_info["name"]]["type"] == "ovs":
+            intf_name = intf_info["name"]
+        else:
+            intf_name = intf_info["alias"]
         cmd = "ip addr add %s/%s brd %s dev %s;" \
               % (intf_info["ip"], intf_info["netmask"], str(network.broadcast),intf_name)
         if "gw" in intf_info:
@@ -65,7 +69,7 @@ def setup_ips(ip_settings):
 def main(config):
     setup_bondings(config["bond_mappings"])
     setup_intfs(config["sys_intf_mappings"])
-    setup_ips(config["ip_settings"])
+    setup_ips(config["ip_settings"], config["sys_intf_mappings"])
 
 if __name__ == "__main__":
     os.system("service openvswitch-switch status|| service openvswitch-switch start")
