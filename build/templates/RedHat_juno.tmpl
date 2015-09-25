@@ -76,7 +76,7 @@ yum -y install $pkg --downloadonly
 
 mkdir -p /centos7-juno-ppa/{Packages,repodata}
 
-find /var/cache/yum/ -name *.rpm | xargs -i cp {} /centos7-juno-ppa/Packages/
+find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos7-juno-ppa/Packages/
 
 rm /centos7-juno-ppa/Packages/selinux-policy* -f
 rm /centos7-juno-ppa/Packages/systemd* -f
