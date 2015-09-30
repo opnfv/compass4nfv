@@ -17,6 +17,13 @@ dd if=/dev/zero of=/ceph/images/ceph-volumes.img bs=1M seek=12288 count=0 oflag=
 sgdisk -g --clear /ceph/images/ceph-volumes.img
 fi
 
+#safe check
+ps -ef |grep create_osd.sh |awk '{print $2}' |xargs kill -9
+ps -ef |grep lvremove |awk '{print $2}' |xargs kill -9
+ps -ef |grep vgremove |awk '{print $2}' |xargs kill -9
+ps -ef |grep vgcreate |awk '{print $2}' |xargs kill -9
+ps -ef |grep lvcreate |awk '{print $2}' |xargs kill -9
+
 if [ -L "/dev/ceph-volumes/ceph0" ]; then
 echo "remove lv vg"
 lvremove -f /dev/ceph-volumes/ceph0
