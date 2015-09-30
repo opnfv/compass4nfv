@@ -25,6 +25,7 @@
     - glance
     - neutron-common
     - neutron-network
+    - ceilometer-controller
 #    - ext-network
     - dashboard
 
@@ -35,6 +36,7 @@
     - nova-compute
     - neutron-compute
     - cinder-volume
+    - ceilometer-compute
 
 - hosts: all
   remote_user: root

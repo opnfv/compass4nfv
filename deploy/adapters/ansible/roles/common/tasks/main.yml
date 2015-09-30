@@ -13,6 +13,9 @@
             dest=/etc/hosts
             backup=yes
 
+- name: make config template dir exist
+  file: path=/opt/os_templates state=directory mode=0755
+
 - name: get compass-core hostname
   local_action: shell hostname
   register: name

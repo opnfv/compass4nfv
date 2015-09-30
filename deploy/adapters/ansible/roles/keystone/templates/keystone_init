@@ -45,3 +45,10 @@ keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}
 keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 user-role-add --user neutron --tenant service --role admin
 keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 service-create --name neutron --type network --description "OpenStack Networking"
 keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 endpoint-create --service-id $(keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 service-list | awk '/ network / {print $2}') --publicurl http://{{ public_vip.ip }}:9696 --adminurl http://{{ internal_vip.ip }}:9696 --internalurl http://{{ internal_vip.ip }}:9696
+
+
+# register ceilometer related
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 user-create --name ceilometer --pass {{ CEILOMETER_PASS }} --email ceilometer@example.com
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 user-role-add --user ceilometer --tenant service --role admin
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 service-create --name ceilometer --type metering --description "OpenStack Telemetry"
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 endpoint-create --service-id $(keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://{{ internal_vip.ip }}:35357/v2.0 service-list | awk '/ metering / {print $2}') --publicurl http://{{ public_vip.ip }}:8777 --adminurl http://{{ internal_vip.ip }}:8777 --internalurl http://{{ internal_vip.ip }}:8777
