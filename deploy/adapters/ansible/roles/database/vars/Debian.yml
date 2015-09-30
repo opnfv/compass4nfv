@@ -1,4 +1,8 @@
 ---
+mongodb_packages:
+    - mongodb-server
+    - mongodb-clients
+    - python-pymongo
 
 mysql_packages:
   - python-mysqldb

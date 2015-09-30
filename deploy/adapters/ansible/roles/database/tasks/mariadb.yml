@@ -24,32 +24,60 @@
 - name: update wsrep_sst_rsync gid
   lineinfile: dest=/usr/bin/wsrep_sst_rsync state=absent regexp="\s*gid = \$MYGID$"  backup=yes
 
+- stat: path=/opt/mysql_init_complete
+  register: mysql_init_complete
+
 - name: restart first mysql server
   shell: service mysql restart --wsrep-cluster-address="gcomm://"
-  when: inventory_hostname == haproxy_hosts.keys()[0]
-  register: result
-  until: result|success
-  retries: 5
-  delay: 5
+  args:
+    creates: /opt/mysql_init_complete
+  when: inventory_hostname == haproxy_hosts.keys()[0] and mysql_init_complete.stat.exists == False
   tags:
     - mysql_restart
+  #register: result
+  #until: result|success
+  #retries: 5
+  #delay: 5
 
 - name: restart other mysql server
-  service: name=mysql state=restarted enabled=yes
-  when: inventory_hostname != haproxy_hosts.keys()[0]
-  register: result
-  until: result|success
-  retries: 5
-  delay: 5
+  shell: service mysql restart
+  args:
+    creates: /opt/mysql_init_complete
   tags:
     - mysql_restart
+  when: inventory_hostname != haproxy_hosts.keys()[0] and mysql_init_complete.stat.exists == False
+  #register: result
+  #until: result|success
+  #retries: 5
+  #delay: 5
 
 - name: generate mysql service list
   shell: echo {{ item }} >> /opt/service
   with_items: services_noarch
 
-- name: create database/user
-  shell: /opt/data.sh
-  run_once: True
-  tags:
-    - mysql_user
+- name: create all needed db
+  run_once: yes
+  mysql_db: name={{ item.db }} state=present
+  with_items: "{{ credentials }}"
+
+- name: create service db user
+  run_once: yes
+  mysql_user:
+    name={{ item[0].user }}
+    password={{ item[0].password }}
+    priv=*.*:ALL,GRANT
+    host={{ item[1] }}
+    state=present
+  with_nested:
+    - "{{ credentials }}"
+    - ['%', 'localhost', inventory_hostname]
+
+- name: create wsrep db user
+  run_once: yes
+  mysql_user:
+    name={{ WSREP_SST_USER }}
+    password={{ WSREP_SST_PASS }}
+    priv=*.*:ALL,GRANT
+    host={{ item }}
+    state=present
+  with_items: ['%', 'localhost', inventory_hostname]
