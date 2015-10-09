@@ -32,8 +32,7 @@ function download_git()
     file_dir=$CACHE_DIR/${1%.*} 
     if [[ -d $file_dir/.git ]]; then
         cd $file_dir
-        git fetch origin master
-        git checkout origin/master
+        git pull origin master
         cd -
     else
         rm -rf $CACHE_DIR/$file_dir
@@ -74,9 +73,6 @@ function download_packages()
              download_local $name $i
          fi
      done
-
-     git fetch
-     git checkout origin/master -- $COMPASS_DIR/deploy/adapters
 }
 
 function copy_file()

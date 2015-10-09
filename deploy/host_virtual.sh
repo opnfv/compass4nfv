@@ -31,7 +31,7 @@ function launch_host_vms() {
           -e "s#REPLACE_IMAGE#$vm_dir/disk.img#g" \
           -e "s/REPLACE_BOOT_MAC/${mac_array[i]}/g" \
           -e "s/REPLACE_BRIDGE_MGMT/br_install/g" \
-          -e "s/REPLACE_BRIDGE_TENANT/br_install/g" \
+          -e "s/REPLACE_BRIDGE_TENANT/br_external/g" \
           -e "s/REPLACE_BRIDGE_PUBLIC/br_install/g" \
           -e "s/REPLACE_BRIDGE_STORAGE/br_install/g" \
           $COMPASS_DIR/deploy/template/vm/host.xml\
