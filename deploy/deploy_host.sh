@@ -23,7 +23,7 @@ function deploy_host(){
     --console_credentials="${CONSOLE_CREDENTIALS}" --host_networks="${HOST_NETWORKS}" \
     --network_mapping="${NETWORK_MAPPING}" --package_config_json_file="${PACKAGE_CONFIG_FILENAME}" \
     --host_roles="${HOST_ROLES}" --default_roles="${DEFAULT_ROLES}" --switch_ips="${SWITCH_IPS}" \
-    --machines=${machines//\'} --switch_credential="${SWITCH_CREDENTIAL}" \
+    --machines=${machines//\'} --switch_credential="${SWITCH_CREDENTIAL}" --deploy_type="${TYPE}" \
     --deployment_timeout="${DEPLOYMENT_TIMEOUT}" --${POLL_SWITCHES_FLAG} --dashboard_url="${DASHBOARD_URL}" \
     --cluster_vip="${VIP}" --network_cfg="$NETWORK_FILE" --neutron_cfg="$NEUTRON_FILE"
 
