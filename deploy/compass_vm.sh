@@ -63,7 +63,26 @@ function launch_compass() {
     sudo umount $old_mnt
 
     chmod 755 -R $new_mnt
-    sed -i -e "s/REPLACE_MGMT_IP/$MGMT_IP/g" -e "s/REPLACE_MGMT_NETMASK/$MGMT_MASK/g" -e "s/REPLACE_INSTALL_IP/$COMPASS_SERVER/g" -e "s/REPLACE_INSTALL_NETMASK/$INSTALL_MASK/g" -e "s/REPLACE_GW/$MGMT_GW/g" $new_mnt/isolinux/isolinux.cfg
+
+    cp $COMPASS_DIR/util/isolinux.cfg $new_mnt/isolinux/ -f
+
+    sed -i -e "s/REPLACE_MGMT_IP/$MGMT_IP/g" \
+           -e "s/REPLACE_MGMT_NETMASK/$MGMT_MASK/g" \
+           -e "s/REPLACE_GW/$MGMT_GW/g" \
+           -e "s/REPLACE_INSTALL_IP/$COMPASS_SERVER/g" \
+           -e "s/REPLACE_INSTALL_NETMASK/$INSTALL_MASK/g" \
+           -e "s/REPLACE_COMPASS_EXTERNAL_NETMASK/$COMPASS_EXTERNAL_MASK/g" \
+           -e "s/REPLACE_COMPASS_EXTERNAL_IP/$COMPASS_EXTERNAL_IP/g" \
+           -e "s/REPLACE_COMPASS_EXTERNAL_GW/$COMPASS_EXTERNAL_GW/g" \
+           $new_mnt/isolinux/isolinux.cfg
+
+    if [[ -n $COMPASS_DNS1 ]]; then
+        sed -i -e "s/REPLACE_COMPASS_DNS1/$COMPASS_DNS1/g" $new_mnt/isolinux/isolinux.cfg
+    fi
+
+    if [[ -n $COMPASS_DNS2 ]]; then
+        sed -i -e "s/REPLACE_COMPASS_DNS2/$COMPASS_DNS2/g" $new_mnt/isolinux/isolinux.cfg
+    fi
 
     ssh-keygen -f $new_mnt/bootstrap/boot.rsa -t rsa -N ''
     cp $new_mnt/bootstrap/boot.rsa $rsa_file
@@ -82,6 +101,7 @@ function launch_compass() {
         -e "s#REPLACE_ISO#$compass_vm_dir/centos.iso#g" \
         -e "s/REPLACE_NET_MGMT/mgmt/g" \
         -e "s/REPLACE_BRIDGE_INSTALL/br_install/g" \
+        -e "s/REPLACE_BRIDGE_EXTERNAL/br_external/g" \
         $COMPASS_DIR/deploy/template/vm/compass.xml \
         > $WORK_DIR/vm/compass/libvirt.xml
 
