@@ -10,6 +10,7 @@ source $(process_input_para $*) || exit 1
 source ${COMPASS_DIR}/deploy/conf/${FLAVOR}.conf
 source ${COMPASS_DIR}/deploy/conf/${TYPE}.conf
 source ${COMPASS_DIR}/deploy/conf/base.conf
+source ${COMPASS_DIR}/deploy/conf/compass.conf
 source ${COMPASS_DIR}/deploy/prepare.sh
 source ${COMPASS_DIR}/deploy/network.sh
 source ${COMPASS_DIR}/deploy/host_${TYPE}.sh

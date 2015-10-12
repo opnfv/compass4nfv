@@ -8,15 +8,20 @@ function destroy_bridge()
 {
     bridge=$1
     nic=$2
-    install_gw="$3"
+    ip="$3"
 
     brige_info=$(ip addr show $bridge 2>/dev/null)
     if [[ -z $brige_info ]]; then
         return
     fi
-    ips=`echo "$brige_info" | grep 'inet ' | grep -v $install_gw | sed  "s/inet //g"`
 
-    routes=$(ip route show | grep $bridge | grep -v $install_gw)
+    if [[ -n $ip ]]; then
+        ip addr delete $ip dev $bridge | true
+    fi
+
+    ips=`echo "$brige_info" | grep 'inet ' | sed  "s/inet //g"`
+
+    routes=$(ip route show | grep $bridge)
 
     ip link set $bridge down
 
@@ -77,9 +82,6 @@ function create_bridge()
         done
     fi
 
-    mask_len=`get_mask_len $INSTALL_MASK`
-    broadcast=`get_broadcast_addr $INSTALL_GW $INSTALL_MASK`
-    ip addr add $INSTALL_GW/$mask_len brd $broadcast dev $bridge
 
     if [[ -n $routes ]]; then
         echo "$routes" | while read line; do
@@ -88,12 +90,36 @@ function create_bridge()
     fi
 }
 
-function setup_om_bridge() {
-    destroy_bridge br_install $OM_NIC $INSTALL_GW
-    create_bridge br_install $OM_NIC
+function add_install_ip() {
+    mask_len=`get_mask_len $INSTALL_MASK`
+    broadcast=`get_broadcast_addr $INSTALL_GW $INSTALL_MASK`
+    ip addr add $INSTALL_GW/$mask_len brd $broadcast dev $bridge
 }
 
-function setup_om_nat() {
+function setup_install_bridge() {
+    destroy_bridge br_install $INSTALL_NIC $INSTALL_GW
+    create_bridge br_install $INSTALL_NIC
+    add_install_ip
+}
+
+function setup_external_net() {
+    if [[ -z `brctl show br_external 2>/dev/null` ]]; then
+        brctl addbr br_external
+    fi
+
+    if [[ -z $EXTERNAL_NIC ]]; then
+        return
+    fi
+
+    if [[ $TYPE == baremetal && $EXTERNAL_NIC == $INSTALL_NIC ]]; then
+        exit 1
+    fi
+
+    destroy_bridge br_external $EXTERNAL_NIC ""
+    create_bridge br_external $EXTERNAL_NIC
+}
+
+function setup_install_nat() {
     destroy_nat install
     # create install network
     sed -e "s/REPLACE_BRIDGE/br_install/g" \
@@ -126,9 +152,12 @@ function create_nets() {
 
     # create install network
     if [[ ! -z $VIRT_NUMBER ]];then
-        setup_om_nat
+        setup_install_nat
     else
-        setup_om_bridge
+        setup_install_bridge
     fi
+
+    # create external network
+    setup_external_net
 }
 
