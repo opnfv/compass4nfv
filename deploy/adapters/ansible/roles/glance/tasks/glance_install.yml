@@ -18,4 +18,3 @@
 
 - name: remove default sqlite db
   shell: rm /var/lib/glance/glance.sqlite || touch glance.sqllite.db.removed
-

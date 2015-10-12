@@ -15,12 +15,6 @@
 - name: delete sqlite database
   shell: rm /var/lib/keystone/keystone.db || echo sqllite database already removed
 
-- name: cron job to purge expired tokens hourly
-  shell: (crontab -l -u keystone 2>&1 | grep -q token_flush) || echo '@hourly /usr/bin/keystone-manage token_flush > /var/log/keystone/keystone-tokenflush.log 2>&1' >> {{ cron_path }}/keystone
-
-- name: modify keystone cron rights
-  file: path={{ cron_path }}/keystone mode=0600
-
 - name: keystone source files
   template: src={{ item }} dest=/opt/{{ item }}
   with_items:
