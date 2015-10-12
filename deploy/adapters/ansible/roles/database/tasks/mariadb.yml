@@ -28,9 +28,7 @@
   register: mysql_init_complete
 
 - name: restart first mysql server
-  shell: service mysql restart --wsrep-cluster-address="gcomm://"
-  args:
-    creates: /opt/mysql_init_complete
+  shell: service mysql restart --wsrep-cluster-address="gcomm://" && touch /opt/mysql_init_complete
   when: inventory_hostname == haproxy_hosts.keys()[0] and mysql_init_complete.stat.exists == False
   tags:
     - mysql_restart
@@ -40,9 +38,7 @@
   #delay: 5
 
 - name: restart other mysql server
-  shell: service mysql restart
-  args:
-    creates: /opt/mysql_init_complete
+  shell: service mysql restart && touch /opt/mysql_init_complete
   tags:
     - mysql_restart
   when: inventory_hostname != haproxy_hosts.keys()[0] and mysql_init_complete.stat.exists == False
