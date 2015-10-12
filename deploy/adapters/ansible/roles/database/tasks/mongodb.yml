@@ -19,7 +19,7 @@
 - name: manually restart mongodb server
   service: name=mongodb state=restarted
 
-- wait_for: port=27017 delay=3 timeout=10 host={{ internal_vip.ip }}
+- wait_for: port=27017 delay=3 timeout=30 host={{ internal_vip.ip }}
 
 - name: create mongodb user
   run_once: True
