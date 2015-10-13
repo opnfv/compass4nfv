@@ -30,7 +30,6 @@ vgremove -f ceph-volumes
 rm -r /dev/ceph-volumes
 fi
 
-losetup -d /dev/loop0
 
 echo "vgcreate"
 vgcreate -y ceph-volumes $(losetup --show -f /ceph/images/ceph-volumes.img)
