@@ -9,7 +9,7 @@ if [ ! -d "/ceph/images" ]; then
 mkdir -p /ceph/images
 fi
 
-rm /ceph/images/ceph-volumes.img
+rm -f /ceph/images/ceph-volumes.img
 
 if [ ! -f "/ceph/images/ceph-volumes.img" ]; then
 echo "create ceph-volumes.img"
@@ -18,7 +18,6 @@ sgdisk -g --clear /ceph/images/ceph-volumes.img
 fi
 
 #safe check
-ps -ef |grep create_osd.sh |awk '{print $2}' |xargs kill -9
 ps -ef |grep lvremove |awk '{print $2}' |xargs kill -9
 ps -ef |grep vgremove |awk '{print $2}' |xargs kill -9
 ps -ef |grep vgcreate |awk '{print $2}' |xargs kill -9
