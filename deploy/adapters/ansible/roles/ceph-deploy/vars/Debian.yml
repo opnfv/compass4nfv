@@ -16,3 +16,6 @@ packages:
   - gdisk
 
 services: []
+
+cinder_service: cinder-volume
+nova_service: nova-compute
