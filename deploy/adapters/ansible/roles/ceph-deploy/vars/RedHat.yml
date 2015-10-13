@@ -6,3 +6,6 @@ packages:
   - ceph
 
 services: []
+
+cinder_service: openstack-cinder-volume
+nova_service: openstack-nova-compute

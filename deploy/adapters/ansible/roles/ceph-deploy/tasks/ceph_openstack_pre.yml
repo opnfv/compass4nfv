@@ -54,6 +54,6 @@
     - "{{ groups['compute'] }}"
   tags:
     - ceph_copy_secret
-
+  ignore_errors: True
 
 
