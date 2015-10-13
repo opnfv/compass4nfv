@@ -13,7 +13,7 @@ rm /ceph/images/ceph-volumes.img
 
 if [ ! -f "/ceph/images/ceph-volumes.img" ]; then
 echo "create ceph-volumes.img"
-dd if=/dev/zero of=/ceph/images/ceph-volumes.img bs=1M seek=12288 count=0 oflag=direct
+dd if=/dev/zero of=/ceph/images/ceph-volumes.img bs=1K seek=$(df / | awk '$3 ~ /[0-9]+/ { print $4 }') count=0 oflag=direct
 sgdisk -g --clear /ceph/images/ceph-volumes.img
 fi
 
@@ -36,7 +36,7 @@ losetup -d /dev/loop0
 echo "vgcreate"
 vgcreate -y ceph-volumes $(sudo losetup --show -f /ceph/images/ceph-volumes.img)
 echo "lvcreate"
-sudo lvcreate -L9G -nceph0 ceph-volumes
+sudo lvcreate -l 100%FREE -nceph0 ceph-volumes
 echo "mkfs"
 mkfs.xfs -f /dev/ceph-volumes/ceph0
 
