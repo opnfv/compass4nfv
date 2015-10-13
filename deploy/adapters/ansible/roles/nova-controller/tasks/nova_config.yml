@@ -1,11 +1,6 @@
 ---
 - name: nova db sync
-  command: su -s /bin/sh -c "nova-manage db sync" nova
-  register: result
-  until: result.rc == 0
-  run_once: True
-  retries: 5
-  delay: 3
+  nova_manage: action=dbsync
   notify:
     - restart nova service
 
