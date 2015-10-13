@@ -100,8 +100,8 @@ function launch_compass() {
         -e "s#REPLACE_IMAGE#$compass_vm_dir/disk.img#g" \
         -e "s#REPLACE_ISO#$compass_vm_dir/centos.iso#g" \
         -e "s/REPLACE_NET_MGMT/mgmt/g" \
-        -e "s/REPLACE_BRIDGE_INSTALL/br_install/g" \
-        -e "s/REPLACE_BRIDGE_EXTERNAL/br_external/g" \
+        -e "s/REPLACE_NET_INSTALL/install/g" \
+        -e "s/REPLACE_NET_EXTERNAL/external/g" \
         $COMPASS_DIR/deploy/template/vm/compass.xml \
         > $WORK_DIR/vm/compass/libvirt.xml
 
