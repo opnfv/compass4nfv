@@ -1,7 +1,7 @@
 ---
 
 - name: modify glance-api.conf for ceph
-  shell: ssh -o StrictHostKeyChecking=no {{ item }} -t "sed -i 's/^\(default_store\).*/\1 = rbd/' /etc/glance/glance-api.conf && sed -i '/^\[glance_store/a stores = rbd\nrbd_store_pool = images\nrbd_store_user = glance\nrbd_store_ceph_conf = /etc/ceph/ceph.conf\nrbd_store_chunk_size = 8\nshow_image_direct_url=True' /etc/glance/glance-api.conf && glance-control api restart"
+  shell: ssh -o StrictHostKeyChecking=no {{ item }} -t "sed -i 's/^\(default_store\).*/\1 = rbd/' /etc/glance/glance-api.conf && sed -i '/^\[glance_store/a stores = rbd\nrbd_store_pool = images\nrbd_store_user = glance\nrbd_store_ceph_conf = /etc/ceph/ceph.conf\nrbd_store_chunk_size = 8\nshow_image_direct_url=True' /etc/glance/glance-api.conf && service {{ glance_service }} restart"
   with_items:
     - "{{ groups['controller'] }}"
   tags:
