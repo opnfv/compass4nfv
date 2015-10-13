@@ -18,9 +18,11 @@ ceilometer_services:
 
 ceilometer_configs_templates:
   - src: ceilometer.j2
-    dest: /etc/ceilometer/ceilometer.conf
+    dest:
+      - /etc/ceilometer/ceilometer.conf
   - src: cinder.j2
-    dest: /etc/cinder/cinder.conf
+    dest:
+      - /etc/cinder/cinder.conf
   - src: glance.j2
     dest:
       - /etc/glance/glance-api.conf

@@ -6,5 +6,3 @@
   cinder_manage: action=dbsync
   notify:
     - restart cinder control serveice
-
-- meta: flush_handlers

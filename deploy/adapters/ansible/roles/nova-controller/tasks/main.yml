@@ -6,6 +6,7 @@
     - nova
 
 - include: nova_config.yml
+  when: inventory_hostname == groups['controller'][0]
   tags:
     - config
     - nova_config

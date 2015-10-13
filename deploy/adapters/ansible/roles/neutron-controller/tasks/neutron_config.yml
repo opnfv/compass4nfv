@@ -11,10 +11,8 @@
 
 - name: restart first neutron-server
   service: name=neutron-server state=restarted enabled=yes
-  when: inventory_hostname == groups['controller'][0]
 
 - name: restart other neutron-server
   service: name=neutron-server state=restarted enabled=yes
-  when: inventory_hostname != groups['controller'][0]
 
 - meta: flush_handlers
