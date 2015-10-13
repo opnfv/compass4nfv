@@ -33,9 +33,9 @@ fi
 losetup -d /dev/loop0
 
 echo "vgcreate"
-vgcreate -y ceph-volumes $(sudo losetup --show -f /ceph/images/ceph-volumes.img)
+vgcreate -y ceph-volumes $(losetup --show -f /ceph/images/ceph-volumes.img)
 echo "lvcreate"
-sudo lvcreate -l 100%FREE -nceph0 ceph-volumes
+lvcreate -l 100%FREE -nceph0 ceph-volumes
 echo "mkfs"
 mkfs.xfs -f /dev/ceph-volumes/ceph0
 
