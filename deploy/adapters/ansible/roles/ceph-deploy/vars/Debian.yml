@@ -19,3 +19,4 @@ services: []
 
 cinder_service: cinder-volume
 nova_service: nova-compute
+glance_service: glance-api
