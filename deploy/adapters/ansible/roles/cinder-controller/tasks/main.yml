@@ -8,6 +8,7 @@
     - cinder
 
 - include: cinder_config.yml
+  when: inventory_hostname == groups['controller'][0]
   tags:
     - config
     - cinder-config

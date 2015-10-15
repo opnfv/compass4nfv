@@ -7,3 +7,7 @@
   shell: echo {{ item }} >> /opt/service
   with_items: services | union(services_noarch)
 
+- name: upload cinder conf
+  template: src=cinder.conf dest=/etc/cinder/cinder.conf
+  notify:
+    - restart cinder control serveice

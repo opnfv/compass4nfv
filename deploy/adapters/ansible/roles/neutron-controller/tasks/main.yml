@@ -6,6 +6,7 @@
     - neutron
 
 - include: neutron_config.yml
+  when: inventory_hostname == groups['controller'][0]
   tags:
     - config
     - neutron_config
