@@ -3,12 +3,12 @@ function deploy_host(){
     NEUTRON_FILE=${COMPASS_DIR}/deploy/conf/neutron_cfg.yaml
 
     pip install oslo.config
-    ssh $ssh_args root@${COMPASS_SERVER} mkdir -p /opt/compass/bin/ansible_callbacks
-    scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${COMPASS_SERVER}:/opt/compass/bin/ansible_callbacks/status_callback.py
+    ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks
+    scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/status_callback.py
 
     reboot_hosts
 
-    python ${COMPASS_DIR}/deploy/client.py --compass_server="${COMPASS_SERVER_URL}" \
+    python ${COMPASS_DIR}/deploy/client.py --compass_server="${HTTP_SERVER_URL}" \
     --compass_user_email="${COMPASS_USER_EMAIL}" --compass_user_password="${COMPASS_USER_PASSWORD}" \
     --cluster_name="${CLUSTER_NAME}" --language="${LANGUAGE}" --timezone="${TIMEZONE}" \
     --hostnames="${HOSTNAMES}" --partitions="${PARTITIONS}" --subnets="${SUBNETS}" \
