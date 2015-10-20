@@ -4,7 +4,6 @@ set -x
 yum remove systemd -y
 # add 163 repo
 yum install wget -y
-#wget -O /etc/yum.repos.d/CentOS7-Base-163.repo  http://mirrors.163.com/.help/CentOS7-Base-163.repo
 wget -O /epel-release-7-5.noarch.rpm http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
 yum remove wget iptables-services -y
 yum update -y
