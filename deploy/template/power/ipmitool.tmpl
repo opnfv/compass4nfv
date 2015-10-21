@@ -1,6 +1,7 @@
 source \${COMPASS_DIR}/util/log.sh
 #set default_ipmiUser=$getVar('ipmiUser', '')
 #set default_ipmiPass=$getVar('ipmiPass', '')
+#set default_ipmiVer=$getVar('ipmiVer', '2.0')
 #set hosts=$getVar('hosts', [])
 #set fail_list=""
 #for host in $hosts
@@ -20,8 +21,15 @@ exit 1
 #set ipmiIp=$host.get('ipmiIp', '')
 #set ipmiUser=$host.get('ipmiUser', $default_ipmiUser)
 #set ipmiPass=$host.get('ipmiPass', $default_ipmiPass)
+#set ipmiVer=$host.get('ipmiVer', $default_ipmiVer)
+#if $ipmiVer == '2.0'
+    #set interface='lanplus'
+#else
+    #set interface='lan'
+#end if
+
 for i in {1..5}; do
-    if ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe >/dev/null 2>&1
+    if ipmitool -I $interface -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe >/dev/null 2>&1
     then
         break
     elif [[ i -lt 5 ]]
@@ -34,7 +42,7 @@ for i in {1..5}; do
 done
 sleep 1
 for i in {1..5}; do
-    if ipmitool -I lan -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power reset >/dev/null 2>&1
+    if ipmitool -I $interface -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power reset >/dev/null 2>&1
     then
         break
     elif [[ i -lt 5 ]]
