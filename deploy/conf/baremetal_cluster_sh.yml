@@ -5,6 +5,7 @@ POWER_TOOL: ipmitool
 
 ipmiUser: root
 ipmiPass: Huawei@123
+ipmiVer: '1.0'
 
 hosts:
   - name: host1

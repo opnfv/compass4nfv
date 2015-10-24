@@ -30,6 +30,7 @@ function install_compass_core() {
 function wait_ok() {
     set +x
     log_info "wait_compass_ok enter"
+    ssh-keygen -f "/root/.ssh/known_hosts" -R $MGMT_IP >/dev/null 2>&1
     retry=0
     until timeout 1s ssh $ssh_args root@$MGMT_IP "exit" >/dev/null 2>&1
     do
