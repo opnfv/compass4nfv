@@ -29,7 +29,7 @@ function prepare_env()
 
 function download_git()
 {
-    file_dir=$CACHE_DIR/${1%.*} 
+    file_dir=$CACHE_DIR/${1%.*}
     if [[ -d $file_dir/.git ]]; then
         cd $file_dir
         git pull origin master
@@ -57,22 +57,30 @@ function download_url()
 
 function download_local()
 {
-    cp $2 $CACHE_DIR/ -rf
+    if [[ $2 != $CACHE_DIR/$1 ]]; then
+       cp $2 $CACHE_DIR/ -rf
+    fi
 }
 
 function download_packages()
 {
      for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $TRUSTY_JUNO_PPA $UBUNTU_ISO \
               $CENTOS_ISO $CENTOS7_JUNO_PPA $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG $PIP_REPO $ANSIBLE_MODULE; do
+
+         if [[ ! $i ]]; then
+             continue
+         fi
          name=`basename $i`
+
          if [[ ${name##*.} == git ]]; then
              download_git  $name $i
-         elif [[ "https?" =~ ${i%%:*} ]]; then
+         elif [[ "https?" =~ ${i%%:*} || "file://" =~ ${i%%:*} ]]; then
              download_url  $name $i
          else
              download_local $name $i
          fi
      done
+
 }
 
 function copy_file()
@@ -87,15 +95,29 @@ function copy_file()
 
     rm -rf $new/.rr_moved
 
-    cp $CACHE_DIR/`basename $UBUNTU_ISO` $new/repos/cobbler/ubuntu/iso/ -rf
-    cp $CACHE_DIR/`basename $TRUSTY_JUNO_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
-    cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
-    cp $CACHE_DIR/`basename $CENTOS7_JUNO_PPA` $new/repos/cobbler/centos/ppa/ -rf
+    if [[ $UBUNTU_ISO ]]; then
+        cp $CACHE_DIR/`basename $UBUNTU_ISO` $new/repos/cobbler/ubuntu/iso/ -rf
+    fi
+
+    if [[  $TRUSTY_JUNO_PPA ]]; then
+        cp $CACHE_DIR/`basename $TRUSTY_JUNO_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
+    fi
+
+    if [[ $CENTOS_ISO ]]; then
+        cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
+    fi
+
+    if [[ $CENTOS7_JUNO_PPA ]]; then
+        cp $CACHE_DIR/`basename $CENTOS7_JUNO_PPA` $new/repos/cobbler/centos/ppa/ -rf
+    fi
 
     cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1
-    cp $CACHE_DIR/`basename $CIRROS` $new/guestimg/ -rf || exit 1
     cp $CACHE_DIR/`basename $APP_PACKAGE` $new/app_packages/ -rf || exit 1
     cp $CACHE_DIR/`basename $ANSIBLE_MODULE | sed 's/.git//g'`  $new/ansible/ -rf || exit 1
+
+    if [[ $CIRROS ]]; then
+        cp $CACHE_DIR/`basename $CIRROS` $new/guestimg/ -rf || exit 1
+    fi
 
     for i in $COMPASS_CORE $COMPASS_INSTALL $COMPASS_WEB; do
         cp $CACHE_DIR/`basename $i | sed 's/.git//g'` $new/compass/ -rf
@@ -103,9 +125,9 @@ function copy_file()
 
     cp $COMPASS_DIR/deploy/adapters $new/compass/compass-adapters -rf
 
-    tar -zxvf $CACHE_DIR/pip.tar.gz -C $new/
+    tar -zxvf $CACHE_DIR/`basename $PIP_REPO` -C $new/
 
-    find $new/compass -name ".git" |xargs rm -rf
+    find $new/compass -name ".git" | xargs rm -rf
 }
 
 function rebuild_ppa()
