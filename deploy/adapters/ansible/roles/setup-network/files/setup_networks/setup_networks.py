@@ -56,6 +56,7 @@ def setup_ips(ip_settings, sys_intf_mappings):
         cmd = "ip addr add %s/%s brd %s dev %s;" \
               % (intf_info["ip"], intf_info["netmask"], str(network.broadcast),intf_name)
         if "gw" in intf_info:
+            cmd += "route del default;"
             cmd += "ip route add default via %s dev %s" % (intf_info["gw"], intf_name)
         LOG.info("setup_ips: cmd=%s" % cmd)
         os.system(cmd)
