@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_6d5eb1eb",
+        "filename": "build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2015-10-27T21:42:25Z",
+      "side": 1,
+      "message": "no else branch here? there is probability that cannot  get one package.\nor we can log some imformation of that?",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 6
+      },
+      "revId": "5a8ee51210424e6d13f37d60982373330f9e3a56",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
