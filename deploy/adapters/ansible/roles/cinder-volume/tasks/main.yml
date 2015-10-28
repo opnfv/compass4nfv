@@ -13,43 +13,13 @@
   stat: path={{ physical_device }}
   register: status
 
-- name: replace physical_device if st is false
-  local_action: copy src=loop.yml dest=/tmp/loop.yml
-  when: status.stat.exists == False
-
 - name: load loop.yml
-  include_vars: /tmp/loop.yml
-  when: status.stat.exists == False
+  include: loop.yml
+  when: status.stat.isblk == False
 
-- name: check if cinder-volumes is mounted
-  shell: ls /mnt
-  register: cindervolumes
-
-- name: get available partition size
-  shell: df / | awk '$3 ~ /[0-9]+/ { print $4 }'
-  register: partition_size
-
-- name: if not mounted, mount it
-  shell: dd if=/dev/zero of=/mnt/cinder-volumes
-         bs=1 count=0 seek={{ partition_size.stdout }}
-  when: cindervolumes.stdout != 'cinder-volumes'
-
-- name: get first lo device
-  shell: losetup -f
-  register: first_lo
-  when: cindervolumes.stdout != 'cinder-volumes'
-
-- name: do a losetup on /mnt/cinder-volumes
-  shell: losetup {{ first_lo.stdout }} /mnt/cinder-volumes
-  when: cindervolumes.stdout != 'cinder-volumes'
-
-- name: destroy GPT lable
-  shell: dd if=/dev/urandom of=/dev/sdb bs=4M count=1
-  ignore_errors: True
-
-- name: create physical and group volumes
-  lvg: vg=cinder-volumes pvs={{ physical_device }}
-       vg_options=--force
+- name: load real.yml
+  include: real.yml
+  when: status.stat.isblk == True
 
 - name: upload cinder-volume configuration
   template: src=cinder.conf dest=/etc/cinder/cinder.conf
