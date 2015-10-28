@@ -109,7 +109,7 @@ function launch_compass() {
     sudo virsh define $compass_vm_dir/libvirt.xml
     sudo virsh start compass
 
-    if ! wait_ok 300;then
+    if ! wait_ok 360;then
         log_error "install os timeout"
         exit 1
     fi
