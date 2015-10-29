@@ -1,7 +1,7 @@
 ---
 
 - name: create pool
-  shell: ceph osd pool create {{ item }} 80
+  shell: ceph osd pool create {{ item }} 50
   with_items:
     - volumes
     - images
@@ -48,8 +48,17 @@
   tags:
     - ceph_copy_secret
 
+- name: undefine libvirt secret in case of repeatedly execute ceph_deploy
+  shell: ssh -o StrictHostKeyChecking=no -t {{ item }}  "virsh secret-list | awk '\$1 ~ /[0-9]+/ {print \$1}' | xargs virsh secret-undefine"
+  with_items:
+    - "{{ groups['compute'] }}"
+  tags:
+    - ceph_copy_secret
+  ignore_errors: True
+
+
 - name: create key for libvirt on compute nodes
-  shell: ssh -o StrictHostKeyChecking=no -t {{ item }} "virsh secret-define --file secret.xml && virsh secret-set-value --secret {{ ceph_uuid.stdout_lines[0] }} --base64 \$(cat client.cinder.key) && rm client.cinder.key secret.xml"
+  shell: ssh -o StrictHostKeyChecking=no -t {{ item }} "virsh secret-define --file secret.xml && virsh secret-set-value --secret {{ ceph_uuid.stdout_lines[0] }} --base64 $(cat client.cinder.key)"
   with_items:
     - "{{ groups['compute'] }}"
   tags:
