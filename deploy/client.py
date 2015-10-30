@@ -201,6 +201,9 @@ opts = [
     cfg.StrOpt('cluster_vip',
               help='cluster ip address',
               default=''),
+    cfg.StrOpt('enable_secgroup',
+              help='enable security group',
+              default='true'),
     cfg.StrOpt('network_cfg',
               help='netowrk config file',
               default=''),
@@ -695,16 +698,10 @@ class CompassClient(object):
             )
         """
         package_config['ha_proxy'] = {}
-
-        #TODO, we need two vip
-        if CONF.cluster_pub_vip:
-            package_config["ha_proxy"]["pub_vip"] = CONF.cluster_pub_vip
-
-        if CONF.cluster_prv_vip:
-            package_config["ha_proxy"]["prv_vip"] = CONF.cluster_prv_vip
-
         if CONF.cluster_vip:
             package_config["ha_proxy"]["vip"] = CONF.cluster_vip
+
+        package_config['enable_secgroup'] = (CONF.enable_secgroup == "true")
 
         status, resp = self.client.update_cluster_config(
             cluster_id, package_config=package_config)
