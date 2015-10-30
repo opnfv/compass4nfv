@@ -15,7 +15,7 @@
 
 - name: load loop.yml
   include: loop.yml
-  when: status.stat.exists == False or status.stat.isblk == False 
+  when: status.stat.exists == False or status.stat.isblk == False
 
 - name: load real.yml
   include: real.yml
