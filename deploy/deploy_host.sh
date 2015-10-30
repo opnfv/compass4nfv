@@ -22,6 +22,7 @@ function deploy_host(){
     --host_roles="${HOST_ROLES}" --default_roles="${DEFAULT_ROLES}" --switch_ips="${SWITCH_IPS}" \
     --machines=${machines//\'} --switch_credential="${SWITCH_CREDENTIAL}" --deploy_type="${TYPE}" \
     --deployment_timeout="${DEPLOYMENT_TIMEOUT}" --${POLL_SWITCHES_FLAG} --dashboard_url="${DASHBOARD_URL}" \
-    --cluster_vip="${VIP}" --network_cfg="$NETWORK" --neutron_cfg="$NEUTRON"
+    --cluster_vip="${VIP}" --network_cfg="$NETWORK" --neutron_cfg="$NEUTRON" \
+    --enable_secgroup="${ENABLE_SECGROUP}"
 
 }
