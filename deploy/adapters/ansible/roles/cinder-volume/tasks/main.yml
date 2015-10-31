@@ -15,11 +15,11 @@
 
 - name: load loop.yml
   include: loop.yml
-  when: status.stat.isblk == False
+  when: status.stat.exists == False or status.stat.isblk == False 
 
 - name: load real.yml
   include: real.yml
-  when: status.stat.isblk == True
+  when: status.stat.exists == True and status.stat.isblk == True
 
 - name: upload cinder-volume configuration
   template: src=cinder.conf dest=/etc/cinder/cinder.conf

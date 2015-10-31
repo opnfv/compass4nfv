@@ -10,6 +10,10 @@
 - name: create monitor node in controller group
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy --overwrite-conf mon create-initial
 
+- name: gather keys
+  shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy gatherkeys {{ ceph_cluster_hosts.stdout_lines[0] }}
+  ignore_errors: True
+
 - name: copy create_osd.sh to host1
   copy: src=create_osd.sh dest=~/create_osd.sh mode=0777
   tags:
