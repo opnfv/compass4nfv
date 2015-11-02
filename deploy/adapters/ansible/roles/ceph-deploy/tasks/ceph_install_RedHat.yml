@@ -18,21 +18,21 @@
 - name: copy create_osd.sh to other nodes
   shell: scp -o StrictHostKeyChecking=no ~/create_osd.sh {{ item }}:~/
   with_items:
-    - "{{ groups['controller'] }}"
+    - "{{ groups['compute'] }}"
   tags:
     - create_osd
 
 - name: create osd
   shell: ssh -o StrictHostKeyChecking=no -t {{ item }} "~/create_osd.sh"
   with_items:
-    - "{{ groups['controller'] }}"
+    - "{{ groups['compute'] }}"
   tags:
     - create_osd
 
 - name: prepare create osd
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy --repo-url http://10.1.0.12/cblr/repo_mirror/centos7-juno-ppa --gpg-url http://10.1.0.12/cblr/repo_mirror/centos7-juno-ppa/ceph_key_release.asc osd prepare {{ item }}:/var/local/osd
   with_items:
-    - "{{ groups['controller'] }}"
+    - "{{ groups['compute'] }}"
   tags:
     - create_osd
 
@@ -40,7 +40,7 @@
 - name: activate osd
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy --repo-url http://10.1.0.12/cblr/repo_mirror/centos7-juno-ppa --gpg-url http://10.1.0.12/cblr/repo_mirror/centos7-juno-ppa/ceph_key_release.asc osd activate {{ item }}:/var/local/osd
   with_items:
-    - "{{ groups['controller'] }}"
+    - "{{ groups['compute'] }}"
   tags:
     - create_osd
     - activate_osd
