@@ -1,8 +1,5 @@
 function deploy_host(){
-    NETWORK_FILE=${COMPASS_DIR}/deploy/conf/network_cfg.yaml
-    NEUTRON_FILE=${COMPASS_DIR}/deploy/conf/neutron_cfg.yaml
 
-    pip install oslo.config
     ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks
     scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/status_callback.py
 
@@ -25,6 +22,6 @@ function deploy_host(){
     --host_roles="${HOST_ROLES}" --default_roles="${DEFAULT_ROLES}" --switch_ips="${SWITCH_IPS}" \
     --machines=${machines//\'} --switch_credential="${SWITCH_CREDENTIAL}" --deploy_type="${TYPE}" \
     --deployment_timeout="${DEPLOYMENT_TIMEOUT}" --${POLL_SWITCHES_FLAG} --dashboard_url="${DASHBOARD_URL}" \
-    --cluster_vip="${VIP}" --network_cfg="$NETWORK_FILE" --neutron_cfg="$NEUTRON_FILE"
+    --cluster_vip="${VIP}" --network_cfg="$NETWORK" --neutron_cfg="$NEUTRON"
 
 }
