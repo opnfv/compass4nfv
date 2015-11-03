@@ -5,8 +5,8 @@ mkdir -p $WORK_DIR/script
 
 source ${COMPASS_DIR}/util/log.sh
 source ${COMPASS_DIR}/deploy/deploy_parameter.sh
-source $(process_default_para $*) || exit 1
 source $(process_input_para $*) || exit 1
+source $(process_default_para $*) || exit 1
 source ${COMPASS_DIR}/deploy/conf/${FLAVOR}.conf
 source ${COMPASS_DIR}/deploy/conf/${TYPE}.conf
 source ${COMPASS_DIR}/deploy/conf/base.conf
