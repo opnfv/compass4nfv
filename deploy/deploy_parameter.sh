@@ -12,11 +12,15 @@ function get_option_flag_list()
 
 function get_conf_name()
 {
+    if [[ -n $DHA ]]; then
+        return
+    fi
+
     cfg_file=`ls $COMPASS_DIR/deploy/conf/*.conf`
     option_name=`get_option_name_list "$cfg_file"`
     option_flag=`get_option_flag_list "$option_name"`
 
-    TEMP=`getopt -o h -l $option_flag -n 'deploy_parameter.sh' -- "$@"`
+    TEMP=`getopt -o h -l dha:,network:,neutron:,conf-dir:,$option_flag -n 'deploy_parameter.sh' -- "$@"`
 
     if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
     eval set -- "$TEMP"
@@ -29,11 +33,20 @@ function get_conf_name()
     done
 
     if [[ $# -eq 0 ]]; then
-        echo "virtual_cluster"
+        export DHA="$COMPASS_DIR/deploy/conf/virtual_cluster"
     elif [[ "$1" == "five" ]];then
-        echo "virtual_five"
+        export DHA=$COMPASS_DIR/deploy/conf/virtual_five
     else
-        echo $1
+        file=${1%*.yml}.yml
+        if [[ -f $file ]]; then
+            export DHA=$file
+        elif [[ -f $CONF_DIR/$file ]]; then
+            export DHA=$CONF_DIR/$file
+        elif [[ -f $COMPASS_DIR/deploy/conf/$file ]]; then
+            export DHA=$COMPASS_DIR/deploy/conf/$file
+        else
+            exit 1
+        fi
     fi
 }
 
@@ -47,7 +60,7 @@ function generate_input_env_file()
     option_name=`get_option_name_list "$cfg_file"`
     option_flag=`get_option_flag_list "$option_name"`
 
-    TEMP=`getopt -o h -l conf-name:,$option_flag -n 'deploy_parameter.sh' -- "$@"`
+    TEMP=`getopt -o h -l dha:,network:,neutron:,conf-dir:,$option_flag -n 'deploy_parameter.sh' -- "$@"`
 
     if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
     eval set -- "$TEMP"
@@ -58,15 +71,10 @@ function generate_input_env_file()
         fi
 
         option=`echo ${1##-?} | tr [:lower:] [:upper:] | sed 's/-/_/g'`
-        echo "$option_name" | grep -w $option > /dev/null
-        if [[ $? -eq 0 ]]; then
-            echo "export $option=$2" >> $ofile
-            shift 2
-            continue
-        fi
+        echo "export $option=$2" >> $ofile
+        shift 2
+        continue
 
-        echo "Internal error!"
-        exit 1
     done
 
     echo $ofile
@@ -74,8 +82,15 @@ function generate_input_env_file()
 
 function process_default_para()
 {
+    if [[ -z $CONF_DIR ]]; then
+         local set conf_dir=${COMPASS_DIR}/deploy/conf
+    else
+         local set conf_dir=$CONF_DIR
+    fi
+    
+    get_conf_name $*
     python ${COMPASS_DIR}/deploy/config_parse.py \
-           "${COMPASS_DIR}/deploy/conf/`get_conf_name $*`" \
+           "$DHA" "$conf_dir" \
            "${COMPASS_DIR}/deploy/template" \
            "${WORK_DIR}/script" \
            "deploy_config.sh"
