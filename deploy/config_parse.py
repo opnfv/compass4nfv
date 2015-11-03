@@ -34,11 +34,14 @@ def hostroles(s, seq, host=None):
 def hostmacs(s, seq, host=None):
     return host.get('mac', '')
 
-def export_config_file(s, ofile):
+def export_config_file(s, conf_dir, ofile):
     env = {}
     env.update(s)
     if env.get('hosts', []):
         env.pop('hosts')
+
+    env.update({'NEUTRON': os.path.join(conf_dir, "neutron_cfg.yaml")})
+    env.update({'NETWORK': os.path.join(conf_dir, "network_cfg.yaml")})
 
     env.update({'TYPE': s.get('TYPE', "virtual")})
     env.update({'FLAVOR': s.get('FLAVOR', "cluster")})
@@ -67,19 +70,19 @@ def export_reset_file(s, tmpl_dir, output_dir, output_file):
     os.system("echo 'export POWER_MANAGE=%s' >> %s" % (reset_file_name, output_file))
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 6:
         print("parameter wrong%d %s" % (len(sys.argv), sys.argv))
         sys.exit(1)
 
-    _, config_file, tmpl_dir, output_dir, output_file = sys.argv
-    config_file += '.yml'
+    _, config_file, conf_dir, tmpl_dir, output_dir, output_file = sys.argv
+
     if not os.path.exists(config_file):
         print("%s is not exist" % config_file)
         sys.exit(1)
 
     data = init(config_file)
 
-    export_config_file(data, os.path.join(output_dir, output_file))
+    export_config_file(data, conf_dir, os.path.join(output_dir, output_file))
     export_reset_file(data, tmpl_dir, output_dir, os.path.join(output_dir, output_file))
 
     sys.exit(0)
