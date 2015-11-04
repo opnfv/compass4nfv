@@ -1,20 +1,12 @@
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- name: first update pkgs
-  shell: "{{ ansible_pkg_mgr }}  update"
-
-- name: install packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest"
-  with_items: packages | union(packages_noarch)
+- name: speed up ansible by purging landscape-common
+  apt: pkg=landscape-common state=absent purge=yes
+  when: ansible_os_family == "Debian"
 
 - name: update hosts files to all hosts
-  template: src=hosts
-            dest=/etc/hosts
-            backup=yes
-
-- name: make config template dir exist
-  file: path=/opt/os_templates state=directory mode=0755
+  template: src=hosts dest=/etc/hosts backup=yes
 
 - name: get compass-core hostname
   local_action: shell hostname
@@ -22,19 +14,25 @@
 
 - name: get compass-core addr
   shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
-  register: ip
+  register: COMPASS_SERVER
 
 - name: update compass-core name and ip to hosts files
   shell: |
     echo "# compass" >> /etc/hosts
-    echo {{ ip.stdout_lines[0] }} {{ name.stdout_lines[0] }} >> /etc/hosts
+    echo {{ COMPASS_SERVER.stdout_lines[0] }} {{ name.stdout_lines[0] }} >> /etc/hosts
+
+- name: first update pkgs
+  shell: "{{ ansible_pkg_mgr }}  update"
+
+- name: install packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest"
+  with_items: packages | union(packages_noarch)
+
+- name: make config template dir exist
+  file: path=/opt/os_templates state=directory mode=0755
 
 - name: create pip config directory
   file: path=~/.pip state=directory
-
-- name: get pip source server addr
-  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
-  register: COMPASS_SERVER
 
 - name: update pip.conf
   template: src=pip.conf dest=~/.pip/pip.conf
