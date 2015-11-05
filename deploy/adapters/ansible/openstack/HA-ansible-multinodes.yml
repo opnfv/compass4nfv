@@ -56,10 +56,14 @@
   roles:
     - ext-network
 
+- hosts: ceph
+  remote_user: root
+  sudo: True
+  roles:
+    - ceph-deploy
 
 - hosts: all
   remote_user: root
   sudo: True
   roles:
-    - ceph-deploy
     - monitor
