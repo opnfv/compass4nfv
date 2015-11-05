@@ -1,6 +1,6 @@
 ---
 - name: create ceph cluster
-  shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy new {{ ceph_cluster_hosts.stdout_lines[0] }}
+  shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy new {{ controller_nodes.stdout_lines[0] }}
   tags:
     - create_ceph_cluster
 
