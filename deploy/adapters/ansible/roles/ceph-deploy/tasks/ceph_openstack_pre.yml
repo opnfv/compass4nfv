@@ -58,7 +58,7 @@
 
 
 - name: create key for libvirt on compute nodes
-  shell: ssh -o StrictHostKeyChecking=no -t {{ item }} "virsh secret-define --file secret.xml && virsh secret-set-value --secret {{ ceph_uuid.stdout_lines[0] }} --base64 $(cat client.cinder.key)"
+  shell: ssh -o StrictHostKeyChecking=no -t {{ item }} "virsh secret-define --file secret.xml && virsh secret-set-value --secret {{ ceph_uuid.stdout_lines[0] }} --base64 \$(cat client.cinder.key)"
   with_items:
     - "{{ groups['compute'] }}"
   tags:
