@@ -6,6 +6,7 @@ hosts:
     roles:
       - controller
       - ha
+      - ceph
 
   - name: host2
     roles:
