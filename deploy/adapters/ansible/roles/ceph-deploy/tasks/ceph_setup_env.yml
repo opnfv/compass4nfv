@@ -25,6 +25,13 @@
     - create_ceph_cluster
     - ceph_install
 
+- name: clear cluster_controller_nodes
+  file: path=cluster_controller_nodes state=absent
+  tags:
+    - create_ceph_cluster
+    - ceph_install
+
+
 - name: echo hosts name to file
   shell: echo -n "{{ item }} " >> cluster_hosts_name
   with_items:
@@ -40,6 +47,23 @@
     - create_ceph_cluster
     - echo_hosts
     - ceph_install
+
+- name: echo controller name to file
+  shell: echo -n "{{ item }} " >> cluster_controller_nodes
+  with_items:
+    - "{{ groups['controller'] }}"
+  tags:
+    - create_ceph_cluster
+    - ceph_install
+
+- name: register controller nodes
+  shell: cat cluster_controller_nodes
+  register: controller_nodes
+  tags:
+    - create_ceph_cluster
+    - echo_hosts
+    - ceph_install
+
 
 - name: gen clean ceph script
   template: src=clean_ceph.j2 dest=~/clean_ceph.sh mode=0777
