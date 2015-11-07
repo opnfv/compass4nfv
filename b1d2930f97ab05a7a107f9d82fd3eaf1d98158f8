@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_a61603f0",
+        "filename": "deploy/adapters/ansible/roles/common/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1317
+      },
+      "writtenOn": "2015-11-07T04:48:44Z",
+      "side": 1,
+      "message": "before the compass core ip and hostname written in /etc/hosts file, ansible-playboot excute slowly,so configure the hosts file is as the first task of playbook",
+      "revId": "b1d2930f97ab05a7a107f9d82fd3eaf1d98158f8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
