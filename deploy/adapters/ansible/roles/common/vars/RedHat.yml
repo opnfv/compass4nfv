@@ -1,7 +1,9 @@
 ---
 packages:
-  - python-devel
   - openvswitch
+
+pip_packages:
+  - crudini
 
 services:
   - openvswitch
