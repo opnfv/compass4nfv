@@ -24,7 +24,7 @@
     - setup_networks/setup_networks.py
 
 - name: copy boot scripts
-  copy:  src={{ item }} dest=/etc/init.d mode=0755
+  copy:  src={{ item }} dest=/etc/init.d/ mode=0755
   with_items:
     - setup_networks/net_init
 
