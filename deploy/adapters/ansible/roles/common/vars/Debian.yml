@@ -6,6 +6,8 @@ packages:
   - openvswitch-switch
   - crudini
 
+pip_packages: []
+
 services: []
 
 ntp_service: ntp

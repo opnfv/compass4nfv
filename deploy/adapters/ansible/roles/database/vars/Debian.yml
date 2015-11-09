@@ -15,7 +15,11 @@ maridb_packages:
   - mysql-wsrep-server-5.5
   - galera-3
 
+pip_packages: []
+
 services: []
+
+mongodb_serveice: mongodb
 
 mysql_config_file_path: "/etc/mysql"
 mysql_config_file_name: ["my.cnf"]

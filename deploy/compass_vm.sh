@@ -38,6 +38,7 @@ function wait_ok() {
         sleep 1
         let retry+=1
         if [[ $retry -ge $1 ]];then
+            timeout 1s ssh $ssh_args root@$MGMT_IP "exit"
             log_error "os install time out"
             exit 1
         fi
