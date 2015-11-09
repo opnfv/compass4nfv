@@ -4,11 +4,21 @@ mysql_packages:
   - mysql-server
 
 maridb_packages:
+  - MySQL-python
   - MariaDB-Galera-server
   - MariaDB-client
   - galera
 
+mongodb_packages:
+    - mongo-10gen-server
+    - mongo-10gen
+
+pip_packages:
+    - pymongo
+
 services: []
+
+mongodb_serveice: mongod
 
 mysql_config_file_path: "/etc/my.cnf.d"
 mysql_config_file_name: ["my-huge.cnf", "server.cnf"]
