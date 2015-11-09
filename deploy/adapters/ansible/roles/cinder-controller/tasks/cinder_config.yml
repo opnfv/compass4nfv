@@ -3,6 +3,7 @@
   template: src=cinder.conf dest=/etc/cinder/cinder.conf
 
 - name: sync cinder db
-  cinder_manage: action=dbsync
+  #cinder_manage: action=dbsync
+  shell: cinder-manage db sync
   notify:
     - restart cinder control serveice

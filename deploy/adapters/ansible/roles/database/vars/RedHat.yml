@@ -7,6 +7,7 @@ maridb_packages:
   - MariaDB-Galera-server
   - MariaDB-client
   - galera
+  - MySQL-python
 
 services: []
 

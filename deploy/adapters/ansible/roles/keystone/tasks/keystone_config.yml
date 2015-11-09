@@ -1,6 +1,7 @@
 ---
 - name: keystone-manage db-sync
-  keystone_manage: action=dbsync
+  #keystone_manage: action=dbsync
+  shell: keystone-manage db_sync
 
 - name: wait for keystone ready
   wait_for: port=35357 delay=3 timeout=10 host={{ internal_vip.ip }}
