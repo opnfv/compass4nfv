@@ -13,8 +13,6 @@
   with_items:
     - glance-api.conf
     - glance-registry.conf
-  notify:
-    - restart glance services
 
 - name: remove default sqlite db
   shell: rm /var/lib/glance/glance.sqlite || touch glance.sqllite.db.removed
