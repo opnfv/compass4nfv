@@ -8,6 +8,11 @@
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest"
   with_items: packages | union(packages_noarch)
 
+
+- name: install pip packages
+  pip: name={{ item }} state=present extra_args='--pre'
+  with_items: pip_packages
+
 - name: update hosts files to all hosts
   template: src=hosts
             dest=/etc/hosts
@@ -37,7 +42,7 @@
   register: COMPASS_SERVER
 
 - name: update pip.conf
-  template: src=pip.conf dest=~/.pip/pip.conf
+  template: src=pip.conf dest=~/.pip/{[ pip_conf }}
 
 - name: update ntp conf
   template: src=ntp.conf dest=/etc/ntp.conf backup=yes

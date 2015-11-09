@@ -3,6 +3,10 @@
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: mongodb_packages | union(packages_noarch)
 
+- name: install pymongod packages
+  pip: name={{ item }} state=present extra_args='--pre'
+  with_items: pip_packages
+
 - name: copy ceilometer configs
   template: src=mongodb.conf dest=/opt/os_templates backup=yes
 
@@ -17,7 +21,7 @@
     - /var/lib/mongodb/journal/*
 
 - name: manually restart mongodb server
-  service: name=mongodb state=restarted
+  service: name={{ mongodb_serveice }} state=restarted
 
 - wait_for: port=27017 delay=3 timeout=60 host={{ internal_vip.ip }}
 
