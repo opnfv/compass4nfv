@@ -178,6 +178,10 @@ function make_all_repo()
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server dracut-config-rescue-033-241.el7_1.3 dracut-network-033-241.el7_1.3"
+
+    make_repo --os-ver rhel7 --package-tag kilo \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
 }
 
 function main()
