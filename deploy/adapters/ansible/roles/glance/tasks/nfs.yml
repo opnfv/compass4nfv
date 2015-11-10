@@ -17,7 +17,7 @@
               line="/opt/images *(rw,insecure,sync,all_squash)"
   run_once: True
 
-- name: restart nfs service
+- name: restart compass nfs service
   local_action: service name={{ item }} state=restarted enabled=yes
   with_items:
       - rpcbind
@@ -31,6 +31,10 @@
 - name: get nfs server
   shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
   register: ip_info
+
+- name: restart host nfs service
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: '{{ nfs_services }}'
 
 - name: mount image directory
   shell: |
