@@ -13,6 +13,24 @@
   sysctl: name=net.ipv4.conf.default.rp_filter
           value=0 state=present reload=yes
 
+- name: assert kernel support for vxlan
+  command: modinfo -F version vxlan
+  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
+
+- name: assert iproute2 suppport for vxlan
+  command: ip link add type vxlan help
+  register: iproute_out
+  failed_when: iproute_out.rc == 255
+  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
+
+- name: update epel-release
+  shell: yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+  ignore_errors: True
+
+- name: update rdo-release-kilo repo
+  shell: yum install -y http://rdo.fedorapeople.org/openstack-kilo/rdo-release-kilo.rpm
+  ignore_errors: True
+
 - name: install neutron network related packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: packages | union(packages_noarch)
@@ -48,36 +66,23 @@
             dest=/etc/neutron/plugins/ml2/ml2_conf.ini
             backup=yes
 
-- name: config neutron
-  template: src=templates/neutron-network.conf
-            dest=/etc/neutron/neutron.conf backup=yes
-  notify:
-    - restart common neutron network relation service
-    - restart neutron network relation service
-    - kill dnsmasq
-
-- meta: flush_handlers
-
 - name: ln plugin.ini
   file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
 
-- name: restart openvswitch-agent service
-  service: name={{ openvswitch_agent }} state=restarted enabled=yes
+- name: config neutron
+  template: src=templates/neutron.conf
+            dest=/etc/neutron/neutron.conf backup=yes
 
-- meta: flush_handlers
+- include: firewall.yml
+  when: enable_fwaas == True
 
-#- include: igmp-router.yml
-#  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }} and ansible_os_family == 'Debian'"
-
-- name: assert kernel support for vxlan
-  command: modinfo -F version vxlan
-  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
-
-- name: assert iproute2 suppport for vxlan
-  command: ip link add type vxlan help
-  register: iproute_out
-  failed_when: iproute_out.rc == 255
-  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
+- include: vpn.yml
+  when: enable_vpnaas == True
 
 - include: odl.yml
   when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
+
+- name: restart neutron services
+  debug: msg="restart neutron services"
+  notify:
+    - restart neutron network relation service
