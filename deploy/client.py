@@ -204,6 +204,12 @@ opts = [
     cfg.StrOpt('enable_secgroup',
               help='enable security group',
               default='true'),
+    cfg.StrOpt('enable_vpnaas',
+              help='enable vpn as service',
+              default='true'),
+    cfg.StrOpt('enable_fwaas',
+              help='enable firewall as service',
+              default='true'),
     cfg.StrOpt('network_cfg',
               help='netowrk config file',
               default=''),
@@ -702,6 +708,8 @@ class CompassClient(object):
             package_config["ha_proxy"]["vip"] = CONF.cluster_vip
 
         package_config['enable_secgroup'] = (CONF.enable_secgroup == "true")
+        package_config['enable_fwaas'] = (CONF.enable_fwaas== "true")
+        package_config['enable_vpnaas'] = (CONF.enable_vpnaas== "true")
 
         status, resp = self.client.update_cluster_config(
             cluster_id, package_config=package_config)
