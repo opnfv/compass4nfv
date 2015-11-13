@@ -17,6 +17,12 @@
 - name: shut down and disable Neutron's openvswitch  agent services
   service: name=neutron-plugin-openvswitch-agent state=stopped
 
+- name: Stop the Open vSwitch service and clear existing OVSDB
+  shell: >
+    ovs-vsctl del-br br-int ;
+    ovs-vsctl del-br br-tun ;
+    ovs-vsctl del-manager ;
+
 #- name: remove Neutron's openvswitch agent services
 #  shell: >
 #    update-rc.d neutron-plugin-openvswitch-agent remove
