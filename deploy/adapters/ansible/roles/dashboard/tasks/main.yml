@@ -23,6 +23,11 @@
             dest=/etc/openstack-dashboard/local_settings.py
             backup=yes
 
+- name: update memcached conf
+  lineinfile: dest=/etc/memcached.conf state=present
+              regexp="-l *"
+              line="-l {{ internal_vip.ip }}"
+
 - name: restart dashboard services
   service: name={{ item }} state=restarted enabled=yes
   with_items: services | union(services_noarch)
