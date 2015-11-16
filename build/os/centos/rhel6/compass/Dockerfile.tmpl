@@ -1,6 +1,10 @@
 FROM centos:6.6
 MAINTAINER Chigang(Justin) <chigang@huawei.com>
 
+# add repo files first, then update
+ADD ./elasticsearch.repo /etc/yum.repos.d/elasticsearch.repo
+ADD ./logstash.repo /etc/yum.repos.d/logstash.repo
+
 # TODO: Is there some easy way to get the fastest/closest mirror?
 RUN yum update -y
 
