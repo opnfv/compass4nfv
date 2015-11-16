@@ -4,6 +4,9 @@
   tags:
     - create_ceph_cluster
 
+- name: default config for ceph
+  shell: cd {{ ceph_cluster_dir[0] }} && echo "osd_journal_size = 1024" >> ceph.conf && echo "osd_pool_default_size = 2" >> ceph.conf
+
 - name: install ceph for every nodes includes jumpserver
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy install {{ ceph_cluster_hosts.stdout_lines[0]}}
 
@@ -11,7 +14,7 @@
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy --overwrite-conf mon create-initial
 
 - name: gather keys
-  shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy gatherkeys {{ ceph_cluster_hosts.stdout_lines[0] }}
+  shell: sleep 5 && cd {{ ceph_cluster_dir[0] }} && ceph-deploy gatherkeys {{ inventory_hostname }}
   ignore_errors: True
 
 - name: copy create_osd.sh to host1
