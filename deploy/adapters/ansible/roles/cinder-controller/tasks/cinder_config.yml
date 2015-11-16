@@ -4,6 +4,6 @@
 
 - name: sync cinder db
   #cinder_manage: action=dbsync
-  shell: cinder-manage db sync
+  shell: su -s /bin/sh -c 'cinder-manage db sync' cinder
   notify:
     - restart cinder control serveice
