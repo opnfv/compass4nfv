@@ -23,6 +23,24 @@ set -ex
 cp /*.tar.gz /result -f
 EOF
 
+cat << EOF >${WORK_PATH}/work/repo/elasticsearch.repo
+[elasticsearch-2.x]
+name=Elasticsearch repository for 2.x packages
+baseurl=http://packages.elastic.co/elasticsearch/2.x/centos
+gpgcheck=1
+gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+EOF
+
+cat << EOF > ${WORK_PATH}/work/repo/logstash.repo
+[logstash-2.0]
+name=Logstash repository for 2.0.x packages
+baseurl=http://packages.elastic.co/logstash/2.0/centos
+gpgcheck=1
+gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+EOF
+
     sudo apt-get install python-yaml -y
     sudo apt-get install python-cheetah -y
 }
@@ -163,7 +181,8 @@ function make_all_repo()
 
     make_repo --os-ver rhel6 --package-tag compass \
               --tmpl "${WORK_PATH}/build/templates/compass_core.tmpl" \
-              --default-package "epel-release python-yaml python-jinja2 python-paramiko"
+              --default-package "epel-release python-yaml python-jinja2 python-paramiko elasticsearch logstash" \
+              --special-package "kibana jdk"
 
     make_repo --os-ver trusty --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
@@ -195,6 +214,11 @@ function main()
         make_repo --os-ver rhel7 --package-tag juno \
                   --ansible-dir $WORK_PATH/deploy/adapters/ansible \
                   --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server dracut-config-rescue-033-241.el7_1.3 dracut-network-033-241.el7_1.3"
+    elif [ "$1" = "rhel6" ]; then
+        make_repo --os-ver rhel6 --package-tag compass \
+              --tmpl "${WORK_PATH}/build/templates/compass_core.tmpl" \
+              --default-package "epel-release python-yaml python-jinja2 python-paramiko elasticsearch logstash" \
+              --special-package "kibana jdk"
     else
         make_repo $*
     fi

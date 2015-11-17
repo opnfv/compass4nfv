@@ -16,8 +16,8 @@ yum -y install $pkg
 
 mkdir -p /centos6-package
 
-find /var/cache/yum/ -name *.rpm | xargs -i cp {} /centos6-package
+find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos6-package
 
-find /centos6-package  -size 0 -name *.rpm | xargs rm -f
+find /centos6-package  -size 0 -name "*.rpm" | xargs rm -f
 
 tar -zcvf /centos6-package.tar.gz /centos6-package
