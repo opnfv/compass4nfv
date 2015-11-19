@@ -1,14 +1,18 @@
 ---
-- name: restart common neutron network relation service
-  service: name={{ item }} state=restarted enabled=yes
-  with_items: services_noarch
-
 - name: restart neutron network relation service
   service: name={{ item }} state=restarted enabled=yes
-  with_items: services
+  with_flattened:
+    - services_noarch
+    - services
 
 - name: restart openvswitch agent service
   service: name=neutron-openvswitch-agent state=restarted enabled=yes
+
+- name: restart vpn agent service
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - neutron-vpn-agent
+    - strongswan
 
 - name: kill dnsmasq
   command: killall dnsmasq

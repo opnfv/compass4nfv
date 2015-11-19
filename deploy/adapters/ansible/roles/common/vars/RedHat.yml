@@ -5,7 +5,7 @@ packages:
 pip_packages:
   - crudini
 
-pip_conf: .pip.conf
+pip_conf: pip.conf
 
 services:
   - openvswitch
