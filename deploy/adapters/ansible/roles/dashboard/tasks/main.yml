@@ -6,7 +6,7 @@
   with_items: http_packages
 
 - name: set http config
-  lineinfile: dest={{ http_config_file }} regexp='^Listen 80' line='Listen {{ internal_ip }}:80'
+  lineinfile: dest={{ http_config_file }} regexp='^Listen' line='Listen {{ internal_ip }}:80'
 
 - name: restart http services
   service: name={{ http_service }} state=restarted enabled=yes
@@ -18,15 +18,17 @@
 - name: remove ubuntu theme
   action: "{{ ansible_pkg_mgr }} name=openstack-dashboard-ubuntu-theme state=absent"
 
-- name: update horizon settings
-  template: src=local_settings.py
+- name: update ubuntu horizon settings
+  template: src=local_settings_debian
             dest=/etc/openstack-dashboard/local_settings.py
             backup=yes
+  when: ansible_os_family == 'Debian'
 
-- name: update memcached conf
-  lineinfile: dest=/etc/memcached.conf state=present
-              regexp="-l *"
-              line="-l {{ internal_vip.ip }}"
+- name: update redhat version horizon settings
+  template: src=local_settings_redhat
+            dest=/etc/openstack-dashboard/local_settings
+            backup=yes
+  when: ansible_os_family == 'RedHat'
 
 - name: restart dashboard services
   service: name={{ item }} state=restarted enabled=yes

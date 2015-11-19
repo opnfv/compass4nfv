@@ -48,10 +48,17 @@ os_services:
     type: volume
     region: regionOne
     description: "OpenStack Block Storage"
-    publicurl: "http://{{ public_vip.ip }}:8776/v1/%(tenant_id)s"
-    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
-    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
+    publicurl: "http://{{ public_vip.ip }}:8776/v2/%(tenant_id)s"
+    internalurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
+    adminurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
 
+  - name: cinderv2
+    type: volumev2
+    region: regionOne
+    description: "OpenStack Block Storage v2"
+    publicurl: "http://{{ public_vip.ip }}:8776/v2/%(tenant_id)s"
+    internalurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
+    adminurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
 
 os_users:
   - user: admin
