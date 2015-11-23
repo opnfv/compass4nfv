@@ -1,0 +1,12 @@
+---
+packages:
+  - heat-api
+  - heat-api-cfn
+  - heat-engine
+  - python-heatclient
+
+services:
+  - heat-api
+  - heat-api-cfn
+  - heat-engine
+

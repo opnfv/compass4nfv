@@ -1,0 +1,19 @@
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: install heat related packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: packages | union(packages_noarch)
+
+- name: generate heat service list
+  shell: echo {{ item }} >> /opt/service
+  with_items: services | union(services_noarch)
+
+- name: update heat conf
+  template: src=heat.j2
+            dest=/etc/heat/heat.conf
+            backup=yes
+  notify:
+    - restart heat service
+    - remove heat-sqlite-db
+

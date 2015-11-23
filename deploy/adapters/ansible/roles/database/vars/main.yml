@@ -20,4 +20,7 @@ credentials:
   - user: cinder
     db: cinder
     password: "{{ CINDER_DBPASS }}"
+  - user: heat
+    db: heat
+    password: "{{ HEAT_DBPASS }}"
 
