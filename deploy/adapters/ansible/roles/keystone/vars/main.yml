@@ -52,6 +52,21 @@ os_services:
     internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
     adminurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
 
+  - name: heat
+    type: orchestration
+    region: regionOne
+    description: "OpenStack Orchestration"
+    publicurl: "http://{{ public_vip.ip }}:8004/v1/%(tenant_id)s"
+    internalurl: "http://{{ internal_vip.ip }}:8004/v1/%(tenant_id)s"
+    adminurl: "http://{{ internal_vip.ip }}:8004/v1/%(tenant_id)s"
+
+  - name: heat-cfn
+    type: cloudformation
+    region: regionOne
+    description: "OpenStack CloudFormation Orchestration"
+    publicurl: "http://{{ public_vip.ip }}:8000/v1"
+    internalurl: "http://{{ internal_vip.ip }}:8000/v1"
+    adminurl: "http://{{ internal_vip.ip }}:8000/v1"
 
 os_users:
   - user: admin
@@ -102,3 +117,17 @@ os_users:
     role: admin
     tenant: service
     tenant_description: "Service Tenant"
+
+  - user: heat
+    password: "{{ HEAT_PASS }}"
+    email: heat@admin.com
+    role: admin
+    tenant: service
+    tenant_description: "Service Tenant"
+
+  - user: demo
+    password: ""
+    email: heat@demo.com
+    role: heat_stack_user
+    tenant: demo
+    tenant_description: "Demo Tenant"

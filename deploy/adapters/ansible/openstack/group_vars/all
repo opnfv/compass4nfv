@@ -24,6 +24,8 @@ NOVA_PASS: nova_secret
 DASH_DBPASS: dash_db_secret
 CINDER_DBPASS: cinder_db_secret
 CINDER_PASS: cinder_secret
+HEAT_DBPASS: heat_db_secret
+HEAT_PASS: heat_secret
 NEUTRON_DBPASS: neutron_db_secret
 NEUTRON_PASS: netron_secret
 NEUTRON_TYPE_DRIVERS: ['flat', 'gre', 'vxlan']
