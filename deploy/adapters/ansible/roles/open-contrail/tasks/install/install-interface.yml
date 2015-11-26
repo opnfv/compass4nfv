@@ -1,0 +1,22 @@
+---
+#- hosts: all
+#  sudo: yes
+#  tasks:
+- name: "configure interface"
+#  sudo: True
+  lineinfile:
+    dest: "/etc/network/interfaces"
+    line: "{{ item }}"
+  with_items:
+    - "auto {{ contrail_device }}"
+    - "iface {{ contrail_device }} inet static"
+    - "\taddress {{ contrail_address }}"
+    - "\tnetmask {{ contrail_netmask }}"
+
+- name: "set interface address"
+#  sudo: True
+  shell: "ifconfig {{ contrail_device }} {{ contrail_address }} netmask {{ contrail_netmask }}"
+
+- name: "up interface"
+#  sudo: True
+  shell: "ifconfig {{ contrail_device }} up"
