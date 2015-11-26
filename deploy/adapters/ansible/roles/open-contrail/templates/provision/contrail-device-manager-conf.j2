@@ -1,0 +1,14 @@
+[DEFAULTS]
+api_server_ip = {{ contrail_haproxy_address }}
+api_server_port = 8082
+zk_server_ip = {% for cur_host in groups['database'] %}{{ hostvars[cur_host]['contrail_address'] }}:2181{% if not loop.last %}, {% endif %}{% endfor %}
+
+cassandra_server_list = {% for cur_host in groups['database'] %}{{ hostvars[cur_host]['contrail_address'] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
+
+disc_server_ip = {{ contrail_haproxy_address }}
+disc_server_port = 5998
+rabbit_server = {{ contrail_haproxy_address }}
+rabbit_port = 5673
+log_file = /var/log/contrail/contrail-device-manager.log
+log_level = SYS_NOTICE
+log_local = 1

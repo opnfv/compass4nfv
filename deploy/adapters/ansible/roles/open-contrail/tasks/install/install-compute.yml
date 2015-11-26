@@ -1,0 +1,47 @@
+---
+#- hosts: [compute, tsn]
+#  sudo: yes
+#  tasks:
+- name: "temporary disable supervisor vrouter"
+  sudo: True
+  template:
+    src: "install/override.j2"
+    dest: "/etc/init/supervisor-vrouter.override"
+
+#    - name: "install nova-compute for contrail package"
+#      apt:
+#        name: "nova-compute"
+#      when: install_nova
+
+- name: "install contrail vrouter 3.13.0-40 package"
+#      apt:
+#        name: "contrail-vrouter-3.13.0-40-generic"
+#      when: ansible_kernel == "3.13.0-40-generic"
+  sudo: True
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: vrouter_packages
+  when: ansible_kernel == kernel_required
+
+- name: "install contrail vrouter dkms package"
+#      apt:
+#        name: "contrail-vrouter-dkms"
+#      when: ansible_kernel != "3.13.0-40-generic"
+  sudo: True
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: dkms_packages
+  when: ansible_kernel != kernel_required
+
+#    - name: "install contrail vrouter common package"
+#      apt:
+#        name: "contrail-vrouter-common"
+
+#    - name: "install contrail nova vif package"
+#      apt:
+#        name: "contrail-nova-vif"
+
+- name: "install contrail vrouter common & nova vif package"
+  sudo: True
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: compute_packages | union(compute_packages_noarch)
+
+
