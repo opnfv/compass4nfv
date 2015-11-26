@@ -1,0 +1,20 @@
+---
+- name: "disable ufw"
+  ufw:
+    state: "disabled"
+
+- name: "change value of kernel.core_pattern"
+  sysctl:
+    name: "kernel.core_pattern"
+    value: "/var/crashes/core.%e.%p.%h.%t"
+
+- name: "change value of net.ipv4.ip_forward"
+  sysctl:
+    name: "net.ipv4.ip_forward"
+    value: "1"
+
+- name: "make crashes directory"
+  file:
+    path: "/var/crashes"
+    state: "directory"
+    mode: 0777
