@@ -52,4 +52,6 @@ function prepare_env() {
 
     chmod 755 $WORK_DIR -R
     virtualenv $WORK_DIR/venv
+
+    sudo cp ${COMPASS_DIR}/deploy/qemu_hook.sh /etc/libvirt/hooks/qemu
 }
