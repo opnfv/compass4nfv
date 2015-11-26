@@ -1,0 +1,26 @@
+---
+- name: "stop redis server"
+  service:
+    name: "redis-server"
+    state: "stopped"
+
+- name: "modify redis server configuration"
+  replace:
+    dest: "/etc/redis/redis.conf"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - { regexp: "^\\s*bind", replace: "#bind" }
+    - { regexp: "^\\s*save", replace: "#save" }
+    - { regexp: "^\\s*dbfilename", replace: "#dbfilename" }
+    - { regexp: "^\\s*lua-time-limit\\s*\\d*", replace: "lua-time-limit 15000" }
+
+- name: "delete redis dump"
+  file:
+    dest: "/var/lib/redis/dump.rdb"
+    state: "absent"
+
+- name: "start redis server"
+  service:
+    name: "redis-server"
+    state: "started"
