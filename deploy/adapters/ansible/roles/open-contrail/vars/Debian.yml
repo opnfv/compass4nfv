@@ -1,0 +1,40 @@
+---
+
+package: "contrail-install-packages_2.21-102~juno_all.deb"
+
+common_packages:
+  - contrail-setup
+
+kernel_packages:
+  - linux-headers-3.13.0-40
+  - linux-headers-3.13.0-40-generic
+  - linux-image-3.13.0-40-generic
+  - linux-image-extra-3.13.0-40-generic
+
+kernel_required: "3.13.0-40-generic"
+
+database_packages:
+  - contrail-openstack-database
+
+config_packages:
+  - contrail-openstack-config
+
+control_packages:
+  - contrail-openstack-control
+
+collector_packages:
+  - contrail-openstack-analytics
+
+webui_packages:
+  - contrail-openstack-webui
+
+vrouter_packages:
+  - contrail-vrouter-3.13.0-40-generic
+
+dkms_packages:
+  - contrail-vrouter-dkms
+
+compute_packages:
+  - contrail-vrouter-common
+  - contrail-nova-vif
+
