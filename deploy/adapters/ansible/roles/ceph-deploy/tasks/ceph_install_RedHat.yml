@@ -1,6 +1,6 @@
 ---
 - name: create ceph cluster
-  shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy new {{ controller_nodes.stdout_lines[0] }}
+  shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy new {{ mon_nodes.stdout_lines[0] }}
   tags:
     - create_ceph_cluster
 
@@ -25,21 +25,21 @@
 - name: copy create_osd.sh to other nodes
   shell: scp -o StrictHostKeyChecking=no ~/create_osd.sh {{ item }}:~/
   with_items:
-    - "{{ groups['compute'] }}"
+    - "{{ groups['ceph_osd'] }}"
   tags:
     - create_osd
 
 - name: create osd
   shell: ssh -o StrictHostKeyChecking=no -t {{ item }} "~/create_osd.sh"
   with_items:
-    - "{{ groups['compute'] }}"
+    - "{{ groups['ceph_osd'] }}"
   tags:
     - create_osd
 
 - name: prepare create osd
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy osd prepare {{ item }}:/var/local/osd
   with_items:
-    - "{{ groups['compute'] }}"
+    - "{{ groups['ceph_osd'] }}"
   tags:
     - create_osd
 
@@ -47,7 +47,7 @@
 - name: activate osd
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy osd activate {{ item }}:/var/local/osd
   with_items:
-    - "{{ groups['compute'] }}"
+    - "{{ groups['ceph_osd'] }}"
   tags:
     - create_osd
     - activate_osd
