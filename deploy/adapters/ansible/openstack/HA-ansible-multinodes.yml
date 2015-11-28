@@ -56,7 +56,7 @@
   roles:
     - ext-network
 
-- hosts: ceph
+- hosts: ceph_adm
   remote_user: root
   sudo: True
   roles:
