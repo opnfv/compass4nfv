@@ -1,0 +1,24 @@
+---
+- name: create all needed db
+  mysql_db: name={{ item.db }} state=present
+  with_items: "{{ credentials }}"
+
+- name: create service db user
+  mysql_user:
+    name={{ item[0].user }}
+    password={{ item[0].password }}
+    priv=*.*:ALL,GRANT
+    host={{ item[1] }}
+    state=present
+  with_nested:
+    - "{{ credentials }}"
+    - ['%', 'localhost', inventory_hostname]
+
+- name: create wsrep db user
+  mysql_user:
+    name={{ WSREP_SST_USER }}
+    password={{ WSREP_SST_PASS }}
+    priv=*.*:ALL,GRANT
+    host={{ item }}
+    state=present
+  with_items: ['%', 'localhost', inventory_hostname]

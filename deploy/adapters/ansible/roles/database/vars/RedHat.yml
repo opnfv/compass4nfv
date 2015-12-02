@@ -11,17 +11,20 @@ maridb_packages:
   - MySQL-python
 
 mongodb_packages:
-    - mongo-10gen-server
-    - mongo-10gen
+  - mongo-10gen-server
+  - mongo-10gen
 
 pip_packages:
-    - pymongo
+  - pymongo
 
 services: []
 
-mongodb_serveice: mongod
+mongodb_service: mongodb
 
-mysql_config_file_path: "/etc/my.cnf.d"
-mysql_config_file_name: ["my-huge.cnf", "server.cnf"]
-wsrep_config_file_path: "/etc/my.cnf.d"
+mysql_config:
+  - dest: /etc/mysql/my.cnf
+    src: my.cnf
+  - dest: /etc/mysql/conf.d/wsrep.cnf
+    src: wsrep.cnf
+
 wsrep_provider_file: "/usr/lib64/galera/libgalera_smm.so"
