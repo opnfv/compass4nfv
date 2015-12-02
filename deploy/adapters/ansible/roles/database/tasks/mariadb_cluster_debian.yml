@@ -1,0 +1,32 @@
+---
+- name: start first node to create new cluster
+  service:
+    name: mysql
+    state: restarted
+    args: "--wsrep-new-cluster"
+  when:
+    - inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: wait for cluster ready
+  command: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"'
+  register: cluster_status
+  until: cluster_status|success
+  failed_when: not cluster_status.stdout | search("OPERATIONAL")
+  retries: 10
+  delay: 3
+  when:
+    - inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: restart other nodes and join cluster
+  service:
+    name: mysql
+    state: restarted
+  when:
+    - inventory_hostname != haproxy_hosts.keys()[0]
+
+- name: restart first nodes
+  service:
+    name: mysql
+    state: restarted
+  when:
+    - inventory_hostname == haproxy_hosts.keys()[0]
