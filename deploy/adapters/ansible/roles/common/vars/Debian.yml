@@ -5,11 +5,13 @@ packages:
   - openvswitch-datapath-dkms
   - openvswitch-switch
   - crudini
+  - python-memcache
 
 pip_packages: []
 
 pip_conf: pip.conf
 
-services: []
+services:
+  - ntp
 
-ntp_service: ntp
+
