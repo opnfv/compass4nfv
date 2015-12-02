@@ -187,12 +187,17 @@ function make_all_repo()
     make_repo --os-ver trusty --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
-              --special-package "openvswitch-datapath-dkms openvswitch-switch" \
+              --special-package "openvswitch-datapath-dkms openvswitch-switch"
 
     make_repo --os-ver trusty --package-tag kilo \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
-              --special-package "openvswitch-datapath-dkms openvswitch-switch" \
+              --special-package "openvswitch-datapath-dkms openvswitch-switch"
+
+    make_repo --os-ver trusty --package-tag liberty \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "openssh-server" \
+              --special-package "openvswitch-datapath-dkms openvswitch-switch"
 
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
