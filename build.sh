@@ -29,14 +29,23 @@ function prepare_env()
 
 function download_git()
 {
-    file_dir=$CACHE_DIR/${1%.*}
+    repo=${1%.*}
+    file_dir=$CACHE_DIR/$repo
     if [[ -d $file_dir/.git ]]; then
         cd $file_dir
         git pull origin master
+        if [[ 'compass-core' =~ $repo ]]; then
+          git reset --hard adc6adaa55afae2a68d2d471f6675820d1da0b2d
+        fi
         cd -
     else
         rm -rf $CACHE_DIR/$file_dir
         git clone $2 $file_dir
+        if [[ 'compass-core' =~ $repo ]]; then
+          cd $file_dir
+          git reset --hard adc6adaa55afae2a68d2d471f6675820d1da0b2d
+          cd -
+        fi
     fi
 }
 
