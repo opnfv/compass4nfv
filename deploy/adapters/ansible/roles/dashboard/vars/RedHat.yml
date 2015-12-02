@@ -6,7 +6,6 @@ http_service: httpd
 
 packages:
   - mod_wsgi
-  - python-memcached
 
 services: []
 
