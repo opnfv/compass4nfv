@@ -28,6 +28,7 @@
     - ceilometer_controller
 #    - ext-network
     - dashboard
+    - heat
 
 - hosts: compute
   remote_user: root
