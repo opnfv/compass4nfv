@@ -1,0 +1,15 @@
+---
+- name: remove default guest user is removed
+  rabbitmq_user:
+    user: guest
+    state: absent
+
+- name: add rabbitmq user
+  rabbitmq_user:
+    user='{{ RABBIT_USER }}'
+    password='{{ RABBIT_PASS }}'
+    vhost=/
+    configure_priv=.*
+    write_priv=.*
+    read_priv=.*
+    state=present
