@@ -5,7 +5,7 @@
     - create_ceph_cluster
 
 - name: default config for ceph
-  shell: cd {{ ceph_cluster_dir[0] }} && echo "osd_journal_size = 1024" >> ceph.conf && echo "osd_pool_default_size = 2" >> ceph.conf
+  shell: cd {{ ceph_cluster_dir[0] }} && echo "osd_journal_size = 1024" >> ceph.conf && echo "osd_pool_default_size = 2" >> ceph.conf && echo "public_network = {{ public_cidr }}" >> ceph.conf && echo "cluster_network = {{ storage_cidr }} " >> ceph.conf
 
 - name: install ceph for every nodes includes jumpserver
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy install {{ ceph_cluster_hosts.stdout_lines[0]}}
