@@ -19,9 +19,11 @@ pip_packages: []
 
 services: []
 
-mongodb_serveice: mongodb
+mongodb_service: mongodb
+mysql_config:
+  - dest: /etc/mysql/my.cnf
+    src: my.cnf
+  - dest: /etc/mysql/conf.d/wsrep.cnf
+    src: wsrep.cnf
 
-mysql_config_file_path: "/etc/mysql"
-mysql_config_file_name: ["my.cnf"]
-wsrep_config_file_path: "/etc/mysql/conf.d"
 wsrep_provider_file: "/usr/lib/galera/libgalera_smm.so"
