@@ -19,7 +19,7 @@
 
 - name: Stop the Open vSwitch service and clear existing OVSDB
   shell: >
-    ovs-vsctl del-br br-int ;
+    ovs-ofctl del-flows br-int ;
     ovs-vsctl del-br br-tun ;
     ovs-vsctl del-manager ;
 
