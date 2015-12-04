@@ -73,6 +73,7 @@ public_vip:
   netmask: "24"
   interface: external
 
+onos_nic: eth2
 public_net_info:
   enable: False
   network: ext-net
