@@ -1,6 +1,7 @@
 ---
 packages:
   - openvswitch
+  - python-memcached
 
 pip_packages:
   - crudini
@@ -9,5 +10,4 @@ pip_conf: pip.conf
 
 services:
   - openvswitch
-
-ntp_service: ntpd
+  - ntpd

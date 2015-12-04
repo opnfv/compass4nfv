@@ -2,5 +2,7 @@
 packages_noarch:
   - python-pip
   - ntp
+  - memcached
 
-services_noarch: []
+services_noarch:
+  - memcached
