@@ -31,6 +31,7 @@ function launch_host_vms() {
           -e "s#REPLACE_IMAGE#$vm_dir/disk.img#g" \
           -e "s/REPLACE_BOOT_MAC/${mac_array[i]}/g" \
           -e "s/REPLACE_NET_INSTALL/install/g" \
+          -e "s/REPLACE_NET_IAAS/external/g" \
           -e "s/REPLACE_NET_TENANT/external/g" \
           $COMPASS_DIR/deploy/template/vm/host.xml\
           > $vm_dir/libvirt.xml
