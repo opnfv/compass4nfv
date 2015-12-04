@@ -43,7 +43,7 @@
 - name: Configure Neutron1
   shell: >
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vlan;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
 
 #- name: Adjust Service Daemon
 #  shell: >
