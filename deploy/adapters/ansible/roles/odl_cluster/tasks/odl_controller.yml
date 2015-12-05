@@ -144,10 +144,10 @@
   shell: >
     rm -rf {{ odl_home }}/data/*;
 
-- name: chown OpenDaylight Directory and Files
-  shell: >
-    chown -R odl:odl "{{ odl_home }}";
-    chown odl:odl "{{ service_file.dst }}";
+#- name: chown OpenDaylight Directory and Files
+#  shell: >
+#    chown -R odl:odl "{{ odl_home }}";
+#    chown odl:odl "{{ service_file.dst }}";
 
 
 ##########################################################################################################
@@ -163,6 +163,12 @@
 
 - name: Run OpenVSwitch Script
   include: openvswitch.yml
+
+
+- name: chown OpenDaylight Directory and Files
+  shell: >
+    chown -R odl:odl "{{ odl_home }}";
+    chown odl:odl "{{ service_file.dst }}";
 
 #- name: Configure Neutron1
 #  shell: >
