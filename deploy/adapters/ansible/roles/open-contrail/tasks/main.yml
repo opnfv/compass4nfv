@@ -7,9 +7,9 @@
   when: groups['opencontrail_control']|length !=0
   # Compass install OpenStack with not only OpenContrail but also ODL or ONOS, and sometimes user just installs OpenStack, so item 'opencontrail_control' is kind of a mark that whether Compass install OpenContrail or not.
 
-- name: Install kernal on all hosts for Open Contrail
-  include: install/install-kernal.yml
-  when: groups['opencontrail_control']|length !=0
+#- name: Install kernal on all hosts for Open Contrail
+#  include: install/install-kernel.yml
+#  when: groups['opencontrail_control']|length !=0
 
 - name: Install database for Open Contrail
   include: install/install-database.yml
