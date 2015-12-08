@@ -26,7 +26,7 @@
            enabled=yes
 
 - name: generate mq service list
-  shell: echo {{ item }} >> /opt/service
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
   with_items: services_noarch
 
 - name: modify rabbitmq password
