@@ -1,0 +1,18 @@
+---
+- name: check if physical device exists
+  stat: path={{ physical_device }}
+  register: status
+  tags:
+    - storage
+
+- name: load loop.yml
+  include: loop.yml
+  when: status.stat.exists == False or status.stat.isblk == False 
+  tags:
+    - storage
+
+- name: load real.yml
+  include: real.yml
+  when: status.stat.exists == True and status.stat.isblk == True
+  tags:
+    - storage

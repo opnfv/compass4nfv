@@ -30,6 +30,12 @@
     - dashboard
     - heat
 
+- hosts: all
+  remote_user: root
+  sudo: True
+  roles:
+    - storage
+
 - hosts: compute
   remote_user: root
   sudo: True
