@@ -82,6 +82,12 @@
 - include: odl.yml
   when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
 
+- name: restart neutron network relation service
+  debug: var='{{ item }}'
+  with_flattened:
+    - services_noarch
+    - services
+
 - name: restart neutron services
   debug: msg="restart neutron services"
   notify:
