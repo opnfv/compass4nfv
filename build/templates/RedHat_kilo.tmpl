@@ -64,19 +64,20 @@ baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
 gpgcheck=0
 EOF
 
-yum update -y
-yum install createrepo -y
-yum install tar -y
+cat <<EOF >>/etc/yum.conf
+exclude=mongodb-org,mongodb-org-server
+EOF
 
+yum update -y
+yum install createrepo tar -y
+
+yum -y install --downloadonly MariaDB-Galera-server
 #download packages
 #set packages = $getVar('default_packages', [])
-#for pkg in $packages
-yum -y install $pkg --downloadonly
-#end for
+yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 #set packages = $getVar('packages', [])
-#for pkg in $packages
-yum -y install $pkg --downloadonly
-#end for
+#silent packages.pop(packages.index('MariaDB-Galera-server'))
+yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 
 #make repo
 

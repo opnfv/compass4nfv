@@ -53,16 +53,20 @@ type=rpm-md
 gpgkey=https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc
 EOF
 
+cat <<EOF >>/etc/yum.conf
+exclude=mongodb-org,mongodb-org-server
+EOF
+
 yum update -y
 yum install createrepo tar -y
 
 yum -y install --downloadonly MariaDB-Galera-server
 #download packages
 #set packages = $getVar('default_packages', [])
-yum -y install --downloadonly #echo ' '.join(packages)
+yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 #set packages = $getVar('packages', [])
 #silent packages.pop(packages.index('MariaDB-Galera-server'))
-yum -y install --downloadonly #echo ' '.join(packages)
+yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 
 #make repo
 mkdir -p /centos7-liberty-ppa/{Packages,repodata}
