@@ -869,7 +869,7 @@ def main():
     client = CompassClient()
     machines = client.get_machines()
 
-    LOG.info('machines are %s', machines)
+    LOG.info('test: machines are %s', machines)
 
     client.add_subnets()
     adapter_id, os_id, distributed_system_id, flavor_id = client.get_adapter()

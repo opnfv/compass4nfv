@@ -4,7 +4,7 @@
   with_items: packages | union(packages_noarch)
 
 - name: generate glance service list
-  shell: echo {{ item }} >> /opt/service
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
   with_items: services | union(services_noarch)
 
 - name: update glance conf
