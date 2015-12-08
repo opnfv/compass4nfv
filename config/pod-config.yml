@@ -1,0 +1,208 @@
+node_hardware:
+  power_tool: 'ipmitool'
+
+  # global settings
+  ipmi_user: root
+  ipmi_user: huawei
+  hosts:
+    - name: host1
+      mac: '11:22:33:44:55'
+      ipmi_user: root
+      ipmi_pass: Huawei@123
+      ipmi_ip: 192.168.2.100
+      roles:
+        - controller
+        - network
+
+    - name: host2
+      mac: '11:22:33:44:56'
+      ipmi_user: root
+      ipmi_pass: Huawei@123
+      ipmi_ip: 192.168.2.101
+      roles:
+        - controller
+        - network
+
+    - name: host3
+      mac: '11:22:33:44:57'
+      ipmi_user: root
+      ipmi_pass: Huawei@123
+      ipmi_ip: 192.168.2.102
+      roles:
+        - controller 
+        - network 
+
+    - name: host4
+      mac: '11:22:33:44:58'
+      ipmi_user: root
+      ipmi_pass: Huawei@123
+      ipmi_ip: 192.168.2.103
+      roles:
+        - compute
+        - storage
+
+    - name: host5
+      mac: '11:22:33:44:59'
+      ipmi_user: root
+      ipmi_pass: Huawei@123
+      ipmi_ip: 192.168.2.104
+      roles:
+        - compute
+        - storage
+
+node_settings:
+  language: ""
+  timezone: ""
+  ntp_servers: []
+  dns_servers: []
+  credential:
+    username: compass
+    password: compass
+
+  http_proxy: ""
+  https_proxy: ""
+  domain: ""
+  search_path: ""
+  repos: []
+  partition:
+    - name: /
+      type: percentage
+      value: 20
+    - name: /var
+      type: percentage
+      value: 50
+    - name: /usr
+      type: percentage
+      value: 10
+    - name: /home
+      type: percentage
+      value: 20
+
+node_network:
+  nic_mappings:
+    - name: eth0
+      bdf: 02:00.1
+  
+    - name: eth1
+      bdf: 02:00.2
+  
+    - name: eth2
+      bdf: 81:00.0
+    
+    - name: eth3
+      bdf: 81:00.1
+  
+  bond_mappings:
+    - name: bond0
+      interface:
+        - eth2
+        - eth3
+      mode: lacp
+  
+  bridge_mappings:
+    - name: br-prv
+      network: physnet
+      interface: bond0
+      type: ovs
+      vlan_range:
+        - 1
+        - 4000
+  
+  interface_mappings:
+    # install is just a alias to eth0, for compass install/admin
+    - name: install 
+      interface: eth0
+      vlan_tag: 4001
+      type: vlan
+      subnet: install
+  
+    # mgmt is a vlan interface on eth1, for inter-components
+    - name: mgmt
+      interface: eth1
+      vlan_tag: 4001
+      type: vlan
+      subnet: mgmt
+  
+    # storage is a vlan interface on eth1, for storage data plane
+    - name: storage
+      interface: eth1
+      vlan_tag: 4002
+      type: vlan
+      subnet: storage
+  
+    # public is just a alias for eth1, for external access to openstack api
+    - name: public
+      interface: eth1
+      type: flat 
+      subnet: public
+  
+  subnets:
+    - name: install 
+      ip_ranges:
+      - - "10.1.0.1"
+        - "10.1.0.254"
+      cidr: "10.1.0.0/24"
+  
+    - name: mgmt
+      ip_ranges:
+      - - "172.16.1.1"
+        - "172.16.1.254"
+      cidr: "172.16.1.0/24"
+      vip: 172.16.1.222
+  
+    - name: storage
+      ip_ranges:
+      - - "172.16.2.1"
+        - "172.16.2.254"
+      cidr: "172.16.2.0/24"
+  
+    - name: public
+      ip_ranges:
+      - - "192.168.50.210"
+        - "192.168.50.220"
+      cidr: "192.168.50.0/24"
+      gw: "192.168.50.1"
+      vip: 192.168.50.240
+
+compass_settings:
+  jumperserver:
+    install_nic: eth1
+    public_nic: eth2
+  
+  domain: ""
+  ntp_servers: []
+  dns_servers: []
+
+virtual_settings:
+  vcpus: 4
+  mem: 16384
+  disk: 50G
+
+openstack_settings:
+  # network relative configuration
+  tenant_network_type: vxlan
+  vni_ranges: 
+    - 1001
+    - 4095
+  provider_networks:
+    - physnet
+  enable_security_group: true
+  enable_vpnaas: false
+  enable_fwaas: false
+  enable_ceph: true
+  enable_dvr: false
+
+  # TODO, need remove?
+  service_credentials:
+    - name: nova
+      username: nova
+      password: nova
+    - name: neutron
+      username: neutron
+      password: neutron
+    - name: cinder
+      username: cinder
+      password: cinder
+    - name: glance
+      username: glance
+      password: glance

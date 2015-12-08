@@ -1,0 +1,13 @@
+global_settins:
+   name: test
+   installer: compass
+   type: baremetal
+  
+   iso_url: http://58.251.166.184:9999/compass.iso
+   pod_config: file://pod-config.yml
+
+   opnfv_release: B
+   openstack_release: liberty
+   os_release: centos7
+   repos:
+     - centos7-liberty
