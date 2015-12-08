@@ -33,7 +33,8 @@
 
 - name: Install compute for Open Contrail
   include: install/install-compute.yml
-  when: inventory_hostname in groups['opencontrail_compute'] or inventory_hostname in groups['opencontrail_tsn']
+  when: inventory_hostname in groups['opencontrail_compute']
+# or inventory_hostname in groups['opencontrail_tsn']
 
 
 # Compass adapter: use OpenStack management network "mgmt"
@@ -52,9 +53,9 @@
 #- include: install/install-interface.yml
 
 
-- name: Provision route on all hosts for Open Contrail
-  include: provision/provision-route.yml
-  when: groups['opencontrail_control']|length !=0
+#- name: Provision route on all hosts for Open Contrail
+#  include: provision/provision-route.yml
+#  when: groups['opencontrail_control']|length !=0
 
 
 #- name: Provision rabbitmq on config for Open Contrail
@@ -64,7 +65,8 @@
 
 - name: Provision increase limits for Open Contrail
   include: provision/provision-increase-limits.yml
-  when: inventory_hostname in groups['opencontrail_control'] or inventory_hostname in groups['opencontrail_config'] or inventory_hostname in groups['opencontrail_collector'] or inventory_hostname in groups['opencontrail_database']
+  when: inventory_hostname in groups['opencontrail_control'] 
+#or inventory_hostname in groups['opencontrail_config'] or inventory_hostname in groups['opencontrail_collector'] or inventory_hostname in groups['opencontrail_database']
 
 
 - name: Provision database for Open Contrail
@@ -75,7 +77,6 @@
 - name: Provision config for Open Contrail
   include: provision/provision-config.yml
   when: inventory_hostname in groups['opencontrail_config']
-
 
 - name: Provision control for Open Contrail
   include: provision/provision-control.yml

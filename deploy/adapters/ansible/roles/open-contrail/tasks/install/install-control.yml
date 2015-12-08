@@ -6,14 +6,14 @@
 #  sudo: True
   template:
 #        src: "templates/override.j2"
-    src: "install/override.j2"
+    src: "../../templates/install/override.j2"
     dest: "/etc/init/supervisor-control.override"
 
 - name: "temporary disable supervisor dns"
 #  sudo: True
   template:
 #        src: "templates/override.j2"
-    src: "install/override.j2"
+    src: "../../templates/install/override.j2"
     dest: "/etc/init/supervisor-dns.override"
 
 - name: "install contrail openstack control package"

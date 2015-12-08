@@ -17,7 +17,7 @@
 
 - name: "create cgroup device acl for qemu conf"
   template:
-    src: "provision/qemu-device-acl-conf.j2"
+    src: "../../templates/provision/qemu-device-acl-conf.j2"
     dest: "/tmp/qemu-device-acl.conf"
   when: deviceacl | failed
 
@@ -33,7 +33,7 @@
 
 - name: "fix up vrouter nodemgr param"
   template:
-    src: "provision/vrouter-nodemgr-param.j2"
+    src: "../../templates/provision/vrouter-nodemgr-param.j2"
     dest: "/etc/contrail/vrouter_nodemgr_param"
 
 - name: "set contrail device name for ansible"
@@ -42,7 +42,7 @@
 
 - name: "fix up default pmac"
   template:
-    src: "provision/default-pmac.j2"
+    src: "../../templates/provision/default-pmac.j2"
     dest: "/etc/contrail/default_pmac"
 
 - name: "copy agent param config from template"
@@ -56,7 +56,7 @@
 
 - name: "fix up contrail vrouter agent config"
   template:
-    src: "provision/contrail-vrouter-agent-conf.j2"
+    src: "../../templates/provision/contrail-vrouter-agent-conf.j2"
     dest: "/etc/contrail/contrail-vrouter-agent.conf"
 
 - name: "delete lines for contrail interface"
@@ -77,22 +77,22 @@
     - "sed -i -n -e '/auto .*/,$p' /tmp/contrail-interfaces-bottom"
     - "cat /tmp/contrail-interfaces-top /tmp/contrail-interfaces-bottom > /etc/network/interfaces"
 
-- name: "configure interface"
-  lineinfile:
-    dest: "/etc/network/interfaces"
-    line: "{{ item }}"
-    state: "present"
-  with_items:
-    - "auto {{ contrail_device }}"
-    - "iface {{ contrail_device }} inet manual"
-    - "\tpre-up ifconfig {{ contrail_device }} up"
-    - "\tpost-down ifconfig {{ contrail_device }} down"
-    - "auto vhost0"
-    - "iface vhost0 inet static"
-    - "\tpre-up /opt/contrail/bin/if-vhost0"
-    - "\tnetwork_name application"
-    - "\taddress {{ contrail_address }}"
-    - "\tnetmask {{ contrail_netmask }}"
+#- name: "configure interface"
+#  lineinfile:
+#    dest: "/etc/network/interfaces"
+#    line: "{{ item }}"
+#    state: "present"
+#  with_items:
+#    - "auto {{ contrail_device }}"
+#    - "iface {{ contrail_device }} inet manual"
+#    - "\tpre-up ifconfig {{ contrail_device }} up"
+#    - "\tpost-down ifconfig {{ contrail_device }} down"
+#    - "auto vhost0"
+#    - "iface vhost0 inet static"
+#    - "\tpre-up /opt/contrail/bin/if-vhost0"
+#    - "\tnetwork_name application"
+#    - "\taddress {{ contrail_address }}"
+#    - "\tnetmask {{ contrail_netmask }}"
 
 - name: "delete temporary files"
   file:

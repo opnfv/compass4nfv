@@ -1,6 +1,6 @@
 ---
 
-package: "contrail-install-packages_2.21-102~juno_all.deb"
+package: "contrail-install-packages_2.21-102-ubuntu-14-04juno_all.deb"
 
 common_packages:
   - contrail-setup

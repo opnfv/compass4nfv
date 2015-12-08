@@ -2,11 +2,19 @@
 #- hosts: all
 #  sudo: yes
 #  tasks:
-- name: "copy contrail install package temporary"
+#- name: "copy contrail install package temporary"
 #  sudo: True
-  copy:
-    src: "files/{{ package }}"
-    dest: "/tmp/{{ package }}"
+#  copy:
+#    src: "{{ package }}"
+#    dest: "/tmp/{{ package }}"
+
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
+- name: download OpenContrail package file
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/open-contrail/{{ package }}"  dest=/tmp/{{ package }}
+
 
 - name: "install contrail install package"
 #  sudo: True
@@ -49,6 +57,7 @@
   apt:
     deb: "{{ item }}"
   with_items: required_packages.stdout_lines
+  ignore_errors: True
 
 - name: modify source list
 #  sudo: True

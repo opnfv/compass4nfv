@@ -2,6 +2,7 @@
 #- hosts: all 
 #  sudo: yes
 #  tasks:
+
 - name: "install Ubuntu kernel"
 #  sudo: True
 #      apt:
@@ -39,7 +40,7 @@
 #      when: (kernel_install) and (ansible_kernel != "3.13.0-40-generic")
   when: (kernel_install) and (ansible_kernel != kernel_required)
 
-handlers:
+#  handlers:
 - name: "Wait for server to come back"
   local_action:
     module: wait_for

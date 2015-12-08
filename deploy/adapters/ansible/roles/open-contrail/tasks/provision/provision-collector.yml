@@ -19,19 +19,19 @@
 
 - name: "fix up contrail collector config"
   template:
-    src: "provision/contrail-collector-conf.j2"
+    src: "../../templates/provision/contrail-collector-conf.j2"
     dest: "/etc/contrail/contrail-collector.conf"
 
 
 - name: "fix up contrail query engine config"
   template:
-    src: "provision/contrail-query-engine-conf.j2"
+    src: "../../templates/provision/contrail-query-engine-conf.j2"
     dest: "/etc/contrail/contrail-query-engine.conf"
 
 
 - name: "fix up contrail analytics api config"
   template:
-    src: "provision/contrail-analytics-api-conf.j2"
+    src: "../../templates/provision/contrail-analytics-api-conf.j2"
     dest: "/etc/contrail/contrail-analytics-api.conf"
 
 
@@ -45,7 +45,7 @@
 
 - name: "fix up contrail keystone auth config"
   template:
-    src: "provision/contrail-keystone-auth-conf.j2"
+    src: "../../templates/provision/contrail-keystone-auth-conf.j2"
     dest: "/etc/contrail/contrail-keystone-auth.conf"
     force: no
 

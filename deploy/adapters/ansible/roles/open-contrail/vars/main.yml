@@ -1,15 +1,16 @@
 ---
 #package: "contrail-install-packages_2.21-102~juno_all.deb" # mv to {os}.yml
 kernel_install: no
-ansible_ssh_user: "root"
-ansible_ssh_pass: "root"
+#ansible_ssh_user: "root"
+#ansible_ssh_pass: "root"
 
 contrail_keystone_address: "{{ internal_vip.ip }}"
 contrail_admin_user: "keystone"
-contrail_admin_password: "{{ keystone_PASS }}"
+contrail_admin_password: "service"
 
 contrail_keepalived: no 
-contrail_haproxy_address: "10.0.0.22" # 10.0.0.80
+#contrail_haproxy_address: "10.0.0.22" # 10.0.0.80
+contrail_haproxy_address: "{{ internal_vip.ip }}"
 contrail_netmask: "255.255.255.0"
 contrail_prefixlen: "24"
 contrail_gateway: "10.0.0.1"

@@ -35,7 +35,8 @@
 
 - name: "create haproxy configuration for contrail"
   template:
-    src: "provision/haproxy-contrail-cfg.j2"
+#    src: "provision/haproxy-contrail-cfg.j2"
+    src: "../../templates/provision/haproxy-contrail-cfg.j2"
     dest: "/tmp/haproxy-contrail.cfg"
 
 - name: "combination of the haproxy configuration"
@@ -54,7 +55,7 @@
 # Compass is using this
 #- name: "create keepalived configuration"
 #  template:
-#    src: "provision/keepalived-conf.j2"
+#    src: "../../templates/provision/keepalived-conf.j2"
 #    dest: "/etc/keepalived/keepalived.conf"
 #  with_indexed_items: groups['opencontrail_config']
 #  when: contrail_keepalived and item.1 == inventory_hostname
@@ -70,37 +71,37 @@
 
 - name: "fix up contrail keystone auth config"
   template:
-    src: "provision/contrail-keystone-auth-conf.j2"
+    src: "../../templates/provision/contrail-keystone-auth-conf.j2"
     dest: "/etc/contrail/contrail-keystone-auth.conf"
 
 - name: "fix up ifmap server log4j properties"
   template:
-    src: "provision/ifmap-log4j-properties.j2"
+    src: "../../templates/provision/ifmap-log4j-properties.j2"
     dest: "/etc/ifmap-server/log4j.properties"
 
 - name: "fix up ifmap server authorization properties"
   template:
-    src: "provision/ifmap-authorization-properties.j2"
+    src: "../../templates/provision/ifmap-authorization-properties.j2"
     dest: "/etc/ifmap-server/authorization.properties"
 
 - name: "fix up ifmap server basicauthusers properties"
   template:
-    src: "provision/ifmap-basicauthusers-properties.j2"
+    src: "../../templates/provision/ifmap-basicauthusers-properties.j2"
     dest: "/etc/ifmap-server/basicauthusers.properties"
 
 - name: "fix up ifmap server publisher properties"
   template:
-    src: "provision/ifmap-publisher-properties.j2"
+    src: "../../templates/provision/ifmap-publisher-properties.j2"
     dest: "/etc/ifmap-server/publisher.properties"
 
 - name: "fix up contrail api config"
   template:
-    src: "provision/contrail-api-conf.j2"
+    src: "../../templates/provision/contrail-api-conf.j2"
     dest: "/etc/contrail/contrail-api.conf"
 
 - name: "fix up contrail api supervisord config"
   template:
-    src: "provision/contrail-api-supervisord-conf.j2"
+    src: "../../templates/provision/contrail-api-supervisord-conf.j2"
     dest: "/etc/contrail/supervisord_config_files/contrail-api.ini"
 
 - name: "modify contrail api init script"
@@ -111,27 +112,27 @@
 
 - name: "fix up contrail schema config"
   template:
-    src: "provision/contrail-schema-conf.j2"
+    src: "../../templates/provision/contrail-schema-conf.j2"
     dest: "/etc/contrail/contrail-schema.conf"
 
 - name: "fix up contrail device manager config"
   template:
-    src: "provision/contrail-device-manager-conf.j2"
+    src: "../../templates/provision/contrail-device-manager-conf.j2"
     dest: "/etc/contrail/contrail-device-manager.conf"
 
 - name: "fix up contrail svc monitor config"
   template:
-    src: "provision/contrail-svc-monitor-conf.j2"
+    src: "../../templates/provision/contrail-svc-monitor-conf.j2"
     dest: "/etc/contrail/contrail-svc-monitor.conf"
 
 - name: "fix up contrail discovery supervisord config"
   template:
-    src: "provision/contrail-discovery-supervisord-conf.j2"
+    src: "../../templates/provision/contrail-discovery-supervisord-conf.j2"
     dest: "/etc/contrail/supervisord_config_files/contrail-discovery.ini"
 
 - name: "fix up contrail discovery config"
   template:
-    src: "provision/contrail-discovery-conf.j2"
+    src: "../../templates/provision/contrail-discovery-conf.j2"
     dest: "/etc/contrail/contrail-discovery.conf"
 
 - name: "modify contrail discovery init script"
@@ -142,7 +143,7 @@
 
 - name: "fix up contrail vnc api library config"
   template:
-    src: "provision/contrail-vnc-api-lib-ini.j2"
+    src: "../../templates/provision/contrail-vnc-api-lib-ini.j2"
     dest: "/etc/contrail/vnc_api_lib.ini"
 
 - name: "fix up contrail config nodemgr config"
@@ -154,7 +155,7 @@
 
 - name: "fix up contrail sudoers"
   template:
-    src: "provision/contrail-sudoers.j2"
+    src: "../../templates/provision/contrail-sudoers.j2"
     dest: "/etc/sudoers.d/contrail_sudoers"
     mode: 0440
 
@@ -165,7 +166,7 @@
 
 - name: "fix up contrail plugin for nuetron"
   template:
-    src: "provision/neutron-contrail-plugin-ini.j2"
+    src: "../../templates/provision/neutron-contrail-plugin-ini.j2"
     dest: "/etc/neutron/plugins/opencontrail/ContrailPlugin.ini"
 
 - name: "modify neutron server configuration"

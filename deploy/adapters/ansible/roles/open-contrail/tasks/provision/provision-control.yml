@@ -15,13 +15,15 @@
 - name: "modify ifmap server basicauthusers properties for control"
   lineinfile:
     dest: "/etc/ifmap-server/basicauthusers.properties"
-    line: "{{ hostvars[item]['contrail_address' ] }}:{{ hostvars[item]['contrail_address' ] }}"
+#    line: "{{ hostvars[item]['contrail_address' ] }}:{{ hostvars[item]['contrail_address' ] }}"
+    line: "{{ contrail_address }}:{{ contrail_address }}"
   with_items: groups['opencontrail_control']
 
 - name: "modify ifmap server basicauthusers properties for dns"
   lineinfile:
     dest: "/etc/ifmap-server/basicauthusers.properties"
-    line: "{{ hostvars[item]['contrail_address' ] }}.dns:{{ hostvars[item]['contrail_address' ] }}.dns"
+#    line: "{{ hostvars[item]['contrail_address' ] }}.dns:{{ hostvars[item]['contrail_address' ] }}.dns"
+    line: "{{ contrail_address }}.dns:{{ contrail_address }}.dns"
   with_items: groups['opencontrail_control']
 
 - name: "node-common"
@@ -29,12 +31,12 @@
 
 - name: "fix up contrail control config"
   template:
-    src: "provision/contrail-control-conf.j2"
+    src: "../../templates/provision/contrail-control-conf.j2"
     dest: "/etc/contrail/contrail-control.conf"
 
 - name: "fix up contrail dns config"
   template:
-    src: "provision/contrail-dns-conf.j2"
+    src: "../../templates/provision/contrail-dns-conf.j2"
     dest: "/etc/contrail/contrail-dns.conf"
 
 - name: "fix up contrail control nodemgr config"

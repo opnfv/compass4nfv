@@ -46,19 +46,25 @@
     - { regexp: "^(#(\\s*)?)?initial_token:", line: "# initial_token:" }
 
 
+
 - name: "set first database host seed"
 #  sudo: True
   set_fact:
-    dbseeds: "{{ hostvars[item.1]['contrail_address'] }}"
-  with_indexed_items: groups['database']
+#    dbseeds: "{{ hostvars[item.1][ contrail_address ] }}"
+     dbseeds: "{{ contrail_address }}"
+  with_indexed_items: groups['opencontrail_database']
   when: item.0 == 0
+
+
+
 
 
 - name: "set second database host seed"
 #  sudo: True
   set_fact:
-    dbseeds: "{{ dbseeds }},{{ hostvars[item.1]['contrail_address'] }}"
-  with_indexed_items: groups['database']
+#    dbseeds: "{{ dbseeds }},{{ hostvars[item.1]['contrail_address'] }}"
+    dbseeds: "{{ dbseeds }},{{ contrail_address }}"
+  with_indexed_items: groups['opencontrail_database']
   when: item.0 == 1
 
 
@@ -112,16 +118,17 @@
   lineinfile:
     dest: "/etc/zookeeper/conf/zoo.cfg"
     regexp: "server.{{ item.0 + 1 }}="
-    line: "server.{{ item.0 + 1 }}={{ hostvars[item.1]['contrail_address'] }}:2888:3888"
-  with_indexed_items: groups['database']
+#    line: "server.{{ item.0 + 1 }}={{ hostvars[item.1]['contrail_address'] }}:2888:3888"
+    line: "server.{{ item.0 + 1 }}={{ contrail_address }}:2888:3888"
+  with_indexed_items: groups['opencontrail_database']
 
 
 - name: "set zookeeper unique id"
 #  sudo: True
   template:
-    src: "templates/zookeeper-unique-id.j2"
+    src: "../../templates/provision/zookeeper-unique-id.j2"
     dest: "/var/lib/zookeeper/myid"
-  with_indexed_items: groups['database']
+  with_indexed_items: groups['opencontrail_database']
   when: item.1 == inventory_hostname
 
 
@@ -135,16 +142,18 @@
 - name: "set first zookeeper host address"
 #  sudo: True
   set_fact:
-    zkaddrs: "{{ hostvars[item.1]['contrail_address'] }}:2181"
-  with_indexed_items: groups['database']
+#    zkaddrs: "{{ hostvars[item.1]['contrail_address'] }}:2181"
+    zkaddrs: "{{ contrail_address }}:2181"
+  with_indexed_items: groups['opencontrail_database']
   when: item.0 == 0
 
 
 - name: "set second or more zookeeper host addresses"
 #  sudo: True
   set_fact:
-    zkaddrs: "{{ zkaddrs }},{{ hostvars[item.1]['contrail_address'] }}:2181"
-  with_indexed_items: groups['database']
+#    zkaddrs: "{{ zkaddrs }},{{ hostvars[item.1]['contrail_address'] }}:2181"
+    zkaddrs: "{{ zkaddrs }},{{ contrail_address }}:2181"
+  with_indexed_items: groups['opencontrail_database']
   when: item.0 > 0
 
 
