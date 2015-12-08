@@ -36,7 +36,7 @@
   with_items: packages | union(packages_noarch)
 
 - name: generate neutron network service list
-  shell: echo {{ item }} >> /opt/service
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
   with_items: services | union(services_noarch)
 
 - name: fix openstack neutron plugin config file
@@ -82,7 +82,8 @@
 - include: odl.yml
   when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
 
-- name: restart neutron services
-  debug: msg="restart neutron services"
-  notify:
-    - restart neutron network relation service
+- name: restart neutron network relation service
+  service: name={{ item }} state=restarted enabled=yes
+  with_flattened:
+    - services_noarch
+    - services
