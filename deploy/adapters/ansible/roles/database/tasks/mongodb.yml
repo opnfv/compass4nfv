@@ -10,18 +10,27 @@
 - name: copy ceilometer configs
   template: src=mongodb.conf dest=/opt/os_templates backup=yes
 
-- name: update mongodb config file
-  shell: crudini --merge /etc/mongodb.conf < /opt/os_templates/mongodb.conf
+- name: bugfix for centos
+  file:
+    dest: /var/run/mongo
+    state: directory
+    owner: mongod
+    group: mongod
+    mode: 0777
+  when: ansible_os_family == "RedHat"
 
-- name: rm prealloc files
+- name: rm data files
   file:
     dest: "{{ item }}"
     state: absent
   with_fileglob:
     - /var/lib/mongodb/journal/*
 
+- name: update mongodb config file
+  shell: crudini --merge {{ mongo_config_path }} < /opt/os_templates/mongodb.conf
+
 - name: manually restart mongodb server
-  service: name={{ mongodb_serveice }} state=restarted
+  service: name={{ mongodb_serveice }} state=restarted enabled=yes
 
 - wait_for: port=27017 delay=3 timeout=60 host={{ internal_vip.ip }}
 
@@ -34,3 +43,4 @@
     password: "{{ CEILOMETER_DBPASS }}"
     roles: 'readWrite,dbAdmin'
     state: present
+  when: inventory_hostname == haproxy_hosts.keys()[0]

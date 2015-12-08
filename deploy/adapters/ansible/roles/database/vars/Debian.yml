@@ -25,3 +25,7 @@ mysql_config_file_path: "/etc/mysql"
 mysql_config_file_name: ["my.cnf"]
 wsrep_config_file_path: "/etc/mysql/conf.d"
 wsrep_provider_file: "/usr/lib/galera/libgalera_smm.so"
+
+mongo_dbpath: /var/lib/mongodb
+mongo_config_path: /etc/mongodb.conf
+mongo_pid_file: /var/run/mongodb/mongodb.pid
