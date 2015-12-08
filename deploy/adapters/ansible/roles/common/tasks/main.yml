@@ -52,3 +52,7 @@
 - name: restart services
   service: name={{ item }} state=restarted enabled=yes
   with_items: services| union(services_noarch)
+
+- name: write services to monitor list
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
+  with_items: services| union(services_noarch)

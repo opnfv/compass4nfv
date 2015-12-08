@@ -21,7 +21,10 @@
     - /var/lib/mongodb/journal/*
 
 - name: manually restart mongodb server
-  service: name={{ mongodb_service }} state=restarted
+  service: name={{ mongodb_service }} state=restarted enabled=yes
+
+- name: write mongodb to monitor list
+  lineinfile: dest=/opt/service create=yes line={{ mongodb_service}}
 
 - wait_for: port=27017 delay=3 timeout=60 host={{ internal_vip.ip }}
 
