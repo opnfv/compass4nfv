@@ -12,20 +12,20 @@ ps -ef |grep vgremove |awk '{print $2}' |xargs kill -9
 ps -ef |grep vgcreate |awk '{print $2}' |xargs kill -9
 ps -ef |grep lvcreate |awk '{print $2}' |xargs kill -9
 
-if [ -L "/dev/cinder-volumes/ceph0" ]; then
+if [ -L "/dev/storage-volumes/ceph0" ]; then
 echo "remove lv vg"
-lvremove -f /dev/cinder-volumes/ceph0
+lvremove -f /dev/storage-volumes/ceph0
 fi
 
 
 echo "lvcreate"
-lvcreate -l 100%FREE -nceph0 cinder-volumes
+lvcreate -l 100%FREE -nceph0 storage-volumes
 echo "mkfs"
-mkfs.xfs -f /dev/cinder-volumes/ceph0
+mkfs.xfs -f /dev/storage-volumes/ceph0
 
 if [ ! -d "/var/local/osd" ]; then
 echo "mount osd"
 mkdir -p /var/local/osd
-mount /dev/cinder-volumes/ceph0 /var/local/osd
+mount /dev/storage-volumes/ceph0 /var/local/osd
 fi
 
