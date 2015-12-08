@@ -21,11 +21,8 @@
     echo "# compass" >> /etc/hosts
     echo {{ COMPASS_SERVER.stdout_lines[0] }} {{ name.stdout_lines[0] }} >> /etc/hosts
 
-- name: first update pkgs
-  shell: "{{ ansible_pkg_mgr }}  update"
-
 - name: install packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest"
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
   with_items: packages | union(packages_noarch)
 
 - name: make config template dir exist
@@ -44,9 +41,6 @@
 - name: update ntp conf
   template: src=ntp.conf dest=/etc/ntp.conf backup=yes
 
-- name: stop ntp
-  service: name={{ ntp_service }} state=stopped enabled=yes
-
 - name: use ntpdate once for initial sync time
   shell: ntpdate {{ ntp_server }}
   ignore_errors: True
@@ -55,9 +49,6 @@
   shell: hwclock --systohc
   ignore_errors: True
 
-- name: restart ntp
-  service: name={{ ntp_service }} state=restarted enabled=yes
-
-- name: restart openvswitch
+- name: restart services
   service: name={{ item }} state=restarted enabled=yes
-  with_items: services
+  with_items: services| union(services_noarch)
