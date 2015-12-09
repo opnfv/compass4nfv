@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_1dea9f0f",
+        "filename": "config/deploy.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 204
+      },
+      "writtenOn": "2015-12-09T17:38:12Z",
+      "side": 1,
+      "message": "General, missing the deployed end system stat requirements.\nEge, ODL, OVS varianttt, etc.",
+      "revId": "1c48eafb50c22979b771458b16f59390751c84f3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_5d901795",
+        "filename": "config/deploy.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 204
+      },
+      "writtenOn": "2015-12-09T17:38:12Z",
+      "side": 1,
+      "message": "I would not want to have the ISO file in the deployment scenario. It       should be provided by Jenkins as argument to deploy.sh",
+      "range": {
+        "startLine": 6,
+        "startChar": 25,
+        "endLine": 6,
+        "endChar": 26
+      },
+      "revId": "1c48eafb50c22979b771458b16f59390751c84f3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_3d8d637c",
+        "filename": "config/deploy.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 204
+      },
+      "writtenOn": "2015-12-09T17:38:12Z",
+      "side": 1,
+      "message": "I would want the pod config file totally independent of the deployment scenario config. Provided by Jenkins as argument to deploy.sh, and depending on where the deployment takes place.",
+      "revId": "1c48eafb50c22979b771458b16f59390751c84f3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_fdeeab21",
+        "filename": "config/pod-config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 204
+      },
+      "writtenOn": "2015-12-09T17:38:12Z",
+      "side": 1,
+      "message": "Very similar to Tim\u0027s patch.\nWhy not go with what Tim proposed",
+      "revId": "1c48eafb50c22979b771458b16f59390751c84f3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_ddf3e708",
+        "filename": "config/pod-config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 204
+      },
+      "writtenOn": "2015-12-09T17:38:12Z",
+      "side": 1,
+      "message": "This should be innnn the deployment scenario config and not in the POD config.",
+      "revId": "1c48eafb50c22979b771458b16f59390751c84f3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
