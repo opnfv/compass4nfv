@@ -18,6 +18,11 @@
 - name: remove ubuntu theme
   action: "{{ ansible_pkg_mgr }} name=openstack-dashboard-ubuntu-theme state=absent"
 
+- name: update memcached conf
+  lineinfile: dest=/etc/memcached.conf state=present
+              regexp="-l *"
+              line="-l {{ internal_vip.ip }}"
+
 - name: update ubuntu horizon settings
   template: src=local_settings_debian
             dest=/etc/openstack-dashboard/local_settings.py
