@@ -307,19 +307,16 @@ class CompassClient(object):
         if not self.is_ok(status) or not resp:
             raise RuntimeError('failed to get adapters')
 
-        adapter_name = CONF.adapter_name
         os_re = re.compile(CONF.adapter_os_pattern)
         flavor_re = re.compile(CONF.adapter_flavor_pattern)
 
         adapter_id = None
         os_id = None
-        distributed_system_id = None
         flavor_id = None
         adapter = None
 
         adapter = resp[0]
         adapter_id = adapter['id']
-        distributed_system_id = adapter['distributed_system_id']
         for supported_os in adapter['supported_oses']:
             if not os_re or os_re.match(supported_os['name']):
                 os_id = supported_os['os_id']
@@ -332,7 +329,7 @@ class CompassClient(object):
                     break
 
         assert(os_id and flavor_id)
-        return (adapter_id, os_id, distributed_system_id, flavor_id)
+        return (adapter_id, os_id, flavor_id)
 
     def add_subnets(self):
         subnets = [
@@ -872,14 +869,14 @@ def main():
     LOG.info('machines are %s', machines)
 
     client.add_subnets()
-    adapter_id, os_id, distributed_system_id, flavor_id = client.get_adapter()
+    adapter_id, os_id, flavor_id = client.get_adapter()
     cluster_id = client.add_cluster(adapter_id, os_id, flavor_id)
 
     client.add_cluster_hosts(cluster_id, machines)
     client.set_host_networking()
     client.set_cluster_os_config(cluster_id)
 
-    if distributed_system_id:
+    if flavor_id:
         client.set_cluster_package_config(cluster_id)
 
     client.set_all_hosts_roles(cluster_id)
