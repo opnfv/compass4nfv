@@ -1,0 +1,13 @@
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: install packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
+  with_items: packages | union(packages_noarch)
+
+- name: change memcache listen ip
+  lineinfile: dest=/etc/memcached.conf regexp="^-l " line="-l 0.0.0.0"
+
+- name: restart services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services| union(services_noarch)

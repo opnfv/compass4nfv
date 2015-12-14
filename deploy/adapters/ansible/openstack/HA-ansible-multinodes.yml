@@ -1,21 +1,19 @@
 ---
 - hosts: all
   remote_user: root
-  sudo: True
   roles:
     - common
     - setup-network
 
 - hosts: ha
   remote_user: root
-  sudo: True
   roles:
     - ha
 
 - hosts: controller
   remote_user: root
-  sudo: True
   roles:
+    - memcached
     - database
     - mq
     - keystone
@@ -32,7 +30,6 @@
 
 - hosts: compute
   remote_user: root
-  sudo: True
   roles:
     - nova-compute
     - neutron-compute
@@ -41,13 +38,11 @@
 
 - hosts: all
   remote_user: root
-  sudo: True
   roles:
     - odl_cluster
 
 - hosts: all
   remote_user: root
-  sudo: True
   roles:
     - onos_cluster
 
@@ -59,24 +54,20 @@
 
 - hosts: controller
   remote_user: root
-  sudo: True
   roles:
     - ext-network
 
 - hosts: ceph_adm
   remote_user: root
-  sudo: True
   roles:
     - ceph-deploy
 
 - hosts: all
   remote_user: root
-  sudo: True
   roles:
     - monitor
 
 - hosts: all
   remote_user: root
-  sudo: True
   roles:
     - secgroup
