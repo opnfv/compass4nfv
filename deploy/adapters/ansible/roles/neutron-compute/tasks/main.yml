@@ -24,7 +24,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: generate neutron compute service list
-  shell: echo {{ item }} >> /opt/service
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
   with_items: services | union(services_noarch)
 
 - name: config ml2 plugin

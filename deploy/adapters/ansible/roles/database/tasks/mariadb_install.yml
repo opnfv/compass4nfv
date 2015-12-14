@@ -46,4 +46,4 @@
   shell: rm -rf /var/lib/mysql/ib_logfile*
 
 - name: set owner
-  file: path=/var/lib owner=mysql group=mysql recurse=yes state=directory
+  file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory

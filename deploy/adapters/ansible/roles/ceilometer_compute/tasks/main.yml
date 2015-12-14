@@ -15,3 +15,7 @@
     - ceilometer_configs_templates
     - dest
   notify: restart ceilometer relation service
+
+- name: write services to monitor list
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
+  with_items: ceilometer_services
