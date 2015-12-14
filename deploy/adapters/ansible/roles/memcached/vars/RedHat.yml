@@ -1,0 +1,7 @@
+---
+packages:
+  - python-memcached
+
+pip_packages: []
+
+services: []
