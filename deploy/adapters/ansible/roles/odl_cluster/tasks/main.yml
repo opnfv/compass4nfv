@@ -9,6 +9,8 @@
   include: openvswitch.yml
   when: groups['odl']|length !=0 and inventory_hostname not in groups['odl']
 
+- meta: flush_handlers
+
 - name: check out new flow table if enable
   shell: ovs-ofctl --protocol=OpenFlow13 dump-flows br-prv | grep CONTROLLER; while [ $? -ne 0 ]; do sleep 10; ovs-ofctl --protocol=OpenFlow13 dump-flows br-prv | grep CONTROLLER; done
   when: groups['odl']|length !=0
