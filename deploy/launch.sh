@@ -18,7 +18,7 @@ source ${COMPASS_DIR}/deploy/compass_vm.sh
 source ${COMPASS_DIR}/deploy/deploy_host.sh
 
 ######################### main process
-if true
+if [[ "$DEPLOY_STEP" == "compass_only" || "$DEPLOY_STEP" == "all" ]]
 then
 if ! prepare_env;then
     echo "prepare_env failed"
@@ -34,7 +34,7 @@ fi
 
 log_info "deploy host macs: $machines"
 export machines
-
+echo "export machines=\""$machines"\"" > $WORK_DIR/switch_machines
 log_info "########## set up network begin #############"
 if ! create_nets;then
     log_error "create_nets failed"
@@ -45,10 +45,21 @@ if ! launch_compass;then
     log_error "launch_compass failed"
     exit 1
 fi
+
 else
+
 # test code
-export machines="'00:00:3d:a4:ee:4c','00:00:63:35:3c:2b','00:00:f2:f2:b7:a5','00:00:2f:d3:88:28','00:00:46:67:11:e7'"
+if [[ -f $WORK_DIR/switch_machines ]]; then
+    echo "using last generated machines"
+    source $WORK_DIR/switch_machines 
+else
+    export machines="'00:00:3d:a4:ee:4c','00:00:63:35:3c:2b','00:00:f2:f2:b7:a5','00:00:2f:d3:88:28','00:00:46:67:11:e7'"
 fi
+
+fi
+
+if [[ "$DEPLOY_STEP" == "host_only" || "$DEPLOY_STEP" == "all" ]]; then
+
 if [[ ! -z $VIRT_NUMBER ]];then
     if ! launch_host_vms;then
         log_error "launch_host_vms failed"
@@ -63,4 +74,6 @@ else
     #tear_down_machines
     #tear_down_compass
     exit 0
+fi
+
 fi
