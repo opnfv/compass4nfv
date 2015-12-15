@@ -66,15 +66,15 @@
     dest: "{{ service_file.dst }}"
     mode: 0644
 
-#- name: create karaf config
-#  template:
-#    src: org.apache.karaf.features.cfg
-#    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
-#    owner: odl
-#    group: odl
-#    mode: 0775
-#  notify:
-#    - restart odl service
+- name: create karaf config
+  template:
+    src: org.apache.karaf.features.cfg
+    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
+    owner: odl
+    group: odl
+    mode: 0775
+  notify:
+    - restart odl service
 
 - name: create tomcat config
   template:
@@ -82,6 +82,12 @@
     dest: "{{ odl_home }}/configuration/tomcat-server.xml"
   notify:
     - restart odl service
+
+
+- name: install odl pip packages
+  pip: name={{ item }} state=present
+  with_items: odl_pip_packages
+
 
 #- name: restart odl service
 #  service: name=opendaylight state=started pattern="opendaylight"
@@ -153,6 +159,9 @@
 ##########################################################################################################
 ################################    OpenDayLight connect with OpenStack   ################################
 ##########################################################################################################
+- name: Turn off neutron-server Daemon on control node
+  shell: sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ; 
+
 - name: Turn off neutron-server on control node
   service: name=neutron-server state=stopped
 
@@ -193,3 +202,8 @@
 
 - name: Restart neutron-server
   service: name=neutron-server state=started
+
+- name: Add service daemon
+  shell: > 
+    echo opendaylight >> /opt/service ;
+    echo neutron-server >> /opt/service ;
