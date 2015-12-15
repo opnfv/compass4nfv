@@ -2,6 +2,10 @@
 COMPASS_DIR=`cd ${BASH_SOURCE[0]%/*}/;pwd`
 export COMPASS_DIR
 
+if [[ -z "$DEPLOY_STEP" ]]; then
+    export DEPLOY_STEP="all"
+fi
+
 for i in python-cheetah python-yaml screen; do
     if [[ `dpkg-query -l $i` == 0 ]]; then
         continue
