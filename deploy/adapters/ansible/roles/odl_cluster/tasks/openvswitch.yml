@@ -12,30 +12,71 @@
 - name: Adjust Service Daemon
   shell: >
     sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
-    echo opendaylight >> /opt/service ;
 
 - name: shut down and disable Neutron's openvswitch  agent services
   service: name=neutron-plugin-openvswitch-agent state=stopped
 
-- name: Stop the Open vSwitch service and clear existing OVSDB
-  shell: >
-    ovs-ofctl del-flows br-int ;
-    ovs-vsctl del-br br-tun ;
-    ovs-vsctl del-manager ;
+#- name: Stop the Open vSwitch service and clear existing OVSDB
+#  shell: >
+#    ovs-ofctl del-flows br-int ;
+#    ovs-vsctl del-br br-tun ;
+#    ovs-vsctl del-port br-int patch-tun;
+#    ovs-vsctl del-manager ;
+
+#- name: Restart OpenVSwitch
+#  shell: service openvswitch-switch restart;
 
 #- name: remove Neutron's openvswitch agent services
 #  shell: >
 #    update-rc.d neutron-plugin-openvswitch-agent remove
 
-#- name: Stop the Open vSwitch service and clear existing OVSDB
-#  shell: >
-#    service openvswitch-switch stop ;
-#    rm -rf /var/log/openvswitch/* ;
-#    rm -rf /etc/openvswitch/conf.db ;
-#    service openvswitch-switch start ;
+- name: Check External network
+  shell: ovs-vsctl list-br | grep br-prv
+  register: extbr
+
+- name: Stop the Open vSwitch service and clear existing OVSDB
+  shell: >
+    service openvswitch-switch stop ;
+    rm -rf /var/log/openvswitch/* ;
+    rm -rf /etc/openvswitch/conf.db ;
+    service openvswitch-switch start ;
 
 - name: Set OpenDaylight as the manager
   command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
+
+##################################################################
+################  Recover External network #######################
+##################################################################
+- name: add ovs bridge
+  openvswitch_bridge: bridge={{ item["name"] }} state=present
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: item["type"] == "ovs" and extbr.rc == 0
+
+- name: add ovs uplink
+  openvswitch_port: bridge={{ item["name"] }} port={{ item["interface"] }} state=present
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: item["type"] == "ovs" and extbr.rc == 0
+
+- name: copy recovery script
+  copy:  src={{ item }} dest=/opt/setup_networks
+  with_items:
+    - recover_network.py
+  when: extbr.rc == 0
+
+- name: Recover external script
+  shell: python /opt/setup_networks/recover_network.py
+  when: extbr.rc == 0
+
+- name: start and disable Neutron's agent services
+  shell: service keepalived restart
+  when: inventory_hostname in groups['odl'] and extbr.rc == 0
+
+##################################################################
+##################################################################
+##################################################################
+
+
+
 
 #- name: start and disable Neutron's agent services
 #  service: name=neutron-plugin-openvswitch-agent state=started
