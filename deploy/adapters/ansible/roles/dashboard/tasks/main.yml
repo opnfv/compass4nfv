@@ -11,6 +11,9 @@
 - name: restart http services
   service: name={{ http_service }} state=restarted enabled=yes
 
+- name: write services to monitor list
+  lineinfile: dest=/opt/service create=yes line='{{ http_service }}'
+
 - name: install dashboard packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: packages | union(packages_noarch)
