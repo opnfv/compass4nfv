@@ -12,7 +12,6 @@
 - name: Adjust Service Daemon
   shell: >
     sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
-    echo opendaylight >> /opt/service ;
 
 - name: shut down and disable Neutron's openvswitch  agent services
   service: name=neutron-plugin-openvswitch-agent state=stopped
@@ -21,7 +20,11 @@
   shell: >
     ovs-ofctl del-flows br-int ;
     ovs-vsctl del-br br-tun ;
+    ovs-vsctl del-port br-int patch-tun;
     ovs-vsctl del-manager ;
+
+- name: Restart OpenVSwitch
+  shell: service openvswitch-switch restart;
 
 #- name: remove Neutron's openvswitch agent services
 #  shell: >

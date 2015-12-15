@@ -153,6 +153,9 @@
 ##########################################################################################################
 ################################    OpenDayLight connect with OpenStack   ################################
 ##########################################################################################################
+- name: Turn off neutron-server Daemon on control node
+  shell: sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ; 
+
 - name: Turn off neutron-server on control node
   service: name=neutron-server state=stopped
 
@@ -193,3 +196,8 @@
 
 - name: Restart neutron-server
   service: name=neutron-server state=started
+
+- name: Add service daemon
+  shell: > 
+    echo opendaylight >> /opt/service ;
+    echo neutron-server >> /opt/service ;
