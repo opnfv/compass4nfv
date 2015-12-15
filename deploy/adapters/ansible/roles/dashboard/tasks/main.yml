@@ -24,15 +24,40 @@
               line="-l {{ internal_vip.ip }}"
 
 - name: update ubuntu horizon settings
-  template: src=local_settings_debian
-            dest=/etc/openstack-dashboard/local_settings.py
-            backup=yes
+  lineinfile:
+    dest: /etc/openstack-dashboard/local_settings.py
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '^WEBROOT[ \t]*=.*'
+      line: 'WEBROOT = "/horizon"'
+    - regexp: '^COMPRESS_OFFLINE[ \t]*=.*'
+      line: 'COMPRESS_OFFLINE=True'
+    - regexp: '^ALLOWED_HOSTS[ \t]*=.*'
+      line: 'ALLOWED_HOSTS = ["*"]'
+    - regexp: '^OPENSTACK_HOST[ \t]*=.*'
+      line: 'OPENSTACK_HOST = "{{ internal_ip }}"'
+  when: ansible_os_family == 'Debian'
+
+- name: precompile horizon css
+  shell: /usr/bin/python /usr/share/openstack-dashboard/manage.py compress --force
+  ignore_errors: True
   when: ansible_os_family == 'Debian'
 
 - name: update redhat version horizon settings
-  template: src=local_settings_redhat
-            dest=/etc/openstack-dashboard/local_settings
-            backup=yes
+  lineinfile:
+    dest: /etc/openstack-dashboard/local_settings
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '^WEBROOT[ \t]*=.*'
+      line: 'WEBROOT = "/horizon"'
+    - regexp: '^COMPRESS_OFFLINE[ \t]*=.*'
+      line: 'COMPRESS_OFFLINE=False'
+    - regexp: '^ALLOWED_HOSTS[ \t]*=.*'
+      line: 'ALLOWED_HOSTS = ["*"]'
+    - regexp: '^OPENSTACK_HOST[ \t]*=.*'
+      line: 'OPENSTACK_HOST = "{{ internal_ip }}"'
   when: ansible_os_family == 'RedHat'
 
 - name: restart dashboard services
