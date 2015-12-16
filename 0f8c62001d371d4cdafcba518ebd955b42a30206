@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_f8d6afc4",
+        "filename": "docs/index.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 254
+      },
+      "writtenOn": "2015-12-16T08:57:36Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to include png files in index.",
+      "revId": "0f8c62001d371d4cdafcba518ebd955b42a30206",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_b8d837f0",
+        "filename": "docs/index.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 254
+      },
+      "writtenOn": "2015-12-16T08:57:36Z",
+      "side": 1,
+      "message": "you shouldn\u0027t need lines below.",
+      "revId": "0f8c62001d371d4cdafcba518ebd955b42a30206",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
