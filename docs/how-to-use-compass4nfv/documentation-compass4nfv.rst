@@ -1,12 +1,5 @@
 .. two dots create a comment. please leave this logo at the top of each of your rst files.
-.. image:: ../etc/opnfv-logo.png 
-  :height: 40
-  :width: 200
-  :alt: OPNFV
-  :align: left
-.. these two pipes are to seperate the logo from the first title
-|
-|
+
 Prerequisite
 ============
 
@@ -60,7 +53,7 @@ This section indicates how to add additional packages and how to build a new com
 2. Create a new role folder ({newrole}) in the compass4nfv/deploy/adapters/ansible/roles/, create a new folder named "vars" in the new role folder({newrole}), and create a file named "main.yml" and add "---" at the head of this file.
 
 
-3. If the targeted packages names are same in both Ubuntu and Centos, you just need edit main.yml. 
+3. If the targeted packages names are same in both Ubuntu and Centos, you just need edit main.yml.
 
 Add the packages' names as following:
 
@@ -99,7 +92,7 @@ Also you can refer "compass4nfv/deploy/adapters/ansible/roles/glance/vars" as ex
            - {newrole}
 
 The first line "hosts" of the section means compass4nfv will deploy {newrole} on which baremetals/VMs, "all" means it deploys on all baremetals/VMs, "controller" means it deploys on all controller and so on.
-    
+
 Also you can refer "glance" position in HA-ansible-multinodes.yml and single-controller.yml.
 
 
@@ -195,7 +188,7 @@ Please pay attention to the last second sentence, all the compiled packages need
 2. Add a new role so that Compass4nfv will install the packages during the deployment, create a new role folder ({newrole}) in the "compass4nfv/deploy/adapters/ansible/roles/", create a new folder named "vars" in the new role folder({newrole}), and create a file named "main.yml" and add "---" at the head of this file.
 
 
-3. If the packages' names are same in both Ubuntu and Centos, you just need edit main.yml. 
+3. If the packages' names are same in both Ubuntu and Centos, you just need edit main.yml.
 
 Add the packages' names as following:
 
@@ -233,7 +226,7 @@ Also you can refer "compass4nfv/deploy/adapters/ansible/roles/glance/vars" as ex
            - {newrole}
 
 The first line "hosts" of the section means compass4nfv will deploy {newrole} on which baremetals/VMs, "all" means it deploys on all baremetals/VMs, "controller" means it deploys on all controller and so on.
-    
+
 Also you can refer "glance" position in HA-ansible-multinodes.yml and single-controller.yml.
 
 
@@ -296,7 +289,7 @@ CENTOS7_JUNO_PPA is packages path for Centos, TRUSTY_JUNO_PPA is packages path f
 
 
 
-* Approach 3 ---- autonomous packages installation 
+* Approach 3 ---- autonomous packages installation
 
 package installed, to be continued...
 
@@ -377,9 +370,9 @@ network_cfg.yaml
 
 
 
-"br-prv" is a bridge created by OpenvSwitch, "mgmt" "storage" and "external" are VLAN. 
+"br-prv" is a bridge created by OpenvSwitch, "mgmt" "storage" and "external" are VLAN.
 
-"mgmt" "stoarge" and "br-prv" can locate on any ethernet port("interface") as long as the host can communicate with other hosts via this ethernet. 
+"mgmt" "stoarge" and "br-prv" can locate on any ethernet port("interface") as long as the host can communicate with other hosts via this ethernet.
 
 "external" must locate on "br-prv".
 
@@ -389,7 +382,7 @@ network_cfg.yaml
 Also check the following items in file "compass4nfv/deploy/conf/base.conf"
 
 .. code-block:: bash
-    
+
     export INSTALL_IP=${INSTALL_IP:-10.1.0.12}
     export INSTALL_MASK=${INSTALL_MASK:-255.255.255.0}
     export INSTALL_GW=${INSTALL_GW:-10.1.0.1}
@@ -502,8 +495,7 @@ For verify jobs a link to the documentation will show up as a comment in gerrit 
 
 * Merge jobs
 
-Once you are happy with the look of your documentation you can submit the patchset the merge job will 
-copy the output of each documentation directory to http://artifacts.opnfv.org/$project/docs/$name_of_your_folder/index.html
+Once you are happy with the look of your documentation you can submit the patchset the merge job will copy the output of each documentation directory to http://artifacts.opnfv.org/$project/docs/$name_of_your_folder/index.html
 
 Here are some quick examples of how to use rst markup
 
