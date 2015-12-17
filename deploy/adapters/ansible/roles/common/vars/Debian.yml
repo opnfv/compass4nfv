@@ -4,10 +4,11 @@ packages:
   #- python-dev
   - openvswitch-datapath-dkms
   - openvswitch-switch
-  - crudini
   - python-memcache
+  - python-iniparse
 
-pip_packages: []
+pip_packages:
+  - crudini
 
 pip_conf: pip.conf
 

@@ -40,9 +40,9 @@ os_services:
     type: metering
     region: regionOne
     description: "OpenStack Telemetry"
-    publicurl: "http://{{ public_vip.ip }}:8777/v2.0"
-    internalurl: "http://{{ internal_vip.ip }}:8777/v2.0"
-    adminurl: "http://{{ internal_vip.ip }}:8777/v2.0"
+    publicurl: "http://{{ public_vip.ip }}:8777"
+    internalurl: "http://{{ internal_vip.ip }}:8777"
+    adminurl: "http://{{ internal_vip.ip }}:8777"
 
   - name: cinder
     type: volume
