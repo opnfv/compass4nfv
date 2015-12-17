@@ -3,6 +3,7 @@
 
 - include: mariadb_install.yml
 - include: mariadb_cluster.yml
+  when: '{{ haproxy_hosts|length }} > 1'
 
 - include: mariadb_config.yml
   when:
