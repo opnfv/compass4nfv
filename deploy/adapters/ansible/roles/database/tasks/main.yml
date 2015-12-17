@@ -9,4 +9,7 @@
   when:
     - inventory_hostname == haproxy_hosts.keys()[0]
 
-- include: mongodb.yml
+- include: mongodb_install.yml
+- include: mongodb_config.yml
+  when:
+    - inventory_hostname == haproxy_hosts.keys()[0]
