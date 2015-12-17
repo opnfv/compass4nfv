@@ -25,15 +25,3 @@
 
 - name: write mongodb to monitor list
   lineinfile: dest=/opt/service create=yes line={{ mongodb_service}}
-
-- wait_for: port=27017 delay=3 timeout=60 host={{ internal_vip.ip }}
-
-- name: create mongodb user
-  run_once: True
-  mongodb_user:
-    login_host: "{{ internal_vip.ip }}"
-    database: ceilometer
-    name: ceilometer
-    password: "{{ CEILOMETER_DBPASS }}"
-    roles: 'readWrite,dbAdmin'
-    state: present
