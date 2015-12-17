@@ -10,9 +10,13 @@
   local_action: file path=/opt/images state=directory mode=0777
   run_once: True
 
+- name: remove nfs config item if exist
+  local_action: lineinfile dest=/etc/exports state=absent
+              regexp="^/opt/images"
+  run_once: True
+
 - name: update nfs config
   local_action: lineinfile dest=/etc/exports state=present
-              regexp="/opt/images *(rw,insecure,sync,all_squash)"
               line="/opt/images *(rw,insecure,sync,all_squash)"
   run_once: True
 
