@@ -1,0 +1,35 @@
+---
+- name: copy replica js
+  template:
+    src: replica.js
+    dest: /opt/replica.js
+
+- name: init replica servers
+  shell: mongo compass /opt/replica.js
+
+- name: wait replica servers are ready
+  shell: mongo compass --eval 'printjson(rs.status())'|grep -E 'PRIMARY|SECONDARY'|wc -l
+  register: servers
+  until: servers.stdout|int == 3
+  retries: 20
+  delay: 3
+
+- debug: msg='{{ servers.stdout |int }}'
+
+- name: create mongodb user and db
+  mongodb_user:
+    login_host: "{{ internal_vip.ip }}"
+    database: ceilometer
+    name: ceilometer
+    password: "{{ CEILOMETER_DBPASS }}"
+    roles: 'readWrite,dbAdmin'
+    state: present
+
+- name: grant user privilege
+  mongodb_user:
+    login_host: "{{ internal_vip.ip }}"
+    database: ceilometer
+    name: ceilometer
+    password: "{{ CEILOMETER_DBPASS }}"
+    roles: 'readWrite,dbAdmin'
+    state: present

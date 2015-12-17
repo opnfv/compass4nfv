@@ -54,6 +54,11 @@
   shell: hwclock --systohc
   ignore_errors: True
 
+- name: create fireball keys dir
+  file: path=~/.fireball.keys state=directory mode=0700
+  delegate_to: 127.0.0.1
+  run_once: true
+
 - name: restart services
   service: name={{ item }} state=restarted enabled=yes
   with_items: services| union(services_noarch)
