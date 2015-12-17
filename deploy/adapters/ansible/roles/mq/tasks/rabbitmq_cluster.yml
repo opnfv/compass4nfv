@@ -2,8 +2,12 @@
 - name: stop rabbitmq app
   shell: rabbitmqctl stop_app; sleep 3
 
-- name: join  cluster
-  command: rabbitmqctl join_cluster rabbit@{{ haproxy_hosts.keys()[0] }}
+- name: join cluster
+  shell: rabbitmqctl join_cluster rabbit@{{ haproxy_hosts.keys()[0] }}
+  register: join_result
+  until: join_result|success
+  retries: 5
+  delay: 2
 
 - name: start rabbitmq app
-  command: rabbitmqctl start_app
+  shell: rabbitmqctl start_app
