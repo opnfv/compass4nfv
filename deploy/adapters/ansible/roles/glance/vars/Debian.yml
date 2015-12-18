@@ -3,10 +3,6 @@
 packages:
   - glance
 
-nfs_packages:
-  - nfs-common
-
-nfs_services: []
 services:
   - glance-registry
   - glance-api
