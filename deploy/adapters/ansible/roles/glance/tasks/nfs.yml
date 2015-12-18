@@ -1,10 +1,9 @@
 ---
-- name: install packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: nfs_packages
-
 - name: install nfs
-  local_action: yum  name=nfs-utils state=present
+  local_action: yum  name={{ item }} state=present
+  with_items:
+    - rpcbind
+    - nfs-utils
   run_once: True
 
 - name: create image directory
@@ -21,7 +20,7 @@
   local_action: service name={{ item }} state=restarted enabled=yes
   with_items:
       - rpcbind
-      - nfs
+      - nfs-server
   run_once: True
 
 - name: get mount info

@@ -48,5 +48,4 @@ rpmbuild -bb rpmbuild/SPECS/kibana.spec
 
 cp -rf rpmbuild/RPMS/* /var/cache/yum/
 
-find /var/cache/yum -name "perl*" | xargs rm -rf
 popd
