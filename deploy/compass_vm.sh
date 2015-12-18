@@ -67,6 +67,7 @@ function launch_compass() {
     chmod 755 -R $new_mnt
 
     cp $COMPASS_DIR/util/isolinux.cfg $new_mnt/isolinux/ -f
+    cp $COMPASS_DIR/util/ks.cfg $new_mnt/isolinux/ -f
 
     sed -i -e "s/REPLACE_MGMT_IP/$MGMT_IP/g" \
            -e "s/REPLACE_MGMT_NETMASK/$MGMT_MASK/g" \
