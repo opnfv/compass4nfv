@@ -9,6 +9,7 @@
 
 - name: install ceph for every nodes includes jumpserver
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy install {{ ceph_cluster_hosts.stdout_lines[0]}}
+  ignore_errors: true
 
 - name: create monitor node in controller group
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy --overwrite-conf mon create-initial

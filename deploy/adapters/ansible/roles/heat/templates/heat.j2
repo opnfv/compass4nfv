@@ -9,6 +9,9 @@ log_dir = /var/log/heat
 
 [database]
 connection = mysql://heat:{{ HEAT_DBPASS }}@{{ db_host }}/heat
+idle_timeout = 30
+use_db_reconnect = True
+pool_timeout = 10
 
 [ec2authtoken]
 auth_uri = http://{{ internal_vip.ip }}:5000/v2.0
