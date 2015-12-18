@@ -92,8 +92,6 @@ function copy_file()
     mkdir -p $new/compass $new/bootstrap $new/pip $new/guestimg $new/app_packages $new/ansible
     mkdir -p $new/repos/cobbler/{ubuntu,centos}/{iso,ppa}
 
-    cp -rf $SCRIPT_DIR/util/ks.cfg $new/isolinux/ks.cfg
-
     rm -rf $new/.rr_moved
 
     if [[ $UBUNTU_ISO ]]; then
