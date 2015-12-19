@@ -38,6 +38,11 @@
   pip: name={{ item }} state=present extra_args='--pre'
   with_items: pip_packages
 
+- name: install keyczar for accelerate
+  pip: name=python-keyczar state=present extra_args='--pre'
+  delegate_to: 127.0.0.1
+  run_once: true
+
 - name: update ntp conf
   template: src=ntp.conf dest=/etc/ntp.conf backup=yes
 
