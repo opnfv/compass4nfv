@@ -4,10 +4,13 @@ packages:
   #- python-dev
   - openvswitch-datapath-dkms
   - openvswitch-switch
-  - crudini
   - python-memcache
+  - python-iniparse
+  - python-d* #TODO, need remove
 
-pip_packages: []
+pip_packages:
+  - crudini
+  - python-keyczar
 
 pip_conf: pip.conf
 
