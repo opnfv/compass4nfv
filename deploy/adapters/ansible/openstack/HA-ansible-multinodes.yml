@@ -3,15 +3,22 @@
   remote_user: root
   roles:
     - common
+
+- hosts: all
+  remote_user: root
+  accelerate: true
+  roles:
     - setup-network
 
 - hosts: ha
   remote_user: root
+  accelerate: true
   roles:
     - ha
 
 - hosts: controller
   remote_user: root
+  accelerate: true
   roles:
     - memcached
     - database
@@ -30,12 +37,13 @@
 
 - hosts: all
   remote_user: root
-  sudo: True
+  accelerate: true
   roles:
     - storage
 
 - hosts: compute
   remote_user: root
+  accelerate: true
   roles:
     - nova-compute
     - neutron-compute
@@ -44,11 +52,13 @@
 
 - hosts: all
   remote_user: root
+  accelerate: true
   roles:
     - odl_cluster
 
 - hosts: all
   remote_user: root
+  accelerate: true
   roles:
     - onos_cluster
 
@@ -60,20 +70,24 @@
 
 - hosts: controller
   remote_user: root
+  accelerate: true
   roles:
     - ext-network
 
 - hosts: ceph_adm
   remote_user: root
+  accelerate: true
   roles:
     - ceph-deploy
 
 - hosts: all
   remote_user: root
+  accelerate: true
   roles:
     - monitor
 
 - hosts: all
   remote_user: root
+  accelerate: true
   roles:
     - secgroup
