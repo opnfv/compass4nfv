@@ -18,6 +18,11 @@ source ${COMPASS_DIR}/deploy/compass_vm.sh
 source ${COMPASS_DIR}/deploy/deploy_host.sh
 
 ######################### main process
+old_ifs=$IFS
+IFS=,
+tear_down_machines
+IFS=$old_ifs
+
 if [[ "$DEPLOY_STEP" == "compass_only" || "$DEPLOY_STEP" == "all" ]]
 then
 if ! prepare_env;then
