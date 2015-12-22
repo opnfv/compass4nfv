@@ -1,24 +1,28 @@
 ---
 - hosts: all
   remote_user: root
+  max_fail_percentage: 10
   roles:
     - common
 
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - setup-network
 
 - hosts: ha
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - ha
 
 - hosts: controller
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - memcached
     - database
@@ -38,12 +42,14 @@
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles: [] # just test
     # - storage 
 
 - hosts: compute
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - nova-compute
     - neutron-compute
@@ -53,12 +59,14 @@
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - odl_cluster
 
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - onos_cluster
 
@@ -71,23 +79,27 @@
 - hosts: controller
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - ext-network
 
 - hosts: ceph_adm
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles: [] # just test
     #- ceph-deploy
 
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - monitor
 
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 10
   roles:
     - secgroup

@@ -38,21 +38,19 @@
   pip: name={{ item }} state=present extra_args='--pre'
   with_items: pip_packages
 
-- name: install keyczar for accelerate
-  pip: name=python-keyczar state=present extra_args='--pre'
-  delegate_to: 127.0.0.1
-  run_once: true
-
 - name: update ntp conf
   template: src=ntp.conf dest=/etc/ntp.conf backup=yes
 
 - name: use ntpdate once for initial sync time
-  shell: ntpdate {{ ntp_server }}
-  ignore_errors: True
+  shell: ntpdate -u {{ ntp_server }}
+  register: ntp_status
+  until: ntp_status|success
+  retries: 3
+  delay: 3
+  ignore_errors: true
 
 - name: sync sys clock to hard clock
   shell: hwclock --systohc
-  ignore_errors: True
 
 - name: restart services
   service: name={{ item }} state=restarted enabled=yes
