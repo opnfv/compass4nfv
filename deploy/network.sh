@@ -16,6 +16,44 @@ function setup_bridge_net()
     sudo virsh net-start $net_name
 }
 
+function save_network_info()
+{
+    sudo ovs-vsctl list-br |grep br-external
+    br_exist=$?
+    external_nic=`ip route |grep '^default'|awk '{print $NF}'`
+    route_info=`ip route |grep -Eo '^default via [^ ]+'`
+    ip_info=`ip addr show $external_nic|grep -Eo '[^ ]+ brd [^ ]+ '`
+    if [ $br_exist -eq 0 ]; then
+        if [ "$external_nic" != "br-external" ]; then
+            sudo ovs-vsctl --may-exist add-port br-external $external_nic
+            sudo ip addr flush $external_nic
+            sudo ip addr add $ip_info dev br-external
+            sudo ip route add $route_info dev br-external
+        fi
+    else
+        sudo ovs-vsctl add-br br-external
+        sudo ovs-vsctl add-port br-external $external_nic
+        sudo ip addr flush $external_nic
+        sudo ip addr add $ip_info dev br-external
+        sudo ip route add $route_info dev br-external
+    fi
+}
+
+function setup_bridge_external()
+{
+    sudo virsh net-destroy external
+    sudo virsh net-undefine external
+
+    save_network_info
+    sed -e "s/REPLACE_NAME/external/g" \
+        -e "s/REPLACE_OVS/br-external/g" \
+    $COMPASS_DIR/deploy/template/network/bridge_ovs.xml \
+    > $WORK_DIR/network/external.xml
+
+    sudo virsh net-define $WORK_DIR/network/external.xml
+    sudo virsh net-start external
+}
+
 function setup_nat_net() {
     net_name=$1
     gw=$2
@@ -50,5 +88,5 @@ function create_nets() {
     fi
 
     # create external network
-    setup_bridge_net external $EXTERNAL_NIC
+    setup_bridge_external
 }

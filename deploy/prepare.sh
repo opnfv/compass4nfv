@@ -19,7 +19,7 @@ function download_iso()
 function prepare_env() {
     export PYTHONPATH=/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages
     sudo apt-get update -y
-    sudo apt-get install -y --force-yes mkisofs bc curl ipmitool
+    sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
     sudo apt-get install -y --force-yes git python-pip python-dev
     sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
     sudo pip install --upgrade pip
