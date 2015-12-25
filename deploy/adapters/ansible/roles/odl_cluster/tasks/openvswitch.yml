@@ -9,9 +9,8 @@
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: compute_packages | union(compute_packages_noarch)
 
-- name: Adjust Service Daemon
-  shell: >
-    sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
+- name: remove neutron-openvswitch-agent service daemon
+  shell: sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
 
 - name: shut down and disable Neutron's openvswitch  agent services
   service: name=neutron-plugin-openvswitch-agent state=stopped
@@ -41,12 +40,18 @@
     rm -rf /etc/openvswitch/conf.db ;
     service openvswitch-switch start ;
 
-- name: Set OpenDaylight as the manager
-  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
+#- name: Set OpenDaylight as the manager
+#  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
 
+
+- name: recover br-int
+  shell: ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) other_config={'local_ip'=' {{ internal_ip }} '};
+
+#'
 ##################################################################
 ################  Recover External network #######################
 ##################################################################
+
 - name: add ovs bridge
   openvswitch_bridge: bridge={{ item["name"] }} state=present
   with_items: "{{ network_cfg['provider_net_mappings'] }}"
@@ -63,39 +68,41 @@
     - recover_network.py
   when: extbr.rc == 0
 
-- name: Recover external script
+- name: recover external script
   shell: python /opt/setup_networks/recover_network.py
   when: extbr.rc == 0
 
-- name: start and disable Neutron's agent services
+- name: restart keepalived
   shell: service keepalived restart
   when: inventory_hostname in groups['odl'] and extbr.rc == 0
+  ignore_errors: True
 
 ##################################################################
 ##################################################################
 ##################################################################
 
+- name: set opendaylight as the manager
+  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
 
+- name: check br-int
+  shell: ovs-vsctl list-br | grep br-int; while [ $? -ne 0 ]; do sleep 10; ovs-vsctl list-br | grep br-int; done
 
-
-#- name: start and disable Neutron's agent services
-#  service: name=neutron-plugin-openvswitch-agent state=started
-
-- name: Configure Neutron1
+- name: configure opendaylight -> ml2
   shell: >
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling True;
 
 #- name: Adjust Service Daemon
 #  shell: >
 #    sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
 #    echo opendaylight >> /opt/service ;
 
-- name: Create ML2 Configuration File
+- name: copy ml2 configuration script
   template:
     src: ml2_conf.sh
     dest: "/opt/ml2_conf.sh"
     mode: 0777
 
-- name: Execute ML2 Configuration File
+- name: execute ml2 configuration script
   command: su -s /bin/sh -c "/opt/ml2_conf.sh;"

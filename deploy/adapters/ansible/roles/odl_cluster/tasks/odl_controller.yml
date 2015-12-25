@@ -57,8 +57,8 @@
 - name: extract odl package
 #  unarchive: src=/opt/{{ odl_pkg_name }} dest={{ odl_home }} group=odl owner=odl mode=0775 copy=no
   command: su -s /bin/sh -c "tar xzf /opt/{{ odl_pkg_name }} -C {{ odl_home }} --strip-components 1 --no-overwrite-dir -k --skip-old-files" odl
-  notify:
-    - restart odl service
+#  notify:
+#    - restart odl service
 
 - name: opendaylight system file
   template:
@@ -73,15 +73,15 @@
     owner: odl
     group: odl
     mode: 0775
-  notify:
-    - restart odl service
+#  notify:
+#    - restart odl service
 
 - name: create tomcat config
   template:
     src: tomcat-server.xml
     dest: "{{ odl_home }}/configuration/tomcat-server.xml"
-  notify:
-    - restart odl service
+#  notify:
+#    - restart odl service
 
 
 - name: install odl pip packages
@@ -103,16 +103,16 @@
   template:
     src: akka.conf
     dest: "{{ odl_home }}/configuration/initial/akka.conf"
-  notify:
-    - restart odl service
+#  notify:
+#    - restart odl service
 
 
 - name: create module-shards config
   template:
     src: module-shards.conf
     dest: "{{ odl_home }}/configuration/initial/module-shards.conf"
-  notify:
-    - restart odl service
+#  notify:
+#    - restart odl service
 
 #- name: copy Jolokia-OSGi config
 #  shell: >
@@ -146,9 +146,8 @@
 #- name: copy Jolokia-OSGi jar config
 #  copy: src=roles/odl_cluster/templates/jolokia-osgi-1.1.5.jar  dest="{{ odl_home }}/system/org/jolokia/jolokia-osgi/1.1.5/"
 
-- name: remove KARAF Data Directory
-  shell: >
-    rm -rf {{ odl_home }}/data/*;
+- name: remove karaf data directory
+  shell: rm -rf {{ odl_home }}/data/*;
 
 #- name: chown OpenDaylight Directory and Files
 #  shell: >
@@ -159,25 +158,38 @@
 ##########################################################################################################
 ################################    OpenDayLight connect with OpenStack   ################################
 ##########################################################################################################
-- name: Turn off neutron-server Daemon on control node
-  shell: sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ; 
-
-- name: Turn off neutron-server on control node
+- name: turn off neutron-server neutron-plugins-openvswitch-agent Daemon on control node
+  shell: >
+    sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
+    sed -i '/neutron-server/d' /opt/service;
+    sed -i '/keepalived/d' /opt/service;
+     
+- name: turn off neutron-server on control node
   service: name=neutron-server state=stopped
+
+- name: turn off keepalived on control node
+  service: name=keepalived state=stopped
 
 #- name: Install Crudini
 #  apt: name={{ item }} state=present
 #  with_items:
 #    - crudini
 
-- name: Run OpenVSwitch Script
-  include: openvswitch.yml
 
-
-- name: chown OpenDaylight Directory and Files
+- name: chown opendaylight directory and files
   shell: >
     chown -R odl:odl "{{ odl_home }}";
     chown odl:odl "{{ service_file.dst }}";
+
+- name: start opendaylight
+  service: name=opendaylight state=started
+
+- name: check if opendaylight running
+  shell: netstat -lpen --tcp | grep java |  grep 6653; while [ $? -ne 0 ]; do sleep 10; netstat -lpen --tcp | grep java |  grep 6653; done
+
+- name: run openvswitch script
+  include: openvswitch.yml
+
 
 #- name: Configure Neutron1
 #  shell: >
@@ -193,17 +205,26 @@
 #- name: Execute ML2 Configuration File
 #  command: su -s /bin/sh -c "/opt/ml2_conf.sh;"
 
-- name: Configure Neutron2
-  shell: >
-    mysql -e "drop database if exists neutron_ml2;";
-    mysql -e "create database neutron_ml2 character set utf8;";
-    mysql -e "grant all on neutron_ml2.* to 'neutron'@'%';";
-    su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
+- name: drop and recreate neutron database
+  shell: mysql -e "drop database if exists neutron;";
+         mysql -e "create database neutron character set utf8;";
+         mysql -e "grant all on neutron.* to 'neutron'@'%' identified by 'console';";
+         su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
+  when: inventory_hostname == haproxy_hosts.keys()[0]
 
-- name: Restart neutron-server
+- name: restart neutron-server
   service: name=neutron-server state=started
 
-- name: Add service daemon
+- name: add service daemon
   shell: > 
     echo opendaylight >> /opt/service ;
     echo neutron-server >> /opt/service ;
+
+- name: restart neutron-l3-agent server
+  service: name=neutron-l3-agent state=restarted
+
+- name: restart neutron-dhcp-agent server
+  service: name=neutron-dhcp-agent state=restarted
+
+- name: restart neutron-metadata-agent server
+  service: name=neutron-metadata-agent state=restarted
