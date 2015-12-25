@@ -1,17 +1,17 @@
 ---
-- name: remove neutron-plugin-openvswitch-agent auto start
-  shell: >
-    update-rc.d neutron-plugin-openvswitch-agent remove;
-    sed -i /neutron-plugin-openvswitch-agent/d /opt/service
+#- name: remove neutron-plugin-openvswitch-agent auto start
+#  shell: >
+#    update-rc.d neutron-plugin-openvswitch-agent remove;
+#    sed -i /neutron-plugin-openvswitch-agent/d /opt/service
 
-- name: shut down and disable Neutron's agent services
-  service: name=neutron-plugin-openvswitch-agent state=stopped
+#- name: shut down and disable Neutron's agent services
+#  service: name=neutron-plugin-openvswitch-agent state=stopped
 
-- name: Stop the Open vSwitch service and clear existing OVSDB
-  shell: >
-    ovs-vsctl del-br br-int ;
-    ovs-vsctl del-br br-tun ;
-    ovs-vsctl del-manager ;
+#- name: Stop the Open vSwitch service and clear existing OVSDB
+#  shell: >
+#    ovs-vsctl del-br br-int ;
+#    ovs-vsctl del-br br-tun ;
+#    ovs-vsctl del-manager ;
 
 #- name: get image http server
 #  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
@@ -28,6 +28,50 @@
 #    cd /opt/openvswitch;
 #    dpkg -i openvswitch-common_2.3.0-1_amd64.deb;
 #    dpkg -i openvswitch-switch_2.3.0-1_amd64.deb;
+
+- name: start up onos-external nic
+  command: su -s /bin/sh -c "ifconfig eth2 0 up"
+
+#- name: wait for onos start time
+#  shell: "sleep 200"
+
+- name: add ovsdatabase feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdatabase'";
+  when: inventory_hostname == groups['onos'][0]
+
+- name: add openflow-base feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow-base'";
+  when: inventory_hostname == groups['onos'][0]
+
+- name: add openflow feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow'";
+  when: inventory_hostname == groups['onos'][0]
+
+- name: add vtn feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-app-vtn-onosfw'";
+  when: inventory_hostname == groups['onos'][0]
+
+
+- name: set public eth card start
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'externalportname-set -n eth2'"
+  when: inventory_hostname == groups['onos'][0]
+
 - name: Set ONOS as the manager
   command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ ip_settings[groups['onos'][0]]['mgmt']['ip'] }}:6640;"
 
+- name: create public network
+  shell: >
+    export OS_PASSWORD=console;
+    export OS_TENANT_NAME=admin;
+    export OS_AUTH_URL=http://172.16.1.222:35357/v2.0;
+    export OS_USERNAME=ADMIN;
+    neutron net-create ext-net --shared --router:external=True;
+    neutron subnet-create ext-net --name ext-subnet 192.168.50.0/24;
+  when: inventory_hostname == groups['controller'][0]
+
+- name: set gateway mac address
+  shell: >
+    opt/onos/bin/onos "externalgateway-update -m 00:23:89:6f:60:af";
+#   gatewayMac=`arp -a 192.168.50.1 | awk '{print $4}'`;
+#   /opt/onos/bin/onos "externalgateway-update -m $gatewayMac";
+  when: inventory_hostname == groups['onos'][0]
