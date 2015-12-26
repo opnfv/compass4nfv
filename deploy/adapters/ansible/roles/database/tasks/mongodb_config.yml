@@ -11,8 +11,8 @@
   shell: mongo compass --eval 'printjson(rs.status())'|grep -E 'PRIMARY|SECONDARY'|wc -l
   register: servers
   until: servers.stdout|int == 3
-  retries: 30
-  delay: 6
+  retries: 60 
+  delay: 10 
 
 - debug: msg='{{ servers.stdout |int }}'
 
