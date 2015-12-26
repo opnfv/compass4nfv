@@ -71,8 +71,7 @@
 
 - name: set gateway mac address
   shell: >
-#    opt/onos/bin/onos "externalgateway-update -m 00:23:89:6f:60:af";
-    ping -c 1 192.168.50.1
+    ping -c 1 192.168.50.1;
     gatewayMac=`arp -a 192.168.50.1 | awk '{print $4}'`;
     /opt/onos/bin/onos "externalgateway-update -m $gatewayMac";
   when: inventory_hostname == groups['onos'][0]
