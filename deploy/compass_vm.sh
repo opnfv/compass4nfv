@@ -14,14 +14,26 @@ function tear_down_compass() {
 }
 
 function install_compass_core() {
+    install_compass "compass_nodocker.yml"
+}
+
+function set_compass_machine() {
+    local config_file=$WORK_DIR/installer/compass-install/install/group_vars/all
+
+    sed -i -e '/test: true/d' -e '/pxe_boot_macs/d' $config_file
+    echo "test: true" >> $config_file
+    echo "pxe_boot_macs: [${machines}]" >> $config_file
+
+    install_compass "compass_machine.yml"
+}
+
+function install_compass() {
     local inventory_file=$compass_vm_dir/inventory.file
-    log_info "install_compass_core enter"
     sed -i "s/mgmt_next_ip:.*/mgmt_next_ip: ${COMPASS_SERVER}/g" $WORK_DIR/installer/compass-install/install/group_vars/all
     echo "compass_nodocker ansible_ssh_host=$MGMT_IP ansible_ssh_port=22" > $inventory_file
-    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ANSIBLE_HOST_KEY_CHECKING=false ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s' python /usr/local/bin/ansible-playbook -e pipeline=true --private-key=$rsa_file --user=root --connection=ssh --inventory-file=$inventory_file $WORK_DIR/installer/compass-install/install/compass_nodocker.yml
+    PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ANSIBLE_HOST_KEY_CHECKING=false ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s' python /usr/local/bin/ansible-playbook -e pipeline=true --private-key=$rsa_file --user=root --connection=ssh --inventory-file=$inventory_file $WORK_DIR/installer/compass-install/install/$1
     exit_status=$?
     rm $inventory_file
-    log_info "install_compass_core exit"
     if [[ $exit_status != 0 ]];then
         /bin/false
     fi
