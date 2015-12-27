@@ -18,67 +18,56 @@ source ${COMPASS_DIR}/deploy/compass_vm.sh
 source ${COMPASS_DIR}/deploy/deploy_host.sh
 
 ######################### main process
-old_ifs=$IFS
-IFS=,
-tear_down_machines
-IFS=$old_ifs
+print_logo
 
-if [[ "$DEPLOY_STEP" == "compass_only" || "$DEPLOY_STEP" == "all" ]]
-then
-if ! prepare_env;then
-    echo "prepare_env failed"
-    exit 1
+if [[ ! -z $VIRT_NUMBER ]];then
+    tear_down_machines
 fi
 
 log_info "########## get host mac begin #############"
 machines=`get_host_macs`
-if [[ -z $machines ]];then
+if [[ -z $machines ]]; then
     log_error "get_host_macs failed"
     exit 1
 fi
 
-log_info "deploy host macs: $machines"
 export machines
-echo "export machines=\""$machines"\"" > $WORK_DIR/switch_machines
-log_info "########## set up network begin #############"
-if ! create_nets;then
-    log_error "create_nets failed"
-    exit 1
-fi
 
-if ! launch_compass;then
-    log_error "launch_compass failed"
-    exit 1
-fi
+if [[ "$DEPLOY_COMPASS" == "true" ]]; then
+    if ! prepare_env;then
+        echo "prepare_env failed"
+        exit 1
+    fi
 
-else
+    log_info "########## set up network begin #############"
+    if ! create_nets;then
+        log_error "create_nets failed"
+        exit 1
+    fi
 
-# test code
-if [[ -f $WORK_DIR/switch_machines ]]; then
-    echo "using last generated machines"
-    source $WORK_DIR/switch_machines
-else
-    export machines="'00:00:3d:a4:ee:4c','00:00:63:35:3c:2b','00:00:f2:f2:b7:a5','00:00:2f:d3:88:28','00:00:46:67:11:e7'"
-fi
-
-fi
-
-if [[ "$DEPLOY_STEP" == "host_only" || "$DEPLOY_STEP" == "all" ]]; then
-
-if [[ ! -z $VIRT_NUMBER ]];then
-    if ! launch_host_vms;then
-        log_error "launch_host_vms failed"
+    if ! launch_compass;then
+        log_error "launch_compass failed"
         exit 1
     fi
 fi
-if ! deploy_host;then
-    #tear_down_machines
-    #tear_down_compass
-    exit 1
-else
-    #tear_down_machines
-    #tear_down_compass
-    exit 0
+
+if [[ -z "$REDEPLOY_HOST" || "$REDEPLOY_HOST" == "false" ]]; then
+    if ! set_compass_machine; then
+        log_error "set_compass_machine fail"
+    fi
 fi
 
+if [[ "$DEPLOY_HOST" == "true" || $REDEPLOY_HOST == "true" ]]; then
+    if [[ ! -z $VIRT_NUMBER ]];then
+        if ! launch_host_vms;then
+            log_error "launch_host_vms failed"
+            exit 1
+        fi
+    fi
+
+    if ! deploy_host;then
+         exit 1
+    fi
 fi
+
+figlet -ctf slant Installation Complete!

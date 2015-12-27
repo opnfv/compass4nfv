@@ -1,4 +1,16 @@
 
+function print_logo()
+{
+    if ! apt --installed list 2>/dev/null | grep "figlet"
+    then
+        sudo apt-get update -y
+        sudo apt-get install -y --force-yes figlet
+    fi
+
+    figlet -ctf slant Compass Installer
+    set +x; sleep 2; set -x
+}
+
 function download_iso()
 {
     iso_name=`basename $ISO_URL`
@@ -14,7 +26,6 @@ function download_iso()
 
     curl --connect-timeout 10 -o $WORK_DIR/cache/$iso_name $ISO_URL
 }
-
 
 function prepare_env() {
     export PYTHONPATH=/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages

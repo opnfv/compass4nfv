@@ -228,6 +228,9 @@ opts = [
     cfg.StrOpt('deploy_type',
               help='deploy type',
               default='virtual'),
+    cfg.StrOpt('deploy_flag',
+              help='deploy flag',
+              default='deploy'),
 ]
 CONF.register_cli_opts(opts)
 
@@ -279,9 +282,9 @@ class CompassClient(object):
 
     def get_machines(self):
         status, resp = self.client.list_machines()
-        LOG.info(
-            'get all machines status: %s, resp: %s', status, resp)
         if not self.is_ok(status):
+            LOG.error(
+                'get all machines status: %s, resp: %s', status, resp)
             raise RuntimeError('failed to get machines')
 
         machines_to_add = list(set([
@@ -289,12 +292,21 @@ class CompassClient(object):
             if machine
         ]))
 
-        LOG.info('machines to add: %s', machines_to_add)
         machines_db = [str(m["mac"]) for m in resp]
-        LOG.info('machines in db: %s', machines_db)
-        assert(set(machines_db) == set(machines_to_add))
+        LOG.info('machines in db: %s\n to add: %s', machines_db, machines_to_add)
+        if not set(machines_to_add).issubset(set(machines_db)):
+            raise RuntimeError('unidentify machine to add')
 
-        return [m["id"] for m in resp]
+        return [m["id"] for m in resp if str(m["mac"]) in machines_to_add]
+
+    def list_clusters(self):
+        status, resp = self.client.list_clusters(name=CONF.cluster_name)
+        if not self.is_ok(status) or not resp:
+            raise RuntimeError('failed to list cluster')
+
+        cluster = resp[0]
+
+        return cluster['id']
 
     def get_adapter(self):
         """get adapter."""
@@ -806,6 +818,18 @@ class CompassClient(object):
         if not self.is_ok(status):
             raise RuntimeError("deploy cluster failed")
 
+    def redeploy_clusters(self, cluster_id):
+        status, response = self.client.redeploy_cluster(
+            cluster_id
+        )
+
+        if not self.is_ok(status):
+            LOG.info(
+                'deploy cluster %s status %s: %s',
+                cluster_id, status, response
+            )
+            raise RuntimeError("redeploy cluster failed")
+
     def get_installing_progress(self, cluster_id):
         """get intalling progress."""
         action_timeout = time.time() + 60 * float(CONF.action_timeout)
@@ -862,7 +886,8 @@ class CompassClient(object):
             raise Exception(msg)
 
 
-def main():
+
+def deploy():
     client = CompassClient()
     machines = client.get_machines()
 
@@ -884,6 +909,23 @@ def main():
 
     client.get_installing_progress(cluster_id)
     client.check_dashboard_links(cluster_id)
+
+def redeploy():
+    client = CompassClient()
+
+    cluster_id = client.list_clusters()
+
+    client.redeploy_clusters(cluster_id)
+
+    client.get_installing_progress(cluster_id)
+    client.check_dashboard_links(cluster_id)
+
+def main():
+    if CONF.deploy_flag == "redeploy":
+        redeploy()
+    else:
+        deploy()
+
 
 if __name__ == "__main__":
     CONF(args=sys.argv[1:])
