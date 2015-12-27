@@ -647,6 +647,11 @@ class Client(object):
         data['deploy'] = deploy
         return self._post('/clusters/%s/action' % cluster_id, data=data)
 
+    def redeploy_cluster(self, cluster_id):
+        data = {}
+        data['redeploy'] = {}
+        return self._post('/clusters/%s/action' % cluster_id, data=data)
+
     def get_cluster_state(self, cluster_id):
         return self._get('/clusters/%s/state' % cluster_id)
 

@@ -5,7 +5,13 @@ function deploy_host(){
 
     reboot_hosts
 
-    python ${COMPASS_DIR}/deploy/client.py --compass_server="${HTTP_SERVER_URL}" \
+    if [[ "$REDEPLOY_HOST" == true ]]; then
+        deploy_flag="redeploy"
+    else
+        deploy_flag="deploy"
+    fi
+
+    python ${COMPASS_DIR}/deploy/client.py --deploy_flag=$deploy_flag --compass_server="${HTTP_SERVER_URL}" \
     --compass_user_email="${COMPASS_USER_EMAIL}" --compass_user_password="${COMPASS_USER_PASSWORD}" \
     --cluster_name="${CLUSTER_NAME}" --language="${LANGUAGE}" --timezone="${TIMEZONE}" \
     --hostnames="${HOSTNAMES}" --partitions="${PARTITIONS}" --subnets="${SUBNETS}" \

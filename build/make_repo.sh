@@ -163,8 +163,8 @@ function make_all_repo()
 
     make_repo --os-ver rhel7 --package-tag compass \
               --tmpl "${WORK_PATH}/build/templates/compass_core.tmpl" \
-              --default-package "kernel-devel epel-release wget libxml2 glibc gcc perl openssl-libs mkisofs createrepo \
-                                 python-yaml python-jinja2 python-paramiko elasticsearch logstash bind-license vim \
+              --default-package "kernel-devel epel-release wget libxml2 glibc gcc perl openssl-libs mkisofs createrepo lsof \
+                                 python-yaml python-jinja2 python-paramiko elasticsearch logstash bind-license vim nmap-ncat \
                                  yum cobbler cobbler-web createrepo mkisofs syslinux pykickstart bind rsync fence-agents \
                                  dhcp xinetd tftp-server httpd libselinux-python python-setuptools python-devel mysql-devel \
                                  mysql-server mysql MySQL-python redis mod_wsgi net-tools rabbitmq-server nfs-utils" \

@@ -1,10 +1,13 @@
 host_vm_dir=$WORK_DIR/vm
 function tear_down_machines() {
+    old_ifs=$IFS
+    IFS=,
     for i in $HOSTNAMES; do
         sudo virsh destroy $i
         sudo virsh undefine $i
         rm -rf $host_vm_dir/$i
     done
+    IFS=$old_ifs
 }
 
 function reboot_hosts() {
@@ -14,7 +17,6 @@ function reboot_hosts() {
 function launch_host_vms() {
     old_ifs=$IFS
     IFS=,
-    tear_down_machines
     #function_bod
     mac_array=($machines)
     log_info "bringing up pxe boot vms"
@@ -44,16 +46,18 @@ function launch_host_vms() {
 }
 
 function get_host_macs() {
-    local config_file=$WORK_DIR/installer/compass-install/install/group_vars/all
     local mac_generator=${COMPASS_DIR}/deploy/mac_generator.sh
     local machines=
 
-    chmod +x $mac_generator
-    mac_array=`$mac_generator $VIRT_NUMBER`
-    machines=`echo $mac_array|sed 's/ /,/g'`
+    if [[ $REDEPLOY_HOST == "true" ]]; then
+        mac_array=`cat $WORK_DIR/switch_machines`
+    else
+        chmod +x $mac_generator
+        mac_array=`$mac_generator $VIRT_NUMBER`
+        echo $mac_array > $WORK_DIR/switch_machines
+    fi
 
-    echo "test: true" >> $config_file
-    echo "pxe_boot_macs: [${machines}]" >> $config_file
+    machines=`echo $mac_array|sed 's/ /,/g'`
 
     echo $machines
 }
