@@ -11,3 +11,5 @@
     - config
     - keystone_config
     - keystone
+
+- meta: flush_handlers

@@ -5,3 +5,5 @@
 
 - include: rabbitmq_config.yml
   when: inventory_hostname == haproxy_hosts.keys()[0]
+
+- meta: flush_handlers

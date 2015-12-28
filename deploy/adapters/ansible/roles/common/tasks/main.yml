@@ -70,3 +70,5 @@
 - name: kill daemon for accelerate
   shell: lsof -ni :5099|grep LISTEN|awk '{print $2}'|xargs kill -9
   ignore_errors: true
+
+- meta: flush_handlers

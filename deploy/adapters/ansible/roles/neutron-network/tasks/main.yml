@@ -87,3 +87,5 @@
   with_flattened:
     - services_noarch
     - services
+
+- meta: flush_handlers

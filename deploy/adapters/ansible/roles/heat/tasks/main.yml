@@ -12,3 +12,4 @@
     - heat_config
     - heat
 
+- meta: flush_handlers

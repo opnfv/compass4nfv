@@ -11,3 +11,5 @@
     - config
     - neutron_config
     - neutron
+
+- meta: flush_handlers

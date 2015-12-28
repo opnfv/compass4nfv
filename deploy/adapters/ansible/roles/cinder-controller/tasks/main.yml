@@ -13,3 +13,5 @@
     - config
     - cinder-config
     - cinder
+
+- meta: flush_handlers

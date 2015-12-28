@@ -84,3 +84,5 @@
 
 - name: restart rsyslog
   shell: service rsyslog restart
+
+- meta: flush_handlers
