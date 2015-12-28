@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_58a3694f",
+        "filename": "deploy/adapters/ansible/roles/onos_cluster/tasks/openvswitch.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2015-12-28T05:17:25Z",
+      "side": 1,
+      "message": "\"192.168.50.0/24\" should be replace by {{ ip_settings[haproxy_hosts.keys()[0]][\u0027external\u0027][\u0027cidr\u0027] }}",
+      "parentUuid": "9a5c5d37_d8e07998",
+      "revId": "169a0abf59a5e8970cc40c7aa03782ac369dedb0",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_785bcd87",
         "filename": "deploy/adapters/ansible/roles/onos_cluster/tasks/openvswitch.yml",
         "patchSetId": 1
