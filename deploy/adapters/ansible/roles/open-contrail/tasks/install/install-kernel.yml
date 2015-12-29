@@ -11,7 +11,7 @@
 #        name: "linux-image-3.13.0-40-generic"
 #        name: "linux-image-extra-3.13.0-40-generic"
 #      when: (kernel_install) and (ansible_kernel != "3.13.0-40-generic")
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
   with_items: kernel_packages | union(kernel_packages_noarch)
   when: (kernel_install) and (ansible_kernel != kernel_required)
 

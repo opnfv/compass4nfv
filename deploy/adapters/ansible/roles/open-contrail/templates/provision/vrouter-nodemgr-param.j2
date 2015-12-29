@@ -1,1 +1,2 @@
-DISCOVERY={{ ip_settings[haproxy_hosts.keys()[0]]['mgmt']['ip'] }}
+#DISCOVERY={{ ip_settings[haproxy_hosts.keys()[0]]['mgmt']['ip'] }}
+DISCOVERY={{ haproxy_hosts.value()[0] }}

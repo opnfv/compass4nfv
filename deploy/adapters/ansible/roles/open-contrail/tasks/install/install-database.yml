@@ -13,5 +13,5 @@
 #  sudo: True
 #      apt:
 #        name: "contrail-openstack-database"
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
   with_items: database_packages 
