@@ -16,3 +16,5 @@
   when: status.stat.exists == True and status.stat.isblk == True
   tags:
     - storage
+
+- meta: flush_handlers

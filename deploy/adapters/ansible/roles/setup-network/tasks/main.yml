@@ -50,3 +50,5 @@
 
 - name: add to boot scripts
   service: name=net_init enabled=yes
+
+- meta: flush_handlers

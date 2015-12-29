@@ -28,3 +28,5 @@
     - ceph_deploy
     - ceph_openstack_conf
     - ceph_openstack
+
+- meta: flush_handlers

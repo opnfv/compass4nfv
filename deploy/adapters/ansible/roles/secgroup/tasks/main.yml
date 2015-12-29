@@ -8,3 +8,5 @@
 - include: secgroup.yml
   when: '{{ enable_secgroup }} == False'
   tags: secgroup
+
+- meta: flush_handlers

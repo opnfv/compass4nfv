@@ -11,3 +11,5 @@
     - config
     - nova_config
     - nova
+
+- meta: flush_handlers

@@ -23,7 +23,7 @@
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
   with_items: services | union(services_noarch)
 
-- meta: flush_handlers
-
 - name: remove nova sqlite db
   shell: rm /var/lib/nova/nova.sqlite || touch nova.sqlite.removed
+
+- meta: flush_handlers

@@ -46,4 +46,3 @@
 
 - include: ../../neutron-network/tasks/odl.yml
   when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
-

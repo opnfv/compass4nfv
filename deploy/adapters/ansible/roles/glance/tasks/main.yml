@@ -17,3 +17,5 @@
     - config
     - glance_config
     - glance
+
+- meta: flush_handlers
