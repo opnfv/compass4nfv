@@ -5,8 +5,19 @@ kernel_install: no
 #ansible_ssh_pass: "root"
 
 contrail_keystone_address: "{{ internal_vip.ip }}"
-contrail_admin_user: "keystone"
-contrail_admin_password: "service"
+contrail_admin_user: "admin"
+contrail_admin_password: "console"
+
+
+# network infor adapter for compass
+contrail_device: "mgmt"
+contrail_address: "{{ internal_ip }}"
+contrail_netmask: "255.255.255.0"
+#contrail_gateway: "10.84.50.254"
+contrail_gateway:
+#contrail_mgmt_address: "172.27.113.91"
+
+
 
 contrail_keepalived: no 
 #contrail_haproxy_address: "10.0.0.22" # 10.0.0.80
@@ -20,7 +31,7 @@ contrail_router_asn: "64512"
 ### Modify when need openstack provisioning
 keystone_provision: no
 install_nova: no
-rabbit_password: "password"
+rabbit_password: "console"
 
 contrail_tor_agents:
   - name: "test01"

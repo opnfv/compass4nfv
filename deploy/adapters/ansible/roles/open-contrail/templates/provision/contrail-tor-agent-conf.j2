@@ -78,7 +78,7 @@ server = {{ contrail_haproxy_address }}
 [NETWORKS]
 # control-channel IP address used by WEB-UI to connect to vnswad to fetch
 # required information (Optional)
-control_network_ip = {{ contrail_address }}
+control_network_ip = {{ contrail_haproxy_address }}
 
 [TOR]
 # IP address of the TOR to manage

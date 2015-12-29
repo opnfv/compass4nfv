@@ -20,6 +20,7 @@
 #  sudo: True
   apt:
     deb: "/tmp/{{ package }}"
+    force: yes
 
 - name: "delete temporary contrail install package"
 #  sudo: True
@@ -56,6 +57,7 @@
 #  sudo: True
   apt:
     deb: "{{ item }}"
+    force: yes
   with_items: required_packages.stdout_lines
   ignore_errors: True
 
@@ -91,3 +93,4 @@
   apt:
     name: "contrail-setup"
     update_cache: yes
+    force: yes
