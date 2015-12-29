@@ -29,7 +29,8 @@
 #  sudo: True
   lineinfile:
     dest: "/etc/hosts"
-    line: "{{ hostvars[item]['contrail_address'] }}\t{{ hostvars[item]['ansible_hostname'] }} {{ hostvars[item]['ansible_hostname'] }}-ctrl"
+#    line: "{{ hostvars[item]['contrail_address'] }}\t{{ hostvars[item]['ansible_hostname'] }} {{ hostvars[item]['ansible_hostname'] }}-ctrl"
+    line: "{{ contrail_address }}\t{{ inventory_hostname }} {{ inventory_hostname }}-ctrl"
   with_items: groups['opencontrail_config']
 
 

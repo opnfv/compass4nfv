@@ -51,7 +51,7 @@
 #  sudo: True
   set_fact:
 #    dbseeds: "{{ hostvars[item.1][ contrail_address ] }}"
-     dbseeds: "{{ contrail_address }}"
+     dbseeds: "{{ haproxy_hosts.values()[0] }}"
   with_indexed_items: groups['opencontrail_database']
   when: item.0 == 0
 
@@ -63,7 +63,7 @@
 #  sudo: True
   set_fact:
 #    dbseeds: "{{ dbseeds }},{{ hostvars[item.1]['contrail_address'] }}"
-    dbseeds: "{{ dbseeds }},{{ contrail_address }}"
+    dbseeds: "{{ dbseeds }},{{ haproxy_hosts.values()[0] }}"
   with_indexed_items: groups['opencontrail_database']
   when: item.0 == 1
 
@@ -119,7 +119,7 @@
     dest: "/etc/zookeeper/conf/zoo.cfg"
     regexp: "server.{{ item.0 + 1 }}="
 #    line: "server.{{ item.0 + 1 }}={{ hostvars[item.1]['contrail_address'] }}:2888:3888"
-    line: "server.{{ item.0 + 1 }}={{ contrail_address }}:2888:3888"
+    line: "server.{{ item.0 + 1 }}={{ haproxy_hosts.values()[0] }}:2888:3888"
   with_indexed_items: groups['opencontrail_database']
 
 
@@ -143,7 +143,7 @@
 #  sudo: True
   set_fact:
 #    zkaddrs: "{{ hostvars[item.1]['contrail_address'] }}:2181"
-    zkaddrs: "{{ contrail_address }}:2181"
+    zkaddrs: "{{ haproxy_hosts.values()[0] }}:2181"
   with_indexed_items: groups['opencontrail_database']
   when: item.0 == 0
 
@@ -152,7 +152,7 @@
 #  sudo: True
   set_fact:
 #    zkaddrs: "{{ zkaddrs }},{{ hostvars[item.1]['contrail_address'] }}:2181"
-    zkaddrs: "{{ zkaddrs }},{{ contrail_address }}:2181"
+    zkaddrs: "{{ zkaddrs }},{{ haproxy_hosts.values()[0] }}:2181"
   with_indexed_items: groups['opencontrail_database']
   when: item.0 > 0
 

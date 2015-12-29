@@ -18,7 +18,7 @@
 #        name: "contrail-vrouter-3.13.0-40-generic"
 #      when: ansible_kernel == "3.13.0-40-generic"
 #  sudo: True
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
   with_items: vrouter_packages
   when: ansible_kernel == kernel_required
 
@@ -27,7 +27,7 @@
 #        name: "contrail-vrouter-dkms"
 #      when: ansible_kernel != "3.13.0-40-generic"
 #  sudo: True
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
   with_items: dkms_packages
   when: ansible_kernel != kernel_required
 
