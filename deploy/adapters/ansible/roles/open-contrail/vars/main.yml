@@ -5,8 +5,8 @@ kernel_install: no
 #ansible_ssh_pass: "root"
 
 contrail_keystone_address: "{{ internal_vip.ip }}"
-contrail_admin_user: "keystone"
-contrail_admin_password: "service"
+contrail_admin_user: "admin"
+contrail_admin_password: "console"
 
 contrail_keepalived: no 
 #contrail_haproxy_address: "10.0.0.22" # 10.0.0.80

@@ -1,5 +1,5 @@
 [DEFAULTS]
-listen_ip_addr = 0.0.0.0
+listen_ip_addr = {{ contrail_haproxy_address }}
 listen_port = 5998
 zk_server_ip = {% for cur_host in groups['opencontrail_database'] %}{{ hostvars[cur_host]['ansible_' + internal_nic].ipv4.address }}{% if not loop.last %}, {% endif %}{% endfor %}
 
