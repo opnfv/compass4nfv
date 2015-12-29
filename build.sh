@@ -32,12 +32,18 @@ function download_git()
     file_dir=$CACHE_DIR/${1%.*}
     if [[ -d $file_dir/.git ]]; then
         cd $file_dir
-        git pull origin master
+        source=`git remote -v | head -n 1  | awk '{print $2}'`
+        if [[ $2 == $source ]]; then
+            git pull origin master
+            if [[ $? -eq 0 ]]; then
+                cd -
+                return
+            fi
+        fi
         cd -
-    else
-        rm -rf $CACHE_DIR/$file_dir
-        git clone $2 $file_dir
     fi
+    rm -rf $CACHE_DIR/${1%.*}
+    git clone $2 $file_dir
 }
 
 function download_url()

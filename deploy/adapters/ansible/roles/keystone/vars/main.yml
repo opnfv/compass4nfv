@@ -99,7 +99,7 @@ os_users:
     tenant_description: "Service Tenant"
 
   - user: keystone
-    password: "{{ keystone_PASS }}"
+    password: "{{ KEYSTONE_PASS }}"
     email: keystone@admin.com
     role: admin
     tenant: service
