@@ -1,4 +1,4 @@
-
+#!/bin/bash
 function print_logo()
 {
     if ! apt --installed list 2>/dev/null | grep "figlet"
