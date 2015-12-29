@@ -63,9 +63,9 @@
     echo 'export ONOS_USER=root' >> {{ onos_home }}/options;
     mkdir {{ onos_home }}/var;
     mkdir {{ onos_home }}/config;
-    sed -i '/pre-stop/i\env JAVA_HOME=/usr/lib/jvm/java-8-oracle' {{ onos_home }}/debian/onos.conf;
-    cp -rf {{ onos_home }}/debian/onos.conf /etc/init/;
-    cp -rf {{ onos_home }}/debian/onos.conf /etc/init.d/;
+    sed -i '/pre-stop/i\env JAVA_HOME=/usr/lib/jvm/java-8-oracle' {{ onos_home }}/init/onos.conf;
+    cp -rf {{ onos_home }}/init/onos.conf /etc/init/;
+    cp -rf {{ onos_home }}/init/onos.conf /etc/init.d/;
 #  notify:
 #    - restart onos service
   
@@ -73,17 +73,17 @@
   shell: >
     sed -i '/^featuresBoot=/c\featuresBoot={{ onos_boot_features }}' {{ onos_home }}/{{ karaf_dist }}/etc/org.apache.karaf.features.cfg;
 
-- name: create cluster json
-  template:
-    src: cluster.json
-    dest: "{{ onos_home }}/config/cluster.json"
+#- name: create cluster json
+#  template:
+#    src: cluster.json
+#    dest: "{{ onos_home }}/config/cluster.json"
 #  notify:
 #    - restart onos service
 
-- name: create tablets json
-  template:
-    src: tablets.json
-    dest: "{{ onos_home }}/config/tablets.json"
+#- name: create tablets json
+#  template:
+#    src: tablets.json
+#    dest: "{{ onos_home }}/config/tablets.json"
 #  notify:
 #    - restart onos service
 
@@ -115,12 +115,13 @@
 ##########################################################################################################
 ################################    ONOS connect with OpenStack   ################################
 ##########################################################################################################
-- name: Run OpenVSwitch Script
-  include: openvswitch.yml
+#- name: Run OpenVSwitch Script
+#  include: openvswitch.yml
 
 - name: Configure Neutron1
   shell: >
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers onos;
+    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins onos_router;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers onos_ml2;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers vxlan
 
