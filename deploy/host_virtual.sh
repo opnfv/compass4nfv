@@ -1,3 +1,4 @@
+#!/bin/bash
 host_vm_dir=$WORK_DIR/vm
 function tear_down_machines() {
     old_ifs=$IFS

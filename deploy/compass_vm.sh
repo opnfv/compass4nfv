@@ -1,3 +1,4 @@
+#!/bin/bash
 compass_vm_dir=$WORK_DIR/vm/compass
 rsa_file=$compass_vm_dir/boot.rsa
 ssh_args="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $rsa_file"

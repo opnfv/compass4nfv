@@ -1,3 +1,4 @@
+#!/bin/bash
 #set -x
 WORK_DIR=$COMPASS_DIR/work/deploy
 

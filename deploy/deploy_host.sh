@@ -1,3 +1,4 @@
+#!/bin/bash
 function deploy_host(){
 
     ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks

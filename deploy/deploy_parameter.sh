@@ -1,3 +1,4 @@
+#!/bin/bash
 set -x
 function get_option_name_list()
 {

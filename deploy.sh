@@ -1,3 +1,4 @@
+#!/bin/bash
 #set -x
 COMPASS_DIR=`cd ${BASH_SOURCE[0]%/*}/;pwd`
 export COMPASS_DIR

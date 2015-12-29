@@ -1,4 +1,4 @@
-
+#!/bin/bash
 function clear_forward_rejct_rules()
 {
     while sudo iptables -nL FORWARD --line-number|grep -E 'REJECT +all +-- +0.0.0.0/0 +0.0.0.0/0 +reject-with icmp-port-unreachable'|head -1|awk '{print $1}'|xargs sudo iptables -D FORWARD; do :; done

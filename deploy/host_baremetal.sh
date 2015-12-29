@@ -1,3 +1,4 @@
+#!/bin/bash
 function reboot_hosts() {
     if [ -z $POWER_MANAGE ]; then
         return
