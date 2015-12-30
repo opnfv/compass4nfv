@@ -47,3 +47,9 @@
 
 - name: set owner
   file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory
+
+- name: start mysql
+  service:
+    name: mysql
+    state: started
+    enabled: yes
