@@ -23,7 +23,11 @@ wsrep_provider_options="gcache.size=1024M"
 wsrep_cluster_name="my_wsrep_cluster"
 
 # Group communication system handle
+{% if haproxy_hosts|length == 1 %}
+wsrep_cluster_address=gcomm://
+{% else %}
 wsrep_cluster_address=gcomm://{{ haproxy_hosts.values()|join(",") }}
+{% endif %}
 
 # Human-readable node name (non-unique). Hostname by default.
 #wsrep_node_name=
