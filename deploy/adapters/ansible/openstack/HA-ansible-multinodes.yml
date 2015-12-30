@@ -77,8 +77,8 @@
 - hosts: ceph_adm
   remote_user: root
   accelerate: true
-  roles: [] # just test
-    #- ceph-deploy
+  roles:
+    - ceph-deploy
 
 - hosts: all
   remote_user: root
