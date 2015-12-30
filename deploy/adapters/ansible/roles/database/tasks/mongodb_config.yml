@@ -16,6 +16,33 @@
 
 - debug: msg='{{ servers.stdout |int }}'
 
+- name: wait replica servers are ready
+  shell: mongo compass --eval 'printjson(rs.status())'|grep -E 'PRIMARY'|wc -l
+  register: servers
+  until: servers.stdout|int == 1
+  retries: 60
+  delay: 10
+
+- debug: msg='{{ servers.stdout |int }}'
+
+- name: create mongodb user and db
+  mongodb_user:
+    login_host: "{{ internal_vip.ip }}"
+    database: ceilometer
+    name: ceilometer
+    password: "{{ CEILOMETER_DBPASS }}"
+    roles: 'readWrite,dbAdmin'
+    state: present
+
+- name: grant user privilege
+  mongodb_user:
+    login_host: "{{ internal_vip.ip }}"
+    database: ceilometer
+    name: ceilometer
+    password: "{{ CEILOMETER_DBPASS }}"
+    roles: 'readWrite,dbAdmin'
+    state: present
+
 - name: create mongodb user and db
   mongodb_user:
     login_host: "{{ internal_vip.ip }}"
