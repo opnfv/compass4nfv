@@ -1,12 +1,12 @@
 ---
 packages:
   - ubuntu-cloud-keyring
-  #- python-dev
+  - python-dev
   - openvswitch-datapath-dkms
   - openvswitch-switch
   - python-memcache
   - python-iniparse
-  - python-d* #TODO, need remove
+  #- python-d* #TODO, need remove
 
 pip_packages:
   - crudini

@@ -15,6 +15,8 @@ sudo add-apt-repository ppa:webupd8team/java
 # add open java7 repo
 sudo add-apt-repository 'deb http://security.ubuntu.com/ubuntu trusty-security main'
 
+echo "deb http://us.archive.ubuntu.com/ubuntu/ precise-updates main restricted" >> /etc/apt/sources.list
+
 sudo apt-get update
 
 sudo apt-get install reprepro -y
