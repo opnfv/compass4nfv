@@ -75,9 +75,9 @@ public_vip:
 
 onos_nic: eth2
 public_net_info:
-  enable: False
+  enable: True 
   network: ext-net
-  type: vlan
+  type: flat
   segment_id: 1000
   subnet: ext-subnet
   provider_network: physnet
