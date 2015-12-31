@@ -33,25 +33,3 @@
   run_once: true
   when: 'public_net_info.enable == True'
 
-- name: create external router
-  neutron_router:
-    login_username: ADMIN
-    login_password: "{{ ADMIN_PASS }}"
-    login_tenant_name: admin
-    auth_url: "http://{{ internal_vip.ip }}:35357/v2.0"
-    name: "{{ public_net_info.router }}"
-    state: present
-  run_once: true
-  when: 'public_net_info.enable == True'
-
-- name: set external router gateway
-  neutron_router_gateway:
-    login_username: ADMIN
-    login_password: "{{ ADMIN_PASS }}"
-    login_tenant_name: admin
-    auth_url: "http://{{ internal_vip.ip }}:35357/v2.0"
-    router_name: "{{ public_net_info.router }}"
-    network_name: "{{ public_net_info.network }}"
-    state: present
-  run_once: true
-  when: 'public_net_info.enable == True'
