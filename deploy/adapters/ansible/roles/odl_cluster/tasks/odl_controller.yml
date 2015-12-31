@@ -86,7 +86,7 @@
 
 - name: install odl pip packages
   pip: name={{ item }} state=present
-  with_items: odl_pip_packages
+  with_items: odl_pip
 
 
 #- name: restart odl service
