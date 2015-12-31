@@ -21,4 +21,4 @@
 #      apt:
 #        name: "contrail-openstack-config"
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: config_packages
+  with_items: config_package

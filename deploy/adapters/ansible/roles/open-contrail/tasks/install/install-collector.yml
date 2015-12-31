@@ -13,4 +13,4 @@
 #   apt:
 #   name: "contrail-openstack-analytics"
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: collector_packages
+  with_items: collector_package

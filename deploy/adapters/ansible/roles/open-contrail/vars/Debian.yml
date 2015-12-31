@@ -2,10 +2,10 @@
 
 package: "contrail-install-packages_2.21-102-ubuntu-14-04juno_all.deb"
 
-common_packages:
+common_package:
   - contrail-setup
 
-kernel_packages:
+kernel_package:
   - linux-headers-3.13.0-40
   - linux-headers-3.13.0-40-generic
   - linux-image-3.13.0-40-generic
@@ -13,28 +13,28 @@ kernel_packages:
 
 kernel_required: "3.13.0-40-generic"
 
-database_packages:
+database_package:
   - contrail-openstack-database
 
-config_packages:
+config_package:
   - contrail-openstack-config
 
-control_packages:
+control_package:
   - contrail-openstack-control
 
-collector_packages:
+collector_package:
   - contrail-openstack-analytics
 
-webui_packages:
+webui_package:
   - contrail-openstack-webui
 
-vrouter_packages:
+vrouter_package:
   - contrail-vrouter-3.13.0-40-generic
 
-dkms_packages:
+dkms_package:
   - contrail-vrouter-dkms
 
-compute_packages:
+compute_package:
   - contrail-vrouter-common
   - contrail-nova-vif
 

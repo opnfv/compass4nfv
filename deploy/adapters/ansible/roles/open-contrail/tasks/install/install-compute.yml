@@ -19,7 +19,7 @@
 #      when: ansible_kernel == "3.13.0-40-generic"
 #  sudo: True
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: vrouter_packages
+  with_items: vrouter_package
   when: ansible_kernel == kernel_required
 
 - name: "install contrail vrouter dkms package"
@@ -28,7 +28,7 @@
 #      when: ansible_kernel != "3.13.0-40-generic"
 #  sudo: True
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: dkms_packages
+  with_items: dkms_package
   when: ansible_kernel != kernel_required
 
 #    - name: "install contrail vrouter common package"
@@ -42,6 +42,6 @@
 - name: "install contrail vrouter common & nova vif package"
 #  sudo: True
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: compute_packages | union(compute_packages_noarch)
+  with_items: compute_package | union(compute_package_noarch)
 
 

@@ -15,4 +15,4 @@
 #      apt:
 #        name: "contrail-openstack-webui"
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"
-  with_items: webui_packages
+  with_items: webui_package

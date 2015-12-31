@@ -55,9 +55,9 @@ contrail_tor_agents:
 
 
 # adapter for compass
-kernel_packages_noarch: []
+kernel_package_noarch: []
 
-compute_packages_noarch: []
+compute_package_noarch: []
 
 # network infor adapter for compass
 contrail_device: "mgmt"
