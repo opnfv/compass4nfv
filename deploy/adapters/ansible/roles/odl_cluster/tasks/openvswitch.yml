@@ -44,7 +44,7 @@
 #  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
 
 
-- name: recover br-int
+- name: set local ip in openvswitch
   shell: ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) other_config={'local_ip'=' {{ internal_ip }} '};
 
 #'
