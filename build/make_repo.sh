@@ -4,6 +4,8 @@ set -ex
 BUILD_PATH=$(cd "$(dirname "$0")"; pwd)
 WORK_PATH=$(cd "$(dirname "$0")"/..; pwd)
 
+source $BUILD_PATH/build.conf
+
 function process_env()
 {
     mkdir -p ${WORK_PATH}/work/repo/ ${WORK_PATH}/work/repo/pip
@@ -117,8 +119,9 @@ function make_repo()
     fi
 
     # copy special package to work dir
-    if [[ -n $special_package_dir && -d $special_package_dir ]]; then
-        cp -rf $special_package_dir/*  ${WORK_PATH}/work/repo/$arch/packages/
+    if [[ -n $special_package_dir ]]; then
+        curl --connect-timeout 10 -o $WORK_PATH/work/repo/$arch/`basename $special_package_dir` $special_package_dir
+        tar -zxvf $WORK_PATH/work/repo/$arch/`basename $special_package_dir` -C ${WORK_PATH}/work/repo/$arch/packages
     fi
 
     # copy docker file to work dir
@@ -133,7 +136,7 @@ function make_repo()
         cp -rf ${WORK_PATH}/build/os/$os_name/ceph_key_release.asc ${WORK_PATH}/work/repo
     fi
 
-    sudo docker build -t ${docker_tag} -f ${WORK_PATH}/work/repo/${dockerfile} ${WORK_PATH}/work/repo/
+    sudo docker build --no-cache=true -t ${docker_tag} -f ${WORK_PATH}/work/repo/${dockerfile} ${WORK_PATH}/work/repo/
 
     sudo docker run -t -v ${WORK_PATH}/work/repo:/result ${docker_tag}
 
@@ -173,17 +176,20 @@ function make_all_repo()
     make_repo --os-ver trusty --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
-              --special-package "openvswitch-datapath-dkms openvswitch-switch"
+              --special-package "openvswitch-datapath-dkms openvswitch-switch keepalived" \
+              --special-package-dir "$SPECIAL_DEBIAN_PACKAGE"
 
     make_repo --os-ver trusty --package-tag kilo \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
-              --special-package "openvswitch-datapath-dkms openvswitch-switch"
+              --special-package "openvswitch-datapath-dkms openvswitch-switch keepalived" \
+              --special-package-dir "$SPECIAL_DEBIAN_PACKAGE"
 
     make_repo --os-ver trusty --package-tag liberty \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
-              --special-package "openvswitch-datapath-dkms openvswitch-switch"
+              --special-package "openvswitch-datapath-dkms openvswitch-switch keepalived" \
+              --special-package-dir "$SPECIAL_DEBIAN_PACKAGE"
 
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
