@@ -20,19 +20,25 @@ def get_packages_name_list(file_list, special_packages):
     for file in file_list:
         datas = yaml.load(open(file))
         for key, value in datas.items():
+            if key == "pip_packages":
+                 continue
+
             if not key.endswith("packages") and not key.endswith("packages_noarch"):
                 continue
 
             if not value:
                 continue
 
-            if value in special_packages:
-                continue
+            if not isinstance(value, list):
+                value = [value]
 
-            if value not in package_name_list:
-                package_name_list += value
+            for i in value:
+                if i in special_packages:
+                    continue
 
-    return package_name_list
+            package_name_list.append(value)
+
+    return list(set(package_name_list)
 
 def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_packages="",
                              special_packages="", special_packages_script_dir="", special_packages_dir=""):
