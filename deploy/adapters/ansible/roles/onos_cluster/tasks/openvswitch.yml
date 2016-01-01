@@ -66,7 +66,7 @@
     export OS_AUTH_URL=http://{{ internal_vip.ip }}:35357/v2.0;
     export OS_USERNAME=ADMIN;
     neutron net-create ext-net --shared --router:external=True;
-    neutron subnet-create ext-net --name ext-subnet {{ ip_settings[haproxy_hosts.keys()[0]]['external']['cidr'] }};
+    neutron subnet-create ext-net --name ext-subnet {{ public_net_info.floating_ip_cidr }};
   when: inventory_hostname == groups['controller'][0]
 
 - name: set gateway mac address
@@ -77,5 +77,7 @@
   when: inventory_hostname == groups['onos'][0]
 
 - name: delete default gateway
-  command: su -s /bin/sh -c "route delete dufault";
+  shell: >
+    route delete dufault;
+  when: inventory_hostname in groups['onos']
   ignore_errors: True
