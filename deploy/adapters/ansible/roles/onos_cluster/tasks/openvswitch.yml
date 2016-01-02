@@ -78,6 +78,6 @@
 
 - name: delete default gateway
   shell: >
-    route delete dufault;
-  when: inventory_hostname in groups['onos']
+    route delete default;
+  when: inventory_hostname not in groups['onos']
   ignore_errors: True
