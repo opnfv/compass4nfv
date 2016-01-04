@@ -183,23 +183,25 @@
 #    group: "neutron"
 #    recurse: yes
 
-#- name: "set values to neutron config"
-#  ini_file:
-#    dest: "/etc/neutron/neutron.conf"
-#    section: "{{ item.section }}"
-#    option: "{{ item.option }}"
-#    value: "{{ item.value }}"
-#  with_items:
+- name: "set values to neutron config"
+  ini_file:
+    dest: "/etc/neutron/neutron.conf"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
 #    - { section: "DEFAULT", option: "bind_port", value: "9697" }
 #    - { section: "DEFAULT", option: "auth_strategy", value: "keystone" }
 #    - { section: "DEFAULT", option: "allow_overlapping_ips", value: "True" }
-#    - { section: "DEFAULT", option: "core_plugin", value: "neutron_plugin_contrail.plugins.opencontrail.contrail_plugin.NeutronPluginContrailCoreV2" }
-#    - { section: "DEFAULT", option: "api_extensions_path", value: "extensions:/usr/lib/python2.7/dist-packages/neutron_plugin_contrail/extensions" }
+    - { section: "DEFAULT", option: "core_plugin", value: "neutron_plugin_contrail.plugins.opencontrail.contrail_plugin.NeutronPluginContrailCoreV2" }
+    - { section: "DEFAULT", option: "api_extensions_path", value: "extensions:/usr/lib/python2.7/dist-packages/neutron_plugin_contrail/extensions" }
 #    - { section: "DEFAULT", option: "rabbit_host", value: "{{ contrail_haproxy_address }}" }
 #    - { section: "DEFAULT", option: "rabbit_port", value: "5673" }
 #    - { section: "DEFAULT", option: "service_plugins", value: "neutron_plugin_contrail.plugins.opencontrail.loadbalancer.plugin.LoadBalancerPlugin" }
-#    - { section: "service_providers", option: "service_provider", value: "LOADBALANCER:Opencontrail:neutron_plugin_contrail.plugins.opencontrail.loadbalancer.driver.OpencontrailLoadbalancerDriver:default" }
-#    - { section: "quotas", option: "quota_driver", value: "neutron_plugin_contrail.plugins.opencontrail.quota.driver.QuotaDriver" }
+    - { section: "DEFAULT", option: "service_plugins", value: " " }
+    - { section: "DEFAULT", option: "notify_nova_on_port_data_changes", value: "False" }
+    - { section: "service_providers", option: "service_provider", value: "LOADBALANCER:Opencontrail:neutron_plugin_contrail.plugins.opencontrail.loadbalancer.driver.OpencontrailLoadbalancerDriver:default" }
+    - { section: "quotas", option: "quota_driver", value: "neutron_plugin_contrail.plugins.opencontrail.quota.driver.QuotaDriver" }
 #    - { section: "quotas", option: "quota_network", value: "-1" }
 #    - { section: "quotas", option: "quota_subnet", value: "-1" }
 #    - { section: "quotas", option: "quota_port", value: "-1" }
@@ -227,10 +229,10 @@
     state: "restarted"
 
 
-#- name: "restart neutron-server"
-#  service:
-#    name: "neutron-server"
-#    state: "restarted"
+- name: "restart neutron-server"
+  service:
+    name: "neutron-server"
+    state: "restarted"
 
 # Compass configured
 #- name: "add neutron service"
