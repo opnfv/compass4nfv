@@ -208,7 +208,7 @@
 - name: drop and recreate neutron database
   shell: mysql -e "drop database if exists neutron;";
          mysql -e "create database neutron character set utf8;";
-         mysql -e "grant all on neutron.* to 'neutron'@'%' identified by 'console';";
+         mysql -e "grant all on neutron.* to 'neutron'@'%' identified by '{{ NEUTRON_DBPASS }}';";
          su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
