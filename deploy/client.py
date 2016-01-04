@@ -25,6 +25,7 @@ import netaddr
 import requests
 import json
 import itertools
+import threading
 from collections import defaultdict
 from restful import Client
 
@@ -231,6 +232,9 @@ opts = [
     cfg.StrOpt('deploy_flag',
               help='deploy flag',
               default='deploy'),
+    cfg.StrOpt('rsa_file',
+              help='ssh rsa key file',
+              default=''),
 ]
 CONF.register_cli_opts(opts)
 
@@ -836,31 +840,40 @@ class CompassClient(object):
         deployment_timeout = time.time() + 60 * float(
             CONF.deployment_timeout)
 
-        current_time = time.time()
+        current_time = time.time
         deployment_failed = True
-        while current_time < deployment_timeout:
+        while current_time() < deployment_timeout:
             status, cluster_state = self.client.get_cluster_state(cluster_id)
-            LOG.info(
-                'get cluster %s state status %s: %s',
-                cluster_id, status, cluster_state
-            )
             if not self.is_ok(status):
                 raise RuntimeError("can not get cluster state")
 
             if cluster_state['state'] in ['UNINITIALIZED', 'INITIALIZED']:
-                if current_time >= action_timeout:
+                if current_time() >= action_timeout:
                     deployment_failed = True
+                    LOG.info(
+                         'get cluster %s state status %s: %s, successful',
+                         cluster_id, status, cluster_state
+                    )
                     break
                 else:
                     continue
 
             elif cluster_state['state'] == 'SUCCESSFUL':
                 deployment_failed = False
+                LOG.info(
+                     'get cluster %s state status %s: %s, successful',
+                     cluster_id, status, cluster_state
+                )
                 break
             elif cluster_state['state'] == 'ERROR':
                 deployment_failed = True
+                LOG.info(
+                     'get cluster %s state status %s: %s, error',
+                     cluster_id, status, cluster_state
+                )
                 break
 
+        kill_print_proc()
         if deployment_failed:
             raise RuntimeError("deploy cluster failed")
 
@@ -886,6 +899,18 @@ class CompassClient(object):
             raise Exception(msg)
 
 
+def print_ansible_log()
+    os.system("""
+              ssh -i %s root@192.168.200.2
+              'while ! tail -f /var/ansible/run/openstack_liberty-opnfv2/ansible.log 2>/dev/null;
+               do :;
+                   sleep 1;
+               done'
+              """ % CONF.rsa_file)
+
+def kill_print_proc()
+    os.system("ps aux |grep -v grep|grep -E 'ssh.+root@192.168.200.2' \
+              | awk '{print $2}'|xargs kill -9")
 
 def deploy():
     client = CompassClient()
@@ -907,7 +932,9 @@ def deploy():
     client.set_all_hosts_roles(cluster_id)
     client.deploy_clusters(cluster_id)
 
-    client.get_installing_progress(cluster_id)
+    threading.Thread(target=client.get_installing_progress, args=(cluster_id,)).start()
+    LOG.info("compass OS installtion is begin")
+    print_ansible_log()
     client.check_dashboard_links(cluster_id)
 
 def redeploy():
