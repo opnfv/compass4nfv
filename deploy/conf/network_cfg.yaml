@@ -75,7 +75,7 @@ public_vip:
 
 onos_nic: eth2
 public_net_info:
-  enable: True 
+  enable: True
   network: ext-net
   type: flat
   segment_id: 1000
