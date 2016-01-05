@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_ec613a3a",
+        "filename": "deploy/conf/vm_environment/huawei-us-deploy-vm-1/network.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1317
+      },
+      "writtenOn": "2016-01-05T06:22:56Z",
+      "side": 1,
+      "message": "modify the floating ip range",
+      "revId": "a6a7e5fdb1f263be729693f4d415a280d6aa059f",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_cc64364b",
+        "filename": "deploy/conf/vm_environment/huawei-us-deploy-vm-2/network.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1317
+      },
+      "writtenOn": "2016-01-05T06:22:56Z",
+      "side": 1,
+      "message": "modify the floating range",
+      "revId": "a6a7e5fdb1f263be729693f4d415a280d6aa059f",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
