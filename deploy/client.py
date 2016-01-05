@@ -856,6 +856,7 @@ class CompassClient(object):
                     )
                     break
                 else:
+                    time.sleep(5)
                     continue
 
             elif cluster_state['state'] == 'SUCCESSFUL':
@@ -926,9 +927,9 @@ def deploy():
     client.set_all_hosts_roles(cluster_id)
     client.deploy_clusters(cluster_id)
 
-    threading.Thread(target=client.get_installing_progress, args=(cluster_id,)).start()
     LOG.info("compass OS installtion is begin")
-    print_ansible_log()
+    threading.Thread(target=print_ansible_log).start()
+    client.get_installing_progress(cluster_id)
     client.check_dashboard_links(cluster_id)
 
 def redeploy():
