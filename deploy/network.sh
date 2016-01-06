@@ -57,6 +57,8 @@ function setup_bridge_external()
 
     sudo virsh net-define $WORK_DIR/network/external.xml
     sudo virsh net-start external
+
+    sudo python $COMPASS_DIR/deploy/setup_vnic.py
 }
 
 function setup_nat_net() {
