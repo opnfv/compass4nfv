@@ -77,14 +77,13 @@ public_vip:
 public_net_info:
   enable: True
   network: ext-net
-  type: vlan
-  segment_id: 1411
+  type: flat
   subnet: ext-subnet
   provider_network: physnet
   router: router-ext
   enable_dhcp: False
   no_gateway: False
-  external_gw: "192.168.140.1"
-  floating_ip_cidr: "192.168.140.0/24"
-  floating_ip_start: "192.168.140.121"
-  floating_ip_end: "192.168.140.231"
+  external_gw: "10.145.140.1"
+  floating_ip_cidr: "10.145.140.0/24"
+  floating_ip_start: "10.145.140.121"
+  floating_ip_end: "10.145.140.231"

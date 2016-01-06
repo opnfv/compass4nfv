@@ -22,13 +22,6 @@ hosts:
       - controller
       - ha
 
-  - name: host3
-    mac: '4C:B1:6C:90:57:E4'
-    ipmiIp: 10.145.140.203
-    roles:
-      - controller
-      - ha
-
   - name: host4
     mac: '4C:B1:6C:90:57:D8'
     ipmiIp: 10.145.140.204
