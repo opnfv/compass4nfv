@@ -44,7 +44,7 @@ contrail_router_asn: "64512"
 ### Modify when need openstack provisioning
 keystone_provision: no
 install_nova: no
-rabbit_password: {{ RABBIT_PASS }}
+#rabbit_password: {{ RABBIT_PASS }}
 
 contrail_tor_agents:
   - name: "test01"
