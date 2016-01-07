@@ -5,7 +5,16 @@
     - create_ceph_cluster
 
 - name: default config for ceph
-  shell: cd {{ ceph_cluster_dir[0] }} && echo "osd_journal_size = 1024" >> ceph.conf && echo "osd_pool_default_size = 2" >> ceph.conf && echo "public_network = {{ mgmt_cidr }}" >> ceph.conf && echo "cluster_network = {{ storage_cidr }} " >> ceph.conf
+  ini_file:
+    dest: "{{ ceph_cluster_dir[0] }}/ceph.conf"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { section: "global", option: "osd_journal_size", value: "1024" }
+    - { section: "global", option: "osd_pool_default_size", value: "2" }
+    - { section: "global", option: "public_network", value: "{{ mgmt_cidr }}" }
+    - { section: "global", option: "cluster_network", value: "{{ storage_cidr }}" }
 
 - name: install ceph for every nodes includes jumpserver
   shell: cd {{ ceph_cluster_dir[0] }} && ceph-deploy install --no-adjust-repos --repo-url http://10.1.0.12/cblr/repo_mirror/centos7-juno-ppa --gpg-url http://10.1.0.12/cblr/repo_mirror/centos7-juno-ppa/ceph_key_release.asc {{ ceph_cluster_hosts.stdout_lines[0]}}
