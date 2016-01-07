@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_470a5c22",
+        "filename": "deploy/conf/hardware_environment/huawei-us-deploy-bare-2/pod1/network.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2016-01-07T03:19:59Z",
+      "side": 1,
+      "message": "is this correct? maybe 10",
+      "range": {
+        "startLine": 81,
+        "startChar": 14,
+        "endLine": 81,
+        "endChar": 18
+      },
+      "revId": "ed70ad31d800884763bff51332157c89e70463cb",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_270d2838",
+        "filename": "deploy/conf/hardware_environment/huawei-us-deploy-bare-2/pod1/network.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2016-01-07T03:19:59Z",
+      "side": 1,
+      "message": "we need more floating ip for testing",
+      "range": {
+        "startLine": 90,
+        "startChar": 31,
+        "endLine": 90,
+        "endChar": 34
+      },
+      "revId": "ed70ad31d800884763bff51332157c89e70463cb",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
