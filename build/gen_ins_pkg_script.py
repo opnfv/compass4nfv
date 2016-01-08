@@ -38,7 +38,7 @@ def get_packages_name_list(file_list, special_packages):
 
             package_name_list.append(value)
 
-    return list(set(package_name_list)
+    return package_name_list
 
 def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_packages="",
                              special_packages="", special_packages_script_dir="", special_packages_dir=""):
