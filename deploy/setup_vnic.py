@@ -3,7 +3,8 @@ import os
 import yaml
 
 if __name__ == "__main__":
-    network_config_file = "/home/carey/nfv/compass4nfv/deploy/conf/network_cfg.yaml"#os.environ["NETWORK"]
+    #network_config_file = "/home/carey/nfv/compass4nfv/deploy/conf/network_cfg.yaml"#os.environ["NETWORK"]
+    network_config_file = os.environ["NETWORK"]
     network_config = yaml.load(open(network_config_file, "r"))
     os.system("ovs-vsctl --may-exist add-port br-external mgmt_vnic -- set Interface mgmt_vnic type=internal")
     os.system("ip addr flush mgmt_vnic")
