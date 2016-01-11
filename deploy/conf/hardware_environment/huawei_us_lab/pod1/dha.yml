@@ -4,32 +4,43 @@ FLAVOR: cluster
 POWER_TOOL: ipmitool
 
 ipmiUser: root
-ipmiPass: root
 ipmiVer: '2.0'
 
 hosts:
   - name: host1
-    mac: '80:FB:06:35:8C:84'
-    ipmiIp: 10.145.140.201
+    mac: '70:7B:E8:77:7B:5F'
+    ipmiIp: 172.16.130.27
+    ipmiPass: huawei@123
     roles:
       - controller
       - ha
 
   - name: host2
-    mac: '4C:B1:6C:90:57:CF'
-    ipmiIp: 10.145.140.202
+    mac: 'E0:24:7F:02:15:A3'
+    ipmiIp: 172.16.130.28
+    ipmiPass: huawei@123
     roles:
       - controller
       - ha
 
+  - name: host3
+    mac: 'D8:49:0B:DA:2A:28'
+    ipmiIp: 172.16.130.29
+    ipmiPass: Huawei@123
+    roles:
+      - compute
+
   - name: host4
-    mac: '4C:B1:6C:90:57:D8'
-    ipmiIp: 10.145.140.204
+    mac: 'D8:49:0B:DA:5B:5D'
+    ipmiIp: 172.16.130.30
+    ipmiPass: Huawei@123
     roles:
       - compute
 
   - name: host5
-    mac: '4C:B1:6C:90:57:D2'
-    ipmiIp: 10.145.140.205
+    mac: 'D8:49:0B:DA:56:85'
+    ipmiIp: 172.16.130.31
+    ipmiPass: Huawei@123
     roles:
       - compute
+
