@@ -17,14 +17,14 @@
 - name: "set first cassandra host address"
   set_fact:
 #    cassandra_addrs: "'{{ hostvars[item.1]['contrail_address'] }}'"
-    cassandra_addrs: "'{{ haproxy_hosts[item]  }}'"
+    cassandra_addrs: "'{{ haproxy_hosts[item.1]  }}'"
   with_indexed_items: groups['opencontrail_database']
   when: item.0 == 0
 
 - name: "set second or more cassandra host addresses"
   set_fact:
 #    cassandra_addrs: "{{ cassandra_addrs }}, '{{ hostvars[item.1]['contrail_address'] }}'"
-    cassandra_addrs: "{{ cassandra_addrs }}, '{{ haproxy_hosts[item] }}'"
+    cassandra_addrs: "{{ cassandra_addrs }}, '{{ haproxy_hosts[item.1] }}'"
   with_indexed_items: groups['opencontrail_database']
   when: item.0 > 0
 
