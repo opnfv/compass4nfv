@@ -1,0 +1,5 @@
+- include: install_mon.yml
+  when: inventory_hostname in groups["ceph_mon"]
+  tags:
+    - ceph_mon
+    - ceph_deploy

@@ -1,0 +1,14 @@
+---
+
+- name: create osd lv and mount it on /var/local/osd
+  script: create_osd.sh
+
+- name: copy osd keyring
+  copy: src="/tmp/ceph.osd.keyring" dest="/var/lib/ceph/bootstrap-osd/ceph.keyring"
+
+- name: prepare osd disk
+  shell: ceph-disk prepare --fs-type xfs /var/local/osd
+
+- name: activate osd node
+  shell: ceph-disk activate /var/local/osd
+
