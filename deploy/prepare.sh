@@ -34,7 +34,7 @@ function prepare_env() {
     sudo apt-get install -y --force-yes git python-pip python-dev
     sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
     sudo pip install --upgrade pip
-    sudo pip install --upgrade ansible
+    sudo pip install --upgrade ansible==1.9.4
     sudo pip install --upgrade virtualenv
     sudo pip install --upgrade netaddr
     sudo pip install --upgrade oslo.config
