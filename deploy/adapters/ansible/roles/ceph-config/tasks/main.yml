@@ -1,0 +1,111 @@
+- name: gen ceph fsid
+  shell: uuidgen
+  register: ceph_fsid
+  run_once: true
+  tags:
+    - ceph_config
+
+- name: gen ceph conf
+  local_action: 
+    module: "template"
+    src: "ceph.j2"
+    dest: "/tmp/ceph.conf"
+  run_once: true
+  tags:
+    - ceph_config
+
+- name: install ceph-related packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items:
+    - ceph-deploy
+  tags:
+    - ceph_config
+
+- name: purge ceph
+  shell: "ceph-deploy purge {{ inventory_hostname }}; ceph-deploy purgedata {{ inventory_hostname }}; ceph-deploy forgetkeys"
+  tags:
+    - ceph_config
+
+- name: remove monmap
+  file: path="/tmp/monmap" state="absent"
+  tags:
+    - ceph_config
+
+- name: "make directory for ceph config file"
+  file: path="/etc/ceph" state="directory"
+  tags:
+    - ceph_config
+
+- name: copy ceph conf to dest mon node
+  copy: src="/tmp/ceph.conf" dest="/etc/ceph/ceph.conf" 
+  tags:
+    - ceph_config
+
+- name: install ceph-related packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items:
+    - ceph
+  tags:
+    - ceph_config
+
+- name: create mon.keyring
+  shell: "ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *'"
+  tags:
+    - ceph_config
+
+- name: create admin.keyring
+  shell: "ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --set-uid=0 --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow'"
+  tags:
+    - ceph_config
+
+- name: Add the client.admin key to the ceph.mon.keyring
+  shell: "ceph-authtool /tmp/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring"
+  tags:
+    - ceph_config
+
+- name: Generate a monitor map
+  shell: "monmaptool --create --add {{ inventory_hostname }} {{ ip_settings[inventory_hostname].mgmt.ip }} --fsid {{ ceph_fsid.stdout }} /tmp/monmap"
+  tags:
+    - ceph_config
+
+- name: Create a default data directory
+  file: path="/var/lib/ceph/mon/ceph-{{ inventory_hostname }}" state="directory"
+  tags:
+    - ceph_config
+
+- name: Populate the monitor daemon
+  shell: "ceph-mon --mkfs -i {{ inventory_hostname }} --monmap /tmp/monmap --keyring /tmp/ceph.mon.keyring"
+  tags:
+    - ceph_config
+
+- name: Touch the done file
+  file: path="/var/lib/ceph/mon/ceph-{{ inventory_hostname }}/done" state="touch"
+  tags:
+    - ceph_config
+
+- name: start mon daemon
+  shell: start ceph-mon id={{ inventory_hostname }}
+  tags:
+    - ceph_config
+
+- name: auto start ceph-mon
+  file: path="/var/lib/ceph/mon/ceph-{{ inventory_hostname }}/upstart" state="touch"
+  tags:
+    - ceph_config
+
+- include: install_osd.yml
+
+- include: ceph_openstack_pre.yml
+  tags:
+    - ceph_deploy
+    - ceph_openstack_pre
+    - ceph_openstack
+
+- include: ceph_openstack_conf.yml
+  tags:
+    - ceph_deploy
+    - ceph_openstack_conf
+    - ceph_openstack
+
+
+- meta: flush_handlers
