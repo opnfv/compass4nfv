@@ -1,0 +1,39 @@
+- name: gen ceph fsid
+  shell: uuidgen
+  register: ceph_fsid
+  run_once: true
+  tags:
+    - ceph_config
+    - ceph_deploy
+
+- name: gen ceph conf
+  local_action:
+    module: "template"
+    src: "ceph.j2"
+    dest: "/tmp/ceph.conf"
+  run_once: true
+  tags:
+    - ceph_config
+    - ceph_deploy
+
+- name: "make directory for ceph config file"
+  file: path="/etc/ceph" state="directory"
+  tags:
+    - ceph_config
+    - ceph_deploy
+
+- name: copy ceph conf to dest mon node
+  copy: src="/tmp/ceph.conf" dest="/etc/ceph/ceph.conf"
+  tags:
+    - ceph_config
+    - ceph_deploy
+
+- name: install ceph-related packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items:
+    - ceph
+  tags:
+    - ceph_config
+    - ceph_deploy
+
+- meta: flush_handlers

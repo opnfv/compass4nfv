@@ -1,0 +1,20 @@
+---
+
+- name: create osd lv and mount it on /var/local/osd
+  script: create_osd.sh
+  tags:
+    - install_osd
+    - ceph_config
+
+- name: prepare osd disk
+  shell: ceph-disk prepare --fs-type xfs /var/local/osd
+  tags:
+    - install_osd
+    - ceph_config
+
+- name: activate osd node
+  shell: ceph-disk activate /var/local/osd
+  tags:
+    - install_osd
+    - ceph_config
+
