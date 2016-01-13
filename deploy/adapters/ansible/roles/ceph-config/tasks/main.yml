@@ -1,0 +1,5 @@
+- include: create_config.yml
+  tags:
+    - ceph_config
+    - ceph_deploy
+    - ceph_mon

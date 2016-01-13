@@ -8,7 +8,7 @@
   ignore_errors: True
 
 - name: modify glance-api.conf for ceph
-  shell: ssh -o StrictHostKeyChecking=no {{ item }} -t "sed -i 's/^\(default_store\).*/\1 = rbd/g' /etc/glance/glance-api.conf && sed -i '/^\[glance_store/a rbd_store_pool = images\nrbd_store_user = glance\nrbd_store_ceph_conf = /etc/ceph/ceph.conf\nrbd_store_chunk_size = 8\nshow_image_direct_url=True' /etc/glance/glance-api.conf"
+  shell: ssh -o StrictHostKeyChecking=no {{ item }} -t "sed -i 's/^\(default_store\).*/\1 = rbd/g' /etc/glance/glance-api.conf && sed -i '/^\[glance_store/a stores = rbd\nrbd_store_pool = images\nrbd_store_user = glance\nrbd_store_ceph_conf = /etc/ceph/ceph.conf\nrbd_store_chunk_size = 8\nshow_image_direct_url=True' /etc/glance/glance-api.conf"
   with_items:
     - "{{ groups['controller'] }}"
   tags:
