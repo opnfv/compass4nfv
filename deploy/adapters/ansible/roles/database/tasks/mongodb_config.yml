@@ -30,7 +30,7 @@
 
 - name: create mongodb user and db
   mongodb_user:
-    login_host: "{{ internal_ip }}"
+    login_host: "{{ internal_vip.ip }}"
     database: ceilometer
     name: ceilometer
     password: "{{ CEILOMETER_DBPASS }}"
@@ -39,7 +39,7 @@
 
 - name: grant user privilege
   mongodb_user:
-    login_host: "{{ internal_ip }}"
+    login_host: "{{ internal_vip.ip }}"
     database: ceilometer
     name: ceilometer
     password: "{{ CEILOMETER_DBPASS }}"
