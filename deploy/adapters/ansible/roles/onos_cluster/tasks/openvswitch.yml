@@ -29,8 +29,21 @@
 #    dpkg -i openvswitch-common_2.3.0-1_amd64.deb;
 #    dpkg -i openvswitch-switch_2.3.0-1_amd64.deb;
 
-- name: start up onos-external nic
-  command: su -s /bin/sh -c "ifconfig eth2 0 up"
+#- name: start up onos-external nic
+#  command: su -s /bin/sh -c "ifconfig eth2 0 up"
+- name: set veth port
+  shell:  >
+    ip link add onos_port1 type veth peer name onos_port2;
+    ifconfig onos_port1 up;
+    ifconfig onos_port2 up;
+  ignore_errors: True
+
+- name: set veth to ovs
+  shell: >
+    externamMac = `ifconfig eth1 | grep "HWaddr" | awk '{print $5}'`;
+    ifconfig onos_port2 hw ether $externamMac;
+    ovs-vsctl add-port br-prv onos_port1;
+  ignore_errors: True
 
 #- name: wait for onos start time
 #  shell: "sleep 200"
@@ -41,20 +54,19 @@
 
 - name: add openflow-base feature
   command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow-base'";
-  when: inventory_hostname == groups['onos'][0]
+  when: inventory_hostname in groups['onos']
 
 - name: add openflow feature
   command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow'";
-  when: inventory_hostname == groups['onos'][0]
+  when: inventory_hostname in groups['onos']
 
 - name: add vtn feature
   command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-app-vtn-onosfw'";
-  when: inventory_hostname == groups['onos'][0]
-
+  when: inventory_hostname in groups['onos']
 
 - name: set public eth card start
-  command: su -s /bin/sh -c "/opt/onos/bin/onos 'externalportname-set -n eth2'"
-  when: inventory_hostname == groups['onos'][0]
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'externalportname-set -n onos_port2'"
+  when: inventory_hostname in groups['onos']
 
 - name: Set ONOS as the manager
   command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ ip_settings[groups['onos'][0]]['mgmt']['ip'] }}:6640;"
@@ -66,7 +78,7 @@
     export OS_AUTH_URL=http://{{ internal_vip.ip }}:35357/v2.0;
     export OS_USERNAME=ADMIN;
     neutron net-create ext-net --shared --router:external=True;
-    neutron subnet-create ext-net --name ext-subnet {{ public_net_info.floating_ip_cidr }};
+    neutron subnet-create ext-net {{ public_net_info.floating_ip_cidr }} --name ext-subnet  --allocation-pool start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }};
   when: inventory_hostname == groups['controller'][0]
 
 - name: set gateway mac address
@@ -74,7 +86,7 @@
     ping -c 1 {{ ansible_default_ipv4.gateway }};
     gatewayMac=`arp -a {{ ansible_default_ipv4.gateway }} | awk '{print $4}'`;
     /opt/onos/bin/onos "externalgateway-update -m $gatewayMac";
-  when: inventory_hostname == groups['onos'][0]
+  when: inventory_hostname in groups['onos']
 
 - name: delete default gateway
   shell: >
