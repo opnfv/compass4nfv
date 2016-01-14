@@ -47,6 +47,7 @@
 
 - name: create new jar repository
   command: su -s /bin/sh -c "mkdir ~/.m2"
+  ignore_errors: True
 
 - name: download jar repository
   get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/repository.tar"  dest=~/.m2/
