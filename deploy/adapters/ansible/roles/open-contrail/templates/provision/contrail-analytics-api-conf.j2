@@ -1,12 +1,12 @@
 [DEFAULTS]
 host_ip = {{ contrail_address }}
 rest_api_ip = {{ contrail_haproxy_address }}
-rest_api_port = 9081
+rest_api_port = 8081
 #cassandra_server_list = {% for cur_host in groups['opencontrail_database'] %}{{ ip_settings[cur_host]['mgmt']['ip'] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
 #chenshuai: This kind of written is also correct, but the following is better, this as record
 cassandra_server_list = {% for cur_host in groups['opencontrail_database'] %}{{ haproxy_hosts[cur_host] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
 
-collectors = {{ contrail_address }}:8086
+collectors = {{ contrail_haproxy_address }}:8086
 http_server_port = 8090
 log_file = /var/log/contrail/contrail-analytics-api.log
 log_level = SYS_NOTICE

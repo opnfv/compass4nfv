@@ -29,7 +29,7 @@ listen contrail-api
     timeout client 3m
     timeout server 3m
 {% for host,ip in haproxy_hosts.items() %}
-    server {{ host }} {{ ip }}:9100 weight 1 check inter 2000 rise 2 fall 3
+    server {{ host }} {{ ip }}:8082 weight 1 check inter 2000 rise 2 fall 3
 {% endfor %}
 
 
@@ -41,7 +41,7 @@ listen contrail-discovery
     balance roundrobin
     option nolinger
 {% for host,ip in haproxy_hosts.items() %}
-    server {{ host }} {{ ip }}:9110 weight 1 check inter 2000 rise 2 fall 3
+    server {{ host }} {{ ip }}:5998 weight 1 check inter 2000 rise 2 fall 3
 {% endfor %}
 
 
@@ -56,7 +56,7 @@ listen contrail-analytics-api
     tcp-check connect port 6379
     default-server error-limit 1 on-error mark-down
 {% for host,ip in haproxy_hosts.items() %}
-    server {{ host }} {{ ip }}:9081 weight 1 check inter 2000 rise 2 fall 5
+    server {{ host }} {{ ip }}:8081 weight 1 check inter 2000 rise 2 fall 5
 {% endfor %}
 
 
