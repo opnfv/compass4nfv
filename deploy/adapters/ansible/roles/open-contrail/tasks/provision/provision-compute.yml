@@ -38,7 +38,7 @@
 
 - name: "set contrail device name for ansible"
   set_fact:
-    contrail_ansible_device: "ansible_{{ contrail_device }}"
+    contrail_ansible_device: "ansible_{{ contrail_vhost_device }}"
 
 - name: "fix up default pmac"
   template:
@@ -52,7 +52,7 @@
   lineinfile:
     dest: "/etc/contrail/agent_param"
     regexp: "dev=__DEVICE__"
-    line: "dev={{ contrail_device }}"
+    line: "dev={{ contrail_vhost_device }}"
 
 - name: "fix up contrail vrouter agent config"
   template:
@@ -62,9 +62,9 @@
 - name: "delete lines for contrail interface"
   shell: "{{ item }}"
   with_items:
-    - "sed -e '/auto {{ contrail_device }}/,$d' /etc/network/interfaces > /tmp/contrail-interfaces-top"
-    - "sed -n -e '/auto {{ contrail_device }}/,$p' /etc/network/interfaces > /tmp/contrail-interfaces-bottom"
-    - "sed -i -e '/auto {{ contrail_device }}/d' /tmp/contrail-interfaces-bottom"
+    - "sed -e '/auto {{ contrail_vhost_device }}/,$d' /etc/network/interfaces > /tmp/contrail-interfaces-top"
+    - "sed -n -e '/auto {{ contrail_vhost_device }}/,$p' /etc/network/interfaces > /tmp/contrail-interfaces-bottom"
+    - "sed -i -e '/auto {{ contrail_vhost_device }}/d' /tmp/contrail-interfaces-bottom"
     - "sed -i -n -e '/auto .*/,$p' /tmp/contrail-interfaces-bottom"
     - "cat /tmp/contrail-interfaces-top /tmp/contrail-interfaces-bottom > /etc/network/interfaces"
 
@@ -77,22 +77,28 @@
     - "sed -i -n -e '/auto .*/,$p' /tmp/contrail-interfaces-bottom"
     - "cat /tmp/contrail-interfaces-top /tmp/contrail-interfaces-bottom > /etc/network/interfaces"
 
-#- name: "configure interface"
-#  lineinfile:
-#    dest: "/etc/network/interfaces"
-#    line: "{{ item }}"
-#    state: "present"
-#  with_items:
-#    - "auto {{ contrail_device }}"
-#    - "iface {{ contrail_device }} inet manual"
-#    - "\tpre-up ifconfig {{ contrail_device }} up"
-#    - "\tpost-down ifconfig {{ contrail_device }} down"
-#    - "auto vhost0"
-#    - "iface vhost0 inet static"
-#    - "\tpre-up /opt/contrail/bin/if-vhost0"
-#    - "\tnetwork_name application"
-#    - "\taddress {{ contrail_address }}"
-#    - "\tnetmask {{ contrail_netmask }}"
+- name: "configure interface"
+  lineinfile:
+    dest: "/etc/network/interfaces"
+    line: "{{ item }}"
+    state: "present"
+  with_items:
+    - "auto {{ contrail_vhost_device }}"
+    - "iface {{ contrail_vhost_device }} inet manual"
+    - "\tpre-up ifconfig {{ contrail_vhost_device }} up"
+    - "\tpost-down ifconfig {{ contrail_vhost_device }} down"
+    - "auto vhost0"
+    - "iface vhost0 inet static"
+    - "\tpre-up /opt/contrail/bin/if-vhost0"
+    - "\tnetwork_name application"
+    - "\taddress {{ contrail_vhost_address }}"
+    - "\tnetmask {{ contrail_vhost_netmask }}"
+
+- name: "load vrouter driver"
+  command: su -s /bin/sh -c "insmod /var/lib/dkms/vrouter/2.21/build/vrouter.ko"
+
+- name: "run vhost0 script"
+  command: su -s /bin/sh -c "/opt/contrail/bin/if-vhost0"
 
 - name: "delete temporary files"
   file:
@@ -164,9 +170,9 @@
     name: "nova-compute"
     state: "restarted"
 
-#- name: "add vrouter to contrail"
-#  shell: "python /opt/contrail/utils/provision_vrouter.py --api_server_ip {{ contrail_haproxy_address }} --admin_user {{ contrail_admin_user }} --admin_password {{ contrail_admin_password }} --admin_tenant_name admin --openstack_ip {{ contrail_keystone_address }} --oper add --host_name {{ ansible_hostname }} --host_ip {{ contrail_address }}"
-#
+- name: "add vrouter to contrail"
+  shell: "python /opt/contrail/utils/provision_vrouter.py --api_server_ip {{ contrail_haproxy_address }} --admin_user {{ contrail_admin_user }} --admin_password {{ contrail_admin_password }} --admin_tenant_name admin --openstack_ip {{ contrail_keystone_address }} --oper add --host_name {{ ansible_hostname }} --host_ip {{ contrail_address }}"
+
 #- name: "reboot Server"
 #  shell: "shutdown -r now"
 #  async: 0
