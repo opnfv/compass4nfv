@@ -165,6 +165,32 @@
   with_items:
     - { section: "DEFAULT", option: "network_api_class", value: "nova_contrail_vif.contrailvif.ContrailNetworkAPI" }
 
+
+
+#################################################
+###########  nova plugin workaround  ############
+#################################################
+
+- name: "copy nova plugs on compute"
+  template:
+  src: "nova_contrail_vif.tar.gz"
+  dest: "/opt/nova_contrail_vif.tar.gz"
+
+- name: "unzip nova plugs"
+  command: su -s /bin/sh -c "tar xzf /opt/nova_contrail_vif.tar.gz -C /opt/"
+
+- name: "remove original nova plugs"
+  shell: rm -rf /usr/lib/python2.7/dist-packages/nova_contrail_vif/
+
+- name: "use new neutron plugs"
+  shell: mv /opt/nova_contrail_vif/  /usr/lib/python2.7/dist-packages/nova_contrail_vif/
+
+#################################################
+
+
+
+
+
 - name: "restart nova compute"
   service:
     name: "nova-compute"
