@@ -2,6 +2,11 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- name: Disable Service Daemon
+  template:
+    src: "/opt/service"
+    dest: "/opt/service.backup"  
+
 - name: Install common on all hosts for Open Contrail
   include: install/install-common.yml
   when: groups['opencontrail_control']|length !=0
@@ -97,6 +102,10 @@
   include: provision/provision-compute.yml
   when: inventory_hostname in groups['opencontrail_compute']
 
+- name: Enable Service Daemon
+  template:
+    src: "/opt/service.backup"
+    dest: "/opt/service"
 
 #- name: Provision tsn for Open Contrail
 #  include: provision/provision-tsn.yml

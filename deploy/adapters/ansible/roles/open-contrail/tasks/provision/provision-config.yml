@@ -229,6 +229,29 @@
     state: "restarted"
 
 
+
+###########################################################
+############# neutron plugins workaround ##################
+###########################################################
+
+- name: "copy neutron plugs on controller"
+  template:
+  src: "neutron_plugin_contrail.tar.gz"
+  dest: "/opt/neutron_plugin_contrail.tar.gz"
+
+- name: "unzip neutron plugs"
+  command: su -s /bin/sh -c "tar xzf /opt/neutron_plugin_contrail.tar.gz -C /opt/" 
+
+- name: "remove original neutron plugs"
+  shell: rm -rf /usr/lib/python2.7/dist-packages/neutron_plugin_contrail/
+  
+- name: "use new neutron plugs"
+  shell: mv /opt/neutron_plugin_contrail/  /usr/lib/python2.7/dist-packages/neutron_plugin_contrail/
+
+###########################################################
+
+
+
 - name: "restart neutron-server"
   service:
     name: "neutron-server"

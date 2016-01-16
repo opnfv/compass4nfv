@@ -66,7 +66,7 @@ platform = default
 physical_interface_address =
 
 # MAC address of device used by dpdk
-physical_interface_mac = {{ hostvars[inventory_hostname][contrail_device]['macaddress'] }}
+physical_interface_mac = {{ hostvars[inventory_hostname][contrail_vhost_device]['macaddress'] }}
 
 [DISCOVERY]
 # If COLLECTOR and/or CONTROL-NODE and/or DNS is not specified this section is
@@ -133,7 +133,7 @@ ip = {{ contraili_vhost_address }}/{{ contrail_prefixlen }}
 gateway = {{ contrail_vhost_gateway }}
 
 # Physical interface name to which virtual host interface maps to
-physical_interface = {{ contrail_device }}
+physical_interface = {{ contrail_vhost_device }}
 
 # We can have multiple gateway sections with different indices in the
 # following format
