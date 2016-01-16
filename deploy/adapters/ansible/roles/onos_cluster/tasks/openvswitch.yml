@@ -40,7 +40,7 @@
 
 - name: set veth to ovs
   shell: >
-    externamMac = `ifconfig eth1 | grep "HWaddr" | awk '{print $5}'`;
+    export externamMac=`ifconfig eth1 | grep "HWaddr" | awk '{print $5}'`;
     ifconfig onos_port2 hw ether $externamMac;
     ovs-vsctl add-port br-prv onos_port1;
   ignore_errors: True
