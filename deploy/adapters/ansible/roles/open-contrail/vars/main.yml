@@ -10,12 +10,25 @@ contrail_admin_password: "console"
 
 
 # network infor adapter for compass
-contrail_device: "mgmt"
 contrail_address: "{{ internal_ip }}"
+#contrail_device: # compass openstack device
 contrail_netmask: "255.255.255.0"
 #contrail_gateway: "10.84.50.254"
 contrail_gateway:
 #contrail_mgmt_address: "172.27.113.91"
+
+
+
+###########################################################
+### we make an independent NIC for OpenContrail vRouter ###
+###########################################################
+contrail_vhost_device: "eth2"
+contrail_vhost_address:
+contrail_vhost_gateway: 
+###########################################################
+###########################################################
+###########################################################
+
 
 
 
@@ -60,7 +73,6 @@ kernel_package_noarch: []
 compute_package_noarch: []
 
 # network infor adapter for compass
-contrail_device: "mgmt"
 contrail_address: "{{ internal_ip }}"
 contrail_netmask: "255.255.255.0"
 #contrail_gateway: "10.84.50.254"
