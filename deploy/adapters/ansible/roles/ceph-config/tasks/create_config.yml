@@ -1,14 +1,14 @@
 - name: gen ceph fsid
   shell: uuidgen
   register: ceph_fsid
-  run_once: true
+  when: inventory_hostname in groups['ceph_adm']
 
 - name: gen ceph conf
   local_action:
     module: "template"
     src: "ceph.j2"
     dest: "/tmp/ceph.conf"
-  run_once: true
+  when: inventory_hostname in groups['ceph_adm']
 
 - name: "make directory for ceph config file"
   file: path="/etc/ceph" state="directory"
@@ -23,7 +23,7 @@
 
 - name: gen create monmap script
   local_action: template src="create_monmap.j2" dest="/tmp/create_monmap.sh" mode=0755
-  run_once: true
+  when: inventory_hostname in groups['ceph_adm']
 
 - name: create monmap
   script: /tmp/create_monmap.sh
@@ -31,23 +31,23 @@
 
 - name: create mon.keyring
   shell: "ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *'"
-  when: inventory_hostname == groups['ceph_mon'][0]
+  when: inventory_hostname in groups['ceph_adm']
 
 - name: create admin.keyring
   shell: "ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --set-uid=0 --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow'"
-  when: inventory_hostname == groups['ceph_mon'][0]
- 
+  when: inventory_hostname in groups['ceph_adm']
+
 - name: Add the client.admin key to the ceph.mon.keyring
   shell: "ceph-authtool /tmp/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring"
-  when: inventory_hostname == groups['ceph_mon'][0]
+  when: inventory_hostname in groups['ceph_adm']
 
 - name: fetch mon.keyring to local
   fetch: src="/tmp/ceph.mon.keyring" dest="/tmp/ceph.mon.keyring" flat=yes
-  when: inventory_hostname == groups['ceph_mon'][0]
+  when: inventory_hostname in groups['ceph_adm']
 
 - name: fetch client.admin.keyring to local
   fetch: src="/etc/ceph/ceph.client.admin.keyring" dest="/tmp/ceph.client.admin.keyring" flat=yes
-  when: inventory_hostname == groups['ceph_mon'][0]
+  when: inventory_hostname in groups['ceph_adm']
 
 - name: copy mon.keyring to remote nodes
   copy: src="/tmp/ceph.mon.keyring" dest="/tmp/ceph.mon.keyring"
