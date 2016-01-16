@@ -1,0 +1,18 @@
+- include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - ceph_deploy
+    - ceph_openstack_pre
+    - ceph_openstack_conf
+    - ceph_openstack
+
+- include: ceph_openstack_pre.yml
+  tags:
+    - ceph_deploy
+    - ceph_openstack_pre
+    - ceph_openstack
+
+- include: ceph_openstack_conf.yml
+  tags:
+    - ceph_deploy
+    - ceph_openstack_conf
+    - ceph_openstack

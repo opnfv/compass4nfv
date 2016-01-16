@@ -1,0 +1,27 @@
+- name: clear tmp files
+  local_action: shell rm -rf /tmp/ceph*
+  tags:
+    - ceph_purge
+    - ceph_deploy
+
+- name: install ceph-related packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items:
+    - ceph-deploy
+  tags:
+    - ceph_purge
+    - ceph_deploy
+
+- name: purge ceph
+  shell: "ceph-deploy purge {{ inventory_hostname }}; ceph-deploy purgedata {{ inventory_hostname }}; ceph-deploy forgetkeys"
+  tags:
+    - ceph_purge
+    - ceph_deploy
+
+- name: remove monmap
+  file: path="/tmp/monmap" state="absent"
+  tags:
+    - ceph_purge
+    - ceph_deploy
+
+
