@@ -1,6 +1,42 @@
 ---
 - hosts: all
   remote_user: root
+  pre_tasks:
+    - name: make sure ssh dir exist
+      file:
+        path: '{{ item.path }}'
+        owner: '{{ item.owner }}'
+        group: '{{ item.group }}'
+        state: directory
+        mode: 0755
+      with_items:
+        - path: /root/.ssh
+          owner: root
+          group: root
+
+    - name: write ssh config
+      copy:
+        content: "UserKnownHostsFile /dev/null\nStrictHostKeyChecking no"
+        dest: '{{ item.dest }}'
+        owner: '{{ item.owner }}'
+        group: '{{ item.group }}'
+        mode: 0600
+      with_items:
+        - dest: /root/.ssh/config
+          owner: root
+          group: root
+
+    - name: generate ssh keys
+      shell: if [ ! -f ~/.ssh/id_rsa.pub ]; then ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""; else echo "already gen ssh key!"; fi;
+
+    - name: fetch ssh keys
+      fetch: src=/root/.ssh/id_rsa.pub dest=/tmp/ssh-keys-{{ ansible_hostname }} flat=yes
+
+    - authorized_key:
+        user: root
+        key:  "{{ lookup('file', 'item') }}"
+      with_fileglob:
+        - /tmp/ssh-keys-*
   roles:
     - common
 
@@ -38,8 +74,8 @@
 - hosts: all
   remote_user: root
   accelerate: true
-  roles: 
-    - storage 
+  roles:
+    - storage
 
 - hosts: compute
   remote_user: root
@@ -91,3 +127,48 @@
   accelerate: true
   roles:
     - secgroup
+
+- hosts: all
+  remote_user: root
+  accelerate: true
+  tasks:
+    - name: set bash to nova
+      user:
+         name: nova
+         shell: /bin/bash
+
+    - name: make sure ssh dir exist
+      file:
+        path: '{{ item.path }}'
+        owner: '{{ item.owner }}'
+        group: '{{ item.group }}'
+        state: directory
+        mode: 0755
+      with_items:
+        - path: /var/lib/nova/.ssh
+          owner: nova
+          group: nova
+
+    - name: copy ssh keys for nova
+      shell: cp -rf /root/.ssh/id_rsa /var/lib/nova/.ssh;
+
+    - name: write ssh config
+      copy:
+        content: "UserKnownHostsFile /dev/null\nStrictHostKeyChecking no"
+        dest: '{{ item.dest }}'
+        owner: '{{ item.owner }}'
+        group: '{{ item.group }}'
+        mode: 0600
+      with_items:
+        - dest: /var/lib/nova/.ssh/config
+          owner: nova
+          group: nova
+
+    - authorized_key:
+        user: nova
+        key:  "{{ lookup('file', 'item') }}"
+      with_fileglob:
+        - /tmp/ssh-keys-*
+
+    - name: chown ssh file
+      shell: chown -R nova:nova /var/lib/nova/.ssh;
