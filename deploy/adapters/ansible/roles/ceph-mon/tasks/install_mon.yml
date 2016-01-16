@@ -14,8 +14,8 @@
 - name: auto start ceph-mon
   file: path="/var/lib/ceph/mon/ceph-{{ inventory_hostname }}/upstart" state="touch"
 
-- name: sleep for creating osd keyring
-  shell: sleep 10 
+- name: wait for creating osd keyring
+  wait_for: path=/var/lib/ceph/bootstrap-osd/ceph.keyring
 
 - name: fetch osd keyring
   fetch: src="/var/lib/ceph/bootstrap-osd/ceph.keyring" dest="/tmp/ceph.osd.keyring" flat=yes
