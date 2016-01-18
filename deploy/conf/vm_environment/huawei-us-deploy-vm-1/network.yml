@@ -55,10 +55,10 @@ ip_settings:
 
   - name: external
     ip_ranges:
-    - - "192.168.105.210"
-      - "192.168.105.220"
-    cidr: "192.168.105.0/24"
-    gw: "192.168.105.1"
+    - - "192.168.107.210"
+      - "192.168.107.220"
+    cidr: "192.168.107.0/24"
+    gw: "192.168.107.1"
     role:
       - controller
       - compute
@@ -69,7 +69,7 @@ internal_vip:
   interface: mgmt
 
 public_vip:
-  ip: 192.168.105.222
+  ip: 192.168.107.222
   netmask: "24"
   interface: external
 
@@ -84,7 +84,7 @@ public_net_info:
   router: router-ext
   enable_dhcp: False
   no_gateway: False
-  external_gw: "192.168.105.1"
-  floating_ip_cidr: "192.168.105.0/24"
-  floating_ip_start: "192.168.105.101"
-  floating_ip_end: "192.168.105.199"
+  external_gw: "192.168.107.1"
+  floating_ip_cidr: "192.168.107.0/24"
+  floating_ip_start: "192.168.107.101"
+  floating_ip_end: "192.168.107.199"
