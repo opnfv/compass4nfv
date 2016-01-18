@@ -30,27 +30,32 @@
 #    - { regexp: "^\\s*tune.bufsize", line: "\ttune.bufsize 16384" }
 #    - { regexp: "^\\s*tune.maxrewrite", line: "\ttune.maxrewrite 1024" }
 
-- name: "delete haproxy configuration for contrail"
-  shell: "sed -i -e '/^#contrail-marker-start/,/^#contrail-marker-end/d' /etc/haproxy/haproxy.cfg"
+#chenshuai, add later
+#- name: "delete haproxy configuration for contrail"
+#  shell: "sed -i -e '/^#contrail-marker-start/,/^#contrail-marker-end/d' /etc/haproxy/haproxy.cfg"
 
-- name: "create haproxy configuration for contrail"
-  template:
+#chenshuai, add later
+#- name: "create haproxy configuration for contrail"
+#  template:
 #    src: "provision/haproxy-contrail-cfg.j2"
-    src: "../../templates/provision/haproxy-contrail-cfg.j2"
-    dest: "/tmp/haproxy-contrail.cfg"
+#    src: "../../templates/provision/haproxy-contrail-cfg.j2"
+#    dest: "/tmp/haproxy-contrail.cfg"
 
-- name: "combination of the haproxy configuration"
-  shell: "cat /tmp/haproxy-contrail.cfg >> /etc/haproxy/haproxy.cfg"
+#chenshuai, add later
+#- name: "combination of the haproxy configuration"
+#  shell: "cat /tmp/haproxy-contrail.cfg >> /etc/haproxy/haproxy.cfg"
 
-- name: "delete temporary configuration file"
-  file:
-    dest: "/tmp/haproxy-contrail.cfg"
-    state: "absent"
+#chenshuai, add later
+#- name: "delete temporary configuration file"
+#  file:
+#    dest: "/tmp/haproxy-contrail.cfg"
+#    state: "absent"
 
-- name: "restart haproxy"
-  service:
-    name: "haproxy"
-    state: "restarted"
+#chenshuai, add later
+#- name: "restart haproxy"
+#  service:
+#    name: "haproxy"
+#    state: "restarted"
 
 # Compass is using this
 #- name: "create keepalived configuration"
@@ -235,9 +240,9 @@
 ###########################################################
 
 - name: "copy neutron plugs on controller"
-  template:
-  src: "neutron_plugin_contrail.tar.gz"
-  dest: "/opt/neutron_plugin_contrail.tar.gz"
+  copy:
+    src: "../../templates/neutron_plugin_contrail.tar.gz"
+    dest: "/opt/neutron_plugin_contrail.tar.gz"
 
 - name: "unzip neutron plugs"
   command: su -s /bin/sh -c "tar xzf /opt/neutron_plugin_contrail.tar.gz -C /opt/" 

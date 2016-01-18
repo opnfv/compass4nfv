@@ -19,20 +19,20 @@
 ###############################################
 ################  workaround  #################
 ###############################################
-#- name: "backup keepalived conf"
-#  shell: mv /etc/keepalived/keepalived.conf /home/keepalived.conf
+- name: "backup keepalived conf"
+  shell: mv /etc/keepalived/keepalived.conf /home/keepalived.conf
 
-#- name: "uninstall keepalived"
-#  action: "{{ ansible_pkg_mgr }} name=keepalived state=absent"
+- name: "uninstall keepalived"
+  action: "{{ ansible_pkg_mgr }} name=keepalived state=absent"
 
-#- name: "install iproute"
-#  action: "{{ ansible_pkg_mgr }} name=iproute state=present"
+- name: "install iproute"
+  action: "{{ ansible_pkg_mgr }} name=iproute state=present"
 
-#- name: "install iproute"
-#  action: "{{ ansible_pkg_mgr }} name=keepalived state=present"
+- name: "install iproute"
+  action: "{{ ansible_pkg_mgr }} name=keepalived state=present"
 
-#- name: "restore keepalived conf"
-#  shell: mv /home/keepalived.conf /etc/keepalived/keepalived.conf
+- name: "restore keepalived conf"
+  shell: mv /home/keepalived.conf /etc/keepalived/keepalived.conf
 ###############################################
 
 - name: "install contrail openstack config package"
