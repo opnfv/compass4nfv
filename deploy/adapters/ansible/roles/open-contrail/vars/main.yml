@@ -23,8 +23,9 @@ contrail_gateway:
 ### we make an independent NIC for OpenContrail vRouter ###
 ###########################################################
 contrail_vhost_device: "eth2"
-contrail_vhost_address:
-contrail_vhost_gateway: 
+contrail_vhost_address: "10.18.1."
+contrail_vhost_gateway: "10.18.1.254"
+contrail_vhost_netmask: "255.255.255.0"
 ###########################################################
 ###########################################################
 ###########################################################

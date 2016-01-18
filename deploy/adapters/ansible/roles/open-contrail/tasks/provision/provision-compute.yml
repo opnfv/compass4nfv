@@ -77,6 +77,10 @@
     - "sed -i -n -e '/auto .*/,$p' /tmp/contrail-interfaces-bottom"
     - "cat /tmp/contrail-interfaces-top /tmp/contrail-interfaces-bottom > /etc/network/interfaces"
 
+- name: get last ip address
+  shell: expr substr `cat /etc/hostname` 5 1
+  register: lastip
+
 - name: "configure interface"
   lineinfile:
     dest: "/etc/network/interfaces"
@@ -91,14 +95,25 @@
     - "iface vhost0 inet static"
     - "\tpre-up /opt/contrail/bin/if-vhost0"
     - "\tnetwork_name application"
-    - "\taddress {{ contrail_vhost_address }}"
+    - "\taddress {{ contrail_vhost_address }}{{ lastip.stdout_lines[0] }}"
     - "\tnetmask {{ contrail_vhost_netmask }}"
+
+##################################################################################
+
+- name: "copy vrouter script to compute"
+  template:
+    src: "../../templates/vrouter-functions.sh"
+    dest: "/opt/contrail/bin/vrouter-functions.sh"
 
 - name: "load vrouter driver"
   command: su -s /bin/sh -c "insmod /var/lib/dkms/vrouter/2.21/build/vrouter.ko"
+  ignore_errors: true
 
 - name: "run vhost0 script"
   command: su -s /bin/sh -c "/opt/contrail/bin/if-vhost0"
+  ignore_errors: true
+
+##################################################################################
 
 - name: "delete temporary files"
   file:
@@ -108,12 +123,35 @@
     - "/tmp/contrail-interfaces-top"
     - "/tmp/contrail-interfaces-bottom"
 
+##################################################################################
+
 - name: "fix up contrail vrouter nodemgr config"
   ini_file:
     dest: "/etc/contrail/contrail-vrouter-nodemgr.conf"
     section: "DISCOVERY"
     option: "server"
     value: "{{ contrail_haproxy_address }}"
+
+
+##################################################################################
+########################### restart vrouter services  ###########################
+
+- name: "restart supervisor service"
+  service:
+    name: "supervisor"
+    state: "restarted"
+
+- name: "restart vrouter nodemgr"
+  shell: ps aux | grep contrail-nodemgr | grep -v grep | awk '{print $2}' | xargs kill -9;
+
+- name: "restart vrouter agent"
+  service:
+    name: "contrail-vrouter-agent"
+    state: "restarted" 
+
+
+##################################################################################
+
 
 - name: "restart libvirt bin"
   service:
@@ -167,14 +205,14 @@
 
 
 
-#################################################
-###########  nova plugin workaround  ############
-#################################################
+#######################################################################
+######################  nova plugin workaround  #######################
+#######################################################################
 
 - name: "copy nova plugs on compute"
-  template:
-  src: "nova_contrail_vif.tar.gz"
-  dest: "/opt/nova_contrail_vif.tar.gz"
+  copy:
+    src: "../../templates/nova_contrail_vif.tar.gz"
+    dest: "/opt/nova_contrail_vif.tar.gz"
 
 - name: "unzip nova plugs"
   command: su -s /bin/sh -c "tar xzf /opt/nova_contrail_vif.tar.gz -C /opt/"
@@ -182,14 +220,10 @@
 - name: "remove original nova plugs"
   shell: rm -rf /usr/lib/python2.7/dist-packages/nova_contrail_vif/
 
-- name: "use new neutron plugs"
+- name: "use new nova plugs"
   shell: mv /opt/nova_contrail_vif/  /usr/lib/python2.7/dist-packages/nova_contrail_vif/
 
 #################################################
-
-
-
-
 
 - name: "restart nova compute"
   service:
