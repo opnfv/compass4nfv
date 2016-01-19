@@ -13,6 +13,11 @@ d-i debian-installer/locale string en_US
 d-i debian-installer/country string US
 d-i debian-installer/language string en
 
+d-i debian-installer/splash boolean false
+d-i debian-installer/quiet boolean false
+d-i debian-installer/framebuffer boolean true
+d-i hw-detect/load_firmware boolean true
+
 # Keyboard selection.
 # Disable automatic (interactive) keymap detection.
 d-i console-setup/ask_detect boolean false
