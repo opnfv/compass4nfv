@@ -63,7 +63,7 @@
     option: "{{ item.option }}"
     value: "{{ item.value }}"
   with_items:
-    - { section: "DEFAULTS", option: "zookeeper", value: "{{ contrail_address }}:2128" }
+    - { section: "DEFAULTS", option: "zookeeper", value: "{{ contrail_address }}:2181" }
     - { section: "DISCOVERY", option: "disc_server_ip", value: "{{ contrail_haproxy_address }}" }
     - { section: "DISCOVERY", option: "disc_server_port", value: "5998" }
 

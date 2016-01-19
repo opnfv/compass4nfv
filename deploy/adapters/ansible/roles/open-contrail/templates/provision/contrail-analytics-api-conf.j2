@@ -1,5 +1,5 @@
 [DEFAULTS]
-host_ip = {{ contrail_address }}
+host_ip = {{ contrail_haproxy_address }}
 rest_api_ip = {{ contrail_haproxy_address }}
 rest_api_port = 8081
 #cassandra_server_list = {% for cur_host in groups['controller'] %}{{ ip_settings[cur_host]['mgmt']['ip'] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
