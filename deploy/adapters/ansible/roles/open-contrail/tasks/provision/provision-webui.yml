@@ -63,3 +63,4 @@
   service:
     name: "supervisor-webui"
     state: "restarted"
+

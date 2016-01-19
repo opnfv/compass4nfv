@@ -54,6 +54,10 @@
     regexp: "dev=__DEVICE__"
     line: "dev={{ contrail_vhost_device }}"
 
+- name: "get last ip address"
+  shell: expr substr `cat /etc/hostname` 5 1
+  register: lastip
+
 - name: "fix up contrail vrouter agent config"
   template:
     src: "../../templates/provision/contrail-vrouter-agent-conf.j2"
