@@ -1,0 +1,83 @@
+TIMEOUT=10
+export PACKAGE_URL=${PACKAGE_URL:-http://205.177.226.237:9999}
+
+#begin: package download
+export CENTOS_BASE=${CENTOS_BASE:-$PACKAGE_URL/CentOS-7-x86_64-Minimal-1511.iso}
+export COMPASS_CORE=${COMPASS_CORE:-https://github.com/openstack/compass-core.git}
+export COMPASS_WEB=${COMPASS_WEB:-http://github.com/baigk/compass-web.git}
+export COMPASS_INSTALL=${COMPASS_INSTALL:-http://github.com/baigk/compass-install.git}
+export UBUNTU_ISO=${UBUNTU_ISO:-$PACKAGE_URL/ubuntu-14.04.3-server-amd64.iso}
+export TRUSTY_JUNO_PPA=${TRUSTY_JUNO_PPA:-$PACKAGE_URL/trusty-juno-ppa.tar.gz}
+export TRUSTY_LIBERTY_PPA=${TRUSTY_LIBERTY_PPA:-$PACKAGE_URL/trusty-liberty-ppa.tar.gz}
+export CENTOS_ISO=${CENTOS_ISO:-$PACKAGE_URL/CentOS-7-x86_64-Minimal-1511.iso}
+export CENTOS7_JUNO_PPA=${CENTOS7_JUNO_PPA:-$PACKAGE_URL/centos7-juno-ppa.tar.gz}
+#export CENTOS7_KILO_PPA=${CENTOS7_KILO_PPA:-$PACKAGE_URL/centos7-kilo-ppa.tar.gz}
+export COMPASS_PKG=${COMPASS_PKG:-$PACKAGE_URL/centos7-compass-core.tar.gz}
+export LOADERS=${LOADERS:-$PACKAGE_URL/loaders.tar.gz}
+export CIRROS=${CIRROS:-$PACKAGE_URL/cirros-0.3.3-x86_64-disk.img}
+export APP_PACKAGE=${APP_PACKAGE:-$PACKAGE_URL/packages.tar.gz}
+export PIP_REPO=${PIP_REPO:-$PACKAGE_URL/pip.tar.gz}
+export ANSIBLE_MODULE=${ANSIBLE_MODULE:-https://github.com/openstack-ansible/openstack-ansible-modules.git}
+export SPECIAL_DEBIAN_PACKAGE=${SPECIAL_DEBIAN_PACKAGE-$PACKAGE_URL/debian-packages.tar.gz}
+#end
+
+export PIP_CONF="https://bootstrap.pypa.io/ez_setup.py \
+    https://pypi.python.org/packages/source/s/setuptools/setuptools-18.2.zip \
+    https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz \
+    https://pypi.python.org/packages/source/a/ansible/ansible-1.9.2.tar.gz \
+    https://pypi.python.org/packages/source/v/virtualenv/virtualenv-13.1.2.tar.gz \
+    https://pypi.python.org/packages/source/p/pexpect/pexpect-3.3.tar.gz \
+    https://pypi.python.org/packages/source/a/amqplib/amqplib-1.0.2.tgz \
+    https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.tar.gz \
+    https://pypi.python.org/packages/source/C/Cheetah/Cheetah-2.4.1.tar.gz \
+    https://pypi.python.org/packages/source/d/daemon/daemon-1.1.tar.gz \
+    https://pypi.python.org/packages/source/F/Flask/Flask-0.10.1.tar.gz \
+    https://pypi.python.org/packages/source/F/Flask-Login/Flask-Login-0.2.11.tar.gz \
+    https://pypi.python.org/packages/2.7/F/Flask-RESTful/Flask_RESTful-0.3.4-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/2.7/F/Flask-WTF/Flask_WTF-0.12-py2-none-any.whl \
+    https://pypi.python.org/packages/source/i/importlib/importlib-1.0.3.tar.bz2 \
+    https://pypi.python.org/packages/py2/l/lockfile/lockfile-0.10.2-py2-none-any.whl \
+    https://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-1.2.5.zip \
+    https://pypi.python.org/packages/any/n/netaddr/netaddr-0.7.18-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/source/P/PyChef/PyChef-0.2.3.tar.gz \
+    https://pypi.python.org/packages/source/S/SQLAlchemy/SQLAlchemy-1.0.8.tar.gz \
+    https://pypi.python.org/packages/source/s/simplejson/simplejson-3.8.0.tar.gz \
+    https://pypi.python.org/packages/2.7/r/requests/requests-2.7.0-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/2.7/c/celery/celery-3.1.18-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/2.7/W/Werkzeug/Werkzeug-0.10.4-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/source/c/ciso8601/ciso8601-1.0.1.tar.gz \
+    https://pypi.python.org/packages/3.3/s/six/six-1.9.0-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/2.7/W/WTForms/WTForms-2.0.2-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz \
+    https://pypi.python.org/packages/2.7/a/amqp/amqp-1.4.6-py2-none-any.whl \
+    https://pypi.python.org/packages/any/M/Markdown/Markdown-2.6.2-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/2.7/a/argparse/argparse-1.3.0-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/source/F/Flask-Script/Flask-Script-2.0.5.tar.gz \
+    https://pypi.python.org/packages/source/F/Flask-SQLAlchemy/Flask-SQLAlchemy-0.10.tar.gz \
+    https://pypi.python.org/packages/source/l/lazypy/lazypy-0.2.tar.gz \
+    https://pypi.python.org/packages/source/p/pytz/pytz-2014.3.zip \
+    https://pypi.python.org/packages/source/b/billiard/billiard-3.3.0.3.tar.gz \
+    https://pypi.python.org/packages/source/a/anyjson/anyjson-0.1.tar.gz \
+    https://pypi.python.org/packages/2.7/k/kombu/kombu-3.0.17-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/source/a/aniso8601/aniso8601-0.48.tar.gz \
+    https://pypi.python.org/packages/2.7/e/ecdsa/ecdsa-0.12-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz \
+    https://pypi.python.org/packages/source/i/itsdangerous/itsdangerous-0.24.tar.gz \
+    https://pypi.python.org/packages/source/p/paramiko/paramiko-1.12.3.tar.gz \
+    https://pypi.python.org/packages/3.4/p/python-daemon/python_daemon-2.0.4-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/source/r/redis/redis-2.7.1.tar.gz \
+    https://pypi.python.org/packages/source/b/billiard/billiard-3.3.0.20.tar.gz \
+    https://pypi.python.org/packages/2.7/k/kombu/kombu-3.0.26-py2.py3-none-any.whl \
+    https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz \
+    https://pypi.python.org/packages/source/a/aniso8601/aniso8601-0.85.tar.gz \
+    https://pypi.python.org/packages/source/a/anyjson/anyjson-0.3.3.tar.gz \
+    https://pypi.python.org/packages/source/o/ordereddict/ordereddict-1.0.tar.gz \
+    https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz \
+    https://pypi.python.org/packages/source/l/lazypy/lazypy-0.5.tar.gz \
+    https://pypi.python.org/packages/source/p/pycrypto-on-pypi/pycrypto-on-pypi-2.3.tar.gz \
+    https://pypi.python.org/packages/source/p/pymongo/pymongo-3.0.3.tar.gz \
+    https://pypi.python.org/packages/source/c/crudini/crudini-0.7.tar.gz \
+    https://pypi.python.org/packages/source/n/networking-odl/networking-odl-1.0.1.tar.gz \
+    https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.715.tar.gz \
+    https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.9.tar.gz \
+    https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz "
