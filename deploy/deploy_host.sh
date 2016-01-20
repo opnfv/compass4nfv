@@ -5,7 +5,8 @@ function deploy_host(){
     ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks
     scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/status_callback.py
 
-    reboot_hosts
+    # avoid nodes reboot to fast, cobbler can not give response
+    nohup bash -c "sleep 20;reboot_hosts" &
 
     if [[ "$REDEPLOY_HOST" == true ]]; then
         deploy_flag="redeploy"
