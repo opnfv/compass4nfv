@@ -8,11 +8,9 @@ if [[ -z $DEPLOY_COMPASS && -z $DEPLOY_HOST && -z $REDEPLOY_HOST ]]; then
     export DEPLOY_HOST="true"
 fi
 
-for i in python-cheetah python-yaml; do
-    if [[ `dpkg-query -l $i` == 0 ]]; then
-        continue
-    fi
-    sudo apt-get install -y --force-yes  $i
-done
+sudo apt-get install -y --force-yes python-pip
+sudo pip install --upgrade pip
+sudo pip install --upgrade cheetah
+sudo pip install --upgrade pyyaml
 
 $COMPASS_DIR/deploy/launch.sh $*
