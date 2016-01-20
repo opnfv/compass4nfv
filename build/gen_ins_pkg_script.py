@@ -35,7 +35,8 @@ def get_packages_name_list(file_list, special_packages):
             for i in value:
                 if i in special_packages:
                     continue
-                package_name_list.append(i)
+                if i not in package_name_list:
+                    package_name_list.append(i)
 
     return package_name_list
 
@@ -56,9 +57,11 @@ def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_
     searchList = {'scripts':make_script}
     if os.path.exists(special_packages_dir):
         special_packages_names=[]
-        for i in os.listdir(special_packages_dir):
-            if os.path.isfile(os.path.join(special_packages_dir, i)):
-                special_packages_names.append(i)
+
+        for parent, dirname, filenames in os.walk(special_packages_dir):
+            for filename in filenames:
+                 if os.path.isfile(os.path.join(parent, filename)):
+                      special_packages_names.append(filename)
         searchList.update({'spcial_packages':special_packages_names})
 
     Dockerfile=os.path.basename(docker_tmpl).split('.')[0]
