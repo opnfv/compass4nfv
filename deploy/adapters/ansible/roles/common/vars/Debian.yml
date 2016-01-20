@@ -6,11 +6,13 @@ packages:
   - openvswitch-switch
   - python-memcache
   - python-iniparse
+  - python-lxml
   - python-d* #TODO, need remove
 
 pip_packages:
   - crudini
   - python-keyczar
+  - yang2tosca
 
 pip_conf: pip.conf
 

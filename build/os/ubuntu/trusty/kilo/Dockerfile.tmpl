@@ -6,7 +6,7 @@ MAINTAINER Chigang(Justin) <chigang@huawei.com>
 RUN rm -f /etc/apt/apt.conf.d/docker-clean
 #set packages = $getVar('spcial_packages', [])
 #for package in $packages
-ADD ./Debian/packages/debian_packages/$package /var/cache/apt/archives/
+ADD ./Debian/packages/debian-packages/$package /var/cache/apt/archives/
 #end for
 #set scripts = $getVar('scripts', [])
 #for script in $scripts
