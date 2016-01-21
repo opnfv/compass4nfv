@@ -31,22 +31,16 @@ function prepare_env() {
     export PYTHONPATH=/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages
     sudo apt-get update -y
     sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
-    sudo apt-get install -y --force-yes git python-pip python-dev
+    sudo apt-get install -y --force-yes git python-dev
     sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
-    sudo pip install --upgrade pip
-    sudo pip install --upgrade ansible==1.9.4
-    sudo pip install --upgrade virtualenv
-    sudo pip install --upgrade netaddr
-    sudo pip install --upgrade oslo.config
     sudo service libvirt-bin restart
 
     # prepare work dir
-    rm -rf $WORK_DIR/{installer,vm,network,iso,venv}
+    rm -rf $WORK_DIR/{installer,vm,network,iso}
     mkdir -p $WORK_DIR/installer
     mkdir -p $WORK_DIR/vm
     mkdir -p $WORK_DIR/network
     mkdir -p $WORK_DIR/iso
-    mkdir -p $WORK_DIR/venv
     mkdir -p $WORK_DIR/cache
 
     download_iso
@@ -62,7 +56,21 @@ function prepare_env() {
     rm -rf $WORK_DIR/mnt
 
     chmod 755 $WORK_DIR -R
-    virtualenv $WORK_DIR/venv
 
     sudo cp ${COMPASS_DIR}/deploy/qemu_hook.sh /etc/libvirt/hooks/qemu
+}
+
+function  prepare_python_env() {
+   rm -rf $WORK_DIR/venv
+   mkdir -p $WORK_DIR/venv
+  
+   virtualenv $WORK_DIR/venv
+   source $WORK_DIR/venv/bin/activate
+  
+   pip install --upgrade pip
+   pip install --upgrade cheetah
+   pip install --upgrade pyyaml
+   pip install --upgrade ansible==1.9.4
+   pip install --upgrade netaddr
+   pip install --upgrade oslo.config
 }
