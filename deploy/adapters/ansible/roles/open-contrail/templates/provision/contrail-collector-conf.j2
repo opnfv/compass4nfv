@@ -13,7 +13,7 @@ analytics_flow_ttl = -1
 
 # IP address and port to be used to connect to cassandra.
 # Multiple IP:port strings separated by space can be provided
-cassandra_server_list = {% for cur_host in groups['controller'] %}{{ haproxy_hosts[cur_host] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
+cassandra_server_list = {% for cur_host in groups['opencontrail'] %}{{ haproxy_hosts[cur_host] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
 
 
 # IP address and port to be used to connect to kafka.

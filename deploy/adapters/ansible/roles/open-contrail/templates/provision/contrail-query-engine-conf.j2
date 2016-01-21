@@ -5,7 +5,7 @@ hostip = {{ contrail_address }}
 #cassandra_server_list = {% for cur_host in groups['controller'] %}{{ ip_settings[cur_host]['mgmt']['ip'] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
 
 
-cassandra_server_list = {% for cur_host in groups['controller'] %}{{ haproxy_hosts[cur_host] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
+cassandra_server_list = {% for cur_host in groups['opencontrail'] %}{{ haproxy_hosts[cur_host] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
 
 collectors = {{ contrail_haproxy_address }}:8086
 http_server_port = 8091
