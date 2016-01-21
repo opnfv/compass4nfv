@@ -194,7 +194,7 @@
 #    - { section: "DEFAULT", option: "auth_strategy", value: "keystone" }
 #    - { section: "DEFAULT", option: "allow_overlapping_ips", value: "True" }
     - { section: "DEFAULT", option: "core_plugin", value: "neutron_plugin_contrail.plugins.opencontrail.contrail_plugin.NeutronPluginContrailCoreV2" }
-    - { section: "DEFAULT", option: "api_extensions_path", value: "extensions:/usr/lib/python2.7/dist-packages/neutron_plugin_contrail/extensions" }
+    - { section: "DEFAULT", option: "api_extensions_path", value: "/usr/lib/python2.7/dist-packages/neutron_plugin_contrail/extensions" }
 #    - { section: "DEFAULT", option: "rabbit_host", value: "{{ contrail_haproxy_address }}" }
 #    - { section: "DEFAULT", option: "rabbit_port", value: "5673" }
 #    - { section: "DEFAULT", option: "service_plugins", value: "neutron_plugin_contrail.plugins.opencontrail.loadbalancer.plugin.LoadBalancerPlugin" }
