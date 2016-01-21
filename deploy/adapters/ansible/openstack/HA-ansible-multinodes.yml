@@ -98,11 +98,11 @@
   roles:
     - onos_cluster
 
-#- hosts: all
-#  remote_user: root
-#  sudo: True
-#  roles:
-#    - open-contrail
+- hosts: all
+  remote_user: root
+  sudo: True
+  roles:
+    - open-contrail
 
 - hosts: controller
   remote_user: root
