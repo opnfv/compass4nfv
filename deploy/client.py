@@ -835,48 +835,49 @@ class CompassClient(object):
             raise RuntimeError("redeploy cluster failed")
 
     def get_installing_progress(self, cluster_id):
-        """get intalling progress."""
-        action_timeout = time.time() + 60 * float(CONF.action_timeout)
-        deployment_timeout = time.time() + 60 * float(
-            CONF.deployment_timeout)
+        def _get_installing_progress():
+            """get intalling progress."""
+            action_timeout = time.time() + 60 * float(CONF.action_timeout)
+            deployment_timeout = time.time() + 60 * float(
+                CONF.deployment_timeout)
 
-        current_time = time.time
-        deployment_failed = True
-        while current_time() < deployment_timeout:
-            status, cluster_state = self.client.get_cluster_state(cluster_id)
-            if not self.is_ok(status):
-                raise RuntimeError("can not get cluster state")
+            current_time = time.time
+            while current_time() < deployment_timeout:
+                status, cluster_state = self.client.get_cluster_state(cluster_id)
+                if not self.is_ok(status):
+                    LOG.error("can not get cluster state")
 
-            if cluster_state['state'] in ['UNINITIALIZED', 'INITIALIZED']:
-                if current_time() >= action_timeout:
-                    deployment_failed = True
+                    # maybe a transient error?
+                    time.sleep(5)
+                    status, cluster_state = self.client.get_cluster_state(cluster_id)
+                    if not self.is_ok(status):
+                        # OK, there's something wrong
+                        raise RuntimeError("can not get cluster state")
+
+                if cluster_state['state'] in ['UNINITIALIZED', 'INITIALIZED']:
+                    if current_time() >= action_timeout:
+                        raise RuntimeError("installation timeout")
+                    else:
+                        time.sleep(5)
+                        continue
+
+                elif cluster_state['state'] == 'SUCCESSFUL':
                     LOG.info(
                          'get cluster %s state status %s: %s, successful',
                          cluster_id, status, cluster_state
                     )
                     break
-                else:
-                    time.sleep(5)
-                    continue
-
-            elif cluster_state['state'] == 'SUCCESSFUL':
-                deployment_failed = False
-                LOG.info(
-                     'get cluster %s state status %s: %s, successful',
-                     cluster_id, status, cluster_state
-                )
-                break
-            elif cluster_state['state'] == 'ERROR':
-                deployment_failed = True
-                LOG.info(
-                     'get cluster %s state status %s: %s, error',
-                     cluster_id, status, cluster_state
-                )
-                break
-
-        kill_print_proc()
-        if deployment_failed:
-            raise RuntimeError("deploy cluster failed")
+                elif cluster_state['state'] == 'ERROR':
+                    raise RuntimeError(
+                         'get cluster %s state status %s: %s, error',
+                         (cluster_id, status, cluster_state)
+                    )
+        try:
+            _get_installing_progress()
+        finally:
+            # do this twice, make sure process be killed
+            kill_print_proc()
+            kill_print_proc()
 
     def check_dashboard_links(self, cluster_id):
         dashboard_url = CONF.dashboard_url
