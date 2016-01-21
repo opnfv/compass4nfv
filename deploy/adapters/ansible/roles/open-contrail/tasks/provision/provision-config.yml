@@ -284,24 +284,24 @@
 
 
 
-- name: "set values to nova config"
-  ini_file:
-    dest: "/etc/nova/nova.conf"
-    section: "{{ item.section }}"
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-  with_items:
-    - { section: "DEFAULT", option: "network_api_class", value: "nova_contrail_vif.contrailvif.ContrailNetworkAPI" }
+#- name: "set values to nova config"
+#  ini_file:
+#    dest: "/etc/nova/nova.conf"
+#    section: "{{ item.section }}"
+#    option: "{{ item.option }}"
+#    value: "{{ item.value }}"
+#  with_items:
+#    - { section: "DEFAULT", option: "network_api_class", value: "nova_contrail_vif.contrailvif.ContrailNetworkAPI" }
 
 
-- name: "restart nova-server"
-  service:
-    name: "{{ item }}"
-    state: "restarted"
-  with_items:
-    - nova-api
-    - nova-cert
-    - nova-conductor
-    - nova-consoleauth
-    - nova-novncproxy
-    - nova-scheduler
+#- name: "restart nova-server"
+#  service:
+#    name: "{{ item }}"
+#    state: "restarted"
+#  with_items:
+#    - nova-api
+#    - nova-cert
+#    - nova-conductor
+#    - nova-consoleauth
+#    - nova-novncproxy
+#    - nova-scheduler
