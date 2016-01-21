@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_70fa8bbe",
+        "filename": "build/build.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-01-21T14:16:46Z",
+      "side": 1,
+      "message": "we should delete PACKAGE_URL in build.conf, it should be  configured in Jenkins JOB.",
+      "revId": "fe275eaacd6601d559dab14f67fa0ae6e3302e1b",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_b0100302",
+        "filename": "build/build.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-01-21T14:16:46Z",
+      "side": 1,
+      "message": "It is better to create branch \"Brahmaputra\" directory than \"master\" .",
+      "revId": "fe275eaacd6601d559dab14f67fa0ae6e3302e1b",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
