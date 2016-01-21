@@ -20,7 +20,7 @@ Version:    4.2.0
 Release:    1
 Vendor:     elasticsearch
 Summary:    GUN kibana x64
-License:    GPL
+License:    Apache License, Version 2.0
 Source:     kibana-4.2.0-linux-x64.tar.gz
 Group:      System Enviroment/Daemons
 URL:        http://www.elasticsearch.co/
