@@ -66,7 +66,7 @@ platform = default
 physical_interface_address =
 
 # MAC address of device used by dpdk
-physical_interface_mac = {{ hostvars[inventory_hostname][contrail_ansible_device]['macaddress'] }}
+physical_interface_mac = {{ hostvars[inventory_hostname][contrail_device]['macaddress'] }}
 
 [DISCOVERY]
 # If COLLECTOR and/or CONTROL-NODE and/or DNS is not specified this section is
@@ -118,7 +118,7 @@ vmware_physical_interface =
 [NETWORKS]
 # control-channel IP address used by WEB-UI to connect to vnswad to fetch
 # required information (Optional)
-control_network_ip = {{ contrail_address }}
+control_network_ip = {{ contrail_haproxy_address }}
 
 [VIRTUAL-HOST-INTERFACE]
 # Everything in this section is mandatory
@@ -127,10 +127,10 @@ control_network_ip = {{ contrail_address }}
 name = vhost0
 
 # IP address and prefix in ip/prefix_len format
-ip = {{ contrail_address }}/{{ contrail_prefixlen }}
+ip = {{ contraili_vhost_address }}/{{ contrail_prefixlen }}
 
 # Gateway IP address for virtual host
-gateway = {{ contrail_gateway }}
+gateway = {{ contrail_vhost_gateway }}
 
 # Physical interface name to which virtual host interface maps to
 physical_interface = {{ contrail_device }}

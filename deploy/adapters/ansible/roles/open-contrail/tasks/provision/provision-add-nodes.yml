@@ -2,6 +2,15 @@
 #- hosts: config
 #  sudo: yes
 #  tasks:
+
+- name: "recover rabbitmq-server service script"
+  shell: if [ ! -f "\/etc\/init.d\/rabbitmq-server.initd.supervisord" ] ; then  mv /etc/init.d/rabbitmq-server.initd.supervisord /home/rabbitmq-server.initd.supervisord; mv /etc/init.d/rabbitmq-server /home/rabbit-server; mv /etc/init.d/rabbitmq-server.backup /etc/init.d/rabbitmq-server; fi
+
+- name: "restart rabbitmq-server"
+  service:
+    name: "rabbitmq-server"
+    state: "restarted"  
+
 - name: "provision config node"
   shell: "python /opt/contrail/utils/provision_config_node.py --api_server_ip {{ contrail_haproxy_address }} --admin_user {{ contrail_admin_user }} --admin_password {{ contrail_admin_password }} --admin_tenant_name admin --oper add --host_name {{ ansible_hostname }} --host_ip {{ contrail_address }}"
   when: inventory_hostname in groups['opencontrail_config']

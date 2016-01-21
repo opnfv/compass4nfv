@@ -37,10 +37,9 @@
 # or inventory_hostname in groups['opencontrail_tsn']
 
 
-# Compass adapter: use OpenStack management network "mgmt"
-#- name: Install interface on all hosts for Open Contrail
-#  include: install/install-interface.yml
-#  when: groups['opencontrail_control']|length !=0
+- name: Install interface on all hosts for Open Contrail
+  include: install/install-interface.yml
+  when: groups['opencontrail_control']|length !=0
 
 #- include: install/install-common.yml
 #- include: install/install-kernel.yml
