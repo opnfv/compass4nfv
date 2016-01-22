@@ -7,10 +7,6 @@ Installation instructions for the Brahmaputra release of OPNFV when using Compas
 ==========================================================================================================
 
 
-.. contents:: Table of Contents
-   :backlinks: none
-
-
 Abstract
 ========
 
@@ -53,8 +49,8 @@ networking and Unix/Linux administration.
 Preface
 =======
 
-Before starting the installation of the Brahmaputra release of OPNFV
-when using Compass4nfv as a deployment tool, some planning must be done.
+Before starting the installation of the Brahmaputra release of OPNFV,
+some planning must be done.
 
 
 Retrieving the installation ISO image
@@ -72,7 +68,8 @@ E.g.
 compass4nfv/brahmaputra/opnfv-2016-01-16_15-03-18.iso
 compass4nfv/brahmaputra/opnfv-2016-01-16_15-03-18.properties
 
-The name of iso image includes the time of iso building.
+The name of iso image includes the time of iso building, you can get the daily
+ISO according the building time.
 The git url and sha1 of Compass4nfv are recorded in properties files,
 According these, the corresponding deployment scripts can be retrieved.
 
@@ -103,8 +100,9 @@ Preparing the installation environment
 --------------------------------------
 
 If you have only 1 Bare Metal server, Virtual deployment is recommended. if more
-than or equal 3 servers, the Bare Metal deployment is recommended. The minimum of Bare Metal
-deployment server is 3, 1 for JumpServer(Jumphost), 1 for controller, 1 for computer.
+than or equal 3 servers, the Bare Metal deployment is recommended. The minimum number of
+servers for Bare metal deployment is 3, 1 for JumpServer(Jumphost), 1 for controller,
+1 for compute.
 
 
 Setup Requirements
@@ -218,6 +216,9 @@ You can write your own IPMI IP/User/Password/Mac address/roles reference to it.
 
         - roles -- Components deployed.
 
+
+**Assignment of different roles to servers**
+
 E.g. Openstack only deployment roles setting
 
 .. code-block:: yaml
@@ -289,6 +290,53 @@ Network Configuration
 Before deployment, there are some network configuration to be checked based on your network topology.
 Compass4nfv network default configuration file is "compass4nfv/deploy/conf/network_cfg.yaml".
 You can write your own reference to it.
+
+**The following figure shows the default network configuration.**
+
+.. code-block:: console
+
+
+      +--+                          +--+     +--+
+      |  |                          |  |     |  |
+      |  |      +------------+      |  |     |  |
+      |  +------+  Jumphost  +------+  |     |  |
+      |  |      +------+-----+      |  |     |  |
+      |  |             |            |  |     |  |
+      |  |             +------------+  +-----+  |
+      |  |                          |  |     |  |
+      |  |      +------------+      |  |     |  |
+      |  +------+    host1   +------+  |     |  |
+      |  |      +------+-----+      |  |     |  |
+      |  |             |            |  |     |  |
+      |  |             +------------+  +-----+  |
+      |  |                          |  |     |  |
+      |  |      +------------+      |  |     |  |
+      |  +------+    host2   +------+  |     |  |
+      |  |      +------+-----+      |  |     |  |
+      |  |             |            |  |     |  |
+      |  |             +------------+  +-----+  |
+      |  |                          |  |     |  |
+      |  |      +------------+      |  |     |  |
+      |  +------+    host3   +------+  |     |  |
+      |  |      +------+-----+      |  |     |  |
+      |  |             |            |  |     |  |
+      |  |             +------------+  +-----+  |
+      |  |                          |  |     |  |
+      |  |                          |  |     |  |
+      +-++                          ++-+     +-++
+        ^                            ^         ^
+        |                            |         |
+        |                            |         |
+      +-+-------------------------+  |         |
+      |      External Network     |  |         |
+      +---------------------------+  |         |
+             +-----------------------+---+     |
+             |       IPMI Network        |     |
+             +---------------------------+     |
+                     +-------------------------+-+
+                     | PXE(Installation) Network |
+                     +---------------------------+
+
 
 Start Deployment
 ----------------
