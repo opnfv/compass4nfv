@@ -35,6 +35,72 @@ Version history
 |                    |                    | (HUAWEI)           |                           |
 +--------------------+--------------------+--------------------+---------------------------+
 
+General Remarks
+===============
+
+
+
+New Features
+============
+
+
+
+Improvements/Enhancements
+=========================
+
+
+Performance Improvements/Enhancements
+-------------------------------------
+
+<None at this time>
+
+
+Other Improvements/Enhancements
+-------------------------------
+
+<None at this time>
+
+
+Removed/Retired Features
+========================
+
+<None at this time>
+
+
+Bug Fixes
+=========
+
+
+Known Issues
+============
+
+
+Installation Information
+========================
+
+
+Installation instructions can be found at:
+
+`Link text <http://artifacts.opnfv.org/compass4nfv/docs/Brahmaputra_installation-instructions/index.html>`_
+
+
+Frequently Asked Questions
+==========================
+
+Frequently asked questions can be found at:
+
+`Link text <http://artifacts.opnfv.org/compass4nfv/docs/Brahmaputra_FAQ/FAQ.html>`_
+
+
+Stay informed
+=============
+
+You are encouraged to subscribe to the OPNFV announcement mailing list to receive important
+notifications such as product updates and security patches.
+
+To get support you can send an email to:  opnfv-users@lists.opnfv.org.
+
+
 
 :Authors: Justin Chi (HUAWEI)
 :Version: 0.0.1
