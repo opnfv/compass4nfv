@@ -31,9 +31,99 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**               |
 |                    |                    |                    |                           |
 +--------------------+--------------------+--------------------+---------------------------+
+| 2016-01-25         | 0.0.2              | Justin Chi         | Add template              |
+|                    |                    | (HUAWEI)           |                           |
++--------------------+--------------------+--------------------+---------------------------+
 | 2016-01-17         | 0.0.1              | Justin Chi         | First draft               |
 |                    |                    | (HUAWEI)           |                           |
 +--------------------+--------------------+--------------------+---------------------------+
+
+General Remarks
+===============
+
+
+New Features
+============
+
+Ubuntu 14.04 support
+--------------------
+
+Compass4nfv for Brahmaputra release uses Ubuntu 14.04 as its target OPNFV system base OS.
+
+Openstack Liberty release support
+---------------------------------
+
+Ceph Infernalis release support
+-------------------------------
+
+OpenDaylight Lithium release support
+------------------------------------
+
+ONOS Emu release support
+------------------------
+
+Opencontrail release support
+----------------------------
+
+High-availability for OpenStack
+-------------------------------
+
+
+Improvements/Enhancements
+=========================
+
+
+Performance Improvements/Enhancements
+-------------------------------------
+
+<First release, none at this time>
+
+
+Other Improvements/Enhancements
+-------------------------------
+
+<First release, none at this time>
+
+
+Removed/Retired Features
+========================
+
+<First release, none at this time>
+
+
+Bug Fixes
+=========
+
+
+Known Issues
+============
+
+
+Installation Information
+========================
+
+
+Installation instructions can be found at:
+
+`Here <http://artifacts.opnfv.org/compass4nfv/docs/Brahmaputra_installation-instructions/index.html>`_
+
+
+Frequently Asked Questions
+==========================
+
+Frequently asked questions can be found at:
+
+`Here <http://artifacts.opnfv.org/compass4nfv/docs/Brahmaputra_FAQ/FAQ.html>`_
+
+
+Stay informed
+=============
+
+You are encouraged to subscribe to the OPNFV announcement mailing list to receive important
+notifications such as product updates and security patches.
+
+To get support you can send an email to:  opnfv-users@lists.opnfv.org.
+
 
 
 :Authors: Justin Chi (HUAWEI)
