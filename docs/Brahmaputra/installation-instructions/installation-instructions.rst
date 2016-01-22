@@ -225,6 +225,9 @@ You can write your own IPMI IP/User/Password/Mac address/roles reference to it.
 
         - roles -- Components deployed.
 
+
+**Assignment of different roles to servers**
+
 E.g. Openstack only deployment roles setting
 
 .. code-block:: yaml
@@ -296,6 +299,53 @@ Network Configuration
 Before deployment, there are some network configuration to be checked based on your network topology.
 Compass4nfv network default configuration file is "compass4nfv/deploy/conf/network_cfg.yaml".
 You can write your own reference to it.
+
+**The following figure shows the default network configuration.**
+
+.. code-block:: console
+
+
+      +--+                          +--+     +--+
+      |  |                          |  |     |  |
+      |  |      +------------+      |  |     |  |
+      |  +------+  Jumphost  +------+  |     |  |
+      |  |      +------+-----+      |  |     |  |
+      |  |             |            |  |     |  |
+      |  |             +------------+  +-----+  |
+      |  |                          |  |     |  |
+      |  |      +------------+      |  |     |  |
+      |  +------+    host1   +------+  |     |  |
+      |  |      +------+-----+      |  |     |  |
+      |  |             |            |  |     |  |
+      |  |             +------------+  +-----+  |
+      |  |                          |  |     |  |
+      |  |      +------------+      |  |     |  |
+      |  +------+    host2   +------+  |     |  |
+      |  |      +------+-----+      |  |     |  |
+      |  |             |            |  |     |  |
+      |  |             +------------+  +-----+  |
+      |  |                          |  |     |  |
+      |  |      +------------+      |  |     |  |
+      |  +------+    host3   +------+  |     |  |
+      |  |      +------+-----+      |  |     |  |
+      |  |             |            |  |     |  |
+      |  |             +------------+  +-----+  |
+      |  |                          |  |     |  |
+      |  |                          |  |     |  |
+      +-++                          ++-+     +-++
+        ^                            ^         ^
+        |                            |         |
+        |                            |         |
+      +-+-------------------------+  |         |
+      |      External Network     |  |         |
+      +---------------------------+  |         |
+             +-----------------------+---+     |
+             |       IPMI Network        |     |
+             +---------------------------+     |
+                     +-------------------------+-+
+                     | PXE(Installation) Network |
+                     +---------------------------+
+
 
 Start Deployment
 ----------------
