@@ -137,7 +137,6 @@ function make_repo()
     fi
 
     sudo docker build --no-cache=true -t ${docker_tag} -f ${WORK_PATH}/work/repo/${dockerfile} ${WORK_PATH}/work/repo/
-
     sudo docker run -t -v ${WORK_PATH}/work/repo:/result ${docker_tag}
 
     image_id=$(sudo docker images|grep ${docker_tag}|awk '{print $3}')
@@ -176,20 +175,17 @@ function make_all_repo()
     make_repo --os-ver trusty --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
-              --special-package "openvswitch-switch keepalived" \
-              --special-package-dir "$SPECIAL_DEBIAN_PACKAGE"
+              --special-package "openvswitch-switch"
 
     make_repo --os-ver trusty --package-tag kilo \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
-              --special-package "openvswitch-switch keepalived" \
-              --special-package-dir "$SPECIAL_DEBIAN_PACKAGE"
+              --special-package "openvswitch-switch"
 
     make_repo --os-ver trusty --package-tag liberty \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
-              --special-package "openvswitch-switch keepalived" \
-              --special-package-dir "$SPECIAL_DEBIAN_PACKAGE"
+              --special-package "openvswitch-switch"
 
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
