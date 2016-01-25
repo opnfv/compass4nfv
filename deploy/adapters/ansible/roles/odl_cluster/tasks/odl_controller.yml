@@ -95,22 +95,22 @@
 ##########################################################################################################
 #################################   OpenDayLight Cluster Configuration   #################################
 ##########################################################################################################
-- name: create initial directory
-  shell: >
-    mkdir -p {{ odl_home }}/configuration/initial;
+#- name: create initial directory
+#  shell: >
+#    mkdir -p {{ odl_home }}/configuration/initial;
 
-- name: create akka config
-  template:
-    src: akka.conf
-    dest: "{{ odl_home }}/configuration/initial/akka.conf"
+#- name: create akka config
+#  template:
+#    src: akka.conf
+#    dest: "{{ odl_home }}/configuration/initial/akka.conf"
 #  notify:
 #    - restart odl service
 
 
-- name: create module-shards config
-  template:
-    src: module-shards.conf
-    dest: "{{ odl_home }}/configuration/initial/module-shards.conf"
+#- name: create module-shards config
+#  template:
+#    src: module-shards.conf
+#    dest: "{{ odl_home }}/configuration/initial/module-shards.conf"
 #  notify:
 #    - restart odl service
 
