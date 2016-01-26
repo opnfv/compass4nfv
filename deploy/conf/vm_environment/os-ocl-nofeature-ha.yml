@@ -8,30 +8,30 @@ hosts:
       - ha
       - ceph-adm
       - ceph-mon
-      - open-contail
+      - open-contrail
 
   - name: host2
     roles:
       - controller
       - ha
       - ceph-mon
-      - open-contail
+      - open-contrail
 
   - name: host3
     roles:
       - controller
       - ha
       - ceph-mon
-      - open-contail
+      - open-contrail
 
   - name: host4
     roles:
       - compute
       - ceph-osd
-      - open-contail
+      - open-contrail
 
   - name: host5
     roles:
       - compute
       - ceph-osd
-      - open-contail
+      - open-contrail
