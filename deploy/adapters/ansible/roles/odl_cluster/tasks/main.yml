@@ -9,6 +9,3 @@
   include: openvswitch.yml
   when: groups['odl']|length !=0 and inventory_hostname not in groups['odl']
 
-- name: Wait 5 minutes after odl deployment
-  shell: sleep 300
-  when: groups['odl']|length !=0
