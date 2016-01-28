@@ -17,4 +17,26 @@
   tags:
     - storage
 
+- name: make setup_storage directory
+  file: path=/opt/setup_storage state=directory mode=0755
+  tags:
+    - storage
+
+- name: copy setup storage scripts
+  copy: src={{ item }} dest=/opt/setup_storage mode=0755
+  with_items:
+    - losetup.sh
+  tags:
+    - storage
+
+- name: set autostart file
+  copy: src=storage dest=/etc/init.d/storage mode=0755
+  tags:
+    - storage
+
+- name: add to boot scripts
+  service: name=storage enabled=yes
+  tags:
+    - storage
+
 - meta: flush_handlers
