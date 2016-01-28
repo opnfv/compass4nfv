@@ -83,11 +83,6 @@
 #  notify:
 #    - restart odl service
 
-- name: create jetty config
-  template:
-    src: jetty.xml
-    dest: "{{ odl_home }}/etc/jetty.xml"
-
 - name: install odl pip packages
   pip: name={{ item }} state=present
   with_items: odl_pip
@@ -149,14 +144,6 @@
 
 #- name: copy Jolokia-OSGi jar config
 #  copy: src=roles/odl_cluster/templates/jolokia-osgi-1.1.5.jar  dest="{{ odl_home }}/system/org/jolokia/jolokia-osgi/1.1.5/"
-
-- name: create odl haproxy config file
-  template:
-    src: haproxy-odl.cfg
-    dest: "/opt/haproxy-odl.cfg"
-
-- name: add odl haproxy configuration to haproxy.cfg
-  shell: "cat /opt/haproxy-odl.cfg >> /etc/haproxy/haproxy.cfg"
 
 - name: remove karaf data directory
   shell: rm -rf {{ odl_home }}/data/*;
@@ -241,5 +228,3 @@
 - name: restart neutron-metadata-agent server
   service: name=neutron-metadata-agent state=restarted
 
-- name: restart haproxy server
-  service: name=haproxy state=restarted
