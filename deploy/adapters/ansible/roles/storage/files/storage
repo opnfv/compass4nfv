@@ -1,0 +1,3 @@
+#! /bin/bash
+loop_dev=`sh /opt/setup_storage/losetup.sh`
+vgcreate --force storage-volumes $loop_dev
