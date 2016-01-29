@@ -1,4 +1,12 @@
 #!/bin/bash
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
 function clear_forward_rejct_rules()
 {
     while sudo iptables -nL FORWARD --line-number|grep -E 'REJECT +all +-- +0.0.0.0/0 +0.0.0.0/0 +reject-with icmp-port-unreachable'|head -1|awk '{print $1}'|xargs sudo iptables -D FORWARD; do :; done
