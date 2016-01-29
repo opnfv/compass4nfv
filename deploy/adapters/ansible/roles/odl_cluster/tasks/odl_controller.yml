@@ -189,15 +189,15 @@
 - name: run openvswitch script
   include: openvswitch.yml
 
-- name: add patch-port and normal flow table
-  shell: ovs-vsctl add-port br-int patch-br-prv;
-         ovs-vsctl set Interface patch-br-prv type=patch;
-         ovs-vsctl set Interface patch-br-prv options:peer=patch-int;
-         ovs-vsctl add-port br-prv patch-int;
-         ovs-vsctl set Interface patch-int type=patch;
-         ovs-vsctl set Interface patch-int options:peer=patch-br-prv;
-         ovs-ofctl -O OpenFlow13 add-flow br-int "table=0, priority=0 actions=NORMAL";
-  ignore_errors: True  
+#- name: add patch-port and normal flow table
+#  shell: ovs-vsctl add-port br-int patch-br-prv;
+#         ovs-vsctl set Interface patch-br-prv type=patch;
+#         ovs-vsctl set Interface patch-br-prv options:peer=patch-int;
+#         ovs-vsctl add-port br-prv patch-int;
+#         ovs-vsctl set Interface patch-int type=patch;
+#         ovs-vsctl set Interface patch-int options:peer=patch-br-prv;
+#         ovs-ofctl -O OpenFlow13 add-flow br-int "table=0, priority=0 actions=NORMAL";
+#  ignore_errors: True  
 
 #- name: Configure Neutron1
 #  shell: >
@@ -212,6 +212,9 @@
 
 #- name: Execute ML2 Configuration File
 #  command: su -s /bin/sh -c "/opt/ml2_conf.sh;"
+
+- name: configure l3 configuration
+  shell: crudini --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-prv;
 
 - name: drop and recreate neutron database
   shell: mysql -e "drop database if exists neutron;";
