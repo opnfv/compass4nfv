@@ -12,3 +12,8 @@
 - name: activate osd node
   shell: ceph-disk activate /var/local/osd
 
+- name: enable ceph service
+  service: name=ceph enabled=yes
+
+- name: rebuild osd after reboot
+  lineinfile: dest=/etc/init/ceph-osd-all-starter.conf insertafter="^task" line="pre-start script\n  set -e\n  /opt/setup_storage/losetup.sh\n  sleep 3\n  mount /dev/storage-volumes/ceph0 /var/local/osd\nend script"
