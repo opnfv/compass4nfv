@@ -116,7 +116,7 @@
   roles: []
   #  - ceph-deploy
 
-- hosts: all
+- hosts: ceph
   remote_user: root
   accelerate: true
   roles:
@@ -135,7 +135,7 @@
   roles:
     - ceph-osd
 
-- hosts: all
+- hosts: ceph
   remote_user: root
   accelerate: true
   roles:
