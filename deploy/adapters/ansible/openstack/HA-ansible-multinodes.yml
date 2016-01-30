@@ -90,6 +90,12 @@
   remote_user: root
   accelerate: true
   roles:
+    - secgroup
+
+- hosts: all
+  remote_user: root
+  accelerate: true
+  roles:
     - odl_cluster
 
 - hosts: all
@@ -147,11 +153,6 @@
   roles:
     - monitor
 
-- hosts: all
-  remote_user: root
-  accelerate: true
-  roles:
-    - secgroup
 
 - hosts: all
   remote_user: root
