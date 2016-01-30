@@ -35,10 +35,9 @@ def get_packages_name_list(file_list, special_packages):
             for i in value:
                 if i in special_packages:
                     continue
+                package_name_list.append(i)
 
-            package_name_list.append(value)
-
-    return list(set(package_name_list)
+    return package_name_list
 
 def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_packages="",
                              special_packages="", special_packages_script_dir="", special_packages_dir=""):
