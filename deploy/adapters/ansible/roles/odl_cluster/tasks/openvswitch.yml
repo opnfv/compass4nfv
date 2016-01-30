@@ -33,9 +33,8 @@
 #- name: Restart OpenVSwitch
 #  shell: service openvswitch-switch restart;
 
-#- name: remove Neutron's openvswitch agent services
-#  shell: >
-#    update-rc.d neutron-plugin-openvswitch-agent remove
+- name: remove Neutron's openvswitch agent services
+  shell: update-rc.d neutron-plugin-openvswitch-agent remove
 
 - name: Check External network
   shell: ovs-vsctl list-br | grep br-prv
@@ -51,11 +50,17 @@
 #- name: Set OpenDaylight as the manager
 #  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
 
+- name: set opendaylight as the manager
+  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
+
+- name: check br-int
+  shell: ovs-vsctl list-br | grep br-int; while [ $? -ne 0 ]; do sleep 10; ovs-vsctl list-br | grep br-int; done
 
 - name: set local ip in openvswitch
   shell: ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) other_config={'local_ip'=' {{ internal_ip }} '};
 
 #'
+
 ##################################################################
 ################  Recover External network #######################
 ##################################################################
@@ -88,13 +93,6 @@
 ##################################################################
 ##################################################################
 ##################################################################
-
-- name: set opendaylight as the manager
-  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
-
-- name: check br-int
-  shell: ovs-vsctl list-br | grep br-int; while [ $? -ne 0 ]; do sleep 10; ovs-vsctl list-br | grep br-int; done
-
 - name: configure opendaylight -> ml2
   shell: >
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight;
