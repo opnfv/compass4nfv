@@ -54,4 +54,3 @@ hosts:
     ipmiPass: Huawei@123
     roles:
       - compute
-
