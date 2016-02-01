@@ -27,3 +27,4 @@
 
 - name: fetch osd keyring
   fetch: src="/var/lib/ceph/bootstrap-osd/ceph.keyring" dest="/tmp/ceph.osd.keyring" flat=yes
+  run_once: True
