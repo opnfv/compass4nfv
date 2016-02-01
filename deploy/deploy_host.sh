@@ -14,12 +14,12 @@ function rename_nics(){
 }
 
 function deploy_host(){
-
+    AYNC_TIMEOUT = 20
     ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks
     scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/status_callback.py
 
     # avoid nodes reboot to fast, cobbler can not give response
-    (sleep 20; rename_nics; reboot_hosts) &
+    (sleep $AYNC_TIMEOUT; rename_nics; reboot_hosts) &
     if [[ "$REDEPLOY_HOST" == true ]]; then
         deploy_flag="redeploy"
     else
@@ -47,4 +47,7 @@ function deploy_host(){
     --enable_secgroup="${ENABLE_SECGROUP}" --enable_fwaas="${ENABLE_FWAAS}" \
     --rsa_file="$rsa_file" --enable_vpnaas="${ENABLE_VPNAAS}"
 
+    RET=$?
+    sleep $((AYNC_TIMEOUT+5))
+    exit $RET
 }
