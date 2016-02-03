@@ -14,7 +14,7 @@ function rename_nics(){
 }
 
 function deploy_host(){
-    AYNC_TIMEOUT = 20
+    export AYNC_TIMEOUT=20
     ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks
     scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/status_callback.py
 
