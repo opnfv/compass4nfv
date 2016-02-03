@@ -42,6 +42,9 @@ function prepare_env() {
     sudo apt-get install -y --force-yes git python-dev
     sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
     sudo service libvirt-bin restart
+    if sudo service openvswitch-switch status|grep stop; then
+        sudo service openvswitch-switch start
+    fi
 
     # prepare work dir
     rm -rf $WORK_DIR/{installer,vm,network,iso}
