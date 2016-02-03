@@ -834,6 +834,21 @@ class CompassClient(object):
             )
             raise RuntimeError("redeploy cluster failed")
 
+    def get_cluster_state(self, cluster_id):
+        for _ in range(10):
+            try:
+                status, cluster_state = self.client.get_cluster_state(cluster_id)
+                if self.is_ok(status):
+                    break
+            except:
+                status = 500
+                cluster_state = ""
+
+            LOG.error("can not get cluster %s's state, try again" % cluster_id)
+            time.sleep(6)
+
+        return status, cluster_state
+
     def get_installing_progress(self, cluster_id):
         def _get_installing_progress():
             """get intalling progress."""
@@ -843,16 +858,9 @@ class CompassClient(object):
 
             current_time = time.time
             while current_time() < deployment_timeout:
-                status, cluster_state = self.client.get_cluster_state(cluster_id)
+                status, cluster_state = self.get_cluster_state(cluster_id)
                 if not self.is_ok(status):
-                    LOG.error("can not get cluster state")
-
-                    # maybe a transient error?
-                    time.sleep(5)
-                    status, cluster_state = self.client.get_cluster_state(cluster_id)
-                    if not self.is_ok(status):
-                        # OK, there's something wrong
-                        raise RuntimeError("can not get cluster state")
+                    raise RuntimeError("can not get cluster state")
 
                 if cluster_state['state'] in ['UNINITIALIZED', 'INITIALIZED']:
                     if current_time() >= action_timeout:
