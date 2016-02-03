@@ -12,8 +12,8 @@ def rename_nics(dha_info, rsa_file, compass_ip):
         interfaces = host.get('interfaces')
         if interfaces:
             for interface in interfaces:
-                nic_name = interfaces.keys()[0]
-                mac = interfaces.values()[0]
+                nic_name = interface.keys()[0]
+                mac = interface.values()[0]
 
                 exec_cmd("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
                           -i %s root@%s \
