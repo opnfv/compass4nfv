@@ -852,22 +852,12 @@ class CompassClient(object):
     def get_installing_progress(self, cluster_id):
         def _get_installing_progress():
             """get intalling progress."""
-            action_timeout = time.time() + 60 * float(CONF.action_timeout)
-            deployment_timeout = time.time() + 60 * float(
-                CONF.deployment_timeout)
-
+            deployment_timeout = time.time() + 60 * float(CONF.deployment_timeout)
             current_time = time.time
             while current_time() < deployment_timeout:
                 status, cluster_state = self.get_cluster_state(cluster_id)
                 if not self.is_ok(status):
                     raise RuntimeError("can not get cluster state")
-
-                if cluster_state['state'] in ['UNINITIALIZED', 'INITIALIZED']:
-                    if current_time() >= action_timeout:
-                        raise RuntimeError("installation timeout")
-                    else:
-                        time.sleep(5)
-                        continue
 
                 elif cluster_state['state'] == 'SUCCESSFUL':
                     LOG.info(
@@ -880,6 +870,14 @@ class CompassClient(object):
                          'get cluster %s state status %s: %s, error',
                          (cluster_id, status, cluster_state)
                     )
+
+                LOG.info("current_time=%s, deployment_timeout=%s" \
+                        % (current_time(), deployment_timeout))
+                time.sleep(5)
+
+            if not current_time() < deployment_timeout:
+                raise RuntimeError("installation timeout")
+
         try:
             _get_installing_progress()
         finally:
