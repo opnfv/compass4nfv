@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a4e6583_f8d59943",
+        "filename": "docs/Brahmaputra/installation-instructions/installation-instructions.rst",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 483
+      },
+      "writtenOn": "2016-02-06T09:18:25Z",
+      "side": 1,
+      "message": "\"when using Compass4nfv as a deployment tool\" deleted",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 43
+      },
+      "revId": "0f61f1c1086df4f4fcbead2fc721693e2b134b04",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a4e6583_18d19557",
+        "filename": "docs/Brahmaputra/installation-instructions/installation-instructions.rst",
+        "patchSetId": 7
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 483
+      },
+      "writtenOn": "2016-02-06T09:18:25Z",
+      "side": 1,
+      "message": "suggest to add a current iso link, refered to the newest successfully build iso. It is used by ubuntu, such as http://cloud-images.ubuntu.com/trusty/current/",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 53
+      },
+      "revId": "0f61f1c1086df4f4fcbead2fc721693e2b134b04",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a4e6583_b8cf21b0",
+        "filename": "docs/Brahmaputra/installation-instructions/installation-instructions.rst",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 483
+      },
+      "writtenOn": "2016-02-06T09:18:25Z",
+      "side": 1,
+      "message": "The minimum number for Bare Metal\ndeployment is 3",
+      "range": {
+        "startLine": 113,
+        "startChar": 67,
+        "endLine": 114,
+        "endChar": 22
+      },
+      "revId": "0f61f1c1086df4f4fcbead2fc721693e2b134b04",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
