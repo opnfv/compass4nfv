@@ -1,6 +1,10 @@
-================================================================================================================
-OPNFV Installation instructions for the Brahmaputra release of OPNFV when using Compass4nfv as a deployment tool
-================================================================================================================
+.. This work is licensed under a Creative Commons Attribution 4.0 International Licence.
+.. http://creativecommons.org/licenses/by/4.0
+.. (c) by Weidong Shao (HUAWEI) and Justin Chi (HUAWEI)
+
+==========================================================================================================
+Installation instructions for the Brahmaputra release of OPNFV when using Compass4nfv as a deployment tool
+==========================================================================================================
 
 
 .. contents:: Table of Contents
@@ -13,17 +17,6 @@ Abstract
 This document describes how to install the Brahmaputra release of OPNFV when
 using Compass4nfv as a deployment tool covering it's limitations, dependencies
 and required system resources.
-
-License
-=======
-
-Brahmaputra release of OPNFV when using Compass4nfv as a deployment tool Docs
-(c) by Weidong Shao (HUAWEI) and Justin Chi (HUAWEI)
-
-Brahmaputra release of OPNFV when using Compass4nfv as a deployment tool Docs
-are licensed under a Creative Commons Attribution 4.0 International License.
-You should have received a copy of the license along with this.
-If not, see <http://creativecommons.org/licenses/by/4.0/>.
 
 Version history
 ===============
@@ -411,4 +404,4 @@ Compass
 `Compass Home Page <http://www.syscompass.org/>`_
 
 :Authors: Justin Chi (HUAWEI)
-:Version: 1.0.0
+
