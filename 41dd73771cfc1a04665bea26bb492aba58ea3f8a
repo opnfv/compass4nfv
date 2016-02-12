@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a4e6583_a149258d",
+        "filename": "docs/installation-instructions/installation-instructions.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 253
+      },
+      "writtenOn": "2016-02-12T10:38:11Z",
+      "side": 1,
+      "message": "we can delete this as well",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "41dd73771cfc1a04665bea26bb492aba58ea3f8a",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
