@@ -19,6 +19,9 @@ def get_packages_name_list(file_list, special_packages):
 
     for file in file_list:
         datas = yaml.load(open(file))
+        if not datas:
+            continue
+
         for key, value in datas.items():
             if key == "pip_packages":
                  continue
