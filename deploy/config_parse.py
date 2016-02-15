@@ -34,7 +34,7 @@ def hostroles(s, seq, host=None):
 def hostmacs(s, seq, host=None):
     return host.get('mac', '')
 
-def export_config_file(s, conf_dir, ofile):
+def export_config_file(s, config_file, conf_dir, ofile):
     env = {}
     env.update(s)
     if env.get('hosts', []):
@@ -47,6 +47,7 @@ def export_config_file(s, conf_dir, ofile):
     env.update({'FLAVOR': s.get('FLAVOR', "cluster")})
     env.update({'HOSTNAMES': hostnames(s, ',')})
     env.update({'HOST_ROLES': hostroles(s, ';')})
+    env.update({'DHA': config_file})
 
     value = hostmacs(s, ',')
     if len(value) > 0:
@@ -82,7 +83,7 @@ if __name__ == "__main__":
 
     data = init(config_file)
 
-    export_config_file(data, conf_dir, os.path.join(output_dir, output_file))
+    export_config_file(data, config_file, conf_dir, os.path.join(output_dir, output_file))
     export_reset_file(data, tmpl_dir, output_dir, os.path.join(output_dir, output_file))
 
     sys.exit(0)
