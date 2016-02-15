@@ -42,9 +42,7 @@ function get_conf_name()
     done
 
     if [[ $# -eq 0 ]]; then
-        export DHA="$COMPASS_DIR/deploy/conf/virtual_cluster.yml"
-    elif [[ "$1" == "five" ]];then
-        export DHA="$COMPASS_DIR/deploy/conf/virtual_five.yml"
+        export DHA="$COMPASS_DIR/deploy/conf/vm_environment/os-nosdn-nofeature-ha.yml"
     else
         file=${1%*.yml}.yml
         if [[ -f $file ]]; then
