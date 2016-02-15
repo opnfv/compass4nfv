@@ -27,7 +27,19 @@ exit 1
 #else
     #set interface='lan'
 #end if
-
+for i in {1..5}; do
+    if ipmitool -I $interface -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power on >/dev/null 2>&1
+    then
+        break
+    elif [[ i -lt 5 ]]
+    then
+        sleep 1
+    else
+        log_error "$ipmiIp power on fail"
+        exit 1
+    fi
+done
+sleep 1
 for i in {1..5}; do
     if ipmitool -I $interface -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe >/dev/null 2>&1
     then
