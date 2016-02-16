@@ -7,7 +7,13 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-services: []
+services:
+  - openstack-heat-api
+  - openstack-heat-api-cfn
+  - openstack-heat-engine
 
-packages: []
-
+packages:  
+  - openstack-heat-api
+  - openstack-heat-api-cfn
+  - openstack-heat-engine
+  - python-heatclient

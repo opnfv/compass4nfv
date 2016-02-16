@@ -7,20 +7,22 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 
+- include_vars: "{{ ansible_os_family }}.yml"
+
 - name: Create a default data directory
   file: path="/var/lib/ceph/mon/ceph-{{ inventory_hostname }}" state="directory"
 
 - name: Populate the monitor daemon
   shell: "ceph-mon --mkfs -i {{ inventory_hostname }} --monmap /tmp/monmap --keyring /tmp/ceph.mon.keyring"
 
-- name: Touch the done file
-  file: path="/var/lib/ceph/mon/ceph-{{ inventory_hostname }}/done" state="touch"
+- name: Touch the done and auto start file
+  file: path="/var/lib/ceph/mon/ceph-{{ inventory_hostname }}/{{ item }}" state="touch"
+  with_items:
+    - "done"
+    - "{{ ceph_start_type }}"
 
 - name: start mon daemon
-  shell: start ceph-mon id={{ inventory_hostname }}
-
-- name: auto start ceph-mon
-  file: path="/var/lib/ceph/mon/ceph-{{ inventory_hostname }}/upstart" state="touch"
+  shell: "{{ ceph_start_script }}"
 
 - name: wait for creating osd keyring
   wait_for: path=/var/lib/ceph/bootstrap-osd/ceph.keyring

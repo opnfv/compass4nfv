@@ -1,0 +1,11 @@
+[Unit]
+Description=Storage Service
+After=syslog.target
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/storage
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

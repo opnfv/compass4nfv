@@ -25,3 +25,9 @@
 
 - name: rebuild osd after reboot
   lineinfile: dest=/etc/init/ceph-osd-all-starter.conf insertafter="^task" line="pre-start script\n  set -e\n  /opt/setup_storage/losetup.sh\n  sleep 3\n  mount /dev/storage-volumes/ceph0 /var/local/osd\nend script"
+  when: ansible_os_family == "Debian"
+
+- name: rebuild osd after reboot for centos
+  lineinfile: dest=/usr/libexec/ceph/ceph-osd-prestart.sh insertafter="^#!/bin/sh" line="\n/opt/setup_storage/losetup.sh\nsleep 3\nmount /dev/storage-volumes/ceph0 /var/local/osd"
+  when: ansible_os_family == "RedHat"
+

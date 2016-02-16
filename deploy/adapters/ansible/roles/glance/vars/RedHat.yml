@@ -9,6 +9,7 @@
 ---
 packages:
   - openstack-glance
+  - rpcbind
 
 nfs_services:
   - rpcbind
