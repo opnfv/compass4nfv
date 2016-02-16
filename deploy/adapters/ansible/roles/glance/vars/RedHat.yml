@@ -9,10 +9,10 @@
 ---
 packages:
   - openstack-glance
+  - rpcbind
 
 nfs_services:
   - rpcbind
-  - rpc-statd
 
 services:
   - openstack-glance-api
