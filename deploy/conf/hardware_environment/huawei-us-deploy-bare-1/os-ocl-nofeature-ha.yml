@@ -16,7 +16,7 @@ hosts:
     roles:
       - controller
       - ha
-      - open-contrail
+      - opencontrail
 
   - name: host2
     mac: 'D8:49:0B:DA:5A:B7'
@@ -25,9 +25,7 @@ hosts:
     ipmiIp: 172.16.130.27
     ipmiPass: huawei@123
     roles:
-      - controller
-      - ha
-      - open-contrail
+      - compute
 
   - name: host3
     mac: 'D8:49:0B:DA:2A:28'
@@ -36,9 +34,7 @@ hosts:
     ipmiIp: 172.16.130.29
     ipmiPass: Huawei@123
     roles:
-      - controller
-      - ha
-      - open-contrail
+      - compute
 
   - name: host4
     mac: 'D8:49:0B:DA:5B:5D'
@@ -48,7 +44,6 @@ hosts:
     ipmiPass: Huawei@123
     roles:
       - compute
-      - open-contrail
 
   - name: host5
     mac: 'D8:49:0B:DA:56:85'
@@ -58,5 +53,4 @@ hosts:
     ipmiPass: Huawei@123
     roles:
       - compute
-      - open-contrail
 
