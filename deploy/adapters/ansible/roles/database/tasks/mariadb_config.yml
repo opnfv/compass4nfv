@@ -8,11 +8,12 @@
 ##############################################################################
 ---
 - name: create all needed db
-  mysql_db: name={{ item.db }} state=present
+  mysql_db: login_unix_socket=/var/run/mysqld/mysqld.sock name={{ item.db }} state=present
   with_items: "{{ credentials }}"
 
 - name: create service db user
   mysql_user:
+    login_unix_socket=/var/run/mysqld/mysqld.sock
     name={{ item[0].user }}
     password={{ item[0].password }}
     priv=*.*:ALL,GRANT
@@ -24,6 +25,7 @@
 
 - name: create wsrep db user
   mysql_user:
+    login_unix_socket=/var/run/mysqld/mysqld.sock
     name={{ WSREP_SST_USER }}
     password={{ WSREP_SST_PASS }}
     priv=*.*:ALL,GRANT

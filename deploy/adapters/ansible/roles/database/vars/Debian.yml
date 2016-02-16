@@ -30,7 +30,7 @@ services: []
 mongodb_service: mongodb
 mysql_config:
   - dest: /etc/mysql/my.cnf
-    src: my.cnf
+    src: my_debian.cnf
   - dest: /etc/mysql/conf.d/wsrep.cnf
     src: wsrep.cnf
 

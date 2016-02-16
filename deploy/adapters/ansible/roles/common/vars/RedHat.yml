@@ -9,10 +9,13 @@
 ---
 packages:
   - openvswitch
+  - python-devel
   - python-memcached
+  - gcc
 
 pip_packages:
   - crudini
+  - python-keyczar
 
 pip_conf: pip.conf
 
