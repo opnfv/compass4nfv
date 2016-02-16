@@ -15,6 +15,7 @@
 
 - name: change memcache listen ip
   lineinfile: dest=/etc/memcached.conf regexp="^-l " line="-l 0.0.0.0"
+  when: ansible_os_family == "Debian"
 
 - name: restart services
   service: name={{ item }} state=restarted enabled=yes

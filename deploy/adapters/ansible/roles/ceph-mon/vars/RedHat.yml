@@ -7,25 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
-  tags:
-    - test_mongo
 
-- include: mariadb_install.yml
-- include: mariadb_cluster.yml
-
-- include: mariadb_config.yml
-  when:
-    - inventory_hostname == haproxy_hosts.keys()[0]
-
-- include: mongodb_install.yml
-  tags:
-    - test_mongo
-
-- include: mongodb_config.yml
-  when:
-    - inventory_hostname == haproxy_hosts.keys()[0]
-  tags:
-    - test_mongo
-
-- meta: flush_handlers
+ceph_start_script: "/etc/init.d/ceph start mon.{{ inventory_hostname }}"
+ceph_start_type: "sysvinit"

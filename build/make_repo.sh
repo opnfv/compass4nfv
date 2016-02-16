@@ -208,6 +208,11 @@ function make_all_repo()
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
                                  dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
+
+    make_repo --os-ver rhel7 --package-tag liberty \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
+                                 dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
 }
 
 function main()
