@@ -14,6 +14,15 @@ yum install http://rdo.fedorapeople.org/openstack-liberty/rdo-release-liberty.rp
 # modify centos7 repo for workaround
 sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
 
+# add mongodb repo
+cat <<EOF >/etc/yum.repos.d/mongodb.repo
+[mongodb]
+name=MongoDB Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
+gpgcheck=0
+enabled=1
+EOF 
+
 # add galeracluster repo
 cat <<EOF >/etc/yum.repos.d/MariaDB.repo
 [mariadb]

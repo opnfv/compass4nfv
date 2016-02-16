@@ -24,6 +24,10 @@
     dest: "/etc/security/limits.conf"
     mode: 0755
 
+- name: create conf dir for wsrep
+  file: path=/etc/my.cnf.d state=directory mode=0755
+  when: ansible_os_family == "RedHat"
+
 - name: update mariadb config file
   template:
     src: '{{ item.src }}'
