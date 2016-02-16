@@ -871,11 +871,11 @@ class CompassClient(object):
                          (cluster_id, status, cluster_state)
                     )
 
-                LOG.info("current_time=%s, deployment_timeout=%s" \
-                        % (current_time(), deployment_timeout))
                 time.sleep(5)
 
-            if not current_time() < deployment_timeout:
+            if current_time() >= deployment_timeout:
+                LOG.info("current_time=%s, deployment_timeout=%s" \
+                        % (current_time(), deployment_timeout))
                 raise RuntimeError("installation timeout")
 
         try:
