@@ -12,26 +12,20 @@ hosts:
 
   - name: host2
     roles:
-      - controller
-      - ha
+      - compute
       - ceph-mon
-      - open-contrail
 
   - name: host3
     roles:
-      - controller
-      - ha
+      - compute
       - ceph-mon
-      - open-contrail
 
   - name: host4
     roles:
       - compute
       - ceph-osd
-      - open-contrail
 
   - name: host5
     roles:
       - compute
       - ceph-osd
-      - open-contrail

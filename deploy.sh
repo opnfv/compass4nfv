@@ -17,3 +17,7 @@ if [[ -z $DEPLOY_COMPASS && -z $DEPLOY_HOST && -z $REDEPLOY_HOST ]]; then
 fi
 
 $COMPASS_DIR/deploy/launch.sh $*
+
+if [[ `echo $HOST_ROLES | grep open-contrail` ]]; then
+    python ${COMPASS_DIR}/deploy/reset_compute.py $TYPE $DHA
+fi
