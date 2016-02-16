@@ -17,7 +17,7 @@ hosts:
     roles:
       - controller
       - ha
-      - open-contrail
+      - opencontrail
 
   - name: host2
     mac: '00:1E:67:D4:39:B5'
@@ -26,9 +26,7 @@ hosts:
       - eth3: '00:1E:67:C5:52:25'
     ipmiIp: 10.2.117.129
     roles:
-      - controller
-      - ha
-      - open-contrail
+      - compute
 
   - name: host3
     mac: '00:1E:67:D4:31:B2'
@@ -37,9 +35,7 @@ hosts:
       - eth3: '00:1E:67:C1:FA:E1'
     ipmiIp: 10.2.117.131
     roles:
-      - controller
-      - ha
-      - open-contrail
+      - compute
 
   - name: host4
     mac: '00:1E:67:D4:34:67'
@@ -49,7 +45,6 @@ hosts:
     ipmiIp: 10.2.117.133
     roles:
       - compute
-      - open-contrail
 
   - name: host5
     mac: '00:1E:67:D4:38:42'
@@ -59,5 +54,4 @@ hosts:
     ipmiIp: 10.2.117.135
     roles:
       - compute
-      - open-contrail
 
