@@ -17,3 +17,4 @@ if [[ -z $DEPLOY_COMPASS && -z $DEPLOY_HOST && -z $REDEPLOY_HOST ]]; then
 fi
 
 $COMPASS_DIR/deploy/launch.sh $*
+

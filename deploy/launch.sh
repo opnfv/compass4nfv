@@ -78,6 +78,14 @@ if [[ "$DEPLOY_HOST" == "true" || $REDEPLOY_HOST == "true" ]]; then
     if ! deploy_host;then
          exit 1
     fi
+    echo $HOST_ROLES
+    echo $TYPE
+    echo $DHA
+    if [[ `echo $HOST_ROLES | grep opencontrail` ]]; then
+        sleep 60
+        python ${COMPASS_DIR}/deploy/reset_compute.py $TYPE $DHA
+        sleep 600
+    fi
 fi
 
 figlet -ctf slant Installation Complete!
