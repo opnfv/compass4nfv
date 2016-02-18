@@ -27,19 +27,19 @@ Release Data
 ============
 
 +--------------------------------------+--------------------------------------+
-| **Project**                          |                                      |
+| **Project**                          | Compass4nfv                          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Repo/tag**                         |                                      |
+| **Repo/tag**                         | Compass4nfv/Brahmaputra.1.0          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release designation**              |                                      |
+| **Release designation**              | Brahmaputra.1.0                      |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     |                                      |
+| **Release date**                     | 2016.2.25                            |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Purpose of the delivery**          |                                      |
+| **Purpose of the delivery**          | OPNFV Brahmaputra release            |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
@@ -48,11 +48,17 @@ Deliverables
 
 Software deliverables
 ~~~~~~~~~~~~~~~~~~~~~
-<XYZ>-based installer iso file <iso file version>
+
+-`Compass4nfv ISO link <http://artifacts.opnfv.org/compass4nfv/brahmaputra/opnfv-2016-02-17_14-01-01.iso>`_
+.. This link will be updated at final release.
 
 Documentation deliverables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
--
+-`Installation Guide <http://artifacts.opnfv.org/compass4nfv/brahmaputra/docs/Brahmaputra_installation-instructions/index.html>`_
+
+-`Release Notes <http://artifacts.opnfv.org/compass4nfv/brahmaputra/docs/Brahmaputra_release-notes/index.html>`_
+
+-`FAQ <http://artifacts.opnfv.org/compass4nfv/brahmaputra/docs/Brahmaputra_FAQ/index.html>`_
 
 Version change
 --------------
@@ -61,8 +67,19 @@ Version change
 Module version change
 ~~~~~~~~~~~~~~~~~~~~~
 
+This is the first release of compass4nfv as a deployment toolchain in OPNFV, the following
+upstream components supported with this release.
+
+ - Openstack Liberty release support
+
+ - Opendaylight Be release support
+
+ - ONOS Emu release support
+
 Document version change
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+<Documentation deliverables>
 
 Reason for new version
 ----------------------
@@ -121,8 +138,9 @@ See JIRA: <link>
 
 Test Result
 ===========
-Brahmaputra test result using <XYZ> as deployment tool.
-<link>
+Brahmaputra test result using <Compass4nfv> as deployment tool.
+
+-`Functest test result <http://artifacts.opnfv.org/functest/docs/results/overview.html>`_
 
 References
 ==========
