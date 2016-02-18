@@ -49,5 +49,9 @@ function deploy_host(){
 
     RET=$?
     sleep $((AYNC_TIMEOUT+5))
-    exit $RET
+    if [[ $RET ]]; then
+       /bin/true
+    else
+       /bin/false
+    fi
 }
