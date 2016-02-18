@@ -3,10 +3,6 @@ OPNFV FAQ for the Brahmaputra release of OPNFV when using Compass4nfv as a deplo
 ==========================================================================================
 
 
-.. contents:: Table of Contents
-   :backlinks: none
-
-
 Abstract
 ========
 
