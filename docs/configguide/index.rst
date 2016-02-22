@@ -5,11 +5,12 @@
 OPNFV(Brahmaputra) Compass4nfv installation instructions
 ********************************************************
 
-Contents:
-
 .. toctree::
-   :numbered:
-   :maxdepth: 4
+   :maxdepth: 2
 
-   installation-instructions.rst
+.. include:: ./introduction.rst
+.. include:: ./installerconfig.rst
+.. include:: ./vmdeploy.rst
+.. include:: ./references.rst
+
 
