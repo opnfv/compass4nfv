@@ -235,6 +235,9 @@ opts = [
     cfg.StrOpt('rsa_file',
               help='ssh rsa key file',
               default=''),
+    cfg.StrOpt('odl_l3_agent',
+              help='odl l3 agent enable flag',
+              default='Disable'),
 ]
 CONF.register_cli_opts(opts)
 
@@ -723,6 +726,7 @@ class CompassClient(object):
         package_config['enable_secgroup'] = (CONF.enable_secgroup == "true")
         package_config['enable_fwaas'] = (CONF.enable_fwaas== "true")
         package_config['enable_vpnaas'] = (CONF.enable_vpnaas== "true")
+        package_config['odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"
 
         status, resp = self.client.update_cluster_config(
             cluster_id, package_config=package_config)
