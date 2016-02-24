@@ -17,8 +17,9 @@ nodes.
 The audience of this document is assumed to have good knowledge in
 networking and Unix/Linux administration.
 
+-------------
 Preconditions
-=============
+-------------
 
 Before starting the installation of the Brahmaputra release of OPNFV,
 some planning must be done.
@@ -75,9 +76,9 @@ than or equal 3 servers, the Bare Metal deployment is recommended. The minimum n
 servers for Bare metal deployment is 3, 1 for JumpServer(Jumphost), 1 for controller,
 1 for compute.
 
-
+------------------
 Setup Requirements
-==================
+------------------
 
 Jumphost Requirements
 ---------------------
@@ -158,8 +159,9 @@ In order to execute a deployment, one must gather the following information:
 
 3.     MAC address of Control Plane / Provisioning interfaces of the Bare Metal nodes.
 
+----------------------------------
 Installation Guide (BM Deployment)
-==================================
+----------------------------------
 
 Nodes Configuration (BM Deployment)
 -----------------------------------
