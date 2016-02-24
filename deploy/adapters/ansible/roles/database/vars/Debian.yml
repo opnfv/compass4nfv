@@ -30,8 +30,13 @@ services: []
 mongodb_service: mongodb
 mysql_config:
   - dest: /etc/mysql/my.cnf
-    src: my.cnf
+    src: my_debian.cnf
   - dest: /etc/mysql/conf.d/wsrep.cnf
     src: wsrep.cnf
+
+mongodb_config:
+  dest: /etc/mongodb.conf
+  src: mongodb.conf
+  journal: /var/lib/mongodb/journal/*
 
 wsrep_provider_file: "/usr/lib/galera/libgalera_smm.so"

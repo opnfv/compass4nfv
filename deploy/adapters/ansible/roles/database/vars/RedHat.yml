@@ -27,12 +27,17 @@ pip_packages:
 
 services: []
 
-mongodb_service: mongodb
+mongodb_service: mongod
 
 mysql_config:
-  - dest: /etc/mysql/my.cnf
-    src: my.cnf
-  - dest: /etc/mysql/conf.d/wsrep.cnf
+  - dest: /etc/my.cnf
+    src: my_redhat.cnf
+  - dest: /etc/my.cnf.d/wsrep.cnf
     src: wsrep.cnf
+
+mongodb_config:
+  dest: /etc/mongod.conf
+  src: mongodb.conf
+  journal: /var/lib/mongo/journal/*
 
 wsrep_provider_file: "/usr/lib64/galera/libgalera_smm.so"

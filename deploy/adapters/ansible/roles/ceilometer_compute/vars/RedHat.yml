@@ -7,5 +7,19 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-services: []
-packages: []
+ceilometer_packages:
+  - openstack-ceilometer-compute
+  - python-ceilometerclient
+  - python-pecan
+
+ceilometer_services:
+  - openstack-ceilometer-compute
+  - openstack-nova-compute 
+
+ceilometer_configs_templates:
+  - src: ceilometer.j2
+    dest:
+      - /etc/ceilometer/ceilometer.conf
+  - src: nova.j2
+    dest:
+      - /etc/nova/nova.conf
