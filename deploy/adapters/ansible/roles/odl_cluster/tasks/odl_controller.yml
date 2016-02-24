@@ -19,6 +19,8 @@
 - name: download oracle-jdk8 package file
   get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_pkg_name }}"  dest=/opt/{{ jdk8_pkg_name }}
 
+#"
+
 - name: upload install_jdk8 scripts
   unarchive: src=install_jdk8.tar dest=/opt/
 
@@ -57,6 +59,8 @@
 - name: download odl package
   get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/odl/{{ odl_pkg_url }}"  dest=/opt/{{ odl_pkg_name }}
 
+# "
+
 #- name: download odl package
 #  get_url: url={{ odl_pkg_url }} dest=/opt/{{ odl_pkg_name }}
 
@@ -74,6 +78,15 @@
     dest: "{{ service_file.dst }}"
     mode: 0644
 
+- name: set l3 fwd enable in custom.properties
+  template:
+    src: custom.properties
+    dest: "{{ odl_home }}/etc/custom.properties"
+    owner: odl
+    group: odl
+    mode: 0775
+  when: odl_l3_agent == "Enable" 
+
 - name: create karaf config
   template:
     src: org.apache.karaf.features.cfg
@@ -81,15 +94,11 @@
     owner: odl
     group: odl
     mode: 0775
-#  notify:
-#    - restart odl service
 
 - name: create tomcat config
   template:
     src: tomcat-server.xml
     dest: "{{ odl_home }}/configuration/tomcat-server.xml"
-#  notify:
-#    - restart odl service
 
 - name: install odl pip packages
   pip: name={{ item }} state=present
@@ -177,12 +186,6 @@
 - name: turn off keepalived on control node
   service: name=keepalived state=stopped
 
-#- name: Install Crudini
-#  apt: name={{ item }} state=present
-#  with_items:
-#    - crudini
-
-
 - name: chown opendaylight directory and files
   shell: >
     chown -R odl:odl "{{ odl_home }}";
@@ -196,16 +199,6 @@
 
 - name: run openvswitch script
   include: openvswitch.yml
-
-#- name: add patch-port and normal flow table
-#  shell: ovs-vsctl add-port br-int patch-br-prv;
-#         ovs-vsctl set Interface patch-br-prv type=patch;
-#         ovs-vsctl set Interface patch-br-prv options:peer=patch-int;
-#         ovs-vsctl add-port br-prv patch-int;
-#         ovs-vsctl set Interface patch-int type=patch;
-#         ovs-vsctl set Interface patch-int options:peer=patch-br-prv;
-#         ovs-ofctl -O OpenFlow13 add-flow br-int "table=0, priority=0 actions=NORMAL";
-#  ignore_errors: True  
 
 #- name: Configure Neutron1
 #  shell: >
@@ -221,8 +214,20 @@
 #- name: Execute ML2 Configuration File
 #  command: su -s /bin/sh -c "/opt/ml2_conf.sh;"
 
-- name: configure l3 configuration
+
+- name: configure l2 configuration
   shell: crudini --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-prv;
+  when: odl_l3_agent == "Disable"
+
+- name: configure l3 configuration
+  shell: crudini --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-ex;
+  when: odl_l3_agent == "Enable"
+
+- name: configure odl l3 driver
+  shell: crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins networking_odl.l3.l3_odl.OpenDaylightL3RouterPlugin;
+  when: odl_l3_agent == "Enable"
+
+
 
 - name: drop and recreate neutron database
   shell: mysql -e "drop database if exists neutron;";
@@ -235,8 +240,8 @@
   service: name=neutron-server state=started
 
 - name: add service daemon
-  shell: > 
-    echo opendaylight >> /opt/service ;
+  shell: >
+    echo keepalived >> /opt/service ; 
     echo neutron-server >> /opt/service ;
 
 - name: restart neutron-l3-agent server

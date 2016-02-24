@@ -23,25 +23,12 @@
 - name: shut down and disable Neutron's openvswitch  agent services
   service: name=neutron-plugin-openvswitch-agent state=stopped
 
-#- name: Stop the Open vSwitch service and clear existing OVSDB
-#  shell: >
-#    ovs-ofctl del-flows br-int ;
-#    ovs-vsctl del-br br-tun ;
-#    ovs-vsctl del-port br-int patch-tun;
-#    ovs-vsctl del-manager ;
-
-#- name: Restart OpenVSwitch
-#  shell: service openvswitch-switch restart;
-
 - name: remove Neutron's openvswitch agent services
   shell: >
     update-rc.d -f neutron-plugin-openvswitch-agent remove;
     mv /etc/init.d/neutron-plugin-openvswitch-agent /home/neutron-plugin-openvswitch-agent;
     mv /etc/init/neutron-plugin-openvswitch-agent.conf /home/neutron-plugin-openvswitch-agent.conf;
 
-- name: Check External network
-  shell: ovs-vsctl list-br | grep br-prv
-  register: extbr
 
 - name: Stop the Open vSwitch service and clear existing OVSDB
   shell: >
@@ -49,9 +36,6 @@
     rm -rf /var/log/openvswitch/* ;
     rm -rf /etc/openvswitch/conf.db ;
     service openvswitch-switch start ;
-
-#- name: Set OpenDaylight as the manager
-#  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
 
 - name: set opendaylight as the manager
   command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
@@ -65,33 +49,79 @@
 #'
 
 ##################################################################
-################  Recover External network #######################
+###########  Recover External network for odl l3 #################
+##################################################################
+
+- name: check br-ex
+  shell: ovs-vsctl list-br | grep br-ex; while [ $? -ne 0 ]; do sleep 10; ovs-vsctl list-br | grep br-ex; done
+  when: odl_l3_agent == "Enable"
+
+- name: add ovs uplink
+  openvswitch_port: bridge=br-ex port={{ item["interface"] }} state=present
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: item["type"] == "ovs" and odl_l3_agent == "Enable"
+
+- name: wait 10 seconds
+  shell: sleep 10
+  when: odl_l3_agent == "Enable"
+
+- name: set external nic in openvswitch
+  shell: ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) other_config:provider_mappings=br-ex:{{ item["interface"] }}
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: item["type"] == "ovs" and odl_l3_agent == "Enable"
+
+- name: copy recovery script
+  copy:  src={{ item }} dest=/opt/setup_networks
+  with_items:
+    - recover_network_odl_l3.py
+    - setup_networks_odl_l3.py
+  when: odl_l3_agent == "Enable"
+
+- name: recover external script
+  shell: python /opt/setup_networks/recover_network_odl_l3.py
+  when: odl_l3_agent == "Enable"
+
+- name: update keepalived info
+  template: src=keepalived.conf dest=/etc/keepalived/keepalived.conf
+  when: inventory_hostname in groups['odl'] and odl_l3_agent == "Enable"
+
+- name: modify net-init
+  shell: sed -i 's/setup_networks.py/setup_networks_odl_l3.py/g' /etc/init.d/net_init
+  when: odl_l3_agent == "Enable"
+
+##################################################################
+###########  Recover External network for odl l2 #################
 ##################################################################
 
 - name: add ovs bridge
   openvswitch_bridge: bridge={{ item["name"] }} state=present
   with_items: "{{ network_cfg['provider_net_mappings'] }}"
-  when: item["type"] == "ovs" and extbr.rc == 0
+  when: item["type"] == "ovs" and odl_l3_agent == "Disable"
 
 - name: add ovs uplink
   openvswitch_port: bridge={{ item["name"] }} port={{ item["interface"] }} state=present
   with_items: "{{ network_cfg['provider_net_mappings'] }}"
-  when: item["type"] == "ovs" and extbr.rc == 0
+  when: item["type"] == "ovs" and odl_l3_agent == "Disable"
 
 - name: copy recovery script
   copy:  src={{ item }} dest=/opt/setup_networks
   with_items:
     - recover_network.py
-  when: extbr.rc == 0
+  when: odl_l3_agent == "Disable"
 
 - name: recover external script
   shell: python /opt/setup_networks/recover_network.py
-  when: extbr.rc == 0
+  when: odl_l3_agent == "Disable"
 
-- name: restart keepalived
+##################################################################
+
+
+- name: restart keepalived to recover external IP
   shell: service keepalived restart
-  when: inventory_hostname in groups['odl'] and extbr.rc == 0
+  when: inventory_hostname in groups['odl']
   ignore_errors: True
+
+
 
 ##################################################################
 ##################################################################
