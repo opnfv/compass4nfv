@@ -122,6 +122,29 @@
       "revId": "163e430ec220de00452832ae050cfe54ae68a8cc",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a486d77_c5f1f196",
+        "filename": "docs/release-notes/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2016-02-25T08:27:33Z",
+      "side": 1,
+      "message": "It is based on following upstream versions:",
+      "range": {
+        "startLine": 69,
+        "startChar": 77,
+        "endLine": 70,
+        "endChar": 48
+      },
+      "revId": "163e430ec220de00452832ae050cfe54ae68a8cc",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
