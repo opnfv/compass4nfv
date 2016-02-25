@@ -113,6 +113,10 @@
   include: provision/provision-compute.yml
   when: groups['opencontrail']|length !=0 and inventory_hostname not in groups['opencontrail']
 
+- name: Remove openvswitch on compute
+  include: uninstall-openvswitch.yml
+  when: groups['opencontrail']|length !=0 and inventory_hostname not in groups['opencontrail']
+
 - name: Enable Service Daemon
   shell: if [ -f “\/opt\/service.bak” ] ; then mv /opt/service.bak /opt/service ; fi
   when: groups['opencontrail']|length !=0

@@ -22,7 +22,7 @@
 
 - name: download OpenContrail package file
   get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/open-contrail/{{ package }}"  dest=/tmp/{{ package }}
-
+#"
 
 - name: "install contrail install package"
 #  sudo: True
