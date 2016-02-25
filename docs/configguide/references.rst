@@ -36,5 +36,3 @@ Compass
 
 `Compass Home Page <http://www.syscompass.org/>`_
 
-:Authors: Justin Chi (HUAWEI)
-

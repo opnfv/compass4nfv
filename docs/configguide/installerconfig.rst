@@ -29,8 +29,12 @@ Retrieving the installation ISO image
 -------------------------------------
 
 First of all, The installation ISO is needed for deploying your OPNFV
-environment, it included packages of Compass,OpenStack,OpenDaylight,ONOS
-and so on. the iso can be retrieved via OPNFV artifacts repository:
+environment, it included packages of Compass, OpenStack, OpenDaylight, ONOS
+and so on.
+
+The stable release ISO can be retrieved via `OPNFV software download page <https://www.opnfv.org/software/>`_
+
+The daily build ISO can be retrieved via OPNFV artifacts repository:
 
 http://artifacts.opnfv.org/
 
@@ -53,13 +57,18 @@ To retrieve the repository of Compass4nfv on Jumphost use the following command:
 
 - git clone https://gerrit.opnfv.org/gerrit/compass4nfv
 
+To get stable/brahmaputra release, you can use the following command:
+
+- git checkout brahmaputra.1.0
+
 NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN root DIRECTORY.
 
-If you don't have a Linux foundation user id, get your own by the url:
+If you don't have a Linux foundation user id, get it first by the url:
 
 https://wiki.opnfv.org/developer/getting_started
 
-Set the branch to the corresponding deployment scripts:
+If you want to use a daily release ISO, please checkout the corresponding sha1 to
+get the deployment scripts:
 
 E.g.
 Git sha1 in file "opnfv-2016-01-16_15-03-18.properties" is
