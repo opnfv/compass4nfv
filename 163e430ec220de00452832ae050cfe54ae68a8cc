@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "1a486d77_65091d95",
+        "filename": "docs/configguide/installerconfig.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-02-25T08:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a486d77_65bfddd1",
+      "revId": "163e430ec220de00452832ae050cfe54ae68a8cc",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a486d77_057ca91f",
         "filename": "docs/configguide/installerconfig.rst",
         "patchSetId": 1
@@ -48,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "1a486d77_e5cd0d5f",
+        "filename": "docs/configguide/installerconfig.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-02-25T08:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a486d77_057ca91f",
+      "revId": "163e430ec220de00452832ae050cfe54ae68a8cc",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a486d77_65a6bdc3",
         "filename": "docs/configguide/installerconfig.rst",
         "patchSetId": 1
@@ -65,6 +101,24 @@
         "endLine": 71,
         "endChar": 19
       },
+      "revId": "163e430ec220de00452832ae050cfe54ae68a8cc",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a486d77_45fe216d",
+        "filename": "docs/configguide/installerconfig.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-02-25T08:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a486d77_65a6bdc3",
       "revId": "163e430ec220de00452832ae050cfe54ae68a8cc",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
