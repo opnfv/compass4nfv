@@ -27,7 +27,7 @@
 
 - name: fix openstack neutron plugin config file
   shell: |
-    sed -i 's,plugins/openvswitch/ovs_neutron_plugin.ini,plugin.ini,g' /usr/lib/systemd/system/neutron-openvswitch-agent.service
+    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' /usr/lib/systemd/system/neutron-openvswitch-agent.service
     systemctl daemon-reload
   when: ansible_os_family == 'RedHat'
 
