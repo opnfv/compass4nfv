@@ -18,9 +18,8 @@ Introduction
 
 Compass4nfv is an OPNFV installer project based on open source project Compass,
 which provides automated deployment and management of OpenStack and other distributed systems.
-Provide a brief introduction of how this release is used in OPNFV release using <XYZ> as a deployment tool
-
-Be sure to reference your installation-instructions.
+Please carefully follow the Installation Instructions to deploy OPNFV using Compass4nfv
+installer.
 
 Release Data
 ============
@@ -48,27 +47,16 @@ Deliverables
 Software deliverables
 ~~~~~~~~~~~~~~~~~~~~~
 
- - Deployment Script
-
-   It is a part of Compass4nfv repository, the entry of deployment sctripts is "compass4nfv/deploy.sh",
-   to retrieve the repository of Compass4nfv by following command:
-
-        git clone https://gerrit.opnfv.org/gerrit/compass4nfv
-
- - `Compass4nfv ISO link <http://artifacts.opnfv.org/compass4nfv/brahmaputra/opnfv-2016-02-17_14-01-01.iso>`_
-
-.. This link will be updated at final release.
+ - Compass4nfv/Brahmaputra.1.0 ISO, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
 
 .. _document-label:
 
 Documentation deliverables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- - `Installation Instructions <http://artifacts.opnfv.org/compass4nfv/brahmaputra/docs/Brahmaputra_installation-instructions/index.html>`_
+ - OPNFV(Brahmaputra) Compass4nfv installation instructions
 
- - `Release Notes <http://artifacts.opnfv.org/compass4nfv/brahmaputra/docs/Brahmaputra_release-notes/index.html>`_
-
- - `FAQ <http://artifacts.opnfv.org/compass4nfv/brahmaputra/docs/Brahmaputra_FAQ/index.html>`_
+ - OPNFV(Brahmaputra) Compass4nfv Release Notes
 
 Version change
 --------------
@@ -82,11 +70,11 @@ upstream components supported with this release.
 
  - Ubuntu 14.04.3
 
- - Openstack Liberty
+ - Openstack (Liberty release)
 
- - Opendaylight
+ - Opendaylight (Beryllium rc1 release)
 
- - ONOS Emu
+ - ONOS (Emu release)
 
 Document version change
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -109,7 +97,7 @@ Feature additions
 | JIRA: COMPASS-307                    | Integration OpenDaylight Beryllium      |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
-| JIRA:                                |                                         |
+|                                      |                                         |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
 
@@ -154,14 +142,13 @@ See JIRA: <link>
 
 Test Result
 ===========
-Brahmaputra test result using <Compass4nfv> as deployment tool.
+The Brahmaputra release with the Compass4nfv deployment toolchain has undergone QA test
+runs with the following results:
 
  - `Functest test result <http://artifacts.opnfv.org/functest/docs/results/overview.html>`_
+ - `Yardstick test result <http://testresults.opnfv.org/grafana/>`_
 
 References
 ==========
 For more information on the OPNFV Brahmaputra release, please visit
 http://www.opnfv.org/brahmaputra
-
-:Authors: Justin Chi (HUAWEI)
-:Version: 0.0.1

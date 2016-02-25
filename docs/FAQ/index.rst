@@ -10,7 +10,3 @@ Contents:
 .. toctree::
    :numbered:
    :maxdepth: 4
-
-   how-to-build-customized-iso.rst
-   how-to-deploy-without-internet-access.rst
-   how-to-integrate-plugins.rst
