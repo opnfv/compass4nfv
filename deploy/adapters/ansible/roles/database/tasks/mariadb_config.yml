@@ -23,7 +23,7 @@
     state=present
   with_nested:
     - "{{ credentials }}"
-    - ['%', 'localhost', '{{ inventory_hostname }}']
+    - ['%', 'localhost']
   tags:
     - test_user
 
@@ -35,4 +35,4 @@
     priv=*.*:ALL,GRANT
     host={{ item }}
     state=present
-  with_items: ['%', 'localhost', '{{ inventory_hostname }}']
+  with_items: ['%', 'localhost']
