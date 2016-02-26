@@ -1,0 +1,66 @@
+
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiVer: '2.0'
+
+hosts:
+  - name: host1
+    mac: 'EC:38:8F:79:0C:2C'
+    ipmiUser: root
+    ipmiPass: Huawei@123
+    ipmiIp: 172.16.130.20
+    interfaces:
+      - eth1: 'EC:38:8F:79:0C:2D'
+    roles:
+      - controller
+      - ha
+      - ceph-adm
+      - ceph-mon
+
+  - name: host2
+    mac: 'EC:38:8F:79:0C:48'
+    ipmiIp: 172.16.130.19
+    ipmiUser: root
+    ipmiPass: Huawei@123
+    interfaces:
+      - eth1: 'EC:38:8F:79:0C:49'
+    roles:
+      - controller
+      - ha
+      - ceph-mon
+
+  - name: host3
+    mac: 'EC:38:8F:79:10:CC'
+    ipmiIp: 172.16.130.18
+    ipmiUser: root
+    ipmiPass: Huawei@123
+    interfaces:
+      - eth1: 'EC:38:8F:79:10:CD'
+    roles:
+      - controller
+      - ha
+      - ceph-mon
+
+  - name: host4
+    mac: 'EC:38:8F:79:0C:6C'
+    ipmiIp: 172.16.130.17
+    ipmiUser: root
+    ipmiPass: Huawei@123
+    interfaces:
+      - eth1: 'EC:38:8F:79:0C:6D'
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host5
+    mac: 'EC:38:8F:7A:E6:ED'
+    ipmiIp: 172.16.130.16
+    ipmiUser: root
+    ipmiPass: Huawei@123
+    interfaces:
+      - eth1: 'EC:38:8F:7A:E6:EE'
+    roles:
+      - compute
+      - ceph-osd
