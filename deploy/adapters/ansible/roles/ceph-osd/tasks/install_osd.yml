@@ -28,6 +28,6 @@
   when: ansible_os_family == "Debian"
 
 - name: rebuild osd after reboot for centos
-  lineinfile: dest=/usr/init.d/ceph insertafter="^### END INIT INFO" line="\nsleep 1\nmount /dev/storage-volumes/ceph0 /var/local/osd"
+  lineinfile: dest=/etc/init.d/ceph insertafter="^### END INIT INFO" line="\nsleep 1\nmount /dev/storage-volumes/ceph0 /var/local/osd"
   when: ansible_os_family == "RedHat"
 

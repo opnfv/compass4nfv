@@ -12,6 +12,8 @@ packages:
   - python-devel
   - python-memcached
   - gcc
+  - redhat-lsb-core
+  - python-crypto
 
 pip_packages:
   - crudini
