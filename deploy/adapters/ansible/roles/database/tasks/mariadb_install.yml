@@ -45,17 +45,25 @@
     - "\\s*uid = \\$MYUID$"
     - "\\s*gid = \\$MYGID$"
 
-- stat: path=/opt/mysql_init_complete
-  register: mysql_init_complete
-
 - name: enable auto start
   file:
     path=/usr/sbin/policy-rc.d
     state=absent
   when: ansible_os_family == "Debian"
 
-- name: rm old datafiles
-  shell: rm -rf /var/lib/mysql/ib_logfile*
-
 - name: set owner
   file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory
+
+- name: get logfile stat
+  stat: path='{{ mysql_data_dir }}/ib_logfile0'
+  register: logfile_stat
+
+- debug: msg='{{ logfile_stat.stat.exists}}'
+- debug: msg='{{ logfile_stat.stat.size }}'
+  when: logfile_stat.stat.exists
+
+- name: rm logfile if exist and size mismatch
+  file: path={{ mysql_data_dir }}/ib_logfile* state=absent
+  when: |
+    logfile_stat.stat.exists
+    and logfile_stat.stat.size != 1073741824
