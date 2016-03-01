@@ -68,6 +68,21 @@
     pattern: '^(?!amq\.).*'
     tags: "ha-mode=all"
 
+- name: get cluster name
+  shell: |
+    rabbitmqctl cluster_status | grep -w '<<"compass">>'
+  register: cluster_status
+  failed_when: false
+  changed_when: cluster_status.rc != 0
+  when: |
+     inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: set cluster name
+  shell: rabbitmqctl set_cluster_name compass
+  when: |
+     inventory_hostname == haproxy_hosts.keys()[0]
+     and cluster_status.rc != 0
+
 - include: rabbitmq_cluster.yml
   when: inventory_hostname != haproxy_hosts.keys()[0]
 
