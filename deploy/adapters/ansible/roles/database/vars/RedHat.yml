@@ -31,9 +31,12 @@ mongodb_service: mongod
 
 mysql_config:
   - dest: /etc/my.cnf
-    src: my_redhat.cnf
+    src: my.cnf
   - dest: /etc/my.cnf.d/wsrep.cnf
     src: wsrep.cnf
+
+mysql_config_dir: /etc/my.cnf.d
+mysql_data_dir: /var/lib/mysql
 
 mongodb_config:
   dest: /etc/mongod.conf
