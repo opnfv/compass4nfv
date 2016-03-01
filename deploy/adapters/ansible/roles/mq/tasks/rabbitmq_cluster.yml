@@ -7,11 +7,22 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
+- name: check if i in the node list
+  shell: |
+    rabbitmqctl -q cluster_status | grep '\[{nodes,'|grep {{ inventory_hostname }}
+  changed_when: is_member.rc != 0
+  failed_when: false
+  register: is_member
+
 - name: stop rabbitmq app
-  shell: rabbitmqctl stop_app; sleep 3
+  shell: |
+    rabbitmqctl stop_app; sleep 5
+  failed_when: false
+  when: is_member.rc != 0
 
 - name: join cluster
   shell: rabbitmqctl join_cluster rabbit@{{ haproxy_hosts.keys()[0] }}
+  when: is_member.rc != 0
   register: join_result
   until: join_result|success
   retries: 20
@@ -19,3 +30,4 @@
 
 - name: start rabbitmq app
   shell: rabbitmqctl start_app
+  when: is_member.rc != 0
