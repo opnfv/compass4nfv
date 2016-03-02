@@ -10,3 +10,5 @@ Contents:
 .. toctree::
    :numbered:
    :maxdepth: 4
+
+   faq.rst
