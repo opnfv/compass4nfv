@@ -37,24 +37,28 @@
         key:  "{{ lookup('file', 'item') }}"
       with_fileglob:
         - /tmp/ssh-keys-*
+  max_fail_percentage: 0
   roles:
     - common
 
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - setup-network
 
 - hosts: ha
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - ha
 
 - hosts: controller
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - memcached
     - database
@@ -74,12 +78,14 @@
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - storage
 
 - hosts: compute
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - nova-compute
     - neutron-compute
@@ -89,18 +95,21 @@
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - secgroup
 
 - hosts: ceph_adm
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles: []
   #  - ceph-deploy
 
 - hosts: ceph
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - ceph-purge
     - ceph-config
@@ -108,24 +117,28 @@
 - hosts: ceph_mon
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - ceph-mon
 
 - hosts: ceph_osd
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - ceph-osd
 
 - hosts: ceph
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - ceph-openstack
 
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - monitor
 
@@ -133,6 +146,7 @@
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   tasks:
     - name: set bash to nova
       user:
@@ -178,27 +192,32 @@
 
 - hosts: all
   remote_user: root
+  max_fail_percentage: 0
   roles:
     - odl_cluster
 
 - hosts: all
   remote_user: root
   accelerate: true
+  max_fail_percentage: 0
   roles:
     - onos_cluster
 
 - hosts: all
   remote_user: root
   sudo: True
+  max_fail_percentage: 0
   roles:
     - open-contrail
 
 - hosts: controller
   remote_user: root
+  max_fail_percentage: 0
   roles:
     - ext-network
 
 - hosts: all
   remote_user: root
+  max_fail_percentage: 0
   roles:
     - odl_cluster_post
