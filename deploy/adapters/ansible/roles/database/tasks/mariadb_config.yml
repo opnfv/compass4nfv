@@ -36,3 +36,32 @@
     host={{ item }}
     state=present
   with_items: ['%', 'localhost']
+
+- name: remove unused user
+  script: remove_user.sh
+  when: ansible_os_family == "RedHat"
+
+- name: restart first nodes
+  service:
+    name: mysql
+    state: restarted
+  when: inventory_hostname == haproxy_hosts.keys()[0] and haproxy_hosts|length > 1
+
+- name: wait for cluster ready
+  command: mysql -e"show status like 'wsrep%'"
+  register: cluster_status
+  until: cluster_status|success
+  failed_when: not cluster_status.stdout | search("ON")
+  retries: 10
+  delay: 3
+  when:
+    - inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: restart other nodes
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when:
+    - inventory_hostname != haproxy_hosts.keys()[0]
+
