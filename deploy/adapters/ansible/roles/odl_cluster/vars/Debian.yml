@@ -15,6 +15,9 @@ controller_packages:
 compute_packages:
   - crudini
 
+service_ovs_name: openvswitch-switch
+service_ovs_agent_name: neutron-plugin-openvswitch-agent
+
 service_file:
    src: opendaylight.conf
    dst: /etc/init/opendaylight.conf

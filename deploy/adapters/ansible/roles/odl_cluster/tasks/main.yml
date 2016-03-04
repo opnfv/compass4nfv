@@ -8,6 +8,8 @@
 ##############################################################################
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - test_odl
 
 - name: Install ODL Cluster on Controller
   include: odl_controller.yml
