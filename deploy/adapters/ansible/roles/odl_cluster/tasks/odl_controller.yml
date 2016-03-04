@@ -76,7 +76,7 @@
   template:
     src: "{{ service_file.src }}"
     dest: "{{ service_file.dst }}"
-    mode: 0644
+    mode: 0755
 
 - name: set l3 fwd enable in custom.properties
   template:
@@ -176,7 +176,7 @@
 ##########################################################################################################
 - name: turn off neutron-server neutron-plugins-openvswitch-agent Daemon on control node
   shell: >
-    sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
+    sed -i '/{{ service_ovs_agent_name }}/d' /opt/service ;
     sed -i '/neutron-server/d' /opt/service;
     sed -i '/keepalived/d' /opt/service;
      
@@ -185,6 +185,7 @@
 
 - name: turn off keepalived on control node
   service: name=keepalived state=stopped
+  when: ansible_os_family == "Debian"
 
 - name: chown opendaylight directory and files
   shell: >
@@ -193,6 +194,15 @@
 
 - name: start opendaylight
   service: name=opendaylight state=started
+  when: ansible_os_family == "Debian"
+
+- name: set opendaylight autostart
+  shell: chkconfig opendaylight on
+  when: ansible_os_family == "RedHat"
+
+- name: start opendaylight
+  shell: service opendaylight start
+  when: ansible_os_family == "RedHat"
 
 - name: check if opendaylight running
   shell: netstat -lpen --tcp | grep java |  grep 6653; while [ $? -ne 0 ]; do sleep 10; netstat -lpen --tcp | grep java |  grep 6653; done
@@ -235,21 +245,6 @@
          mysql -e "grant all on neutron.* to 'neutron'@'%' identified by '{{ NEUTRON_DBPASS }}';";
          su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
   when: inventory_hostname == haproxy_hosts.keys()[0]
-
-- name: restart neutron-server
-  service: name=neutron-server state=started
-
-- name: add service daemon
-  shell: >
-    echo keepalived >> /opt/service ; 
-    echo neutron-server >> /opt/service ;
-
-- name: restart neutron-l3-agent server
-  service: name=neutron-l3-agent state=restarted
-
-- name: restart neutron-dhcp-agent server
-  service: name=neutron-dhcp-agent state=restarted
-
-- name: restart neutron-metadata-agent server
-  service: name=neutron-metadata-agent state=restarted
+  tags:
+    - test_odl
 

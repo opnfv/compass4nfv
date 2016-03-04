@@ -18,24 +18,25 @@
   with_items: compute_packages | union(compute_packages_noarch)
 
 - name: remove neutron-openvswitch-agent service daemon
-  shell: sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
+  shell: sed -i '/{{ service_ovs_agent_name }}/d' /opt/service ;
 
 - name: shut down and disable Neutron's openvswitch  agent services
-  service: name=neutron-plugin-openvswitch-agent state=stopped
+  service: name={{ service_ovs_agent_name }} state=stopped enabled=no
 
 - name: remove Neutron's openvswitch agent services
   shell: >
-    update-rc.d -f neutron-plugin-openvswitch-agent remove;
-    mv /etc/init.d/neutron-plugin-openvswitch-agent /home/neutron-plugin-openvswitch-agent;
-    mv /etc/init/neutron-plugin-openvswitch-agent.conf /home/neutron-plugin-openvswitch-agent.conf;
+    update-rc.d -f {{ service_ovs_agent_name }} remove;
+    mv /etc/init.d/{{ service_ovs_agent_name }} /home/{{ service_ovs_agent_name }};
+    mv /etc/init/{{ service_ovs_agent_name }}.conf /home/{{ service_ovs_agent_name }}.conf;
+  when: ansible_os_family == "Debian"
 
 
 - name: Stop the Open vSwitch service and clear existing OVSDB
   shell: >
-    service openvswitch-switch stop ;
+    service {{ service_ovs_name }} stop ;
     rm -rf /var/log/openvswitch/* ;
     rm -rf /etc/openvswitch/conf.db ;
-    service openvswitch-switch start ;
+    service {{ service_ovs_name }} start ;
 
 - name: set opendaylight as the manager
   command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"

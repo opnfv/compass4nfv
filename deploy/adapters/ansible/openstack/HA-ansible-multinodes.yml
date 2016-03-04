@@ -210,14 +210,16 @@
   roles:
     - open-contrail
 
+- hosts: all
+  remote_user: root
+  serial: 1
+  max_fail_percentage: 0
+  roles:
+    - odl_cluster_post
+
 - hosts: controller
   remote_user: root
   max_fail_percentage: 0
   roles:
     - ext-network
 
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - odl_cluster_post
