@@ -226,7 +226,7 @@ E.g. Openstack and ceph deployment roles setting
         roles:
           - controller
           - ha
-          - ceph-admin
+          - ceph-adm
           - ceph-mon
 
       - name: host2
