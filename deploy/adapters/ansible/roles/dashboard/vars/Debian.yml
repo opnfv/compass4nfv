@@ -7,15 +7,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-http_packages:
-  - apache2
-  - libapache2-mod-wsgi
-
-http_service: apache2
-
 packages: []
 
 services:
   - memcached
 
-http_config_file: "/etc/apache2/ports.conf"
+apache_config_dir: /etc/apache2
+horizon_dir: /usr/share/openstack-dashboard/openstack_dashboard
