@@ -7,6 +7,17 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: restart memcahed services
-  service: name={{ item }} state=restarted enabled=yes
-  with_items: services| union(services_noarch)
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: install packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
+  with_items: packages | union(packages_noarch)
+
+- name: assure listen port exist
+  template:
+    dest: '{{ apache_config_dir }}/ports.conf'
+    src: ports.conf.j2
+  notify:
+    - restart dashboard services
+
+- meta: flush_handlers
