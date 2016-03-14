@@ -40,9 +40,6 @@ def export_config_file(s, config_file, conf_dir, ofile):
     if env.get('hosts', []):
         env.pop('hosts')
 
-    env.update({'NEUTRON': os.path.join(conf_dir, "neutron_cfg.yaml")})
-    env.update({'NETWORK': os.path.join(conf_dir, "network_cfg.yaml")})
-
     env.update({'TYPE': s.get('TYPE', "virtual")})
     env.update({'FLAVOR': s.get('FLAVOR', "cluster")})
     env.update({'HOSTNAMES': hostnames(s, ',')})
