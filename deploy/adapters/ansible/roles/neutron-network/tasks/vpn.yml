@@ -9,9 +9,22 @@
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- name: disable auto start
+  copy:
+    content: "#!/bin/sh\nexit 101"
+    dest: "/usr/sbin/policy-rc.d"
+    mode: 0755
+  when: ansible_os_family == "Debian"
+
 - name: install vpn packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: vpn_packages
+
+- name: enable auto start
+  file:
+    path=/usr/sbin/policy-rc.d
+    state=absent
+  when: ansible_os_family == "Debian"
 
 - name: update vpn related conf
   shell: crudini --set  /etc/neutron/l3_agent.ini vpnagent vpn_device_driver neutron_vpnaas.services.vpn.device_drivers.strongswan_ipsec.StrongSwanDriver;
