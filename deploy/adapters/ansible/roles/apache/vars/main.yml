@@ -7,10 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-packages: []
+packages_noarch: []
 
-services:
-  - memcached
-
-apache_config_dir: /etc/apache2
-horizon_dir: /usr/share/openstack-dashboard/openstack_dashboard
+services_noarch: []

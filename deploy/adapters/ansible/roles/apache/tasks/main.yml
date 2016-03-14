@@ -7,10 +7,15 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-packages: []
+- include_vars: "{{ ansible_os_family }}.yml"
 
-services:
-  - memcached
+- name: install packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
+  with_items: packages | union(packages_noarch)
 
-apache_config_dir: /etc/apache2
-horizon_dir: /usr/share/openstack-dashboard/openstack_dashboard
+- name: update configuration
+  debug: msg='TODO'
+  notify:
+    - restart apache related services
+
+- meta: flush_handlers

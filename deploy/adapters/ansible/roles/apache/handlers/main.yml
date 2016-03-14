@@ -7,10 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-packages: []
-
-services:
-  - memcached
-
-apache_config_dir: /etc/apache2
-horizon_dir: /usr/share/openstack-dashboard/openstack_dashboard
+- name: restart apache related services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services| union(services_noarch)
