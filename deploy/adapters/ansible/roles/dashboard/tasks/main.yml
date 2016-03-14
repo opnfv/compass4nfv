@@ -9,25 +9,54 @@
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- name: install http packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: http_packages
-
-- name: set http config
-  lineinfile: dest={{ http_config_file }} regexp='^Listen' line='Listen {{ internal_ip }}:80'
-
-- name: restart http services
-  service: name={{ http_service }} state=restarted enabled=yes
-
-- name: write services to monitor list
-  lineinfile: dest=/opt/service create=yes line='{{ http_service }}'
+- name: disable auto start
+  copy:
+    content: "#!/bin/sh\nexit 101"
+    dest: "/usr/sbin/policy-rc.d"
+    mode: 0755
+  when: ansible_os_family == "Debian"
 
 - name: install dashboard packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: packages | union(packages_noarch)
 
+- name: enable auto start
+  file:
+    path=/usr/sbin/policy-rc.d
+    state=absent
+  when: ansible_os_family == "Debian"
+
 - name: remove ubuntu theme
   action: "{{ ansible_pkg_mgr }} name=openstack-dashboard-ubuntu-theme state=absent"
+  notify:
+    - restart dashboard services
+
+- name: remove default apache2 config
+  file:
+    path: '{{ item }}'
+    state: absent
+  with_items:
+    - '{{ apache_config_dir }}/conf-available/openstack-dashboard.conf'
+    - '{{ apache_config_dir }}/conf-enabled/openstack-dashboard.conf'
+    - '{{ apache_config_dir }}/sites-available/000-default.conf'
+    - '{{ apache_config_dir }}/sites-enabled/000-default.conf'
+  notify:
+    - restart dashboard services
+
+- name: update apache2 configs
+  template:
+    src: openstack-dashboard.conf.j2
+    dest: '{{ apache_config_dir }}/sites-available/openstack-dashboard.conf'
+  notify:
+    - restart dashboard services
+
+- name: enable dashboard
+  file:
+    src: "/etc/apache2/sites-available/openstack-dashboard.conf"
+    dest: "/etc/apache2/sites-enabled/openstack-dashboard.conf"
+    state: "link"
+  notify:
+    - restart dashboard services
 
 - name: update ubuntu horizon settings
   lineinfile:
@@ -44,11 +73,15 @@
     - regexp: '^OPENSTACK_HOST[ \t]*=.*'
       line: 'OPENSTACK_HOST = "{{ internal_ip }}"'
   when: ansible_os_family == 'Debian'
+  notify:
+    - restart dashboard services
 
 - name: precompile horizon css
   shell: /usr/bin/python /usr/share/openstack-dashboard/manage.py compress --force
   ignore_errors: True
   when: ansible_os_family == 'Debian'
+  notify:
+    - restart dashboard services
 
 - name: update redhat version horizon settings
   lineinfile:
@@ -65,7 +98,7 @@
     - regexp: '^OPENSTACK_HOST[ \t]*=.*'
       line: 'OPENSTACK_HOST = "{{ internal_ip }}"'
   when: ansible_os_family == 'RedHat'
+  notify:
+    - restart dashboard services
 
-- name: restart dashboard services
-  service: name={{ item }} state=restarted enabled=yes
-  with_items: services | union(services_noarch)
+- meta: flush_handlers

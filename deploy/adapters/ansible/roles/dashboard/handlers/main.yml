@@ -7,6 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: restart memcahed services
+- name: restart dashboard services
   service: name={{ item }} state=restarted enabled=yes
-  with_items: services| union(services_noarch)
+  with_items: services | union(services_noarch)
