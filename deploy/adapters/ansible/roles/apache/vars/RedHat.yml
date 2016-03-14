@@ -7,6 +7,9 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: restart memcahed services
-  service: name={{ item }} state=restarted enabled=yes
-  with_items: services| union(services_noarch)
+packages:
+  - mod_wsgi
+  - httpd
+
+services:
+  - httpd
