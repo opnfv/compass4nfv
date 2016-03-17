@@ -31,9 +31,22 @@
   failed_when: iproute_out.rc == 255
   when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
 
+- name: disable auto start
+  copy:
+    content: "#!/bin/sh\nexit 101"
+    dest: "/usr/sbin/policy-rc.d"
+    mode: 0755
+  when: ansible_os_family == "Debian"
+
 - name: install neutron network related packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: packages | union(packages_noarch)
+
+- name: enable auto start
+  file:
+    path=/usr/sbin/policy-rc.d
+    state=absent
+  when: ansible_os_family == "Debian"
 
 - name: generate neutron network service list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
