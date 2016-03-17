@@ -229,3 +229,9 @@
   roles:
     - ext-network
 
+- hosts: controller
+  remote_user: root
+  accelerate: true
+  max_fail_percentage: 0
+  roles:
+    - tacker
