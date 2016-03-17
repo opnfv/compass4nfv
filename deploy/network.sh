@@ -92,15 +92,23 @@ function setup_nat_net() {
     sudo virsh net-start $net_name
 }
 
+
+function setup_virtual_net() {
+  setup_nat_net install $INSTALL_GW $INSTALL_MASK
+}
+
+function setup_baremetal_net() {
+  if [[ -z $INSTALL_NIC ]]; then
+    exit 1
+  fi
+  setup_bridge_net install $INSTALL_NIC
+}
+
 function create_nets() {
     setup_nat_net mgmt $MGMT_GW $MGMT_MASK $MGMT_IP_START $MGMT_IP_END
 
     # create install network
-    if [[ -n $INSTALL_NIC ]]; then
-        setup_bridge_net install $INSTALL_NIC
-    else
-        setup_nat_net install $INSTALL_GW $INSTALL_MASK
-    fi
+    setup_"$TYPE"_net
 
     # create external network
     setup_bridge_external
