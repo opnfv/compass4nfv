@@ -13,4 +13,4 @@ packages:
   - openstack-keystone
 
 services:
-  - openstack-keystone
+  - httpd
