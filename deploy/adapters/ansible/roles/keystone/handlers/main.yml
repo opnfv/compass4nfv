@@ -7,12 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-cron_path: "/var/spool/cron"
-
-packages:
-  - openstack-keystone
-
-services:
-  - httpd
-
-apache_config_dir: /etc/httpd/conf.d
+- name: restart keystone services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services | union(services_noarch)

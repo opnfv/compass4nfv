@@ -18,7 +18,7 @@
     dest: '{{ apache_config_dir }}/ports.conf'
     src: ports.conf.j2
   notify:
-    - restart dashboard services
+    - restart apache related services
 
 - name: remove default listen port on centos
   lineinfile:
