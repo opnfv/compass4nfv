@@ -14,4 +14,6 @@ packages:
   - keystone
 
 services:
-  - keystone
+  - apache2
+
+apache_config_dir: /etc/apache2

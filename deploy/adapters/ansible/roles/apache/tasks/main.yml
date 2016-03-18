@@ -18,13 +18,11 @@
     dest: '{{ apache_config_dir }}/ports.conf'
     src: ports.conf.j2
   notify:
-    - restart dashboard services
+    - restart apache related services
 
-- name: remove default listen port on centos
-  lineinfile:
-    dest: /etc/httpd/conf/httpd.conf
-    state: absent
-    regexp: 'Listen 80'
-  when: ansible_os_family == 'RedHat'
+- name: update configuration
+  debug: msg='TODO'
+  notify:
+    - restart apache related services
 
 - meta: flush_handlers
