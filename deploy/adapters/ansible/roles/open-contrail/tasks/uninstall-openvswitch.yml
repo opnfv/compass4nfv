@@ -26,20 +26,17 @@
   shell: rmmod vport_vxlan; rmmod openvswitch;
   ignore_errors: True
 
-#- name: copy recovery script
-#  copy:  src={{ item }} dest=/opt/setup_networks
-#  with_items:
+- name: copy recovery script
+  copy:  src={{ item }} dest=/opt/setup_networks
+  with_items:
 #    - recover_network_opencontrail.py
-#    - setup_networks_opencontrail.py
-#
+    - setup_networks_opencontrail.py
+
 #- name: recover external script
 #  shell: python /opt/setup_networks/recover_network_opencontrail.py
-#
-#- name: modify net-init
-#  shell: sed -i 's/setup_networks.py/setup_networks_opencontrail.py/g' /etc/init.d/net_init
 
 - name: modify net-init
-  shell: sed -i '/setup_networks/d' /etc/init.d/net_init 
+  shell: sed -i 's/setup_networks.py/setup_networks_opencontrail.py/g' /etc/init.d/net_init
 
 - name: resolve dual NIC problem
   shell: >

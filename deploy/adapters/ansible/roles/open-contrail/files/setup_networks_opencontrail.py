@@ -75,6 +75,15 @@ def setup_ips_new(config):
     LOG.info("setup_ips_new: cmd=%s" % cmd)
     os.system(cmd)
 
+def setup_default_router(config):
+    LOG.info("setup_ips_new enter")
+    network = netaddr.IPNetwork(config["ip_settings"]["br-prv"]["cidr"])
+    intf_name = config["provider_net_mappings"][0]["interface"]
+    cmd = "route del default;"
+    cmd += "ip route add default via %s dev %s" % (config["ip_settings"]["br-prv"]["gw"], "vhost0")
+    LOG.info("setup_default_router: cmd=%s" % cmd)
+    os.system(cmd)
+
 def remove_ovs_kernel_mod(config):
     LOG.info("remove_ovs_kernel_mod enter")
     cmd = "rmmod vport_vxlan; rmmod openvswitch;"
@@ -90,7 +99,8 @@ def main(config):
 
     setup_intfs(config["sys_intf_mappings"], uplink_map)
     setup_ips(config["ip_settings"], config["sys_intf_mappings"])
-    setup_ips_new(config)
+#    setup_ips_new(config)
+    setup_default_router(config)
 
 if __name__ == "__main__":
     config = yaml.load(open(config_path))
