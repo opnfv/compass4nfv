@@ -30,10 +30,10 @@ contrail_gateway:
 ###########################################################
 ### we make an independent NIC for OpenContrail vRouter ###
 ###########################################################
-contrail_vhost_device: "eth2"
-contrail_vhost_address: "10.18.1."
-contrail_vhost_gateway: "10.18.1.254"
-contrail_vhost_netmask: "255.255.255.0"
+contrail_vhost_device: "{{ network_cfg['provider_net_mappings'][0]['interface'] }}"
+contrail_vhost_address: "{{ ip_settings[inventory_hostname]['br-prv']['ip'] }}"
+contrail_vhost_gateway: "{{ ip_settings[inventory_hostname]['br-prv']['gw'] }}"
+contrail_vhost_netmask: "{{ ip_settings[inventory_hostname]['br-prv']['netmask'] }}"
 ###########################################################
 ###########################################################
 ###########################################################
@@ -81,9 +81,3 @@ kernel_package_noarch: []
 
 compute_package_noarch: []
 
-# network infor adapter for compass
-contrail_address: "{{ internal_ip }}"
-contrail_netmask: "255.255.255.0"
-#contrail_gateway: "10.84.50.254"
-contrail_gateway:
-#contrail_mgmt_address: "172.27.113.91"

@@ -62,9 +62,9 @@
     regexp: "dev=__DEVICE__"
     line: "dev={{ contrail_vhost_device }}"
 
-- name: "get last ip address"
-  shell: expr substr `cat /etc/hostname` 5 1
-  register: lastip
+#- name: "get last ip address"
+#  shell: expr substr `cat /etc/hostname` 5 1
+#  register: lastip
 
 - name: "fix up contrail vrouter agent config"
   template:
@@ -89,9 +89,9 @@
     - "sed -i -n -e '/auto .*/,$p' /tmp/contrail-interfaces-bottom"
     - "cat /tmp/contrail-interfaces-top /tmp/contrail-interfaces-bottom > /etc/network/interfaces"
 
-- name: get last ip address
-  shell: expr substr `cat /etc/hostname` 5 1
-  register: lastip
+#- name: get last ip address
+#  shell: expr substr `cat /etc/hostname` 5 1
+#  register: lastip
 
 - name: "configure interface"
   lineinfile:
@@ -107,7 +107,7 @@
     - "iface vhost0 inet static"
     - "\tpre-up /opt/contrail/bin/if-vhost0"
     - "\tnetwork_name application"
-    - "\taddress {{ contrail_vhost_address }}{{ lastip.stdout_lines[0] }}"
+    - "\taddress {{ contrail_vhost_address }}"
     - "\tnetmask {{ contrail_vhost_netmask }}"
 
 ##################################################################################
