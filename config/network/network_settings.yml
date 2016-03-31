@@ -1,0 +1,103 @@
+network-config-metadata:
+  title: Network config
+  version: 0.1
+  created: Mon Dec 28 2015
+  comment: None
+
+host_network:
+  interfaces:
+    eth0:
+      type: phy
+      mtu: 65000
+      networks:
+        - admin
+    eth1:
+      type: phy
+      mtu: 65000
+      networks:
+        - management
+        - tenant 
+        - public
+ 
+networks:
+  admin-network:
+    jump_server: 10.1.0.2
+    dhcp_pool_end: 10.1.0.254
+    dhcp_pool_start: 10.1.0.50
+    ipaddress: 10.20.0.2
+    netmask: 255.255.255.0
+    dns-domain: opnfvlf.org
+    dns-search: opnfvlf.org
+    dns-upstream:
+      - 8.8.8.8
+      - 8.8.4.4
+    ntp-upstream:
+     - 0.se.pool.ntp.org
+     - 1.se.pool.ntp.org
+
+  tenant_networks:
+    base_mac: fa:16:3e:00:00:00
+    mtu: 64000
+    dns_nameservers:
+      - 8.8.8.8
+      - 8.8.4.4
+    floating_ranges:
+      - 10.164.101.132, 10.164.101.150
+      - 10.164.101.175, 10.164.101.200
+    overlay-id-range:
+      - 2
+      - 65535
+    net_l23_provider: ovs
+    segmentation_type: vxlan
+
+  infra-networks:
+    - cidr: 192.168.10.0/24
+      gateway: null
+      ip_ranges:
+        - 192.168.10.1, 192.168.10.31
+        - 192.168.10.64, 192.168.10.127
+      name: management
+      vlan_tag: 100
+      mtu: 64000
+
+    - cidr: 192.168.30.0/24
+      gateway: null
+      ip_ranges:
+      - - 192.168.30.1
+        - 192.168.30.254
+      name: tenant 
+      vlan_tag: 300
+
+    - cidr: 10.164.101.0/24
+      gateway: 10.164.101.1
+      ip_ranges:
+      - - 10.164.101.122
+        - 10.164.101.131
+      name: public
+      vlan_tag: 800
+      mtu: 64000
+
+    - cidr: 192.168.20.0/24
+      ip_ranges:
+      - 192.168.20.1, 192.168.20.31
+      - 192.168.20.128, 192.168.20.254
+      name: storage
+      vlan_tag: 200
+      mtu: 64000
+
+    - cidr: 10.20.0.0/24
+      gateway: 10.20.0.2
+      ip_ranges:
+      - - 10.20.0.3
+        - 10.20.0.254
+      name: admin
+
+  external_dns:
+    - 8.8.8.8
+    - 8.8.8.4
+  external_ntp:
+    - 0.se.pool.ntp.org
+    - 1.se.pool.ntp.org
+  syslog:
+    server: 10.128.1.24
+    transport: 'tcp'
