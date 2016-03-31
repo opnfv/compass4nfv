@@ -1,0 +1,46 @@
+nodes:
+  node1:
+    mac_address: "00:1e:67:b2:08:7b"
+    pm_type: "libvirt"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    roles:
+      - controller
+      - ha
+  node2:
+    mac_address: "00:1e:67:4f:b7:b1"
+    pm_type: "libvirt"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    roles:
+      - controller
+      - ha
+  node3:
+    mac_address: "00:1e:67:4f:cc:0b"
+    pm_type: "libvirt"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    roles:
+      - controller
+      - ha
+  node4:
+    mac_address: "00:1e:67:4f:cc:f1"
+    pm_type: "libvirt"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    roles:
+      - controller
+      - ha
+  node5:
+    mac_address: "00:1e:67:4f:b9:55"
+    pm_type: "libvirt"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    roles:
+      - controller
+      - ha
