@@ -1,0 +1,48 @@
+---
+global_params:
+  ha_enabled: true
+  iso_url:
+  network_isolation_settings: network/network_settings.yml
+  openstack_version: liberty
+
+deploy_options:
+  sdn_controller:
+    name: opendaylight
+    version: lithium
+    enable_l3: false
+  tacker: false
+  congress: false
+  sfc: false
+  openvswitch_version: dpdk
+  ceph: true
+
+installer_options:
+  jumpserver:
+    install_nic:
+    external_nic:
+    
+  compass:
+    dashboard_url:
+    http_server_url:
+    user_email:
+    user_password:
+  
+  cluster:
+    fwaas: false
+    vpnaas: false
+    secgroup: false
+
+    os:
+      language:
+      timezone:
+      http_proxy:
+      https_proxy:
+      no_proxy:
+      domain:
+      search_path:
+      local_repo:
+      repo_name:
+      server_credentials:
+      partition:
+
+

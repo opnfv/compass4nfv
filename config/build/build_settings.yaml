@@ -1,0 +1,4 @@
+build_params:
+  opendaylight: true
+  onos: false
+  ovs: true

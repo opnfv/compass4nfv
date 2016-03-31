@@ -1,0 +1,51 @@
+hosts:
+  host1:
+    mac_address: "00:1e:67:b2:08:7b"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    power:
+      type: libvirt
+    tags:
+      - controller
+      - ha
+  host2:
+    mac_address: "00:1e:67:4f:b7:b1"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    power:
+      type: libvirt
+    tags:
+      - controller
+      - ha
+  host3:
+    mac_address: "00:1e:67:4f:cc:0b"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    power:
+      type: libvirt
+    tags:
+      - controller
+      - ha
+  host4:
+    mac_address: "00:1e:67:4f:cc:f1"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    power:
+      type: libvirt
+    tags:
+      - controller
+      - ha
+  host5:
+    mac_address: "00:1e:67:4f:b9:55"
+    cpus: 2
+    memory: 8192
+    disk: 40
+    power:
+      type: libvirt
+    tags:
+      - controller
+      - ha
