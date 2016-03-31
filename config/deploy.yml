@@ -1,8 +1,0 @@
-global_settins:
-  name: example_deployment
-  installer: compass
-  type: baremetal
-
-  os_release: centos7
-  openstack_release: liberty
-  sdn_controller: opendaylight

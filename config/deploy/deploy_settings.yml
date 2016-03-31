@@ -1,0 +1,19 @@
+---
+global_params:
+  ha_enabled: true
+  network_isolation_settings: network/network_settings.yml
+  openstack_version: liberty
+
+deploy_options:
+  sdn_controller:
+    name: opendaylight
+    version: lithium
+    enable_l3: false
+  tacker: false
+  congress: false
+  sfc: false
+  openvswitch_version: dpdk
+  ceph: true
+
+installer_options:
+  param1: true
