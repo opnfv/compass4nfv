@@ -1,9 +1,9 @@
 [DEFAULTS]
 api_server_ip = {{ contrail_haproxy_address }}
 api_server_port = 8082
-zk_server_ip = {% for cur_host in groups['opencontrail'] %}{{ haproxy_hosts[cur_host] }}:2181{% if not loop.last %}, {% endif %}{% endfor %}
+zk_server_ip = {% for cur_host in groups['opencontrail'] %}{{ ip_settings[cur_host]['br-prv']['ip'] }}:2181{% if not loop.last %}, {% endif %}{% endfor %}
 
-cassandra_server_list = {% for cur_host in groups['opencontrail'] %}{{ haproxy_hosts[cur_host] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
+cassandra_server_list = {% for cur_host in groups['opencontrail'] %}{{ ip_settings[cur_host]['br-prv']['ip'] }}:9160{% if not loop.last %} {% endif %}{% endfor %}
 
 disc_server_ip = {{ contrail_haproxy_address }}
 disc_server_port = 5998

@@ -12,13 +12,15 @@ kernel_install: no
 #ansible_ssh_user: "root"
 #ansible_ssh_pass: "root"
 
-contrail_keystone_address: "{{ internal_vip.ip }}"
+#contrail_keystone_address: "{{ internal_vip.ip }}"
+contrail_keystone_address: "{{ public_vip.ip }}"
 contrail_admin_user: "admin"
 contrail_admin_password: "console"
 
 
 # network infor adapter for compass
-contrail_address: "{{ internal_ip }}"
+# contrail_address: "{{ internal_ip }}"
+contrail_address: " {{ ip_settings[inventory_hostname]['br-prv']['ip'] }} "
 #contrail_device: # compass openstack device
 contrail_netmask: "255.255.255.0"
 #contrail_gateway: "10.84.50.254"
@@ -43,7 +45,8 @@ contrail_vhost_netmask: "{{ ip_settings[inventory_hostname]['br-prv']['netmask']
 
 contrail_keepalived: no 
 #contrail_haproxy_address: "10.0.0.22" # 10.0.0.80
-contrail_haproxy_address: "{{ internal_vip.ip }}"
+#contrail_haproxy_address: "{{ internal_vip.ip }}"
+contrail_haproxy_address: "{{ public_vip.ip }}"
 contrail_netmask: "255.255.255.0"
 contrail_prefixlen: "24"
 contrail_gateway: "10.0.0.1"

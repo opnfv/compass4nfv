@@ -24,14 +24,14 @@
   lineinfile:
     dest: "/etc/ifmap-server/basicauthusers.properties"
 #    line: "{{ hostvars[item]['contrail_address' ] }}:{{ hostvars[item]['contrail_address' ] }}"
-    line: "{{ haproxy_hosts[item] }}:{{ haproxy_hosts[item] }}"
+    line: "{{ ip_settings[item]['br-prv']['ip'] }}:{{ ip_settings[item]['br-prv']['ip'] }}"
   with_items: groups['opencontrail']
 
 - name: "modify ifmap server basicauthusers properties for dns"
   lineinfile:
     dest: "/etc/ifmap-server/basicauthusers.properties"
 #    line: "{{ hostvars[item]['contrail_address' ] }}.dns:{{ hostvars[item]['contrail_address' ] }}.dns"
-    line: "{{ haproxy_hosts[item] }}.dns:{{ haproxy_hosts[item] }}.dns"
+    line: "{{ ip_settings[item]['br-prv']['ip'] }}.dns:{{ ip_settings[item]['br-prv']['ip'] }}.dns"
   with_items: groups['opencontrail']
 
 - name: "node-common"

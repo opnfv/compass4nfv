@@ -61,7 +61,7 @@
 #  sudo: True
   set_fact:
 #    dbseeds: "{{ hostvars[item.1][ contrail_address ] }}"
-     dbseeds: "{{ haproxy_hosts[item.1] }}"
+     dbseeds: "{{ ip_settings[item.1]['br-prv']['ip'] }}"
   with_indexed_items: groups['opencontrail']
   when: item.0 == 0
 
@@ -73,7 +73,7 @@
 #  sudo: True
   set_fact:
 #    dbseeds: "{{ dbseeds }},{{ hostvars[item.1]['contrail_address'] }}"
-    dbseeds: "{{ dbseeds }},{{ haproxy_hosts[item.1] }}"
+    dbseeds: "{{ dbseeds }},{{ ip_settings[item.1]['br-prv']['ip'] }}"
   with_indexed_items: groups['opencontrail']
   when: item.0 == 1
 
@@ -129,7 +129,7 @@
     dest: "/etc/zookeeper/conf/zoo.cfg"
     regexp: "server.{{ item.0 + 1 }}="
 #    line: "server.{{ item.0 + 1 }}={{ hostvars[item.1]['contrail_address'] }}:2888:3888"
-    line: "server.{{ item.0 + 1 }}={{ haproxy_hosts[item.1] }}:2888:3888"
+    line: "server.{{ item.0 + 1 }}={{ ip_settings[item.1]['br-prv']['ip'] }}:2888:3888"
   with_indexed_items: groups['opencontrail']
 
 
@@ -153,7 +153,7 @@
 #  sudo: True
   set_fact:
 #    zkaddrs: "{{ hostvars[item.1]['contrail_address'] }}:2181"
-    zkaddrs: "{{ haproxy_hosts[item.1] }}:2181"
+    zkaddrs: "{{ ip_settings[item.1]['br-prv']['ip'] }}:2181"
   with_indexed_items: groups['opencontrail']
   when: item.0 == 0
 
@@ -162,7 +162,7 @@
 #  sudo: True
   set_fact:
 #    zkaddrs: "{{ zkaddrs }},{{ hostvars[item.1]['contrail_address'] }}:2181"
-    zkaddrs: "{{ zkaddrs }},{{ haproxy_hosts[item.1] }}:2181"
+    zkaddrs: "{{ zkaddrs }},{{ ip_settings[item.1]['br-prv']['ip'] }}:2181"
   with_indexed_items: groups['opencontrail']
   when: item.0 > 0
 
