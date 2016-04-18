@@ -1,9 +1,11 @@
 #!/bin/bash
 set -ex
 
-# add openstack liberty repo
+#set OPV="liberty"
+
+# add openstack $OPV repo
 sudo apt-get update && apt-get install -y software-properties-common
-sudo add-apt-repository -y cloud-archive:liberty
+sudo add-apt-repository -y cloud-archive:$OPV
 
 # add galeracluster repo
 #sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
@@ -30,8 +32,8 @@ sudo apt-get -d install $pkg -y
 #end for
 
 #make repo
-mkdir -p trusty-liberty-ppa/conf
-cat <<EOF > trusty-liberty-ppa/conf/distributions
+mkdir -p trusty-$OPV-ppa/conf
+cat <<EOF > trusty-$OPV-ppa/conf/distributions
 Codename: trusty
 Components: main
 Architectures: amd64
@@ -44,6 +46,6 @@ rm -rf /var/cache/apt/python-pyasn1_0.1.7-1ubuntu2_all.deb
 mkdir deb
 find /var/cache/apt/ -name *.deb | xargs -i cp {} deb
 
-reprepro -b trusty-liberty-ppa includedeb trusty deb/*.deb
+reprepro -b trusty-$OPV-ppa includedeb trusty deb/*.deb
 
-tar -zcvf /trusty-liberty-ppa.tar.gz ./trusty-liberty-ppa
+tar -zcvf /trusty-$OPV-ppa.tar.gz ./trusty-$OPV-ppa

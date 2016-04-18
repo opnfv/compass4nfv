@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x
 
+#set OPV="kilo"
+
 yum remove systemd -y
 # add 163 repo
 yum install wget -y
@@ -10,10 +12,10 @@ yum update -y
 #rm -f /etc/yum.repos.d/CentOS-*.repo
 yum repolist
 yum clean all
-# add openstack kilo repo
+
 yum install yum-plugin-priorities -y
 yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm -y
-yum install http://rdo.fedorapeople.org/openstack-kilo/rdo-release-kilo.rpm -y
+yum install http://rdo.fedorapeople.org/openstack-$OPV/rdo-release-$OPV.rpm -y
 
 # modify centos7 repo for workaround
 sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
@@ -81,21 +83,21 @@ yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 
 #make repo
 
-mkdir -p /centos7-kilo-ppa/{Packages,repodata}
+mkdir -p /centos7-$OPV-ppa/{Packages,repodata}
 
-find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos7-kilo-ppa/Packages/
+find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos7-$OPV-ppa/Packages/
 
-rm /centos7-kilo-ppa/Packages/selinux-policy* -f
-rm /centos7-kilo-ppa/Packages/systemd* -f
-rm /centos7-kilo-ppa/Packages/openssl-1.0.1e-42.el7.9.x86_64.rpm
-rm /centos7-kilo-ppa/Packages/libnl3-3.2.21-9.el7_1.x86_64.rpm
+rm /centos7-$OPV-ppa/Packages/selinux-policy* -f
+rm /centos7-$OPV-ppa/Packages/systemd* -f
+rm /centos7-$OPV-ppa/Packages/openssl-1.0.1e-42.el7.9.x86_64.rpm
+rm /centos7-$OPV-ppa/Packages/libnl3-3.2.21-9.el7_1.x86_64.rpm
 
-mv /epel-release-7-5.noarch.rpm /centos7-kilo-ppa/Packages/
-cp /comps.xml /centos7-kilo-ppa/
-cp /ceph_key_release.asc /centos7-kilo-ppa/
-createrepo -g comps.xml /centos7-kilo-ppa
-mkdir /centos7-kilo-ppa/noarch
-mkdir /centos7-kilo-ppa/noarch/Packages
-cp -r /centos7-kilo-ppa/Packages/ceph* /centos7-kilo-ppa/noarch/Packages/
-cp -r /centos7-kilo-ppa/repodata/ /centos7-kilo-ppa/noarch/
-tar -zcvf /centos7-kilo-ppa.tar.gz /centos7-kilo-ppa
+mv /epel-release-7-5.noarch.rpm /centos7-$OPV-ppa/Packages/
+cp /comps.xml /centos7-$OPV-ppa/
+cp /ceph_key_release.asc /centos7-$OPV-ppa/
+createrepo -g comps.xml /centos7-$OPV-ppa
+mkdir /centos7-$OPV-ppa/noarch
+mkdir /centos7-$OPV-ppa/noarch/Packages
+cp -r /centos7-$OPV-ppa/Packages/ceph* /centos7-$OPV-ppa/noarch/Packages/
+cp -r /centos7-$OPV-ppa/repodata/ /centos7-$OPV-ppa/noarch/
+tar -zcvf /centos7-$OPV-ppa.tar.gz /centos7-$OPV-ppa

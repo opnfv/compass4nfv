@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x
 
+#set OPV="juno"
+
 yum remove systemd -y
 # add 163 repo
 yum install wget -y
@@ -10,10 +12,10 @@ yum update -y
 #rm -f /etc/yum.repos.d/CentOS-*.repo
 yum repolist
 yum clean all
-# add openstack juno repo
+
 yum install yum-plugin-priorities -y
 yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm -y
-yum install http://rdo.fedorapeople.org/openstack-juno/rdo-release-juno.rpm -y
+yum install http://rdo.fedorapeople.org/openstack-$OPV/rdo-release-$OPV.rpm -y
 
 # modify centos7 repo for workaround
 sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
@@ -75,19 +77,19 @@ yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 
 #make repo
 
-mkdir -p /centos7-juno-ppa/{Packages,repodata}
+mkdir -p /centos7-$OPV-ppa/{Packages,repodata}
 
-find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos7-juno-ppa/Packages/
+find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos7-$OPV-ppa/Packages/
 
-rm /centos7-juno-ppa/Packages/selinux-policy* -f
-rm /centos7-juno-ppa/Packages/systemd* -f
+rm /centos7-$OPV-ppa/Packages/selinux-policy* -f
+rm /centos7-$OPV-ppa/Packages/systemd* -f
 
-mv /epel-release-7-5.noarch.rpm /centos7-juno-ppa/Packages/
-cp /comps.xml /centos7-juno-ppa/
-cp /ceph_key_release.asc /centos7-juno-ppa/
-createrepo -g comps.xml /centos7-juno-ppa
-mkdir /centos7-juno-ppa/noarch
-mkdir /centos7-juno-ppa/noarch/Packages
-cp -r /centos7-juno-ppa/Packages/ceph* /centos7-juno-ppa/noarch/Packages/
-cp -r /centos7-juno-ppa/repodata/ /centos7-juno-ppa/noarch/
-tar -zcvf /centos7-juno-ppa.tar.gz /centos7-juno-ppa
+mv /epel-release-7-5.noarch.rpm /centos7-$OPV-ppa/Packages/
+cp /comps.xml /centos7-$OPV-ppa/
+cp /ceph_key_release.asc /centos7-$OPV-ppa/
+createrepo -g comps.xml /centos7-$OPV-ppa
+mkdir /centos7-$OPV-ppa/noarch
+mkdir /centos7-$OPV-ppa/noarch/Packages
+cp -r /centos7-$OPV-ppa/Packages/ceph* /centos7-$OPV-ppa/noarch/Packages/
+cp -r /centos7-$OPV-ppa/repodata/ /centos7-$OPV-ppa/noarch/
+tar -zcvf /centos7-$OPV-ppa.tar.gz /centos7-$OPV-ppa
