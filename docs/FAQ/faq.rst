@@ -111,6 +111,13 @@ Where is OpenStack RC file
 It is located /opt/admin-openrc.sh in each BM node as default. Please source it first if you want to use
 OpenStack CLI.
 
+How to recovery network connection after jumpserver reboot
+==========================================================
+
+.. code-block:: bash
+
+    source deploy/network.sh && save_network_info
+
 References
 ==========
 For more information on the Compass4nfv FAQ, please visit
