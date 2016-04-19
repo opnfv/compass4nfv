@@ -77,9 +77,9 @@
 - name: provide an endpoint to tacker service
   shell: >
     . /opt/admin-openrc.sh; openstack endpoint create --region RegionOne \
-        --publicurl 'http://{{ public_vip.ip }}:8890/' \
-        --adminurl 'http://{{ internal_vip.ip }}:8890/' \
-        --internalurl 'http://{{ internal_vip.ip }}:8890/' tacker
+        --publicurl 'http://{{ public_vip.ip }}:8888/' \
+        --adminurl 'http://{{ internal_vip.ip }}:8888/' \
+        --internalurl 'http://{{ internal_vip.ip }}:8888/' tacker
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: install tacker
