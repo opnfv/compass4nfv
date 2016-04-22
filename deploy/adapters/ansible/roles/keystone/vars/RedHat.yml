@@ -16,3 +16,4 @@ services:
   - httpd
 
 apache_config_dir: /etc/httpd/conf.d
+http_service_name: httpd

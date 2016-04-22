@@ -61,10 +61,18 @@
   notify:
     - restart keystone services
 
+- name: update apache2 configs
+  template:
+    src: wsgi-keystone.conf.j2
+    dest: '{{ apache_config_dir }}/wsgi-keystone.conf'
+  when: ansible_os_family == 'RedHat'
+  notify:
+    - restart keystone services
+
 - name: enable keystone server
   file:
-    src: "/etc/apache2/sites-available/wsgi-keystone.conf"
-    dest: "/etc/apache2/sites-enabled/wsgi-keystone.conf"
+    src: "{{ apache_config_dir }}/sites-available/wsgi-keystone.conf"
+    dest: "{{ apache_config_dir }}/sites-enabled/wsgi-keystone.conf"
     state: "link"
   when: ansible_os_family == 'Debian'
   notify:
