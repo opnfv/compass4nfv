@@ -75,6 +75,7 @@
 #    - ext-network
     - dashboard
     - heat
+#    - aodh
 
 - hosts: all
   remote_user: root
