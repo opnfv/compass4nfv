@@ -52,6 +52,14 @@ os_services:
     internalurl: "http://{{ internal_vip.ip }}:8777"
     adminurl: "http://{{ internal_vip.ip }}:8777"
 
+  - name: aodh
+    type: alarming
+    region: regionOne
+    description: "OpenStack Telemetry"
+    publicurl: "http://{{ public_vip.ip }}:8042"
+    internalurl: "http://{{ internal_vip.ip }}:8042"
+    adminurl: "http://{{ internal_vip.ip }}:8042"
+
   - name: cinder
     type: volume
     region: regionOne
@@ -130,6 +138,13 @@ os_users:
   - user: cinder
     password: "{{ CINDER_PASS }}"
     email: cinder@admin.com
+    role: admin
+    tenant: service
+    tenant_description: "Service Tenant"
+
+  - user: aodh
+    password: "{{ AODH_PASS }}"
+    email: aodh@admin.com
     role: admin
     tenant: service
     tenant_description: "Service Tenant"
