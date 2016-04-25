@@ -20,7 +20,7 @@ contrail_admin_password: "console"
 
 # network infor adapter for compass
 # contrail_address: "{{ internal_ip }}"
-contrail_address: " {{ ip_settings[inventory_hostname]['br-prv']['ip'] }} "
+contrail_address: "{{ ip_settings[inventory_hostname]['br-prv']['ip'] }}"
 #contrail_device: # compass openstack device
 contrail_netmask: "255.255.255.0"
 #contrail_gateway: "10.84.50.254"

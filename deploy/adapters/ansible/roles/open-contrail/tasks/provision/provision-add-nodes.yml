@@ -11,16 +11,16 @@
 #  sudo: yes
 #  tasks:
 
-- name: "recover rabbitmq-server service script"
-  shell: cp /home/rabbitmq-server /etc/init.d/rabbitmq-server
+#- name: "recover rabbitmq-server service script"
+#  shell: cp /home/rabbitmq-server /etc/init.d/rabbitmq-server
 
-- name: "restart rabbitmq-server"
-  service:
-    name: "rabbitmq-server"
-    state: "restarted"
+#- name: "restart rabbitmq-server"
+#  service:
+#    name: "rabbitmq-server"
+#    state: "restarted"
 
-- name: "wait rabbitmq-server start"
-  shell: sleep 5
+#- name: "wait rabbitmq-server start"
+#  shell: sleep 5
 
 - name: "restart contrail-discovery"
   service:

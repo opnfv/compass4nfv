@@ -74,6 +74,9 @@
 #  when: groups['opencontrail_control']|length !=0
 
 
+- name: Provision RabbitMQ on OpenContrail config nodes
+  include: provision/provision-rabbitmq.yml
+  when: inventory_hostname in groups['opencontrail']
 
 - name: Provision increase limits for Open Contrail
   include: provision/provision-increase-limits.yml
