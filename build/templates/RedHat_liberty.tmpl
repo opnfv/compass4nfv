@@ -10,7 +10,7 @@ yum repolist
 yum clean all
 
 yum install yum-plugin-priorities -y
-yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm -y
+yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm -y
 yum install http://rdo.fedorapeople.org/openstack-$OPV/rdo-release-$OPV.rpm -y
 
 # modify centos7 repo for workaround
@@ -47,7 +47,7 @@ EOF
 cat <<EOF >/etc/yum.repos.d/ceph.repo
 [ceph]
 name=Ceph packages for x86_64
-baseurl=http://ceph.com/rpm-hammer/rhel7/x86_64
+baseurl=http://ceph.com/rpm-infernalis/el7/x86_64
 enabled=1
 priority=2
 gpgcheck=1
@@ -56,7 +56,7 @@ gpgkey=https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc
 
 [ceph-noarch]
 name=Ceph noarch packages
-baseurl=http://ceph.com/rpm-hammer/rhel7/noarch
+baseurl=http://ceph.com/rpm-infernalis/el7/noarch
 enabled=1
 priority=2
 gpgcheck=1
