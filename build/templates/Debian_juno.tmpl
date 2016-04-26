@@ -20,6 +20,10 @@ sudo apt-get update
 
 sudo apt-get install reprepro -y
 
+cd /var/cache/apt/
+sudo apt-get download libexpat1
+cd -
+
 #download packages
 #set packages = $getVar('default_packages', [])
 #for pkg in $packages

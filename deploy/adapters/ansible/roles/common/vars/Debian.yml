@@ -9,13 +9,14 @@
 ---
 packages:
   - ubuntu-cloud-keyring
-  #- python-dev
+  - libexpat1-dev=2.1.0-4ubuntu1.1
+  - python-dev
   - openvswitch-datapath-dkms
   - openvswitch-switch
   - python-memcache
   - python-iniparse
   - python-lxml
-  - python-d* #TODO, need remove
+  #- python-d* #TODO, need remove
 
 pip_packages:
   - crudini
