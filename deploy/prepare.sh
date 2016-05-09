@@ -41,6 +41,7 @@ function prepare_env() {
     sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
     sudo apt-get install -y --force-yes git python-dev
     sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
+    sudo apt-get install -y --force-yes libffi-dev libssl-dev
     sudo service libvirt-bin restart
     if sudo service openvswitch-switch status|grep stop; then
         sudo service openvswitch-switch start
@@ -86,5 +87,5 @@ function  prepare_python_env() {
    pip install --upgrade requests
    pip install --upgrade netaddr
    pip install --upgrade oslo.config
-   pip install --upgrade ansible==1.9.4
+   pip install --upgrade ansible
 }
