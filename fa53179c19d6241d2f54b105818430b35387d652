@@ -16,6 +16,24 @@
       "revId": "fa53179c19d6241d2f54b105818430b35387d652",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a91bd0f_32d811ef",
+        "filename": "deploy/prepare.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2016-05-10T12:26:15Z",
+      "side": 1,
+      "message": "new ansible depends on these two",
+      "parentUuid": "9a91bd0f_d2768506",
+      "revId": "fa53179c19d6241d2f54b105818430b35387d652",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
