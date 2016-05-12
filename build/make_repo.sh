@@ -60,6 +60,7 @@ function make_repo()
     special_package_script_dir=""
     special_package_dir=""
     ansible_dir=""
+    ansible_dir_tmp=""
     while :; do
         case "$1" in
             --os-ver) os_ver=$2; shift 2;;
@@ -108,7 +109,21 @@ function make_repo()
         tmpl=${BUILD_PATH}/templates/${arch}_${package_tag}.tmpl
     fi
 
-    python ${BUILD_PATH}/gen_ins_pkg_script.py "${ansible_dir}" "${arch}" "${tmpl}" \
+    if [[ "${ansible_dir}" != "" ]]; then
+        # generate ansible_dir_tmp
+        if [[ -d ${WORK_PATH}/work/tmp ]]; then
+            rm -rf ${WORK_PATH}/work/tmp
+        fi
+        mkdir -p ${WORK_PATH}/work/tmp
+        echo "${ansible_dir}"
+        cp -rf ${ansible_dir}/roles/ ${WORK_PATH}/work/tmp/
+        if [[ -d ${ansible_dir}/openstack_${package_tag} && "`ls ${ansible_dir}/openstack_${package_tag}`" != "" ]]; then
+            cp -rf ${ansible_dir}/openstack_${package_tag}/* ${WORK_PATH}/work/tmp/roles/
+        fi 
+        ansible_dir_tmp=${WORK_PATH}/work/tmp/
+    fi
+
+    python ${BUILD_PATH}/gen_ins_pkg_script.py "${ansible_dir_tmp}" "${arch}" "${tmpl}" \
           "${docker_tmpl}" "${default_package}" "${special_package}" \
           "${WORK_PATH}/work/repo/$arch/script/" \
           "${WORK_PATH}/work/repo/$arch/packages/"
@@ -169,18 +184,18 @@ function make_pip_repo()
 
 function make_all_repo()
 {
-#    make_repo --package-tag pip
+    make_repo --package-tag pip
 
-#    make_repo --os-ver rhel7 --package-tag compass \
-#              --tmpl "${WORK_PATH}/build/templates/compass_core.tmpl" \
-#              --default-package "kernel-devel epel-release wget libxml2 glibc gcc perl openssl-libs mkisofs createrepo lsof \
-#                                 python-yaml python-jinja2 python-paramiko elasticsearch logstash bind-license vim nmap-ncat \
-#                                 yum cobbler cobbler-web createrepo mkisofs syslinux pykickstart bind rsync fence-agents \
-#                                 dhcp xinetd tftp-server httpd libselinux-python python-setuptools python-devel mysql-devel \
-#                                 mysql-server mysql MySQL-python redis mod_wsgi net-tools rabbitmq-server nfs-utils" \
-#              --special-package "kibana jdk"
+    make_repo --os-ver rhel7 --package-tag compass \
+              --tmpl "${WORK_PATH}/build/templates/compass_core.tmpl" \
+              --default-package "kernel-devel epel-release wget libxml2 glibc gcc perl openssl-libs mkisofs createrepo lsof \
+                                 python-yaml python-jinja2 python-paramiko elasticsearch logstash bind-license vim nmap-ncat \
+                                 yum cobbler cobbler-web createrepo mkisofs syslinux pykickstart bind rsync fence-agents \
+                                 dhcp xinetd tftp-server httpd libselinux-python python-setuptools python-devel mysql-devel \
+                                 mysql-server mysql MySQL-python redis mod_wsgi net-tools rabbitmq-server nfs-utils" \
+              --special-package "kibana jdk"
 
-    for opv in juno kilo liberty; do
+    for opv in juno kilo liberty mitaka; do
     make_repo --os-ver trusty --package-tag $opv \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
