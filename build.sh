@@ -61,9 +61,9 @@ function download_url()
     if [[ -f $CACHE_DIR/$1 ]]; then
         local_md5=`md5sum $CACHE_DIR/$1 | cut -d ' ' -f 1`
         repo_md5=`cat $CACHE_DIR/$1.md5 | cut -d ' ' -f 1`
-        if [[ $local_md5 == $repo_md5 ]]; then
+#        if [[ $local_md5 == $repo_md5 ]]; then
             return
-        fi
+#        fi
     fi
 
     curl --connect-timeout 10 -o $CACHE_DIR/$1 $2
@@ -78,8 +78,8 @@ function download_local()
 
 function download_packages()
 {
-     for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $UBUNTU_ISO \
-              $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG \
+     for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA $UBUNTU_ISO \
+              $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA $CENTOS7_MITAKA_PPA $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG \
               $PIP_REPO $ANSIBLE_MODULE; do
 
          if [[ ! $i ]]; then
@@ -120,6 +120,10 @@ function copy_file()
         cp $CACHE_DIR/`basename $TRUSTY_LIBERTY_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
     fi
 
+    if [[  $TRUSTY_MITAKA_PPA ]]; then
+        cp $CACHE_DIR/`basename $TRUSTY_MITAKA_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
+    fi
+
     if [[ $CENTOS_ISO ]]; then
         cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
     fi
@@ -134,6 +138,10 @@ function copy_file()
 
     if [[ $CENTOS7_LIBERTY_PPA ]]; then
         cp $CACHE_DIR/`basename $CENTOS7_LIBERTY_PPA` $new/repos/cobbler/centos/ppa/ -rf
+    fi
+
+    if [[ $CENTOS7_MITAKA_PPA ]]; then
+        cp $CACHE_DIR/`basename $CENTOS7_MITAKA_PPA` $new/repos/cobbler/centos/ppa/ -rf
     fi
 
     cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1

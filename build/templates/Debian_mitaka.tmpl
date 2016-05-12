@@ -1,11 +1,13 @@
 #!/bin/bash
 set -ex
 
-# add openstack kilo repo
+# add openstack mitaka repo
 sudo apt-get update && apt-get install -y software-properties-common
-sudo add-apt-repository -y cloud-archive:kilo
+sudo add-apt-repository -y cloud-archive:mitaka
 
 # add galeracluster repo
+#sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+#sudo add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu trusty main'
 sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 D669017EBC19DDBA
 sudo add-apt-repository 'deb http://releases.galeracluster.com/ubuntu trusty main'
 # add oracle java8 ppa
@@ -28,16 +30,20 @@ sudo apt-get -d install $pkg -y
 #end for
 
 #make repo
-mkdir -p trusty-kilo-ppa/conf
-cat <<EOF > trusty-kilo-ppa/conf/distributions
+mkdir -p trusty-mitaka-ppa/conf
+cat <<EOF > trusty-mitaka-ppa/conf/distributions
 Codename: trusty
 Components: main
 Architectures: amd64
 EOF
 
+sudo apt-get install wget
+wget -O /var/cache/apt/python-pyasn1_0.1.8-2_all.deb http://us.archive.ubuntu.com/ubuntu/pool/main/p/pyasn1/python-pyasn1_0.1.8-2_all.deb
+rm -rf /var/cache/apt/python-pyasn1_0.1.7-1ubuntu2_all.deb
+
 mkdir deb
 find /var/cache/apt/ -name *.deb | xargs -i cp {} deb
 
-reprepro -b trusty-kilo-ppa includedeb trusty deb/*.deb
+reprepro -b trusty-mitaka-ppa includedeb trusty deb/*.deb
 
-tar -zcvf /trusty-kilo-ppa.tar.gz ./trusty-kilo-ppa
+tar -zcvf /trusty-mitaka-ppa.tar.gz ./trusty-mitaka-ppa

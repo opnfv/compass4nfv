@@ -60,6 +60,7 @@ function make_repo()
     special_package_script_dir=""
     special_package_dir=""
     ansible_dir=""
+    ansible_dir_tmp=""
     while :; do
         case "$1" in
             --os-ver) os_ver=$2; shift 2;;
@@ -108,7 +109,18 @@ function make_repo()
         tmpl=${BUILD_PATH}/templates/${arch}_${package_tag}.tmpl
     fi
 
-    python ${BUILD_PATH}/gen_ins_pkg_script.py "${ansible_dir}" "${arch}" "${tmpl}" \
+    # generate ansible_dir_tmp
+    if [[ -d ${WORK_PATH}/work/tmp ]]; then
+        rm -rf ${WORK_PATH}/work/tmp
+    fi
+    mkdir -p ${WORK_PATH}/work/tmp
+    cp -rf ${ansible_dir}/roles/ ${WORK_PATH}/work/tmp/
+    if [[ -d ${ansible_dir}/openstack_${package_tag} ]]; then
+        cp -rf ${ansible_dir}/openstack_${package_tag}/* ${WORK_PATH}/work/tmp/roles/
+    fi 
+    ansible_dir_tmp=${WORK_PATH}/work/tmp/
+
+    python ${BUILD_PATH}/gen_ins_pkg_script.py "${ansible_dir_tmp}" "${arch}" "${tmpl}" \
           "${docker_tmpl}" "${default_package}" "${special_package}" \
           "${WORK_PATH}/work/repo/$arch/script/" \
           "${WORK_PATH}/work/repo/$arch/packages/"
@@ -149,7 +161,7 @@ function make_repo()
 
     image_id=$(sudo docker images|grep ${docker_tag}|awk '{print $3}')
 
-    sudo docker rmi -f ${image_id}
+    #sudo docker rmi -f ${image_id}
 }
 
 function make_pip_repo()
@@ -169,41 +181,68 @@ function make_pip_repo()
 
 function make_all_repo()
 {
-#    make_repo --package-tag pip
+    make_repo --package-tag pip
 
-#    make_repo --os-ver rhel7 --package-tag compass \
-#              --tmpl "${WORK_PATH}/build/templates/compass_core.tmpl" \
-#              --default-package "kernel-devel epel-release wget libxml2 glibc gcc perl openssl-libs mkisofs createrepo lsof \
-#                                 python-yaml python-jinja2 python-paramiko elasticsearch logstash bind-license vim nmap-ncat \
-#                                 yum cobbler cobbler-web createrepo mkisofs syslinux pykickstart bind rsync fence-agents \
-#                                 dhcp xinetd tftp-server httpd libselinux-python python-setuptools python-devel mysql-devel \
-#                                 mysql-server mysql MySQL-python redis mod_wsgi net-tools rabbitmq-server nfs-utils" \
-#              --special-package "kibana jdk"
+    make_repo --os-ver rhel7 --package-tag compass \
+              --tmpl "${WORK_PATH}/build/templates/compass_core.tmpl" \
+              --default-package "kernel-devel epel-release wget libxml2 glibc gcc perl openssl-libs mkisofs createrepo lsof \
+                                 python-yaml python-jinja2 python-paramiko elasticsearch logstash bind-license vim nmap-ncat \
+                                 yum cobbler cobbler-web createrepo mkisofs syslinux pykickstart bind rsync fence-agents \
+                                 dhcp xinetd tftp-server httpd libselinux-python python-setuptools python-devel mysql-devel \
+                                 mysql-server mysql MySQL-python redis mod_wsgi net-tools rabbitmq-server nfs-utils" \
+              --special-package "kibana jdk"
 
-    for opv in juno kilo liberty; do
-    make_repo --os-ver trusty --package-tag $opv \
+    make_repo --os-ver trusty --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server" \
               --special-package "openvswitch-switch"
-    done
+
+    make_repo --os-ver trusty --package-tag kilo \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "openssh-server" \
+              --special-package "openvswitch-switch"
+
+    make_repo --os-ver trusty --package-tag liberty \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "openssh-server" \
+              --special-package "openvswitch-switch"
+
+    make_repo --os-ver trusty --package-tag mitaka \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "openssh-server" \
+              --special-package "openvswitch-switch"
 
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
                                  dracut-config-rescue-033-241.el7_1.3 dracut-network-033-241.el7_1.3"
 
-    for opv in kilo liberty; do
-    make_repo --os-ver rhel7 --package-tag $opv \
+    make_repo --os-ver rhel7 --package-tag kilo \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
                                  dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
-    done
+
+    make_repo --os-ver rhel7 --package-tag liberty \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
+                                 dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
+
+    make_repo --os-ver rhel7 --package-tag mitaka \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
+                                 dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
 }
 
 function main()
 {
     process_env
 
+    make_repo --os-ver trusty --package-tag mitaka \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "openssh-server" \
+              --special-package "openvswitch-switch"
+
+    exit 0
     if [[ $# -eq 0 ]]; then
         make_all_repo
     else
