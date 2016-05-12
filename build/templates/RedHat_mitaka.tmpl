@@ -3,21 +3,25 @@ set -x
 
 yum remove systemd -y
 # add 163 repo
-yum install wget -y
-wget -O /epel-release-7-5.noarch.rpm http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-yum remove wget iptables-services -y
-yum update -y
 #rm -f /etc/yum.repos.d/CentOS-*.repo
 yum repolist
 yum clean all
-# add openstack juno repo
+# add openstack mitaka repo
 yum install yum-plugin-priorities -y
 yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm -y
-yum install http://rdo.fedorapeople.org/openstack-juno/rdo-release-juno.rpm -y
+yum install http://rdo.fedorapeople.org/openstack-mitaka/rdo-release-mitaka.rpm -y
 
 # modify centos7 repo for workaround
 sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
 
+# add mongodb repo
+cat <<EOF >/etc/yum.repos.d/mongodb.repo
+[mongodb]
+name=MongoDB Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
+gpgcheck=0
+enabled=1
+EOF
 
 # add galeracluster repo
 cat <<EOF >/etc/yum.repos.d/MariaDB.repo
@@ -74,20 +78,19 @@ yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 
 #make repo
+mkdir -p /centos7-mitaka-ppa/{Packages,repodata}
 
-mkdir -p /centos7-juno-ppa/{Packages,repodata}
+find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos7-mitaka-ppa/Packages/
 
-find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos7-juno-ppa/Packages/
+rm /centos7-mitaka-ppa/Packages/selinux-policy* -f
+rm /centos7-mitaka-ppa/Packages/systemd* -f
 
-rm /centos7-juno-ppa/Packages/selinux-policy* -f
-rm /centos7-juno-ppa/Packages/systemd* -f
-
-mv /epel-release-7-5.noarch.rpm /centos7-juno-ppa/Packages/
-cp /comps.xml /centos7-juno-ppa/
-cp /ceph_key_release.asc /centos7-juno-ppa/
-createrepo -g comps.xml /centos7-juno-ppa
-mkdir /centos7-juno-ppa/noarch
-mkdir /centos7-juno-ppa/noarch/Packages
-cp -r /centos7-juno-ppa/Packages/ceph* /centos7-juno-ppa/noarch/Packages/
-cp -r /centos7-juno-ppa/repodata/ /centos7-juno-ppa/noarch/
-tar -zcvf /centos7-juno-ppa.tar.gz /centos7-juno-ppa
+mv /epel-release-7-5.noarch.rpm /centos7-mitaka-ppa/Packages/
+cp /comps.xml /centos7-mitaka-ppa/
+cp /ceph_key_release.asc /centos7-mitaka-ppa/
+createrepo -g comps.xml /centos7-mitaka-ppa
+mkdir /centos7-mitaka-ppa/noarch
+mkdir /centos7-mitaka-ppa/noarch/Packages
+cp -r /centos7-mitaka-ppa/Packages/ceph* /centos7-mitaka-ppa/noarch/Packages/
+cp -r /centos7-mitaka-ppa/repodata/ /centos7-mitaka-ppa/noarch/
+tar -zcvf /centos7-mitaka-ppa.tar.gz /centos7-mitaka-ppa
