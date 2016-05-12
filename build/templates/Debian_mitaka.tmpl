@@ -1,0 +1,57 @@
+#!/bin/bash
+set -ex
+
+#set OPV="mitaka"
+
+# add openstack $OPV repo
+sudo apt-get update && apt-get install -y software-properties-common
+sudo add-apt-repository -y cloud-archive:$OPV
+
+# add galeracluster repo
+#sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+#sudo add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu trusty main'
+sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 D669017EBC19DDBA
+sudo add-apt-repository 'deb http://releases.galeracluster.com/ubuntu trusty main'
+# add oracle java8 ppa
+sudo add-apt-repository ppa:webupd8team/java
+# add open java7 repo
+sudo add-apt-repository 'deb http://security.ubuntu.com/ubuntu trusty-security main'
+
+sudo apt-get update
+
+sudo apt-get install reprepro -y
+
+sudo apt-get -d install pciutils -y
+
+cd /var/cache/apt/
+sudo apt-get download libexpat1
+cd -
+
+#download packages
+#set packages = $getVar('default_packages', [])
+#for pkg in $packages
+sudo apt-get -d install $pkg -y
+#end for
+#set packages = $getVar('packages', [])
+#for pkg in $packages
+sudo apt-get -d install $pkg -y
+#end for
+
+#make repo
+mkdir -p trusty-$OPV-ppa/conf
+cat <<EOF > trusty-$OPV-ppa/conf/distributions
+Codename: trusty
+Components: main
+Architectures: amd64
+EOF
+
+sudo apt-get install wget
+wget -O /var/cache/apt/python-pyasn1_0.1.8-2_all.deb http://us.archive.ubuntu.com/ubuntu/pool/main/p/pyasn1/python-pyasn1_0.1.8-2_all.deb
+rm -rf /var/cache/apt/python-pyasn1_0.1.7-1ubuntu2_all.deb
+
+mkdir deb
+find /var/cache/apt/ -name *.deb | xargs -i cp {} deb
+
+reprepro -b trusty-$OPV-ppa includedeb trusty deb/*.deb
+
+tar -zcvf /trusty-$OPV-ppa.tar.gz ./trusty-$OPV-ppa

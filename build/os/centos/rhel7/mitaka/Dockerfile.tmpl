@@ -1,0 +1,27 @@
+FROM centos:7.1.1503
+MAINTAINER Chigang(Justin) <chigang@huawei.com>
+
+# set cache enable
+RUN sed -i 's/keepcache=0/keepcache=1/g' /etc/yum.conf
+#set packages = $getVar('spcial_packages', [])
+#for package in $packages
+ADD ./RedHat/packages/redhat_packages/$package /var/cache/yum/x86_64/7/base/packages/
+#end for
+#set scripts = $getVar('scripts', [])
+#for script in $scripts
+ADD ./RedHat/script/$script /tmp/chigang/$script
+RUN chmod +x /tmp/chigang/$script
+RUN /tmp/chigang/$script
+#end for
+ADD ./comps.xml /
+ADD ./ceph_key_release.asc /
+ADD ./install_packages.sh /tmp/chigang/install_packages.sh
+RUN chmod +x /tmp/chigang/install_packages.sh
+RUN /tmp/chigang/install_packages.sh
+
+ADD ./cp_repo.sh /tmp/chigang/cp_repo.sh
+RUN chmod +x /tmp/chigang/cp_repo.sh
+RUN mkdir /result
+
+CMD ["/tmp/chigang/cp_repo.sh"]
+#VOLUME /tmp/chigang
