@@ -12,6 +12,8 @@ ceilometer_packages:
   - ceilometer-collector
   - ceilometer-agent-central
   - ceilometer-agent-notification
+#  - ceilometer-alarm-evaluator
+#  - ceilometer-alarm-notifier
   - python-ceilometerclient
 
 ceilometer_services:
@@ -19,6 +21,8 @@ ceilometer_services:
   - ceilometer-agent-notification
   - ceilometer-api
   - ceilometer-collector
+#  - ceilometer-alarm-evaluator
+#  - ceilometer-alarm-notifier
 
 ceilometer_configs_templates:
   - src: ceilometer.j2
