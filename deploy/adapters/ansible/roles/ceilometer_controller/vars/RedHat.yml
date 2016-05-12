@@ -12,7 +12,6 @@ ceilometer_packages:
   - openstack-ceilometer-collector
   - openstack-ceilometer-central
   - openstack-ceilometer-notification
-  - openstack-ceilometer-alarm
   - python-ceilometerclient
 
 ceilometer_services:
@@ -20,8 +19,6 @@ ceilometer_services:
   - openstack-ceilometer-notification
   - openstack-ceilometer-api
   - openstack-ceilometer-collector
-  - openstack-ceilometer-alarm-evaluator
-  - openstack-ceilometer-alarm-notifier
 
 ceilometer_configs_templates:
   - src: ceilometer.j2
