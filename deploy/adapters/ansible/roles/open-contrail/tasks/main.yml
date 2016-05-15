@@ -121,6 +121,9 @@
   include: uninstall-openvswitch.yml
   when: groups['opencontrail']|length !=0 and inventory_hostname not in groups['opencontrail']
 
+- name: Config ext-net network
+  include: ext-net.yml
+
 - name: Enable Service Daemon
   shell: if [ -f “\/opt\/service.bak” ] ; then mv /opt/service.bak /opt/service ; fi
   when: groups['opencontrail']|length !=0
