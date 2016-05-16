@@ -17,3 +17,31 @@
 - name: add vgw router on compute(without vgw) for open-contrail
   shell: echo "ip route add {{ public_net_info.floating_ip_cidr }} via {{ ip_settings[groups['compute'][0]]['br-prv']['ip'] }} dev vhost0" >> /etc/init.d/net_init
   when: groups['opencontrail']|length !=0 and inventory_hostname not in groups['opencontrail'] and inventory_hostname != groups['compute'][0]
+
+
+
+
+
+# create a file with vgw ip on CompassCore, so that Jumper Host could access this to get vgw ip
+- name: add vgw file on compass
+  local_action: file path=/home/opencontrail1.rc state=touch mode=0777
+  run_once: True
+  when: groups['opencontrail']|length !=0
+
+- name: update vgw file
+  local_action: lineinfile dest=/home/opencontrail1.rc line={{ ip_settings[groups['compute'][0]]['br-prv']['ip'] }}
+  run_once: True
+  when: groups['opencontrail']|length !=0
+
+- name: add vgw file on compass
+  local_action: file path=/home/opencontrail2.rc state=touch mode=0777
+  run_once: True
+  when: groups['opencontrail']|length !=0
+
+- name: update vgw file
+  local_action: lineinfile dest=/home/opencontrail2.rc line={{ public_net_info.floating_ip_cidr }}
+  run_once: True
+  when: groups['opencontrail']|length !=0
+
+
+
