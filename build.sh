@@ -120,6 +120,10 @@ function copy_file()
         cp $CACHE_DIR/`basename $TRUSTY_LIBERTY_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
     fi
 
+#    if [[  $TRUSTY_MITAKA_PPA ]]; then
+#        cp $CACHE_DIR/`basename $TRUSTY_MITAKA_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
+#    fi
+
     if [[ $CENTOS_ISO ]]; then
         cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
     fi
@@ -135,6 +139,10 @@ function copy_file()
     if [[ $CENTOS7_LIBERTY_PPA ]]; then
         cp $CACHE_DIR/`basename $CENTOS7_LIBERTY_PPA` $new/repos/cobbler/centos/ppa/ -rf
     fi
+
+#    if [[ $CENTOS7_MITAKA_PPA ]]; then
+#        cp $CACHE_DIR/`basename $CENTOS7_MITAKA_PPA` $new/repos/cobbler/centos/ppa/ -rf
+#    fi
 
     cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1
     cp $CACHE_DIR/`basename $APP_PACKAGE` $new/app_packages/ -rf || exit 1
