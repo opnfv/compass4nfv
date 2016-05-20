@@ -3,6 +3,7 @@
   sudo: True
   roles:
     - common
+    - kvmfornfv
     - database
     - mq
     - keystone
