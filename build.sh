@@ -80,7 +80,7 @@ function download_packages()
 {
      for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $UBUNTU_ISO \
               $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG \
-              $PIP_REPO $ANSIBLE_MODULE; do
+              $PIP_REPO $ANSIBLE_MODULE $KVMFORNFV; do
 
          if [[ ! $i ]]; then
              continue
@@ -175,6 +175,29 @@ function rebuild_ppa()
     createrepo -g $WORK_DIR/comps.xml $1
 }
 
+function make_kernel()
+{
+    cd $CACHE_DIR/kvmfornfv/kernel
+    cp arch/x86/configs/opnfv.config .config
+    make -j8
+    make -j8 modules
+}
+
+function make_qemu()
+{
+    mkdir -p $CACHE_DIR/kvmfornfv/qemu/build
+    cd $CACHE_DIR/kvmfornfv/qemu/build
+    ../configure --prefix=/usr --enable-system --enable-kvm
+    make -j8
+}
+
+function make_kvmfornfv()
+{
+    make_kernel $1
+    make_qemu $1
+    tar czvf $CACHE_DIR/$1/app_packages/kvmfornfv_$(date +%F_%R).tar.gz $CACHE_DIR/$1/kvmfornfv
+}
+
 function make_iso()
 {
     download_packages
@@ -189,6 +212,7 @@ function make_iso()
 
     copy_file new
     rebuild_ppa new
+    make_kvmfornfv new
 
     mkisofs -quiet -r -J -R -b isolinux/isolinux.bin \
             -no-emul-boot -boot-load-size 4 \
