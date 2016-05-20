@@ -1,0 +1,43 @@
+# Copyright (c) 2014, Nokia
+# All rights reserved.
+#
+# SPDX-License-Identifier:     BSD-3-Clause
+#
+---
+
+path: /tmp/kvmfornfv
+kernel_path: "{{ path }}/kernel"
+qemu_path: "{{ path }}/qemu"
+qemu_build_dir: "{{ qemu_path }}/build"
+
+centos_packages:
+  - bc
+  - gcc
+  - gcc-c++
+  - zlib-devel
+  - glib2-devel
+  - autoconf
+  - automake
+  - gettext-devel
+  - libtool
+  - bison
+  - flex
+  - git
+  - qemu-kvm
+  - grub2
+
+ubuntu_packages:
+  - git
+  - qemu-kvm
+  - grub-pc
+  - make
+  - gcc
+  - g++
+  - bc
+  - libtool
+  - pkg-config
+  - zlib1g-dev
+  - libglib2.0-dev
+  - autoconf
+  - automake
+
