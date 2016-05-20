@@ -63,6 +63,8 @@ function prepare_env() {
     sudo mount -o loop $WORK_DIR/iso/centos.iso $WORK_DIR/mnt
     cp -rf $WORK_DIR/mnt/compass/compass-core $WORK_DIR/installer/
     cp -rf $WORK_DIR/mnt/compass/compass-install $WORK_DIR/installer/
+    tar -C /tmp -xzf $WORK_DIR/mnt/app_packages/kvmfornfv-*.tar.gz
+    cd -
     sudo umount $WORK_DIR/mnt
     rm -rf $WORK_DIR/mnt
 

@@ -1,0 +1,27 @@
+##############################################################################
+## Copyright (c) 2015 Nokia and others.
+##
+## All rights reserved. This program and the accompanying materials
+## are made available under the terms of the Apache License, Version 2.0
+## which accompanies this distribution, and is available at
+## http://www.apache.org/licenses/LICENSE-2.0
+###############################################################################
+---
+
+- name: Kernel install
+  shell: make install chdir={{ kernel_path }}
+
+- name: Modules install
+  shell: make modules_install chdir={{ kernel_path }}
+
+- name: Update grub on Centos
+  shell: grub2-mkconfig -o /boot/grub2/grub.conf
+  when: ansible_os_family == 'RedHat'
+
+- name: Update grub on Ubuntu
+  shell: grub-mkconfig -o /boot/grub/grub.conf
+  when: ansible_os_family == 'Debian'
+
+- name: Make install
+  shell: make -j8 install chdir={{ qemu_build_dir }}
+
