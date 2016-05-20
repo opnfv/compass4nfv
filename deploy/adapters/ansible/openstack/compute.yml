@@ -4,5 +4,6 @@
   sudo: True
   roles:
     - common
+    - kvmfornfv
     - nova-compute
     - neutron-compute

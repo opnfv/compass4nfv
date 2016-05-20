@@ -1,0 +1,57 @@
+# Copyright (c) 2014, Nokia
+# All rights reserved.
+#
+# SPDX-License-Identifier:     BSD-3-Clause
+#
+---
+
+- name: Install Centos dependencies
+  yum: name={{ item }} state=present
+  with_items: '{{ centos_packages }}'
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Ubuntu dependenices
+  apt: name={{ item }} state=present
+  with_items: '{{ ubuntu_packages }}'
+  when: ansible_os_family == 'Debian'
+
+- name: Checkout kvmfornfv
+  git: repo=https://gerrit.opnfv.org/gerrit/p/kvmfornfv.git
+       dest={{ path }}
+       accept_hostkey=True
+
+- name: Copy opnfv config
+  shell: cp {{ kernel_path }}/arch/x86/configs/opnfv.config {{ kernel_path }}/.config
+
+- name: Make kernel
+  shell: make -j8 chdir={{ kernel_path }}
+
+- name: Make modules
+  shell: make -j8 modules chdir={{ kernel_path }}
+
+- name: Kernel install
+  shell: make install chdir={{ kernel_path }}
+
+- name: Modules install
+  shell: make modules_install chdir={{ kernel_path }}
+
+- name: Update grub on Centos
+  shell: grub2-mkconfig -o /boot/grub2/grub.conf
+  when: ansible_os_family == 'RedHat'
+
+- name: Update grub on Ubuntu
+  shell: grub-mkconfig -o /boot/grub/grub.conf
+  when: ansible_os_family == 'Debian'
+
+- name: Create qemu build dir
+  file: dest={{ qemu_build_dir }} state=directory
+
+- name: Configure qemu
+  shell: ../configure --prefix=/usr --enable-system --enable-kvm chdir={{ qemu_build_dir }}
+
+- name: Make qemu
+  shell: make -j8 chdir={{ qemu_build_dir }}
+
+- name: Make install
+  shell: make -j8 install chdir={{ qemu_build_dir }}
+
