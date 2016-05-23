@@ -7,6 +7,9 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
+- name: restart neutron server
+  service: name=neutron-server state=restarted enabled=yes
+
 - name: create external net
   neutron_network:
     login_username: ADMIN
