@@ -14,7 +14,7 @@
   with_items: packages | union(packages_noarch)
 
 - name: update aodh conf
-  template: src={{ item }} dest=/etc/aodh/{{ item }}
+  template: src={{ item }} dest=/etc/aodh/aodh.conf
             backup=yes
   with_items:
     - aodh.conf.j2
