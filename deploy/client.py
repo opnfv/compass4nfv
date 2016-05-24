@@ -913,7 +913,8 @@ class CompassClient(object):
 
 def print_ansible_log():
     os.system("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i %s root@192.168.200.2 \
-              'while ! tail -f /var/ansible/run/openstack_liberty-opnfv2/ansible.log 2>/dev/null; do :; sleep 1; done'" % CONF.rsa_file)
+              'while ! tail -f /var/ansible/run/%s-%s/ansible.log 2>/dev/null; do :; sleep 1; done'" %
+              (CONF.rsa_file, CONF.adapter_name, CONF.cluster_name))
 
 def kill_print_proc():
     os.system("ps aux|grep -v grep|grep -E 'ssh.+root@192.168.200.2'|awk '{print $2}'|xargs kill -9")
