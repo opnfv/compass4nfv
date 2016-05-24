@@ -117,9 +117,9 @@ function make_repo()
         mkdir -p ${WORK_PATH}/work/tmp
         echo "${ansible_dir}"
         cp -rf ${ansible_dir}/roles/ ${WORK_PATH}/work/tmp/
-        if [[ -d ${ansible_dir}/openstack_${package_tag} && "`ls ${ansible_dir}/openstack_${package_tag}`" != "" ]]; then
-            cp -rf ${ansible_dir}/openstack_${package_tag}/* ${WORK_PATH}/work/tmp/roles/
-        fi 
+        if [[ -d ${ansible_dir}/openstack_${package_tag}/roles && "`ls ${ansible_dir}/openstack_${package_tag}`" != "" ]]; then
+            cp -rf ${ansible_dir}/openstack_${package_tag}/roles/* ${WORK_PATH}/work/tmp/roles/
+        fi
         ansible_dir_tmp=${WORK_PATH}/work/tmp/
     fi
 
