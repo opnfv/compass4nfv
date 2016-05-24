@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a91bd0f_1fef04b2",
+        "filename": "deploy/adapters/ansible/roles/kvmfornfv/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-05-24T08:04:17Z",
+      "side": 1,
+      "message": "you\u0027d better separate this file into there files and put them into vars directory, for common variables -\u003e mail.yml, centos related variables -\u003e RedHat.yml, ubuntu related variables -\u003e Debian.yml. you take neutron-controller/vars as an example.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "e115c716519bf988fa4d084db8e7e925bc80b590",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a91bd0f_bf2b78ea",
+        "filename": "deploy/adapters/ansible/roles/kvmfornfv/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-05-24T08:04:17Z",
+      "side": 1,
+      "message": "Can we use Apache license and use opnfv General Code headers.\nhttps://wiki.opnfv.org/display/DEV/Contribution+Guidelines",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 1
+      },
+      "revId": "e115c716519bf988fa4d084db8e7e925bc80b590",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
