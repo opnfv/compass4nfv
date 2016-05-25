@@ -3,3 +3,6 @@
 /docs_build/
 /docs_output/
 /releng/
+/work
+*.pyc
+__main__.log
