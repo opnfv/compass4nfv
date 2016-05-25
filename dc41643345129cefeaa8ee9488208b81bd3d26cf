@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a91bd0f_217aee88",
+        "filename": "deploy/adapters/ansible/roles/kvmfornfv/defaults/Debian.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-05-25T13:00:38Z",
+      "side": 1,
+      "message": "some of them are not necessary, pls delete them. Because we don\u0027t need configure and compile  the code now.",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 12
+      },
+      "revId": "dc41643345129cefeaa8ee9488208b81bd3d26cf",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a91bd0f_e173a6af",
+        "filename": "deploy/adapters/ansible/roles/kvmfornfv/defaults/RedHat.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-05-25T13:00:38Z",
+      "side": 1,
+      "message": "some of them are not necessary, pls delete them. Because we don\u0027t need configure and compile the code now.",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 25,
+        "endChar": 9
+      },
+      "revId": "dc41643345129cefeaa8ee9488208b81bd3d26cf",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
