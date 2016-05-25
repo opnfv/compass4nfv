@@ -1,3 +1,9 @@
+{% set memcached_servers = [] %}
+{% for host in haproxy_hosts.values() %}
+{% set _ = memcached_servers.append('%s:11211'% host) %}
+{% endfor %}
+{% set memcached_servers = memcached_servers|join(',') %}
+
 [DEFAULT]
 bind_host = {{ internal_ip }}
 bind_port = 8042
