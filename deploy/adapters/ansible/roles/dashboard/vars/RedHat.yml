@@ -15,3 +15,5 @@ services:
   - httpd
 
 http_config_file: "/etc/httpd/conf/httpd.conf"
+apache_config_dir: /etc/httpd
+horizon_dir: /usr/share/openstack-dashboard

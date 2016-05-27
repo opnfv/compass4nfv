@@ -53,6 +53,14 @@
   notify:
     - restart dashboard services
 
+- name: update apache2 configs redhat
+  template:
+    src: openstack-dashboard-redhat.conf.j2
+    dest: '{{ apache_config_dir }}/conf.d/openstack-dashboard.conf'
+  when: ansible_os_family == 'RedHat'
+  notify:
+    - restart dashboard services
+
 - name: enable dashboard
   file:
     src: "/etc/apache2/sites-available/openstack-dashboard.conf"
