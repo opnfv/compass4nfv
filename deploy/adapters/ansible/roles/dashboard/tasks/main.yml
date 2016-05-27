@@ -94,7 +94,7 @@
     line: '{{ item.line }}'
   with_items:
     - regexp: '^WEBROOT[ \t]*=.*'
-      line: 'WEBROOT = "/horizon"'
+      line: 'WEBROOT = "/dashboard"'
     - regexp: '^COMPRESS_OFFLINE[ \t]*=.*'
       line: 'COMPRESS_OFFLINE=False'
     - regexp: '^ALLOWED_HOSTS[ \t]*=.*'
