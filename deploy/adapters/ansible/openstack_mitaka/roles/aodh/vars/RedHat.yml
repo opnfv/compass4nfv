@@ -16,7 +16,7 @@ packages:
   - python-ceilometerclient
 
 services:
-  - aodh-api
-  - aodh-notifier
-  - aodh-evaluator
-  - aodh-listener
+  - openstack-aodh-api
+  - openstack-aodh-notifier
+  - openstack-aodh-evaluator
+  - openstack-aodh-listener
