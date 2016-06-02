@@ -101,41 +101,41 @@
   roles:
     - secgroup
 
-#- hosts: ceph_adm
-#  remote_user: root
-#  accelerate: true
-#  max_fail_percentage: 0
-#  roles: []
+- hosts: ceph_adm
+  remote_user: root
+  accelerate: true
+  max_fail_percentage: 0
+  roles: []
   #  - ceph-deploy
 
-#- hosts: ceph
-#  remote_user: root
-#  accelerate: true
-#  max_fail_percentage: 0
-#  roles:
-#    - ceph-purge
-#    - ceph-config
+- hosts: ceph
+  remote_user: root
+  accelerate: true
+  max_fail_percentage: 0
+  roles:
+    - ceph-purge
+    - ceph-config
 
-#- hosts: ceph_mon
-#  remote_user: root
-#  accelerate: true
-#  max_fail_percentage: 0
-#  roles:
-#    - ceph-mon
+- hosts: ceph_mon
+  remote_user: root
+  accelerate: true
+  max_fail_percentage: 0
+  roles:
+    - ceph-mon
 
-#- hosts: ceph_osd
-#  remote_user: root
-#  accelerate: true
-#  max_fail_percentage: 0
-#  roles:
-#    - ceph-osd
+- hosts: ceph_osd
+  remote_user: root
+  accelerate: true
+  max_fail_percentage: 0
+  roles:
+    - ceph-osd
 
-#- hosts: ceph
-#  remote_user: root
-#  accelerate: true
-#  max_fail_percentage: 0
-#  roles:
-#    - ceph-openstack
+- hosts: ceph
+  remote_user: root
+  accelerate: true
+  max_fail_percentage: 0
+  roles:
+    - ceph-openstack
 
 - hosts: all
   remote_user: root
