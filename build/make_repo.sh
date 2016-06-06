@@ -222,8 +222,8 @@ function main()
     if [[ $# -eq 0 ]]; then
         make_all_repo
     else
-        make_repo $*
+        make_repo "$@"
     fi
 }
 
-main $*
+main "$@"
