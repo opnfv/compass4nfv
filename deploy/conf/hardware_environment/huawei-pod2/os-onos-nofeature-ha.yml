@@ -3,58 +3,61 @@ TYPE: baremetal
 FLAVOR: cluster
 POWER_TOOL: ipmitool
 
-ipmiUser: root
 ipmiVer: '2.0'
 
 hosts:
   - name: host1
-    mac: 'F8:4A:BF:55:A2:8D'
-    interfaces:
-       - eth1: 'F8:4A:BF:55:A2:8E'
-    ipmiIp: 172.16.130.26
+    mac: 'EC:38:8F:79:0C:2C'
+    ipmiUser: root
     ipmiPass: Huawei@123
+    ipmiIp: 172.16.130.20
+    interfaces:
+      - eth1: 'EC:38:8F:79:0C:2D'
     roles:
       - controller
       - ha
       - onos
 
   - name: host2
-    mac: 'D8:49:0B:DA:5A:B7'
+    mac: 'EC:38:8F:79:0C:48'
+    ipmiIp: 172.16.130.19
+    ipmiUser: root
+    ipmiPass: Huawei@123
     interfaces:
-      - eth1: 'D8:49:0B:DA:5A:B8'
-    ipmiIp: 172.16.130.27
-    ipmiPass: huawei@123
+      - eth1: 'EC:38:8F:79:0C:49'
     roles:
       - controller
       - ha
       - onos
 
   - name: host3
-    mac: 'D8:49:0B:DA:2A:28'
-    interfaces:
-      - eth1: 'D8:49:0B:DA:2A:29'
-    ipmiIp: 172.16.130.29
+    mac: 'EC:38:8F:79:10:CC'
+    ipmiIp: 172.16.130.18
+    ipmiUser: root
     ipmiPass: Huawei@123
+    interfaces:
+      - eth1: 'EC:38:8F:79:10:CD'
     roles:
       - controller
       - ha
       - onos
 
   - name: host4
-    mac: 'D8:49:0B:DA:5B:5D'
-    interfaces:
-      - eth1: 'D8:49:0B:DA:5B:5E'
-    ipmiIp: 172.16.130.30
+    mac: 'EC:38:8F:79:0C:6C'
+    ipmiIp: 172.16.130.17
+    ipmiUser: root
     ipmiPass: Huawei@123
+    interfaces:
+      - eth1: 'EC:38:8F:79:0C:6D'
     roles:
       - compute
 
   - name: host5
-    mac: 'D8:49:0B:DA:56:85'
-    interfaces:
-      - eth1: 'D8:49:0B:DA:56:86'
-    ipmiIp: 172.16.130.31
+    mac: 'EC:38:8F:7A:E6:ED'
+    ipmiIp: 172.16.130.16
+    ipmiUser: root
     ipmiPass: Huawei@123
+    interfaces:
+      - eth1: 'EC:38:8F:7A:E6:EE'
     roles:
       - compute
-
