@@ -33,7 +33,7 @@ function save_network_info()
 {
     sudo ovs-vsctl list-br |grep br-external
     br_exist=$?
-    external_nic=`ip route |grep '^default'|awk '{print $NF}'`
+    external_nic=`ip route |grep '^default'|awk '{print $5F}'`
     route_info=`ip route |grep -Eo '^default via [^ ]+'`
     ip_info=`ip addr show $external_nic|grep -Eo '[^ ]+ brd [^ ]+ '`
     if [ $br_exist -eq 0 ]; then
