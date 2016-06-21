@@ -12,14 +12,22 @@ apt-get install -y build-essential fakeroot debhelper \
          autoconf automake bzip2 libssl-dev \
          openssl graphviz python-all procps \
          python-qt4 python-zopeinterface \
-         python-twisted-conch libtool wget dh-autoreconf
+         python-twisted-conch libtool wget \
+         libc6-dev make kmod netbase procps \
+         python-argparse uuid-runtime python:any \
+         libssl1.0.0 git dkms
+
 
 pushd .
-cd /tmp
-wget http://openvswitch.org/releases/openvswitch-2.5.0.tar.gz
-tar -zxvf openvswitch-2.5.0.tar.gz
-cd openvswitch-2.5.0
-DEB_BUILD_OPTIONS='parallel=8 nocheck' fakeroot debian/rules binary
-cd -
-cp -f *.deb /var/cache/apt/archives/
+mkdir -p /home/package_yang/
+cd /home/package_yang
+wget http://205.177.226.237:9999/onosfw/package_ovs_debian.tar.gz
+tar -zxvf package_ovs_debian.tar.gz
+#wget http://openvswitch.org/releases/openvswitch-2.3.1.tar.gz
+#tar -zxvf openvswitch-2.3.1.tar.gz
+#cd openvswitch-2.3.1
+#DEB_BUILD_OPTIONS='parallel=8 nocheck' fakeroot debian/rules binary
+#cd -
+cp -f /home/package_yang/*.deb /var/cache/apt/archives/
 popd
+
