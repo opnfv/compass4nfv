@@ -9,11 +9,11 @@
 ---
 #- name: remove neutron-plugin-openvswitch-agent auto start
 #  shell: >
-#    update-rc.d neutron-openvswitch-agent remove;
-#    sed -i /neutron-openvswitch-agent/d /opt/service
+#    update-rc.d neutron-plugin-openvswitch-agent remove;
+#    sed -i /neutron-plugin-openvswitch-agent/d /opt/service
 
 #- name: shut down and disable Neutron's agent services
-#  service: name=neutron-openvswitch-agent state=stopped
+#  service: name=neutron-plugin-openvswitch-agent state=stopped
 
 #- name: Stop the Open vSwitch service and clear existing OVSDB
 #  shell: >
@@ -46,26 +46,37 @@
     ifconfig onos_port2 up;
   ignore_errors: True
 
-- name: set veth to ovs
-  shell: >
-    export externamMac=`ifconfig eth1 | grep -Eo '\<[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}'`;
-    ifconfig onos_port2 hw ether $externamMac;
-    ovs-vsctl add-port br-prv onos_port1;
-  ignore_errors: True
+#- name: set veth to ovs
+#  shell: >
+#    export externamMac=`ifconfig eth1 | grep -Eo '\<[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}'`;
+#    ifconfig onos_port2 hw ether $externamMac;
+#    ovs-vsctl add-port br-prv onos_port1;
+#  ignore_errors: True
 
 #- name: wait for onos start time
 #  shell: "sleep 200"
-
-- name: add ovsdatabase feature
-  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdatabase'";
-  when: inventory_hostname == groups['onos'][0]
-
 - name: add openflow-base feature
   command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow-base'";
   when: inventory_hostname in groups['onos']
 
 - name: add openflow feature
   command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow'";
+  when: inventory_hostname in groups['onos']
+
+- name: add ovsdatabase feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdatabase'";
+  when: inventory_hostname in groups['onos']
+
+- name: add ovsdb-base feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdb-base'";
+  when: inventory_hostname in groups['onos']
+
+- name: add onos driver ovsdb feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-drivers-ovsdb'";
+  when: inventory_hostname in groups['onos']
+
+- name: add ovsdb provider host feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdb-provider-host'";
   when: inventory_hostname in groups['onos']
 
 - name: add vtn feature
@@ -79,6 +90,9 @@
 - name: Set ONOS as the manager
   command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ ip_settings[groups['onos'][0]]['mgmt']['ip'] }}:6640;"
 
+#- name: set opendaylight as the manager
+#  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
+
 - name: create public network
   shell: >
     export OS_PASSWORD=console;
@@ -89,12 +103,12 @@
     neutron subnet-create ext-net {{ public_net_info.floating_ip_cidr }} --name ext-subnet  --allocation-pool start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }};
   when: inventory_hostname == groups['controller'][0]
 
-- name: set gateway mac address
-  shell: >
-    ping -c 1 {{ ansible_default_ipv4.gateway }};
-    gatewayMac=`arp -a {{ ansible_default_ipv4.gateway }} | awk '{print $4}'`;
-    /opt/onos/bin/onos "externalgateway-update -m $gatewayMac";
-  when: inventory_hostname in groups['onos']
+#- name: set gateway mac address
+#  shell: >
+#    ping -c 1 {{ ansible_default_ipv4.gateway }};
+#    gatewayMac=`arp -a {{ ansible_default_ipv4.gateway }} | awk '{print $4}'`;
+#    /opt/onos/bin/onos "externalgateway-update -m $gatewayMac";
+#  when: inventory_hostname in groups['onos']
 
 - name: delete default gateway
   shell: >
