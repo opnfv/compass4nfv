@@ -17,7 +17,7 @@ project_name = service
 [agent]
 root_helper = sudo /usr/local/bin/tacker-rootwrap /usr/local/etc/tacker/rootwrap.conf
 
-[DATABASE]
+[database]
 connection = mysql://tacker:TACKER_DBPASS@{{ internal_vip.ip }}:3306/tacker?charset=utf8
 
 [servicevm_nova]
