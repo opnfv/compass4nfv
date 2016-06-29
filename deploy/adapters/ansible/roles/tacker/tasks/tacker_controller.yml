@@ -82,15 +82,19 @@
         --internalurl 'http://{{ internal_vip.ip }}:8888/' tacker
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
+- name: install pip packages
+  shell: >
+    pip install tosca-parser; pip install heat-translator;
+
 - name: install tacker
   shell: >
-    . /opt/admin-openrc.sh; pip install tosca-parser; cd {{ tacker_home }}; python setup.py install
+    . /opt/admin-openrc.sh; cd {{ tacker_home }}; python setup.py install
 
-# - name: create 'tacker' directory in '/var/cache', set ownership and permissions
-#   shell: >
-#   sudo mkdir /var/cache/tacker
+- name: create 'tacker' directory in '/var/cache', set ownership and permissions
+  shell: >
+    mkdir -p /var/cache/tacker
 #   sudo chown <LOGIN_USER>:root /var/cache/tacker
-#   sudo chmod 700 /var/cache/tacker
+#    chmod 700 /var/cache/tacker
 
 - name: create 'tacker' directory in '/var/log'
   shell: mkdir -p /var/log/tacker
@@ -102,9 +106,10 @@
 - name: edit tacker configuration file
   shell: crudini --merge /usr/local/etc/tacker/tacker.conf < /opt/os_templates/tacker.j2
 
-#- name: populate tacker database
-#  shell: >
-#    . /opt/admin-openrc.sh; /usr/local/bin/tacker-db-manage --config-file /usr/local/etc/tacker/tacker.conf upgrade head
+- name: populate tacker database
+  shell: >
+    . /opt/admin-openrc.sh; /usr/local/bin/tacker-db-manage --config-file /usr/local/etc/tacker/tacker.conf upgrade head
+  when: inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: install tacker client
   shell: >
