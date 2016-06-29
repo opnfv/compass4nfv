@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_79266318",
+        "filename": "deploy/adapters/ansible/openstack_mitaka/roles/onos_cluster/tasks/onos_controller.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-06-29T10:05:11Z",
+      "side": 1,
+      "message": "red tail, delete tail space, there are some more red tail below.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 2
+      },
+      "revId": "8004b8ad265c27da16d39e4aa8884ac1b4ddb478",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_b90cfb95",
+        "filename": "deploy/adapters/ansible/openstack_mitaka/roles/onos_cluster/templates/cluster.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-06-29T10:05:11Z",
+      "side": 1,
+      "message": "tab -\u003e space",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 1
+      },
+      "revId": "8004b8ad265c27da16d39e4aa8884ac1b4ddb478",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_d911b7ad",
+        "filename": "deploy/adapters/ansible/openstack_mitaka/roles/onos_cluster/templates/tablets.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-06-29T10:05:11Z",
+      "side": 1,
+      "message": "tab -\u003e space",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 1
+      },
+      "revId": "8004b8ad265c27da16d39e4aa8884ac1b4ddb478",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_19188fd2",
+        "filename": "deploy/adapters/ansible/openstack_mitaka/roles/onos_cluster/vars/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-06-29T10:05:11Z",
+      "side": 1,
+      "message": "pls delete it, if it is not used.\nAnd do not download package directly form internet",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 12
+      },
+      "revId": "8004b8ad265c27da16d39e4aa8884ac1b4ddb478",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
