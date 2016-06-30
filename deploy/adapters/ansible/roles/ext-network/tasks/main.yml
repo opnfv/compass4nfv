@@ -20,7 +20,7 @@
     provider_network_type: "{{ public_net_info.type }}"
     provider_physical_network: "{{ public_net_info.provider_network }}"
     provider_segmentation_id: "{{ public_net_info.segment_id}}"
-    shared: true
+    shared: false
     router_external: yes
     state: present
   run_once: true
