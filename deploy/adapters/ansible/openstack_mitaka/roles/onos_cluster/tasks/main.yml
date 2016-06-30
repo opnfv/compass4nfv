@@ -9,16 +9,15 @@
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- name: remove neutron-openvswitch-agent auto start
+- name: remove neutron-plugin-openvswitch-agent auto start
   shell: >
-    update-rc.d neutron-openvswitch-agent remove;
-    sed -i /neutron-openvswitch-agent/d /opt/service
+    update-rc.d neutron-plugin-openvswitch-agent remove;
+    sed -i /neutron-plugin-openvswitch-agent/d /opt/service
   when: groups['onos']|length !=0
   ignore_errors: True
 
 - name: shut down and disable Neutron's agent services
-  service: name=neutron-openvswitch-agent state=stopped
-  when: groups['onos']|length !=0
+  service: name=neutron-plugin-openvswitch-agent state=stopped
   ignore_errors: True
 
 - name: remove neutron-l3-agent auto start
@@ -39,15 +38,13 @@
     ovs-vsctl del-br br-tun ;
     ovs-vsctl del-manager ;
     ip link delete onos_port1 type veth peer name onos_port2;
-  when: groups['onos']|length !=0
   ignore_errors: True
 
 - name: Install ONOS Cluster on Controller
   include: onos_controller.yml
   when: inventory_hostname in groups['onos']
 
-- name: Install ONOS Cluster on Compute
+- name: Config ONOS Cluster
   include: openvswitch.yml
-  when: groups['onos']|length !=0
-#  when: groups['onos']|length !=0 and inventory_hostname not in groups['onos']
+  when: inventory_hostname in groups['onos']
 
