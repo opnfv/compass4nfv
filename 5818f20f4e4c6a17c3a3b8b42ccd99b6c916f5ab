@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_08891326",
+        "filename": "deploy/adapters/ansible/openstack/HA-ansible-multinodes.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-07-01T03:27:50Z",
+      "side": 1,
+      "message": "pls delete it, if it is unused.",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 13
+      },
+      "revId": "5818f20f4e4c6a17c3a3b8b42ccd99b6c916f5ab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
