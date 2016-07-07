@@ -18,6 +18,7 @@
 
 - name: shut down and disable Neutron's agent services
   service: name=neutron-plugin-openvswitch-agent state=stopped
+  when: groups['onos']|length !=0
   ignore_errors: True
 
 - name: remove neutron-l3-agent auto start
@@ -38,6 +39,7 @@
     ovs-vsctl del-br br-tun ;
     ovs-vsctl del-manager ;
     ip link delete onos_port1 type veth peer name onos_port2;
+  when: groups['onos']|length !=0
   ignore_errors: True
 
 - name: Install ONOS Cluster on Controller
@@ -46,5 +48,4 @@
 
 - name: Config ONOS Cluster
   include: openvswitch.yml
-  when: inventory_hostname in groups['onos']
-
+  when: groups['onos']|length !=0
