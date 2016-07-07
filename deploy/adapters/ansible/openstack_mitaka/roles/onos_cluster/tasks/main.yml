@@ -38,6 +38,7 @@
     ovs-vsctl del-br br-tun ;
     ovs-vsctl del-manager ;
     ip link delete onos_port1 type veth peer name onos_port2;
+  when: groups['onos']|length !=0
   ignore_errors: True
 
 - name: Install ONOS Cluster on Controller
@@ -46,5 +47,4 @@
 
 - name: Config ONOS Cluster
   include: openvswitch.yml
-  when: inventory_hostname in groups['onos']
-
+  when: groups['onos']|length !=0
