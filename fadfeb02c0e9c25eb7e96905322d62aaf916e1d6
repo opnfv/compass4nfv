@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_8c23ee04",
+        "filename": "deploy/adapters/ansible/openstack_mitaka/roles/onos_cluster/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-07-07T06:13:26Z",
+      "side": 1,
+      "message": "pls add inventory check here.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 21
+      },
+      "revId": "fadfeb02c0e9c25eb7e96905322d62aaf916e1d6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
