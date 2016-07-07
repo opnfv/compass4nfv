@@ -167,17 +167,92 @@ function make_repo()
     sudo docker rmi -f ${image_id}
 }
 
+function _try_fetch_dependency()
+{
+    local dir_name=''
+    if [ -f $1 ];then
+        case $1 in
+            *.tar.bz2)
+                tar xjf $1
+                dir_name="$(basename $1 .tar.bz2)"
+                ;;
+            *.tar.gz)
+                tar xzf $1
+                dir_name="$(basename $1 .tar.gz)"
+                ;;
+            *.bz2)
+                bunzip2 $1
+                dir_name="$(basename $1 .bz2)"
+                ;;
+            *.rar)
+                unrar e $1
+                dir_name="$(basename $1 .rar)"
+                ;;
+            *.gz)
+                gunzip $1
+                dir_name="$(basename $1 .gz)"
+                ;;
+            *.tar)
+                tar xf $1
+                dir_name="$(basename $1 .tar)"
+                ;;
+            *.tbz2)
+                tar xjf $1
+                dir_name="$(basename $1 .tbz2)"
+                ;;
+            *.tgz)
+                tar xzf $1
+                dir_name="$(basename $1 .tgz)"
+                ;;
+            *.zip)
+                gunzip $1
+                dir_name="$(basename $1 .zip)"
+                ;;
+            *)
+                echo "'$1' cannot be extract()"
+                return -1
+                ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+        return -1
+    fi
+
+    if [ ! -f ${dir_name}/requirements.txt ]; then
+        echo "${dir_name}/requirements.txt does not exist"
+        return -1
+    fi
+
+    pip install --download=$2 -r ${dir_name}/requirements.txt
+
+    rm -rf $dir_name
+}
+
+function try_fetch_dependency()
+{
+    cd $3
+    _try_fetch_dependency $1/$2 $1
+    cd -
+}
+
 function make_pip_repo()
 {
     source $WORK_PATH/build/build.conf
+    local pip_path=$WORK_PATH/work/repo/pip
+    local pip_tmp_path=$WORK_PATH/work/repo/pip_tmp
 
-    if [[ $PIP_CONF == "" ]]; then
-        return
-    fi
-
-    for i in $PIP_CONF; do
-        curl --connect-timeout 10 -o $WORK_PATH/work/repo/pip/`basename $i` $i
+    for i in $SPECIAL_PIP_PACKAGE; do
+        curl --connect-timeout 10 -o $pip_path/`basename $i` $i
     done
+
+    mkdir -p $pip_tmp_path
+
+    for i in $PIP_PACKAGE; do
+        curl --connect-timeout 10 -o $pip_path/$(basename $i) $i
+        try_fetch_dependency $pip_path $(basename $i) $pip_tmp_path
+    done
+
+    rm -rf $pip_tmp_path
 
     cd $WORK_PATH/work/repo; tar -zcvf pip.tar.gz ./pip; cd -
 }
