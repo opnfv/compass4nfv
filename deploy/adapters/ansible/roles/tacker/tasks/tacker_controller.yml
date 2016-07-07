@@ -82,9 +82,12 @@
         --internalurl 'http://{{ internal_vip.ip }}:8888/' tacker
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
+- name: install pip package
+  pip: name=Babel state=present version=2.3.4
+
 - name: install pip packages
   shell: >
-    pip install tosca-parser heat-translator;
+    pip install tosca-parser heat-translator oslosphinx;
 
 - name: install tacker
   shell: >
