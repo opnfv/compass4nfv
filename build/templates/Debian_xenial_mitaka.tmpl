@@ -1,0 +1,71 @@
+#!/bin/bash
+set -ex
+
+#set OPV="mitaka"
+
+# add openstack $OPV repo
+apt-get update && apt-get install -y software-properties-common
+# sudo add-apt-repository -y cloud-archive:$OPV
+apt-get install -d nova-compute-kvm -y
+
+#make pernoca database
+apt-get install -y apt-transport-https debconf-utils libaio1 libc6 libdbd-mysql-perl libgcc1 libgcrypt20 libstdc++6 python-software-properties wget
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+add-apt-repository 'deb https://mirrors.tuna.tsinghua.edu.cn/mariadb/mariadb-10.0.26/repo/ubuntu/ xenial main'
+apt-get update
+apt-get install -d mariadb-client mariadb-galera-server-10.0 galera-3 rsync socat -y
+#make pernoca database end
+
+
+
+# add galeracluster repo
+#sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+#sudo add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu trusty main'
+#apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 D669017EBC19DDBA
+##sudo add-apt-repository 'deb http://releases.galeracluster.com/ubuntu trusty main'
+# add oracle java8 ppa
+add-apt-repository ppa:webupd8team/java
+# add open java7 repo
+##sudo add-apt-repository 'deb http://security.ubuntu.com/ubuntu trusty-security main'
+
+apt-get update
+
+apt-get install python2.7 -y
+
+apt-get install reprepro -y
+
+apt-get -d install pciutils -y
+
+cd /var/cache/apt/
+apt-get download libexpat1
+cd -
+
+#download packages
+#set packages = $getVar('default_packages', [])
+#for pkg in $packages
+apt-get -d install $pkg -y
+#end for
+#set packages = $getVar('packages', [])
+#for pkg in $packages
+apt-get -d install $pkg -y
+#end for
+
+#make repo
+mkdir -p xenial-$OPV-ppa/conf
+cat <<EOF > xenial-$OPV-ppa/conf/distributions
+Codename: xenial
+Components: main
+Architectures: amd64
+EOF
+
+apt-get install wget
+
+wget -O /var/cache/apt/python-pyasn1_0.1.8-2_all.deb http://us.archive.ubuntu.com/ubuntu/pool/main/p/pyasn1/python-pyasn1_0.1.8-2_all.deb
+rm -rf /var/cache/apt/python-pyasn1_0.1.7-1ubuntu2_all.deb
+
+mkdir deb
+find /var/cache/apt/ -name *.deb | xargs -i cp {} deb
+
+reprepro -b xenial-$OPV-ppa includedeb xenial deb/*.deb
+
+tar -zcvf /xenial-$OPV-ppa.tar.gz ./xenial-$OPV-ppa

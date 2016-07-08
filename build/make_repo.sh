@@ -86,7 +86,7 @@ function make_repo()
         exit 1
     fi
 
-    if [[ ${os_ver} == trusty ]]; then
+    if [[ ${os_ver} == trusty || ${os_ver} == xenial ]]; then
         arch=Debian
         os_name=ubuntu
     fi
@@ -106,7 +106,11 @@ function make_repo()
     docker_tag="${os_ver}/${package_tag}"
 
     if [[ -z ${tmpl} ]]; then
-        tmpl=${BUILD_PATH}/templates/${arch}_${package_tag}.tmpl
+        if [[ ${os_ver} == xenial ]]; then
+            tmpl=${BUILD_PATH}/templates/${arch}_${os_ver}_${package_tag}.tmpl
+        else
+            tmpl=${BUILD_PATH}/templates/${arch}_${package_tag}.tmpl
+        fi
     fi
 
     if [[ "${ansible_dir}" != "" ]]; then
@@ -276,6 +280,10 @@ function make_all_repo()
               --default-package "openssh-server" \
               --special-package "openvswitch-switch"
     done
+ 
+    make_repo --os-ver xenial --package-tag mitaka \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "openssh-server"
 
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
