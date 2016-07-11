@@ -1,0 +1,22 @@
+[Unit]
+Description=Ceph cluster monitor daemon
+Documentation=man:ceph-mon
+
+After=network-online.target local-fs.target ceph-create-keys.service
+Wants=network-online.target local-fs.target ceph-create-keys.service
+
+PartOf=ceph.target
+
+[Service]
+LimitNOFILE=1048576
+LimitNPROC=1048576
+EnvironmentFile=-/etc/default/ceph
+Environment=CLUSTER=ceph
+ExecStart=/usr/bin/ceph-mon -f --cluster ${CLUSTER} --id {{ inventory_hostname }} --setuser ceph --setgroup ceph
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=30
+TasksMax=infinity
+
+[Install]
+WantedBy=multi-user.target
