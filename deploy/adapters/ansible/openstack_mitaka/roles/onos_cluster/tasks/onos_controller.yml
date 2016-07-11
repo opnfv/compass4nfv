@@ -114,7 +114,7 @@
 ##########################################################################################################
 - name: Configure Neutron1
   shell: >
-    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins networking_sfc.services.sfc.plugin.SfcPlugin, networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin, onos_router;
+    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins networking_sfc.services.sfc.plugin.SfcPlugin,networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin,onos_router;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers onos_ml2;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers vxlan
