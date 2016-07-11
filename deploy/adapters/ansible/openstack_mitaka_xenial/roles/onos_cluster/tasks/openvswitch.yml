@@ -1,0 +1,57 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: set veth port
+  shell:  >
+    ip link add onos_port1 type veth peer name onos_port2;
+    ifconfig onos_port1 up;
+    ifconfig onos_port2 up;
+  ignore_errors: True
+
+- name: add openflow-base feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow-base'";
+  when: inventory_hostname in groups['onos']
+
+- name: add openflow feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow'";
+  when: inventory_hostname in groups['onos']
+
+- name: add ovsdatabase feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdatabase'";
+  when: inventory_hostname in groups['onos']
+
+- name: add ovsdb-base feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdb-base'";
+  when: inventory_hostname in groups['onos']
+
+- name: add onos driver ovsdb feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-drivers-ovsdb'";
+  when: inventory_hostname in groups['onos']
+
+- name: add ovsdb provider host feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdb-provider-host'";
+  when: inventory_hostname in groups['onos']
+
+- name: add vtn feature
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-app-vtn-onosfw'";
+  when: inventory_hostname in groups['onos']
+
+- name: set public eth card start
+  command: su -s /bin/sh -c "/opt/onos/bin/onos 'externalportname-set -n onos_port2'"
+  when: inventory_hostname in groups['onos']
+
+- name: Set ONOS as the manager
+  command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ ip_settings[groups['onos'][0]]['mgmt']['ip'] }}:6640;"
+
+- name: delete default gateway
+  shell: >
+    route delete default;
+  when: inventory_hostname not in groups['onos']
+  ignore_errors: True

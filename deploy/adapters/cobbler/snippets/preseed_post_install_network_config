@@ -53,6 +53,8 @@ for physical_interface in \${physical_interfaces}; do
     set \$(ip link show \${physical_interface})
 #if $osversion == "trusty"
     mac=\$(echo \$@ | cut -d' ' -f17)
+#elif $osversion == "xenial"
+    mac=\$(echo \$@ | cut -d' ' -f17)
 #else
     mac=\$(echo \$@ | cut -d' ' -f13)
 #end if
