@@ -10,5 +10,6 @@
 packages:
   - software-properties-common
   - crudini
+  - git
 
 services: []
