@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_06b1f1f7",
+        "filename": "build/build.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-07-14T15:50:46Z",
+      "side": 1,
+      "message": "rename UBUNTU_ISO/UBUNTU_ISO1 to UBUNTU_TRUSTY_ISO/UBUNTU_XENIAL_ISO could be better :).",
+      "range": {
+        "startLine": 22,
+        "startChar": 7,
+        "endLine": 22,
+        "endChar": 18
+      },
+      "revId": "1dde11d3b422f1c649244078c2b2ef945b0a0e2c",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
