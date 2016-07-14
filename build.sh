@@ -78,8 +78,9 @@ function download_local()
 
 function download_packages()
 {
-     for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA $XENIAL_MITAKA_PPA $UBUNTU_ISO \
-              $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA $CENTOS7_MITAKA_PPA $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG \
+     for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA \
+              $XENIAL_MITAKA_PPA $UBUNTU_ISO $UBUNTU_ISO1 $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA \
+              $CENTOS7_MITAKA_PPA $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG \
               $PIP_REPO $ANSIBLE_MODULE; do
 
          if [[ ! $i ]]; then
@@ -110,6 +111,10 @@ function copy_file()
 
     if [[ $UBUNTU_ISO ]]; then
         cp $CACHE_DIR/`basename $UBUNTU_ISO` $new/repos/cobbler/ubuntu/iso/ -rf
+    fi
+
+    if [[ $UBUNTU_ISO1 ]]; then
+        cp $CACHE_DIR/`basename $UBUNTU_ISO1` $new/repos/cobbler/ubuntu/iso/ -rf
     fi
 
     if [[  $TRUSTY_JUNO_PPA ]]; then
