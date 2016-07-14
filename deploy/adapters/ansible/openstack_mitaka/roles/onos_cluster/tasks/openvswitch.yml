@@ -15,6 +15,13 @@
     ifconfig onos_port2 up;
   ignore_errors: True
 
+- name: set veth to ovs
+  shell: >
+    export externamMac=`ifconfig eth1 | grep -Eo '\<[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}'`;
+    ifconfig onos_port2 hw ether $externamMac;
+    ovs-vsctl add-port br-prv onos_port1;
+  ignore_errors: True
+
 - name: add openflow-base feature
   command: su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow-base'";
   when: inventory_hostname in groups['onos']
