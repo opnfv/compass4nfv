@@ -9,6 +9,10 @@
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- name: install onos related packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: packages | union(packages_noarch)
+
 - name: remove neutron-plugin-openvswitch-agent auto start
   shell: >
     update-rc.d neutron-plugin-openvswitch-agent remove;

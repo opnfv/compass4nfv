@@ -6,6 +6,10 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
+---
+packages_noarch: []
+
+services_noarch: []
 onos_pkg_name: onos-1.6.0.tar.gz
 onos_home: /opt/onos/
 karaf_dist: apache-karaf-3.0.5
