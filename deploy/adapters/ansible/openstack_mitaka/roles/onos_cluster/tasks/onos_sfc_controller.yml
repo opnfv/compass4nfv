@@ -15,16 +15,25 @@
 - name: download onos driver packages
   get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_driver }}"  dest=/opt/
 
+- name: download onos sfc driver package
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_sfc_driver }}"  dest=/opt/
+
 - name: unarchive onos driver package
   command: su -s /bin/sh -c "tar xvf  /opt/networking-onos.tar -C /opt/"
+
+- name: unarchive onos sfc driver package
+  command: su -s /bin/sh -c "tar xvf  /opt/networking-sfc.tar -C /opt/"
 
 - name: install onos driver
   command: su -s /bin/sh -c "/opt/networking-onos/install_driver.sh"
 
+- name: install onos sfc driver
+  command: su -s /bin/sh -c "/opt/networking-sfc/install_driver.sh"
+
 - name: install onos required packages
   action: "{{ ansible_pkg_mgr }}  name={{ item }} state=present"
   with_items: packages
-  
+ 
 - name: download oracle-jdk8 package file
   get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_pkg_name }}"  dest=/opt/{{ jdk8_pkg_name }}
 
@@ -35,8 +44,8 @@
   command: su -s /bin/sh -c "tar xvf  /opt/install_jdk8.tar -C /opt/"
  
 - name: install install_jdk8 package
-  command: su -s /bin/sh -c "/opt/install_jdk8/install_jdk8.sh" 
-  
+  command: su -s /bin/sh -c "/opt/install_jdk8/install_jdk8.sh"
+ 
 - name: create JAVA_HOME environment variable
   shell: >
     export J2SDKDIR=/usr/lib/jvm/java-8-oracle;
@@ -82,7 +91,7 @@
     sed -i '/pre-stop/i\env JAVA_HOME=/usr/lib/jvm/java-8-oracle' {{ onos_home }}/init/onos.conf;
     cp -rf {{ onos_home }}/init/onos.conf /etc/init/;
     cp -rf {{ onos_home }}/init/onos.conf /etc/init.d/;
- 
+
 - name: configure onos boot feature
   shell: >
     sed -i '/^featuresBoot=/c\featuresBoot={{ onos_boot_features }}' {{ onos_home }}/{{ karaf_dist }}/etc/org.apache.karaf.features.cfg;
@@ -105,7 +114,7 @@
 ##########################################################################################################
 - name: Configure Neutron1
   shell: >
-    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins onos_router;
+    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins networking_sfc.services.sfc.plugin.SfcPlugin,networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin,onos_router;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers onos_ml2;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers vxlan
