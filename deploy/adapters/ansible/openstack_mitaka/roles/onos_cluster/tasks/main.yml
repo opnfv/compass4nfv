@@ -48,7 +48,11 @@
 
 - name: Install ONOS Cluster on Controller
   include: onos_controller.yml
-  when: inventory_hostname in groups['onos']
+  when: inventory_hostname in groups['onos'] and onos_sfc == "Disable"
+
+- name: Install ONOS Cluster on Controller
+  include: onos_sfc_controller.yml
+  when: inventory_hostname in groups['onos'] and onos_sfc == "Enable"
 
 - name: Config ONOS Cluster
   include: openvswitch.yml

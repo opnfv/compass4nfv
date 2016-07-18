@@ -15,11 +15,20 @@
 - name: download onos driver packages
   get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_driver }}"  dest=/opt/
 
+- name: download onos sfc driver package
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_sfc_driver }}"  dest=/opt/
+
 - name: unarchive onos driver package
   command: su -s /bin/sh -c "tar xvf  /opt/networking-onos.tar -C /opt/"
 
+- name: unarchive onos sfc driver package
+  command: su -s /bin/sh -c "tar xvf  /opt/networking-sfc.tar -C /opt/"
+
 - name: install onos driver
   command: su -s /bin/sh -c "/opt/networking-onos/install_driver.sh"
+
+- name: install onos sfc driver
+  command: su -s /bin/sh -c "/opt/networking-sfc/install_driver.sh"
 
 - name: install onos required packages
   action: "{{ ansible_pkg_mgr }}  name={{ item }} state=present"
@@ -105,7 +114,7 @@
 ##########################################################################################################
 - name: Configure Neutron1
   shell: >
-    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins onos_router;
+    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins networking_sfc.services.sfc.plugin.SfcPlugin,networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin,onos_router;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers onos_ml2;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers vxlan
