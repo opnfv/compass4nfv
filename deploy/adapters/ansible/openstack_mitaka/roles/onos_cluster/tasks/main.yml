@@ -13,15 +13,15 @@
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: packages | union(packages_noarch)
 
-- name: remove neutron-plugin-openvswitch-agent auto start
+- name: remove neutron-openvswitch-agent auto start
   shell: >
-    update-rc.d neutron-plugin-openvswitch-agent remove;
-    sed -i /neutron-plugin-openvswitch-agent/d /opt/service
+    update-rc.d neutron-openvswitch-agent remove;
+    sed -i /neutron-openvswitch-agent/d /opt/service
   when: groups['onos']|length !=0
   ignore_errors: True
 
 - name: shut down and disable Neutron's agent services
-  service: name=neutron-plugin-openvswitch-agent state=stopped
+  service: name=neutron-openvswitch-agent state=stopped
   when: groups['onos']|length !=0
   ignore_errors: True
 
