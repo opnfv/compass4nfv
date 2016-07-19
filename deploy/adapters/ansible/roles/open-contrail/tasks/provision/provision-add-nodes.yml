@@ -35,6 +35,11 @@
     name: "contrail-api"
     state: "restarted"
 
+- name: "restart apache2"
+  service:
+    name: "apache2"
+    state: "restarted"
+
 - name: "check contrail-api"
   shell: lsof -ni :8082 ; while [ $? -ne 0 ]; do sleep 10; lsof -ni :8082; done; sleep 20;
 
