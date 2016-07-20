@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_c7ed6ef1",
+        "filename": "deploy/adapters/ansible/openstack_mitaka/roles/onos_cluster/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2016-07-20T01:57:16Z",
+      "side": 1,
+      "message": "there is a bug here, please add the condition like below",
+      "range": {
+        "startLine": 14,
+        "startChar": 24,
+        "endLine": 14,
+        "endChar": 25
+      },
+      "revId": "cbe32e01a56da7289d2348893dbafb90d373a787",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
