@@ -14,7 +14,7 @@
     - heat
 
 - include: heat_config.yml
-  when: HA_CLUSTER is not defined or HA_CLUSTER[inventory_hostname] == ''
+  when: inventory_hostname == groups['controller'][0]
   tags:
     - config
     - heat_config
