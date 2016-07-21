@@ -233,5 +233,12 @@
   accelerate: true
   max_fail_percentage: 0
   roles:
+    - moon
+
+- hosts: controller
+  remote_user: root
+  accelerate: true
+  max_fail_percentage: 0
+  roles:
     - ext-network
 
