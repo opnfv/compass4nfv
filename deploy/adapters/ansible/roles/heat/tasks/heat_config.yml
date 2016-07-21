@@ -9,7 +9,6 @@
 ---
 - name: heat db sync
   shell: su -s /bin/sh -c "heat-manage db_sync" heat
-  ignore_errors: True
   notify:
     - restart heat service
 
