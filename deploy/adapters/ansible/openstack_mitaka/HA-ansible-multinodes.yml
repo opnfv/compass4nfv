@@ -194,6 +194,7 @@
 
 - hosts: all
   remote_user: root
+  accelerate: true
   max_fail_percentage: 0
   roles:
     - odl_cluster
@@ -214,6 +215,7 @@
 
 - hosts: all
   remote_user: root
+  accelerate: true
   serial: 1
   max_fail_percentage: 0
   roles:
@@ -221,12 +223,14 @@
 
 - hosts: all
   remote_user: root
+  accelerate: true
   max_fail_percentage: 0
   roles:
     - odl_cluster_post
 
 - hosts: controller
   remote_user: root
+  accelerate: true
   max_fail_percentage: 0
   roles:
     - ext-network
