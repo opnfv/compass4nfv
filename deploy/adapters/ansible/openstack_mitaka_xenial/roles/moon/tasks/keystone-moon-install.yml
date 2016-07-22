@@ -2,8 +2,13 @@
 # Note (asteroide): this part is specific but when Keystone-Moon packages will be installed in a true repository
 #                   we will not have to do that.
 
+
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
 - name: download keystone-moon packages
-  get_url: url=https://github.com/dthom/moon-bin/archive/master.zip dest=/tmp/master.zip mode=0444
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/moon/master.zip"  dest=/opt/master.zip
 
 - name: extract keystone-moon packages
   unarchive: src=/tmp/master.zip dest=/tmp copy=no
