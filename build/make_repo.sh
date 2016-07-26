@@ -264,7 +264,10 @@ function make_pip_repo()
 
     rm -rf $pip_tmp_path
 
-    cd $WORK_PATH/work/repo; tar -zcvf pip.tar.gz ./pip; cd -
+    cd $WORK_PATH/work/repo
+    tar -zcvf pip.tar.gz ./pip
+    md5sum pip.tar.gz > pip.tar.gz.md5
+    cd -
 }
 
 function make_all_repo()
@@ -277,7 +280,8 @@ function make_all_repo()
                                  python-yaml python-jinja2 python-paramiko elasticsearch logstash bind-license vim nmap-ncat \
                                  yum cobbler cobbler-web createrepo mkisofs syslinux pykickstart bind rsync fence-agents \
                                  dhcp xinetd tftp-server httpd libselinux-python python-setuptools python-devel mysql-devel \
-                                 mysql-server mysql MySQL-python redis mod_wsgi net-tools rabbitmq-server nfs-utils" \
+                                 mysql-server mysql MySQL-python redis mod_wsgi net-tools rabbitmq-server nfs-utils git \
+                                 ansible python-pip" \
               --special-package "kibana jdk"
 
     for opv in juno kilo liberty mitaka; do

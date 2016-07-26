@@ -37,7 +37,7 @@ Packager:   test@test.com
 kibana package
 
 %prep
-tar xvf ../SOURCES/kibana-4.2.0-linux-x64.tar.gz
+tar xf ../SOURCES/kibana-4.2.0-linux-x64.tar.gz
 
 %install
 cd ../BUILDROOT
