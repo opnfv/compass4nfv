@@ -21,3 +21,5 @@ service_ovs_agent_name: neutron-openvswitch-agent
 service_file:
    src: opendaylight.conf
    dst: /etc/init/opendaylight.conf
+
+networking_odl_pkg_name: networking-odl-2.0.0.tar.gz
