@@ -1,6 +1,9 @@
 #!/bin/bash
 set -x
 
+# add cobbler repo
+yum install epel-release -y
+
 # add openstack kilo repo
 yum install http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm -y
 yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm -y
