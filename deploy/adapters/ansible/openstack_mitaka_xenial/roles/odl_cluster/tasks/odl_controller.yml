@@ -73,7 +73,7 @@
 #    - restart odl service
 
 - name: opendaylight system file
-  template:
+  copy:
     src: "{{ service_file.src }}"
     dest: "{{ service_file.dst }}"
     mode: 0755

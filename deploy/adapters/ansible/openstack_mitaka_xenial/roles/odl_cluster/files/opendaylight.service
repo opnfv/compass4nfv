@@ -1,0 +1,20 @@
+[Unit]
+Description=OpenDaylight
+After=
+
+
+[Service]
+User=root
+Group=root
+Type=simple
+WorkingDirectory=/opt/opendaylight-0.3.0
+PermissionsStartOnly=true
+ExecStartPre=
+ExecStart=/usr/lib/jvm/java-8-oracle/bin/java -Djava.security.properties=/opt/opendaylight-0.3.0/etc/odl.java.security -server -Xms128M -Xmx2048m -XX:+UnlockDiagnosticVMOptions -XX:+UnsyncloadClass -XX:MaxPermSize=512m -Dcom.sun.management.jmxremote -Djava.endorsed.dirs=/usr/lib/jvm/java-8-oracle/jre/lib/endorsed:/usr/lib/jvm/java-8-oracle/lib/endorsed:/opt/opendaylight-0.3.0/lib/endorsed -Djava.ext.dirs=/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/lib/jvm/java-8-oracle/lib/ext:/opt/opendaylight-0.3.0/lib/ext -Dkaraf.instances=/opt/opendaylight-0.3.0/instances -Dkaraf.home=/opt/opendaylight-0.3.0 -Dkaraf.base=/opt/opendaylight-0.3.0 -Dkaraf.data=/opt/opendaylight-0.3.0/data -Dkaraf.etc=/opt/opendaylight-0.3.0/etc -Djava.io.tmpdir=/opt/opendaylight-0.3.0/data/tmp -Djava.util.logging.config.file=/opt/opendaylight-0.3.0/etc/java.util.logging.properties -Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true -classpath /opt/opendaylight-0.3.0/lib/karaf-jaas-boot.jar:/opt/opendaylight-0.3.0/lib/karaf-jmx-boot.jar:/opt/opendaylight-0.3.0/lib/karaf-org.osgi.core.jar:/opt/opendaylight-0.3.0/lib/karaf.branding-1.2.2-Beryllium-SR2.jar:/opt/opendaylight-0.3.0/lib/karaf.jar org.apache.karaf.main.Main
+Restart=on-failure
+LimitNOFILE=65535
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
+
