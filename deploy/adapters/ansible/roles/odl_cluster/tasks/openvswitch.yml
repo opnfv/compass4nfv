@@ -41,6 +41,11 @@
 - name: set opendaylight as the manager
   command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
 
+- name: restart keepalived to recover external IP before check br-int
+  shell: service keepalived restart
+  when: inventory_hostname in groups['odl']
+  ignore_errors: True
+
 - name: check br-int
   shell: ovs-vsctl list-br | grep br-int; while [ $? -ne 0 ]; do sleep 10; ovs-vsctl list-br | grep br-int; done
 
