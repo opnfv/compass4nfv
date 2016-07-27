@@ -7,6 +7,17 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
+# FIXME: temporary workaround for openstack api access random failure
+- name: restart api server
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - nova-api
+    - cinder-api
+    - glance-api
+    - ceilometer-api
+    - heat-api
+    - aodh-api
+
 - name: restart neutron server
   service: name=neutron-server state=restarted enabled=yes
 
