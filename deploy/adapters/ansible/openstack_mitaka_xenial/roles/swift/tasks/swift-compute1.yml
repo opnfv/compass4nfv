@@ -1,0 +1,66 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: disable auto start
+  copy:
+    content: "#!/bin/sh\nexit 101"
+    dest: "/usr/sbin/policy-rc.d"
+    mode: 0755
+  when: ansible_os_family == "Debian"
+
+- name: install swift-compute packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: compute_packages | union(compute_packages_noarch)
+
+- name: enable auto start
+  file:
+    path=/usr/sbin/policy-rc.d
+    state=absent
+  when: ansible_os_family == "Debian"
+
+- name: format devices
+  shell: >
+    dd if=/dev/zero of=/var/swift1 bs=1G count=10;
+    dd if=/dev/zero of=/var/swift2 bs=1G count=10;
+    mkfs.xfs /var/swift1;
+    mkfs.xfs /var/swift2;
+
+- name: create mount point dirertory
+  shell: >
+    mkdir -p /srv/node/swift1;
+    mkdir -p /srv/node/swift2;
+
+- name: edit /etc/fstab
+  shell: >
+    echo "/var/swift1 /srv/node/swift1/ xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab;
+    echo "/var/swift2 /srv/node/swift2/ xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab;
+    mount /srv/node/swift1;
+    mount /srv/node/swift2;
+
+- name: edit /etc/default/rsync
+  shell: sed -i 's/RSYNC_ENABLE=false/RSYNC_ENABLE=true/g' /etc/default/rsync
+
+- name: restart rsync service
+  service: name=rsync state=restarted enabled=yes
+
+- name: copy scripts
+  template: src={{ item }} dest=/etc/swift/ backup=yes
+  with_items:
+    - account-server.conf
+    - container-server.conf
+    - object-server.conf
+
+- name: change directory
+  shell: >
+    chown -R swift:swift /srv/node;
+    mkdir -p /var/cache/swift;
+    chown -R root:swift /var/cache/swift;
+    chmod -R 775 /var/cache/swift;
+

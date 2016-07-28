@@ -1,0 +1,212 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+# install all packages
+- name: install keystone packages
+  shell: apt-get install -y python-pip unzip
+
+# download master.zip
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
+- name: download keystone-moon packages
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/moon/master.zip"  dest=/tmp/master.zip mode=0444
+
+- name: extract keystone-moon packages
+  unarchive: src=/tmp/master.zip dest=/tmp copy=no
+
+# install all dependencies
+- name: copy scripts
+  copy:  src=get_deb_depends.py dest=/tmp/get_deb_depends.py
+
+- name: install keystone-moon dependencies
+  shell: "apt-get install `python /tmp/get_deb_depends.py /tmp/moon-bin-master/*.deb`"
+  when: ansible_os_family == "Debian"
+
+
+# install keystone moon
+- name: copy scripts
+  copy:  src=deb.conf dest=/tmp/deb.conf
+
+- name: install keystone moon
+  shell: >
+    export DEBIAN_FRONTEND="noninteractive";
+    sudo -E dpkg -i /tmp/moon-bin-master/*moon*.deb;
+
+#- name: install keystone moon
+#  shell: >
+#    export DEBIAN_FRONTEND="noninteractive";
+#    sudo -E debconf-set-selections python-keystone < /tmp/deb.conf;
+#    sudo -E dpkg -i /tmp/moon-bin-master/*moon*.deb;
+
+- name: stop keystone task
+  shell: >
+    service keystone stop;
+    mv /etc/init.d/keystone /home/;
+    mv /etc/init/keystone.conf /home/;
+    mv /lib/systemd/system/keystone.service /home/;
+
+# config keystone and apache2
+- name: delete sqlite database
+  file:
+    path: /var/lib/keystone/keystone.db
+    state: absent
+
+- name: update keystone conf
+  template: src=keystone.conf dest=/etc/keystone/keystone.conf backup=yes
+
+#- name: initialize fernet keys
+#  shell: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+
+- name: assure listen port exist
+  lineinfile:
+    dest: '{{ apache_config_dir }}/ports.conf'
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line}}'
+  with_items:
+    - regexp: "^Listen {{ internal_ip }}:5000"
+      line: "Listen {{ internal_ip }}:5000"
+    - regexp: "^Listen {{ internal_ip }}:35357"
+      line: "Listen {{ internal_ip }}:35357"
+
+- name: update apache2 configs
+  template:
+    src: wsgi-keystone.conf.j2
+    dest: '{{ apache_config_dir }}/sites-available/wsgi-keystone.conf'
+  when: ansible_os_family == 'Debian'
+
+- name: enable keystone server
+  file:
+    src: "{{ apache_config_dir }}/sites-available/wsgi-keystone.conf"
+    dest: "{{ apache_config_dir }}/sites-enabled/wsgi-keystone.conf"
+    state: "link"
+  when: ansible_os_family == 'Debian'
+
+- name: keystone source files
+  template: src={{ item }} dest=/opt/{{ item }}
+  with_items:
+    - admin-openrc.sh
+    - demo-openrc.sh
+
+# keystone paste ini
+- name: keystone paste ini 1
+  shell: sudo cp /etc/keystone/keystone-paste.ini /etc/keystone/keystone-paste.ini.bak;
+
+- name: keystone paste ini 2
+  shell: sudo sed "3i[pipeline:moon_pipeline]\npipeline = sizelimit url_normalize request_id build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension moon_service\n\n[app:moon_service]\nuse = egg:keystone#moon_service\n" /etc/keystone/keystone-paste.ini > /tmp/keystone-paste.ini;
+
+- name: keystone paste ini 3
+  shell: sudo cp /tmp/keystone-paste.ini /etc/keystone/keystone-paste.ini;
+
+- name: keystone paste ini 4
+  shell: sudo sed "s/use = egg:Paste#urlmap/use = egg:Paste#urlmap\n\/moon = moon_pipeline/" /etc/keystone/keystone-paste.ini > /tmp/keystone-paste.ini;
+
+- name: keystone paste ini 5
+  shell: sudo cp /tmp/keystone-paste.ini /etc/keystone/keystone-paste.ini;
+
+# moon log
+- name: moon log
+  shell: >
+    sudo mkdir /var/log/moon/;
+    sudo chown keystone /var/log/moon/;
+    sudo addgroup moonlog;
+    sudo chgrp moonlog /var/log/moon/;
+    sudo touch /var/log/moon/keystonemiddleware.log;
+    sudo touch /var/log/moon/system.log;
+    sudo chgrp moonlog /var/log/moon/keystonemiddleware.log;
+    sudo chgrp moonlog /var/log/moon/system.log;
+    sudo chmod g+rw /var/log/moon;
+    sudo chmod g+rw /var/log/moon/keystonemiddleware.log;
+    sudo chmod g+rw /var/log/moon/system.log;
+    sudo adduser keystone moonlog;
+
+
+# keystone db sync
+- name: keystone db sync
+  shell: >
+    sudo /usr/bin/keystone-manage db_sync;
+    sudo /usr/bin/keystone-manage db_sync --extension moon;
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+
+
+#############################################
+- name: wait for keystone ready
+  wait_for: port=35357 delay=3 timeout=10 host={{ internal_vip.ip }}
+
+- name: cron job to purge expired tokens hourly
+  cron:
+    name: 'purge expired tokens'
+    special_time: hourly
+    job: '/usr/bin/keystone-manage token_flush > /var/log/keystone/keystone-tokenflush.log 2>&1'
+
+#############################################
+
+
+# apache2 restart
+- name: restart apache2
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: services | union(services_noarch)
+
+# install moonclient
+- name: install moon client
+  shell: sudo pip install /tmp/moon-bin-master/python-moonclient-0.1.tar.gz
+
+###################################################
+
+
+- name: add tenants
+  keystone_user:
+    token: "{{ ADMIN_TOKEN }}"
+    endpoint: "http://{{ internal_ip }}:35357/v2.0"
+    tenant: "{{ item.tenant }}"
+    tenant_description: "{{ item.tenant_description }}"
+  with_items: "{{ os_users }}"
+  when: inventory_hostname == groups['controller'][0]
+
+- name: add users
+  keystone_user:
+    token: "{{ ADMIN_TOKEN }}"
+    endpoint: "http://{{ internal_ip }}:35357/v2.0"
+    user: "{{ item.user }}"
+    tenant: "{{ item.tenant }}"
+    password: "{{ item.password }}"
+    email: "{{ item.email }}"
+  with_items: "{{ os_users }}"
+  when: inventory_hostname == groups['controller'][0]
+
+- name: grant roles
+  keystone_user:
+    token: "{{ ADMIN_TOKEN }}"
+    endpoint: "http://{{ internal_ip }}:35357/v2.0"
+    user: "{{ item.user }}"
+    role: "{{ item.role }}"
+    tenant: "{{ item.tenant }}"
+  with_items: "{{ os_users }}"
+  when: inventory_hostname == groups['controller'][0]
+
+- name: add endpoints
+  keystone_service:
+    token: "{{ ADMIN_TOKEN }}"
+    endpoint: "http://{{ internal_ip }}:35357/v2.0"
+    name: "{{ item.name }}"
+    type: "{{ item.type }}"
+    region: "{{ item.region}}"
+    description: "{{ item.description }}"
+    publicurl: "{{ item.publicurl }}"
+    internalurl: "{{ item.internalurl }}"
+    adminurl: "{{ item.adminurl }}"
+  with_items: "{{ os_services }}"
+  when: inventory_hostname == groups['controller'][0]
+
+
+###################################################
+
