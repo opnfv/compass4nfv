@@ -64,3 +64,11 @@
     chown -R root:swift /var/cache/swift;
     chmod -R 775 /var/cache/swift;
 
+- name: copy swift lib
+  copy: src=swift-lib.tar.gz dest=/tmp/swift-lib.tar.gz
+
+- name: untar swift lib
+  shell: >
+    tar zxf /tmp/swift-lib.tar.gz;
+    cp /tmp/swift-lib/* /usr/lib/;
+
