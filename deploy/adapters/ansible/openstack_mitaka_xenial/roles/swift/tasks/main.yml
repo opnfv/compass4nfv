@@ -35,3 +35,9 @@
   shell: swift-init all start
   when: inventory_hostname in groups['compute']
   ignore_errors: True
+
+- name: restart tasks on controller
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - rsync
+  when: inventory_hostname in groups['compute']
