@@ -92,6 +92,14 @@ os_services:
     internalurl: "http://{{ internal_vip.ip }}:8000/v1"
     adminurl: "http://{{ internal_vip.ip }}:8000/v1"
 
+  - name: swift
+    type: object-store
+    region: regionOne
+    description: "OpenStack Object Storage"
+    publicurl: "http://{{ public_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
+    internalurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
+    adminurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
+
 os_users:
   - user: admin
     password: "{{ ADMIN_PASS }}"
@@ -162,3 +170,10 @@ os_users:
     role: heat_stack_user
     tenant: demo
     tenant_description: "Demo Tenant"
+
+  - user: swift
+    password: "{{ CINDER_PASS }}"
+    email: swift@admin.com
+    role: admin
+    tenant: service
+    tenant_description: "Service Tenant"
