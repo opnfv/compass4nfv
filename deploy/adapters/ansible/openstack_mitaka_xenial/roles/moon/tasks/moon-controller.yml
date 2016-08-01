@@ -7,8 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
-
 # install all packages
 - name: install keystone packages
   shell: apt-get install -y python-pip unzip
@@ -61,41 +59,39 @@
     path: /var/lib/keystone/keystone.db
     state: absent
 
-- name: update keystone conf
-  template: src=keystone.conf dest=/etc/keystone/keystone.conf backup=yes
+#- name: update keystone conf
+#  template: src=keystone.conf dest=/etc/keystone/keystone.conf backup=yes
 
-#- name: initialize fernet keys
-#  shell: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
 
-- name: assure listen port exist
-  lineinfile:
-    dest: '{{ apache_config_dir }}/ports.conf'
-    regexp: '{{ item.regexp }}'
-    line: '{{ item.line}}'
-  with_items:
-    - regexp: "^Listen {{ internal_ip }}:5000"
-      line: "Listen {{ internal_ip }}:5000"
-    - regexp: "^Listen {{ internal_ip }}:35357"
-      line: "Listen {{ internal_ip }}:35357"
-
-- name: update apache2 configs
-  template:
-    src: wsgi-keystone.conf.j2
-    dest: '{{ apache_config_dir }}/sites-available/wsgi-keystone.conf'
-  when: ansible_os_family == 'Debian'
-
-- name: enable keystone server
-  file:
-    src: "{{ apache_config_dir }}/sites-available/wsgi-keystone.conf"
-    dest: "{{ apache_config_dir }}/sites-enabled/wsgi-keystone.conf"
-    state: "link"
-  when: ansible_os_family == 'Debian'
-
-- name: keystone source files
-  template: src={{ item }} dest=/opt/{{ item }}
-  with_items:
-    - admin-openrc.sh
-    - demo-openrc.sh
+#- name: assure listen port exist
+#  lineinfile:
+#    dest: '{{ apache_config_dir }}/ports.conf'
+#    regexp: '{{ item.regexp }}'
+#    line: '{{ item.line}}'
+#  with_items:
+#    - regexp: "^Listen {{ internal_ip }}:5000"
+#      line: "Listen {{ internal_ip }}:5000"
+#    - regexp: "^Listen {{ internal_ip }}:35357"
+#      line: "Listen {{ internal_ip }}:35357"
+#
+#- name: update apache2 configs
+#  template:
+#    src: wsgi-keystone.conf.j2
+#    dest: '{{ apache_config_dir }}/sites-available/wsgi-keystone.conf'
+#  when: ansible_os_family == 'Debian'
+#
+#- name: enable keystone server
+#  file:
+#    src: "{{ apache_config_dir }}/sites-available/wsgi-keystone.conf"
+#    dest: "{{ apache_config_dir }}/sites-enabled/wsgi-keystone.conf"
+#    state: "link"
+#  when: ansible_os_family == 'Debian'
+#
+#- name: keystone source files
+#  template: src={{ item }} dest=/opt/{{ item }}
+#  with_items:
+#    - admin-openrc.sh
+#    - demo-openrc.sh
 
 # keystone paste ini
 - name: keystone paste ini 1
@@ -128,6 +124,8 @@
     sudo chmod g+rw /var/log/moon/keystonemiddleware.log;
     sudo chmod g+rw /var/log/moon/system.log;
     sudo adduser keystone moonlog;
+    sudo adduser swift moonlog;
+    sudo adduser nova moonlog;
 
 
 # keystone db sync
@@ -142,11 +140,11 @@
 - name: wait for keystone ready
   wait_for: port=35357 delay=3 timeout=10 host={{ internal_vip.ip }}
 
-- name: cron job to purge expired tokens hourly
-  cron:
-    name: 'purge expired tokens'
-    special_time: hourly
-    job: '/usr/bin/keystone-manage token_flush > /var/log/keystone/keystone-tokenflush.log 2>&1'
+#- name: cron job to purge expired tokens hourly
+#  cron:
+#    name: 'purge expired tokens'
+#    special_time: hourly
+#    job: '/usr/bin/keystone-manage token_flush > /var/log/keystone/keystone-tokenflush.log 2>&1'
 
 #############################################
 
@@ -163,50 +161,69 @@
 ###################################################
 
 
-- name: add tenants
-  keystone_user:
-    token: "{{ ADMIN_TOKEN }}"
-    endpoint: "http://{{ internal_ip }}:35357/v2.0"
-    tenant: "{{ item.tenant }}"
-    tenant_description: "{{ item.tenant_description }}"
-  with_items: "{{ os_users }}"
-  when: inventory_hostname == groups['controller'][0]
-
-- name: add users
-  keystone_user:
-    token: "{{ ADMIN_TOKEN }}"
-    endpoint: "http://{{ internal_ip }}:35357/v2.0"
-    user: "{{ item.user }}"
-    tenant: "{{ item.tenant }}"
-    password: "{{ item.password }}"
-    email: "{{ item.email }}"
-  with_items: "{{ os_users }}"
-  when: inventory_hostname == groups['controller'][0]
-
-- name: grant roles
-  keystone_user:
-    token: "{{ ADMIN_TOKEN }}"
-    endpoint: "http://{{ internal_ip }}:35357/v2.0"
-    user: "{{ item.user }}"
-    role: "{{ item.role }}"
-    tenant: "{{ item.tenant }}"
-  with_items: "{{ os_users }}"
-  when: inventory_hostname == groups['controller'][0]
-
-- name: add endpoints
-  keystone_service:
-    token: "{{ ADMIN_TOKEN }}"
-    endpoint: "http://{{ internal_ip }}:35357/v2.0"
-    name: "{{ item.name }}"
-    type: "{{ item.type }}"
-    region: "{{ item.region}}"
-    description: "{{ item.description }}"
-    publicurl: "{{ item.publicurl }}"
-    internalurl: "{{ item.internalurl }}"
-    adminurl: "{{ item.adminurl }}"
-  with_items: "{{ os_services }}"
-  when: inventory_hostname == groups['controller'][0]
+#- name: add tenants
+#  keystone_user:
+#    token: "{{ ADMIN_TOKEN }}"
+#    endpoint: "http://{{ internal_ip }}:35357/v2.0"
+#    tenant: "{{ item.tenant }}"
+#    tenant_description: "{{ item.tenant_description }}"
+#  with_items: "{{ os_users }}"
+#  when: inventory_hostname == groups['controller'][0]
+#
+#- name: add users
+#  keystone_user:
+#    token: "{{ ADMIN_TOKEN }}"
+#    endpoint: "http://{{ internal_ip }}:35357/v2.0"
+#    user: "{{ item.user }}"
+#    tenant: "{{ item.tenant }}"
+#    password: "{{ item.password }}"
+#    email: "{{ item.email }}"
+#  with_items: "{{ os_users }}"
+#  when: inventory_hostname == groups['controller'][0]
+#
+#- name: grant roles
+#  keystone_user:
+#    token: "{{ ADMIN_TOKEN }}"
+#    endpoint: "http://{{ internal_ip }}:35357/v2.0"
+#    user: "{{ item.user }}"
+#    role: "{{ item.role }}"
+#    tenant: "{{ item.tenant }}"
+#  with_items: "{{ os_users }}"
+#  when: inventory_hostname == groups['controller'][0]
+#
+#- name: add endpoints
+#  keystone_service:
+#    token: "{{ ADMIN_TOKEN }}"
+#    endpoint: "http://{{ internal_ip }}:35357/v2.0"
+#    name: "{{ item.name }}"
+#    type: "{{ item.type }}"
+#    region: "{{ item.region}}"
+#    description: "{{ item.description }}"
+#    publicurl: "{{ item.publicurl }}"
+#    internalurl: "{{ item.internalurl }}"
+#    adminurl: "{{ item.adminurl }}"
+#  with_items: "{{ os_services }}"
+#  when: inventory_hostname == groups['controller'][0]
 
 
 ###################################################
 
+- name: update api-paste.ini
+  template: src=api-paste.ini dest=/etc/nova/api-paste.ini backup=yes
+
+# restart nova
+- name: restart nova
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - nova-api
+    - nova-cert
+    - nova-conductor
+    - nova-consoleauth
+    - nova-scheduler
+
+# restart swift
+- name: restart swift
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - swift-proxy
+    - memcached
