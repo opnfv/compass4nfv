@@ -9,6 +9,23 @@
 ---
 
 packages:
+  - adduser
+  - dbconfig-common
+  - init-system-helpers
+  - python-keystone
+  - q-text-as-data
+  - sqlite3
+  - ssl-cert
+  - debconf
+  - lsb-base
+  - python:any
+  - libjs-sphinxdoc
+  - python-pip
+  - unzip
+  - apache2
+  - libapache2-mod-wsgi
+
+dependency_packages:
   - python-cryptography
   - python-dateutil
   - python-dogpile.cache
@@ -86,7 +103,66 @@ packages:
   - python3-oslo.utils
   - apache2
   - libapache2-mod-wsgi
+  - python3-cryptography
+  - python3-dateutil
+  - python3-dogpile.cache
+  - python3-eventlet
+  - python3-greenlet
+  - python3-jsonschema
+  - python3-keystoneclient
+  - python3-keystonemiddleware
+  - python3-lxml
+  - python3-memcache
+  - python3-migrate
+  - python3-msgpack
+  - python3-mysqldb
+  - python3-oauthlib
+  - python3-openstackclient
+  - python3-oslo.cache
+  - python3-oslo.concurrency
+  - python3-oslo.config
+  - python3-oslo.context
+  - python3-oslo.db
+  - python3-oslo.i18n
+  - python3-oslo.log
+  - python3-oslo.messaging
+  - python3-oslo.middleware
+  - python3-oslo.policy
+  - python3-oslo.serialization
+  - python3-oslo.service
+  - python3-oslo.utils
+  - python3-pam
+  - python3-passlib
+  - python3-paste
+  - python3-pastedeploy
+  - python3-pbr
+  - python3-pycadf
+  - python3-pymysql
+  - python3-pysaml2
+  - python3-routes
+  - python3-six
+  - python3-sqlalchemy
+  - python3-stevedore
+  - python3-webob
+  - python3-oslo.service
+  - python3-oslo.utils
+  - python3-pam
+  - python3-passlib
+  - python3-paste
+  - python3-pastedeploy
+  - python3-pbr
+  - python3-pycadf
+  - python3-pymysql
+  - python3-pysaml2
+  - python3-routes
+  - python3-six
+  - python3-sqlalchemy
+  - python3-stevedore
+  - python3-webob
 
 services:
   - apache2
 
+
+apache_config_dir: /etc/apache2
+http_service_name: apache2
