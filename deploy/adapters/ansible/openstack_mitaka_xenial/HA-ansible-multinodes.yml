@@ -64,32 +64,11 @@
     - apache
     - database
     - mq
-#    - keystone
+    - keystone
     - moon-controller
     - nova-controller
     - neutron-controller
 #    - cinder-controller
-
-- hosts: compute
-  remote_user: root
-  accelerate: true
-  max_fail_percentage: 0
-  roles:
-    - nova-compute
-
-- hosts: all
-  remote_user: root
-  accelerate: true
-  max_fail_percentage: 0
-  roles:
-    - swift
-    - moon-post
-
-- hosts: controller
-  remote_user: root
-  accelerate: true
-  max_fail_percentage: 0
-  roles:
     - glance
     - neutron-common
     - neutron-network
@@ -111,10 +90,18 @@
   accelerate: true
   max_fail_percentage: 0
   roles:
-#    - nova-compute
+    - nova-compute
     - neutron-compute
 #    - cinder-volume
     - ceilometer_compute
+
+- hosts: all
+  remote_user: root
+  accelerate: true
+  max_fail_percentage: 0
+  roles:
+    - swift
+    - moon
 
 - hosts: all
   remote_user: root
