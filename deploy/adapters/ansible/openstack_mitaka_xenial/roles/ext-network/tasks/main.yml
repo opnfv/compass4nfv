@@ -13,6 +13,7 @@
 - name: restart api server
   service: name={{ item }} state=restarted enabled=yes
   with_items: api_services | union(api_services_noarch)
+  ignore_errors: True
 
 - name: restart neutron server
   service: name=neutron-server state=restarted enabled=yes
