@@ -1,4 +1,4 @@
-##############################################################################
+#############################################################################
 # Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
@@ -6,8 +6,15 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-export OS_USERNAME=demo
-export OS_PASSWORD={{ DEMO_PASS }}
-export OS_TENANT_NAME=demo
-export OS_AUTH_URL=http://{{ internal_vip.ip }}:35357/v2.0
+---
+- name: update api-paste.ini
+  template: src=api-paste.ini dest=/etc/nova/api-paste.ini backup=yes
 
+- name: restart nova task
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - nova-compute
+
+- name: restart swift task
+  shell: swift-init all start
+  ignore_errors: True
