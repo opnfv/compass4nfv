@@ -7,17 +7,8 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include: aodh_install.yml
-  tags:
-    - install
-    - aodh_install
-    - aodh
+- name: aodh db sync
+  shell: su -s /bin/sh -c "aodh-dbsync" aodh  
+  notify:
+    - restart aodh services
 
-- include: aodh_config.yml
-  when: inventory_hostname == groups['controller'][0]
-  tags:
-    - config
-    - aodh_config
-    - aodh
-
-- meta: flush_handlers
