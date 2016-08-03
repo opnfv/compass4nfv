@@ -10,16 +10,15 @@ bind_port = 8042
 rpc_backend = rabbit
 auth_strategy = keystone
 debug = True
-verbose = True
 
 [oslo_messaging_rabbit]
 rabbit_hosts = {{ internal_vip.ip }}
 rabbit_userid = {{ RABBIT_USER }}
 rabbit_password = {{ RABBIT_PASS }}
-rabbit_use_ssl = false
+#rabbit_use_ssl = false
 
 [database]
-connection = mongodb://aodh:{{ AODH_DBPASS }}@{{ internal_vip.ip }}:27017/aodh
+connection = mysql://aodh:{{ AODH_DBPASS }}@{{ db_host }}/aodh
 
 [keystone_authtoken]
 auth_uri = http://{{ internal_vip.ip }}:5000

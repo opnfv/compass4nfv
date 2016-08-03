@@ -7,23 +7,17 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
+- include: aodh_install.yml
+  tags:
+    - install
+    - aodh_install
+    - aodh
 
-- name: install aodh packages
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: packages | union(packages_noarch)
-
-- name: update aodh conf
-  template: src={{ item }} dest=/etc/aodh/aodh.conf
-            backup=yes
-  with_items:
-    - aodh.conf.j2
-#    - api_paste.ini.j2
-#    - policy.json.j2
-  notify: restart aodh services
-
-- name: write services to monitor list
-  lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: services
+- include: aodh_config.yml
+  when: inventory_hostname == groups['controller'][0]
+  tags:
+    - config
+    - aodh_config
+    - aodh
 
 - meta: flush_handlers

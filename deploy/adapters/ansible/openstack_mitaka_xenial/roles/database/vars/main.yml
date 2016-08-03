@@ -34,4 +34,6 @@ credentials:
   - user: heat
     db: heat
     password: "{{ HEAT_DBPASS }}"
-
+  - user: aodh
+    db: aodh
+    password: "{{ AODH_DBPASS }}"
