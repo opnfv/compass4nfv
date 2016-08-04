@@ -34,7 +34,7 @@ DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
         <Arg>
             <New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
                 <Set name="host">
-                    <Property name="jetty.host" default="{{ internal_ip }}"/>
+                    <Property name="jetty.host"/>
                 </Set>
                 <Set name="port">
                     <Property name="jetty.port" default="8181" />
@@ -52,7 +52,7 @@ DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
       <Arg>
         <New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
           <Set name="host">
-            <Property name="jetty.host" default="{{ internal_ip }}"/>
+            <Property name="jetty.host"/>
           </Set>
           <Set name="port">
             <Property name="jetty.port" default="8181" />
