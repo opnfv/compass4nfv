@@ -7,18 +7,22 @@ hosts:
       - controller
       - ha
       - onos
+      - ceph-adm
+      - ceph-mon
 
   - name: host2
     roles:
       - controller
       - ha
       - onos
+      - ceph-mon
 
   - name: host3
     roles:
       - controller
       - ha
       - onos
+      - ceph-mon
 
   - name: host4
     roles:
