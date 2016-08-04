@@ -100,6 +100,11 @@
     src: tomcat-server.xml
     dest: "{{ odl_home }}/configuration/tomcat-server.xml"
 
+- name: create tomcat config
+  template:
+    src: jetty.xml
+    dest: "{{ odl_home }}/etc/jetty.xml"
+
 - name: download odl pip package
   get_url: url="http://{{ http_server.stdout_lines[0] }}/pip/{{ networking_odl_pkg_name }}"  dest=/opt/{{ networking_odl_pkg_name }}
 
