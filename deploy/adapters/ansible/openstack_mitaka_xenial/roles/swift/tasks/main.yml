@@ -51,8 +51,8 @@
 - name: wait 30 seconds
   shell: sleep 30
 
-- name: stop tasks on compute
-  service: name={{ item }} state=stop enabled=yes
+- name: create swift task script
+  shell: echo {{ item }} >> /opt/swift-service
   with_items:
     - swift-account
     - swift-account-replicator
@@ -70,46 +70,10 @@
   when: inventory_hostname in groups['compute']
   ignore_errors: True
 
-- name: sleep 10 second
-  shell: sleep 10
-
-- name: start tasks on compute
-  service: name={{ item }} state=start enabled=yes
-  with_items:
-    - swift-account
-    - swift-account-replicator
-    - swift-container-replicator
-    - swift-object
-    - swift-object-updater
-    - swift-account-auditor
-    - swift-container
-    - swift-container-sync
-    - swift-object-auditor
-    - swift-account-reaper
-    - swift-container-auditor
-    - swift-container-updater
-    - swift-object-replicator
-  when: inventory_hostname in groups['compute']
-  ignore_errors: True
-
-- name: sleep 10 second
-  shell: sleep 10
-
-- name: start tasks on compute
-  service: name={{ item }} state=start enabled=yes
-  with_items:
-    - swift-account
-    - swift-account-replicator
-    - swift-container-replicator
-    - swift-object
-    - swift-object-updater
-    - swift-account-auditor
-    - swift-container
-    - swift-container-sync
-    - swift-object-auditor
-    - swift-account-reaper
-    - swift-container-auditor
-    - swift-container-updater
-    - swift-object-replicator
+- name: restart swift task
+  shell: >
+    for i in `cat /opt/swift-service`; do service $i start; done;
+    sleep 10;
+    for i in `cat /opt/swift-service`; do service $i restart; done;
   when: inventory_hostname in groups['compute']
   ignore_errors: True
