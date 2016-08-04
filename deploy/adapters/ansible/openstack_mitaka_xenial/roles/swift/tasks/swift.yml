@@ -1,0 +1,79 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: swift-controller1.yml
+  when: inventory_hostname in groups['controller']
+
+- include: swift-compute1.yml
+  when: inventory_hostname in groups['compute']
+
+- include: swift-controller2.yml
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: copy swift.conf
+  template: src=swift.conf dest=/etc/swift/swift.conf backup=yes
+
+- name: chown /etc/swift
+  shell: chown -R root:swift /etc/swift
+
+- name: restart tasks on controller
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - memcached
+    - swift-proxy
+  when: inventory_hostname in groups['controller']
+
+- name: restart tasks on compute
+  shell: swift-init all start
+  when: inventory_hostname in groups['compute']
+  ignore_errors: True
+
+- name: restart tasks on controller
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - rsync
+  when: inventory_hostname in groups['compute']
+
+- name: upload swift lib
+  unarchive: src=swift-lib.tar.gz dest=/tmp/
+
+- name: copy swift lib
+  command: su -s /bin/sh -c "cp /tmp/swift-lib/* /usr/lib/"
+
+- name: wait 30 seconds
+  shell: sleep 30
+
+- name: create swift task script
+  shell: echo {{ item }} >> /opt/swift-service
+  with_items:
+    - swift-account
+    - swift-account-replicator
+    - swift-container-replicator
+    - swift-object
+    - swift-object-updater
+    - swift-account-auditor
+    - swift-container
+    - swift-container-sync
+    - swift-object-auditor
+    - swift-account-reaper
+    - swift-container-auditor
+    - swift-container-updater
+    - swift-object-replicator
+  when: inventory_hostname in groups['compute']
+  ignore_errors: True
+
+- name: restart swift task
+  shell: >
+    for i in `cat /opt/swift-service`; do service $i start; done;
+    sleep 10;
+    for i in `cat /opt/swift-service`; do service $i restart; done;
+  when: inventory_hostname in groups['compute']
+  ignore_errors: True
