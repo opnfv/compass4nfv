@@ -27,10 +27,10 @@ hosts:
     roles:
       - compute
 
-  - name: host3
-    mac: 'D8:49:0B:DA:2A:28'
+ - name: host3
+    mac: 'D8:49:0B:DA:67:1F'
     interfaces:
-      - eth1: 'D8:49:0B:DA:2A:29'
+      - eth1: 'D8:49:0B:DA:67:20'
     ipmiIp: 172.16.130.29
     ipmiPass: Huawei@123
     roles:
