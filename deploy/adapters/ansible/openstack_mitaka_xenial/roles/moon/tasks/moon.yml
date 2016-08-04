@@ -1,4 +1,4 @@
-##############################################################################
+#############################################################################
 # Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
@@ -7,5 +7,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include: swift.yml
-  when: moon == "Enable"
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: moon-controller.yml
+  when: inventory_hostname in groups['controller']
+
+- include: moon-compute.yml
+  when: inventory_hostname in groups['compute']
