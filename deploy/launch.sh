@@ -12,6 +12,8 @@ WORK_DIR=$COMPASS_DIR/work/deploy
 
 mkdir -p $WORK_DIR/script
 
+export DEPLOY_FIRST_TIME=${DEPLOY_FIRST_TIME-"true"}
+
 source ${COMPASS_DIR}/deploy/prepare.sh
 prepare_python_env
 source ${COMPASS_DIR}/util/log.sh
