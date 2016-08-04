@@ -67,7 +67,7 @@
     - keystone
     - nova-controller
     - neutron-controller
-#    - cinder-controller
+    - cinder-controller
     - glance
     - neutron-common
     - neutron-network
@@ -91,7 +91,7 @@
   roles:
     - nova-compute
     - neutron-compute
-#    - cinder-volume
+    - cinder-volume
     - ceilometer_compute
 
 - hosts: all
