@@ -17,6 +17,8 @@ hosts:
       - controller
       - ha
       - odl
+      - ceph-adm
+      - ceph-mon
 
   - name: host2
     mac: 'D8:49:0B:DA:5A:B7'
@@ -28,6 +30,7 @@ hosts:
       - controller
       - ha
       - odl
+      - ceph-mon
 
   - name: host3
     mac: 'D8:49:0B:DA:67:1F'
@@ -39,6 +42,7 @@ hosts:
       - controller
       - ha
       - odl
+      - ceph-mon
 
   - name: host4
     mac: 'D8:49:0B:DA:5B:5D'

@@ -19,6 +19,8 @@ hosts:
       - controller
       - ha
       - onos
+      - ceph-adm
+      - ceph-mon
 
   - name: host2
     mac: 'EC:38:8F:79:0C:48'
@@ -31,6 +33,7 @@ hosts:
       - controller
       - ha
       - onos
+      - ceph-mon
 
   - name: host3
     mac: 'EC:38:8F:79:10:CC'
@@ -43,6 +46,7 @@ hosts:
       - controller
       - ha
       - onos
+      - ceph-mon
 
   - name: host4
     mac: 'EC:38:8F:79:0C:6C'

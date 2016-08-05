@@ -17,6 +17,8 @@ hosts:
       - controller
       - ha
       - opencontrail
+      - ceph-adm
+      - ceph-mon
 
   - name: host2
     mac: 'EC:38:8F:79:0C:48'
