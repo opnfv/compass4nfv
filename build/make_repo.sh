@@ -220,17 +220,17 @@ function _try_fetch_dependency()
                 ;;
             *)
                 echo "'$1' cannot be extract()"
-                return -1
+                return
                 ;;
         esac
     else
         echo "'$1' is not a valid file"
-        return -1
+        return
     fi
 
     if [ ! -f ${dir_name}/requirements.txt ]; then
         echo "${dir_name}/requirements.txt does not exist"
-        return -1
+        return
     fi
 
     pip install --download=$2 -r ${dir_name}/requirements.txt
