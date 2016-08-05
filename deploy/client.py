@@ -238,6 +238,9 @@ opts = [
     cfg.StrOpt('odl_l3_agent',
               help='odl l3 agent enable flag',
               default='Disable'),
+    cfg.StrOpt('moon',
+              help='moon enable flag',
+              default='Disable'),
     cfg.StrOpt('onos_sfc',
               help='onos_sfc enable flag',
               default='Disable'),
@@ -730,6 +733,7 @@ class CompassClient(object):
         package_config['enable_fwaas'] = (CONF.enable_fwaas== "true")
         package_config['enable_vpnaas'] = (CONF.enable_vpnaas== "true")
         package_config['odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"
+        package_config['moon'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"
         package_config['onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
 
         status, resp = self.client.update_cluster_config(
