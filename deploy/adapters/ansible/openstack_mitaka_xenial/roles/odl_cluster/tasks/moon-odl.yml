@@ -1,0 +1,54 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: delete data journal snapshots
+  shell: rm -rf {{ odl_home }}/{{ item }}
+  with_items:
+    - journal
+    - data
+    - snapshots
+
+- name: remove aaa feature
+  shell: rm -rf {{ odl_home }}/system/org/opendaylight/aaa/
+
+- name: download apache maven package file
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/odl/apache-maven-3.3.9-bin.tar.gz"  dest=/opt/apache-maven-3.3.9-bin.tar.gz
+
+- name: extract maven
+  shell: >
+    tar zxf /opt/apache-maven-3.3.9-bin.tar.gz;
+    ln -s /opt/apache-maven-3.3.9/bin/mvn /usr/local/bin/mvn;
+
+- name: create m2 directory
+  file: path=/root/.m2/ state=directory mode=0755
+
+- name: copy settings.xml
+  template: src=settings.xml dest=/root/.m2/settings.xml
+
+- name: upload swift lib
+  unarchive: src=odl-aaa-moon.tar.gz dest=/home/
+
+- name: install aaa
+  shell: >
+    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-oracle/bin:/opt/apache-maven-3.3.3/bin";
+    export JAVA_HOME="/usr/lib/jvm/java-8-oracle";
+    export _JAVA_OPTIONS="-Djava.net.preferIPv4Stack=true";
+    export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=512m";
+    cd /home/odl-aaa-moon/aaa/;
+    mvn clean install -DskipTests;
+
+- name: remove shiro ini
+  shell: rm -f {{ odl_home }}/etc/shiro.ini
+
+- name: set moon env
+  shell: >
+    export MOON_SERVER_ADDR={{ internal_vip.ip }};
+    export MOON_SERVER_PORT=5000;
+    export no_proxy="localhost,127.0.0.1";

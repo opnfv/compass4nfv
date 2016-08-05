@@ -209,6 +209,16 @@
   service: name=keepalived state=stopped
   when: ansible_os_family == "Debian"
 
+
+#################################################################
+########################### moon ################################
+#################################################################
+
+- include: moon-odl.yml
+  when: moon == "Enable"
+
+#################################################################
+
 - name: chown opendaylight directory and files
   shell: >
     chown -R odl:odl "{{ odl_home }}";
