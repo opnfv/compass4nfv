@@ -733,7 +733,7 @@ class CompassClient(object):
         package_config['enable_fwaas'] = (CONF.enable_fwaas== "true")
         package_config['enable_vpnaas'] = (CONF.enable_vpnaas== "true")
         package_config['odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"
-        package_config['moon'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"
+        package_config['moon'] = "Enable" if CONF.moon == "Enable" else "Disable"
         package_config['onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
 
         status, resp = self.client.update_cluster_config(
