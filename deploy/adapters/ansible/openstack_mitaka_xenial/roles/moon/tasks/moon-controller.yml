@@ -151,7 +151,9 @@
 #    job: '/usr/bin/keystone-manage token_flush > /var/log/keystone/keystone-tokenflush.log 2>&1'
 
 #############################################
-
+# moon workaround
+- name: copy scripts
+  copy:  src=controllers.py dest=/usr/lib/python2.7/dist-packages/keystone/contrib/moon/controllers.py
 
 # apache2 restart
 - name: restart apache2
