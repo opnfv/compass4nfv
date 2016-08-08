@@ -28,6 +28,7 @@ hosts:
     ipmiPass: huawei@123
     roles:
       - compute
+      - ceph-osd
 
   - name: host3
     mac: 'D8:49:0B:DA:67:1F'
@@ -37,6 +38,7 @@ hosts:
     ipmiPass: Huawei@123
     roles:
       - compute
+      - ceph-osd
 
   - name: host4
     mac: 'D8:49:0B:DA:5B:5D'
@@ -46,6 +48,7 @@ hosts:
     ipmiPass: Huawei@123
     roles:
       - compute
+      - ceph-osd
 
   - name: host5
     mac: 'D8:49:0B:DA:56:85'
@@ -55,4 +58,5 @@ hosts:
     ipmiPass: Huawei@123
     roles:
       - compute
+      - ceph-osd
 

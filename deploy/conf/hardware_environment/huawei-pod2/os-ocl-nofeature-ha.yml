@@ -29,6 +29,7 @@ hosts:
       - eth1: 'EC:38:8F:79:0C:49'
     roles:
       - compute
+      - ceph-osd
 
   - name: host3
     mac: 'EC:38:8F:79:10:CC'
@@ -39,6 +40,7 @@ hosts:
       - eth1: 'EC:38:8F:79:10:CD'
     roles:
       - compute
+      - ceph-osd
 
   - name: host4
     mac: 'EC:38:8F:79:0C:6C'
@@ -49,6 +51,7 @@ hosts:
       - eth1: 'EC:38:8F:79:0C:6D'
     roles:
       - compute
+      - ceph-osd
 
   - name: host5
     mac: 'EC:38:8F:7A:E6:ED'
@@ -59,3 +62,4 @@ hosts:
       - eth1: 'EC:38:8F:7A:E6:EE'
     roles:
       - compute
+      - ceph-osd
