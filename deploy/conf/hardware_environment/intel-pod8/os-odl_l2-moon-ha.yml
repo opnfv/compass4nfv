@@ -20,6 +20,8 @@ hosts:
       - controller
       - ha
       - odl
+      - ceph-adm
+      - ceph-mon
 
   - name: host2
     mac: '00:1E:67:D4:39:B5'
@@ -31,6 +33,7 @@ hosts:
       - controller
       - ha
       - odl
+      - ceph-mon
 
   - name: host3
     mac: '00:1E:67:D4:31:B2'
@@ -42,6 +45,7 @@ hosts:
       - controller
       - ha
       - odl
+      - ceph-mon
 
   - name: host4
     mac: '00:1E:67:D4:34:67'
@@ -51,6 +55,7 @@ hosts:
     ipmiIp: 10.2.117.133
     roles:
       - compute
+      - ceph-osd
 
   - name: host5
     mac: '00:1E:67:D4:38:42'
@@ -60,4 +65,5 @@ hosts:
     ipmiIp: 10.2.117.135
     roles:
       - compute
+      - ceph-osd
 
