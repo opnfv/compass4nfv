@@ -10,11 +10,12 @@ yum repolist
 yum clean all
 
 yum install yum-plugin-priorities -y
-yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm -y
-yum install http://rdo.fedorapeople.org/openstack-$OPV/rdo-release-${OPV}.rpm -y
+# yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm -y
+# yum install http://rdo.fedorapeople.org/openstack-$OPV/rdo-release-${OPV}.rpm -y
+yum install -y centos-release-openstack-${OPV}
 
 # modify centos7 repo for workaround
-sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
+# sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
 
 # add mongodb repo
 cat <<EOF >/etc/yum.repos.d/mongodb.repo
@@ -42,26 +43,6 @@ enabled=1
 gpgcheck=0
 gpgkey=http://rpms.adiscon.com/RPM-GPG-KEY-Adiscon
 protect=1
-EOF
-
-cat <<EOF >/etc/yum.repos.d/ceph.repo
-[ceph]
-name=Ceph packages for x86_64
-baseurl=http://ceph.com/rpm-hammer/rhel7/x86_64
-enabled=1
-priority=2
-gpgcheck=1
-type=rpm-md
-gpgkey=https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc
-
-[ceph-noarch]
-name=Ceph noarch packages
-baseurl=http://ceph.com/rpm-hammer/rhel7/noarch
-enabled=1
-priority=2
-gpgcheck=1
-type=rpm-md
-gpgkey=https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc
 EOF
 
 cat <<EOF >>/etc/yum.conf
