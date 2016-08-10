@@ -7,6 +7,7 @@ After=
 User=root
 Group=root
 Type=simple
+EnvironmentFile=-/opt/moon-environment
 WorkingDirectory=/opt/opendaylight-0.3.0
 PermissionsStartOnly=true
 ExecStartPre=

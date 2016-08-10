@@ -52,7 +52,4 @@
   shell: rm -f {{ odl_home }}/etc/shiro.ini
 
 - name: set moon env
-  shell: >
-    export MOON_SERVER_ADDR={{ internal_vip.ip }};
-    export MOON_SERVER_PORT=5000;
-    export no_proxy="localhost,127.0.0.1";
+  template: src=moon-environment dest=/opt/moon-environment
