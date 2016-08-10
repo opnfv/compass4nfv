@@ -19,7 +19,7 @@
   shell: rm -rf {{ odl_home }}/system/org/opendaylight/aaa/
 
 - name: download apache maven package file
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/odl/apache-maven-3.3.9-bin.tar.gz"  dest=/opt/apache-maven-3.3.9-bin.tar.gz
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/moon/apache-maven-3.3.9-bin.tar.gz"  dest=/opt/apache-maven-3.3.9-bin.tar.gz
 
 - name: create maven folder
   shell: mkdir -p /opt/apache-maven-3.3.9/
