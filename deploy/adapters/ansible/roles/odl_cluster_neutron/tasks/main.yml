@@ -11,7 +11,7 @@
 
 - name: restart neutron-l3-agent server
   service: name=neutron-l3-agent state=restarted
-  when: inventory_hostname in groups['odl']
+  when: inventory_hostname in groups['odl'] and odl_l3_agent == "Disable"
 
 - name: restart neutron-dhcp-agent server
   service: name=neutron-dhcp-agent state=restarted

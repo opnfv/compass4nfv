@@ -187,6 +187,19 @@
   service: name=keepalived state=stopped
   when: ansible_os_family == "Debian"
 
+################ l3 agent remove ###################
+- name: turn off neutron-l3-agent on control node
+  service: name=neutron-l3-agent state=stopped
+  when: odl_l3_agent == "Enable"
+
+- name: remove neutron-l3-agent daemon
+  shell: >
+    sed -i 'neutron-l3-agent/d' /opt/service ;
+    mv /etc/init.d/neutron-l3-agent /home/ ;
+    mv /etc/init/neutron-l3-agent.conf /home/ ;
+  when: odl_l3_agent == "Enable"
+####################################################
+
 - name: chown opendaylight directory and files
   shell: >
     chown -R odl:odl "{{ odl_home }}";
