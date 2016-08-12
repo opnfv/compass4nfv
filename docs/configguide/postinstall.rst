@@ -20,7 +20,7 @@
 .. documentation of this.
 
 .. <Project> post configuration procedures
-.. --------------------------------------
+.. ---------------------------------------
 .. Describe any deploy tool or feature specific scripts, tests or procedures
 .. that should be carried out on the deployment post install and configuration
 .. in this section.
