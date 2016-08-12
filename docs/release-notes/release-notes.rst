@@ -28,16 +28,16 @@ Release Data
 | **Project**                          | Compass4nfv                          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Repo/tag**                         | Compass4nfv/Brahmaputra.1.0          |
+| **Repo/tag**                         | Compass4nfv/Colorado.1.0             |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release designation**              | Brahmaputra.1.0                      |
+| **Release designation**              | Colorado.1.0                         |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Release date**                     | 2016.2.25                            |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Purpose of the delivery**          | OPNFV Brahmaputra release            |
+| **Purpose of the delivery**          | OPNFV Colorado release               |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
@@ -47,16 +47,16 @@ Deliverables
 Software deliverables
 ~~~~~~~~~~~~~~~~~~~~~
 
- - Compass4nfv/Brahmaputra.1.0 ISO, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
+ - Compass4nfv/Colorado.1.0 ISO, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
 
 .. _document-label:
 
 Documentation deliverables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- - OPNFV(Brahmaputra) Compass4nfv installation instructions
+ - OPNFV(Colorado) Compass4nfv installation instructions
 
- - OPNFV(Brahmaputra) Compass4nfv Release Notes
+ - OPNFV(Colorado) Compass4nfv Release Notes
 
 Version change
 --------------
