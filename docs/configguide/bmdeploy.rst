@@ -1,18 +1,30 @@
-.. This work is licensed under a Creative Commons Attribution 4.0 International Licence.
+.. This work is licensed under a Creative Commons Attribution 4.0 International License.
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) by Weidong Shao (HUAWEI) and Justin Chi (HUAWEI)
 
-Installation Guide (Virtual Deployment)
-=======================================
+Installation Guide (Bare Metal Deployment)
+==========================================
 
-Nodes Configuration (Virtual Deployment)
-----------------------------------------
+Nodes Configuration (Bare Metal Deployment)
+-------------------------------------------
 
 The below file is the inventory template of deployment nodes:
 
-"compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml"
+"compass4nfv/deploy/conf/hardware_environment/huawei-pod1/[dha].yml"
 
-You can write your own address/roles reference to it.
+You can write your own IPMI IP/User/Password/Mac address/roles reference to it.
+
+        - ipmiVer -- IPMI interface version for deployment node support. IPMI 1.0
+          or IPMI 2.0 is available.
+
+        - ipmiIP -- IPMI IP address for deployment node. Make sure it can access
+          from Jumphost.
+
+        - ipmiUser -- IPMI Username for deployment node.
+
+        - ipmiPass -- IPMI Password for deployment node.
+
+        - mac -- MAC Address of deployment node PXE NIC .
 
         - name -- Host name for deployment node after installation.
 
@@ -86,8 +98,8 @@ E.g. Openstack and ONOS deployment roles setting
           - compute
 
 
-Network Configuration (Virtual Deployment)
-------------------------------------------
+Network Configuration (Bare Metal Deployment)
+---------------------------------------------
 
 Before deployment, there are some network configuration to be checked based on your network topology.
 Compass4nfv network default configuration file is "compass4nfv/deploy/conf/network_cfg.yaml".
@@ -140,11 +152,17 @@ You can write your own reference to it.
                      +---------------------------+
 
 
+Start Deployment (Bare Metal Deployment)
+----------------------------------------
 
-Start Deployment (Virtual Deployment)
--------------------------------------
+1. Set PXE/Installation NIC for Jumphost. (set eth1 E.g.)
 
-1. Set OS version and OpenStack version for deployment nodes.
+.. code-block:: bash
+
+    export INSTALL_NIC=eth1
+
+
+2.Set OS version and OpenStack version for deployment nodes.
 
     Compass4nfv Colorado supports three OS version based openstack mitaka.
 
@@ -169,7 +187,7 @@ Centos 7 mitaka:
     export OS_VERSION=centos7
     export OPENSTACK_VERSION=mitaka
 
-2. Set ISO image that you want to deploy
+3. Set ISO image that you want to deploy
 
 .. code-block:: bash
 
@@ -177,7 +195,7 @@ Centos 7 mitaka:
     or
     export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
 
-3. Run ``deploy.sh`` with inventory and network configuration
+4. Run ``deploy.sh`` with inventory and network configuration
 
 .. code-block:: bash
 
@@ -190,54 +208,54 @@ E.g.
 .. code-block:: bash
 
     ./deploy.sh \
-        --dha /root/compass4nfv/deploy/conf/vm_environment/os-nosdn-nofeature-ha.yml \
-        --network /root/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml
+        --dha ./compass4nfv/deploy/conf/hardware_environment/huawei-pod1/os-nosdn-nofeature-ha.yml \
+        --network ./compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml
 
 2. ocl-nofeature scenario deploy sample
 
 .. code-block:: bash
 
     ./deploy.sh \
-        --dha /root/compass4nfv/deploy/conf/vm_environment/os-ocl-nofeature-ha.yml \
-        --network /root/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network_ocl.yml
+        --dha /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/os-ocl-nofeature-ha.yml \
+        --network /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network_ocl.yml
 
 3. odl_l2-moon scenario deploy sample
 
 .. code-block:: bash
 
     ./deploy.sh \
-        --dha /root/compass4nfv/deploy/conf/vm_environment/os-odl_l2-moon-ha.yml \
-        --network /root/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml
+        --dha /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/os-odl_l2-moon-ha.yml \
+        --network /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml
 
-4. odl_l2-nofeature scenario deploy sample
+ 4. odl_l2-nofeature scenario deploy template
 
 .. code-block:: bash
 
     ./deploy.sh \
-        --dha /root/compass4nfv/deploy/conf/vm_environment/os-odl_l2-nofeature-ha.yml \
-        --network /root/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml
+        --dha /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/os-odl_l2-nofeature-ha.yml \
+        --network /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml
 
 5. odl_l3-nofeature scenario deploy sample
 
 .. code-block:: bash
 
     ./deploy.sh \
-        --dha /root/compass4nfv/deploy/conf/vm_environment/os-odl_l3-nofeature-ha.yml \
-        --network /root/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml
+        --dha /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/os-odl_l3-nofeature-ha.yml \
+        --network /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml
 
 6. onos-nofeature scenario deploy sample
 
 .. code-block:: bash
 
     ./deploy.sh \
-        --dha /root/compass4nfv/deploy/conf/vm_environment/os-onos-nofeature-ha.yml \
-        --network /root/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network_onos.yml
+        --dha /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/os-onos-nofeature-ha.yml \
+        --network /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
 
 7. onos-sfc deploy scenario sample
 
 .. code-block:: bash
 
     ./deploy.sh \
-        --dha /root/compass4nfv/deploy/conf/vm_environment/os-onos-sfc-ha.yml \
-        --network /root/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network_onos.yml
+        --dha /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/os-onos-sfc-ha.yml \
+        --network /root/compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
 
