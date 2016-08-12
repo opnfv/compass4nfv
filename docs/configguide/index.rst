@@ -2,7 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 
 ********************************************************
-OPNFV(Brahmaputra) Compass4nfv installation instructions
+OPNFV(Colorado) Compass4nfv installation instructions
 ********************************************************
 
 .. toctree::
@@ -11,6 +11,6 @@ OPNFV(Brahmaputra) Compass4nfv installation instructions
 
    introduction.rst
    installerconfig.rst
+   bmdeploy.rst
    vmdeploy.rst
    references.rst
-
