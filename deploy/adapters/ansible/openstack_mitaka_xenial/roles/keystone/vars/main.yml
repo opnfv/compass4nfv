@@ -14,7 +14,7 @@ services_noarch: []
 os_services:
   - name: keystone
     type: identity
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Identity"
     publicurl: "http://{{ public_vip.ip }}:5000/v2.0"
     internalurl: "http://{{ internal_vip.ip }}:5000/v2.0"
@@ -22,7 +22,7 @@ os_services:
 
   - name: glance
     type: image
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Image Service"
     publicurl: "http://{{ public_vip.ip }}:9292"
     internalurl: "http://{{ internal_vip.ip }}:9292"
@@ -30,7 +30,7 @@ os_services:
 
   - name: nova
     type: compute
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Compute"
     publicurl: "http://{{ public_vip.ip }}:8774/v2/%(tenant_id)s"
     internalurl: "http://{{ internal_vip.ip }}:8774/v2/%(tenant_id)s"
@@ -38,7 +38,7 @@ os_services:
 
   - name: neutron
     type: network
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Networking"
     publicurl: "http://{{ public_vip.ip }}:9696"
     internalurl: "http://{{ internal_vip.ip }}:9696"
@@ -46,7 +46,7 @@ os_services:
 
   - name: ceilometer
     type: metering
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Telemetry"
     publicurl: "http://{{ public_vip.ip }}:8777"
     internalurl: "http://{{ internal_vip.ip }}:8777"
@@ -54,7 +54,7 @@ os_services:
 
   - name: aodh
     type: alarming
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Telemetry"
     publicurl: "http://{{ public_vip.ip }}:8042"
     internalurl: "http://{{ internal_vip.ip }}:8042"
@@ -62,7 +62,7 @@ os_services:
 
   - name: cinder
     type: volume
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Block Storage"
     publicurl: "http://{{ public_vip.ip }}:8776/v1/%(tenant_id)s"
     internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
@@ -70,7 +70,7 @@ os_services:
 
   - name: cinderv2
     type: volumev2
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Block Storage v2"
     publicurl: "http://{{ public_vip.ip }}:8776/v2/%(tenant_id)s"
     internalurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
@@ -78,7 +78,7 @@ os_services:
 
   - name: heat
     type: orchestration
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Orchestration"
     publicurl: "http://{{ public_vip.ip }}:8004/v1/%(tenant_id)s"
     internalurl: "http://{{ internal_vip.ip }}:8004/v1/%(tenant_id)s"
@@ -86,7 +86,7 @@ os_services:
 
   - name: heat-cfn
     type: cloudformation
-    region: regionOne
+    region: RegionOne
     description: "OpenStack CloudFormation Orchestration"
     publicurl: "http://{{ public_vip.ip }}:8000/v1"
     internalurl: "http://{{ internal_vip.ip }}:8000/v1"
@@ -94,7 +94,7 @@ os_services:
 
   - name: swift
     type: object-store
-    region: regionOne
+    region: RegionOne
     description: "OpenStack Object Storage"
     publicurl: "http://{{ public_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
     internalurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"

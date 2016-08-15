@@ -76,7 +76,7 @@
 
 - name: provide an endpoint to tacker service
   shell: >
-    . /opt/admin-openrc.sh; openstack endpoint create --region regionOne \
+    . /opt/admin-openrc.sh; openstack endpoint create --region RegionOne \
         --publicurl 'http://{{ public_vip.ip }}:8888/' \
         --adminurl 'http://{{ internal_vip.ip }}:8888/' \
         --internalurl 'http://{{ internal_vip.ip }}:8888/' tacker
