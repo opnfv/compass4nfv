@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_aa09ee2d",
+        "filename": "docs/configguide/installerconfig.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "hhttps -\u003e https",
+      "range": {
+        "startLine": 35,
+        "startChar": 75,
+        "endLine": 35,
+        "endChar": 81
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8a10b24f",
+        "filename": "docs/configguide/installerconfig.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "compass4nfv/colorado",
+      "range": {
+        "startLine": 41,
+        "startChar": 26,
+        "endLine": 41,
+        "endChar": 46
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_2a1dde66",
+        "filename": "docs/configguide/installerconfig.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "needs update when colorado daily isos is builded",
+      "range": {
+        "startLine": 44,
+        "startChar": 21,
+        "endLine": 44,
+        "endChar": 50
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0a2ca298",
+        "filename": "docs/configguide/installerconfig.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "stable/colorado",
+      "range": {
+        "startLine": 60,
+        "startChar": 7,
+        "endLine": 60,
+        "endChar": 23
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_2a34fedc",
+        "filename": "docs/configguide/vmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "compass4nfv colorado supports three os version openstack mitaka\n\nUbuntu 14.04 mitaka:\n\n    export OS_VERSION\u003dtrusty\n    export OPENSTACK_VERSION\u003dmitaka\n\nUbuntu 16.04 mitaka:\n\n    export OS_VERSION\u003dxenial\n    export OPENSTACK_VERSION\u003dmitaka_xenial\n\nCentos7 mitaka:\n\n    export OS_VERSION\u003dcentos7\n    export OPENSTACK_VERSION\u003dmitaka",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 35
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8a3752e3",
+        "filename": "docs/configguide/vmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "delete http://",
+      "range": {
+        "startLine": 165,
+        "startChar": 26,
+        "endLine": 165,
+        "endChar": 33
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4a313aeb",
+        "filename": "docs/configguide/vmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "template -\u003e sample?",
+      "range": {
+        "startLine": 175,
+        "startChar": 35,
+        "endLine": 175,
+        "endChar": 43
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ca254aac",
+        "filename": "docs/configguide/vmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "tab -\u003e space",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 6
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_6a3af6ce",
+        "filename": "docs/configguide/vmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-08-16T03:25:58Z",
+      "side": 1,
+      "message": "add space",
+      "range": {
+        "startLine": 228,
+        "startChar": 1,
+        "endLine": 228,
+        "endChar": 4
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
