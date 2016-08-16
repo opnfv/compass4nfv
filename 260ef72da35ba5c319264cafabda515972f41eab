@@ -25,6 +25,52 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_ea9b66c7",
+        "filename": "docs/configguide/bmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2016-08-16T05:03:31Z",
+      "side": 1,
+      "message": "it will be batter keep consistent with the file?the same to next?",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 19
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0aa102f8",
+        "filename": "docs/configguide/bmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2016-08-16T05:03:31Z",
+      "side": 1,
+      "message": "change file name or have a explanation",
+      "range": {
+        "startLine": 105,
+        "startChar": 75,
+        "endLine": 105,
+        "endChar": 92
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_aa09ee2d",
         "filename": "docs/configguide/installerconfig.rst",
         "patchSetId": 4
@@ -133,6 +179,29 @@
         "startChar": 0,
         "endLine": 68,
         "endChar": 48
+      },
+      "revId": "260ef72da35ba5c319264cafabda515972f41eab",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_aaa56e05",
+        "filename": "docs/configguide/vmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2016-08-16T05:03:31Z",
+      "side": 1,
+      "message": "change",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 50
       },
       "revId": "260ef72da35ba5c319264cafabda515972f41eab",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
