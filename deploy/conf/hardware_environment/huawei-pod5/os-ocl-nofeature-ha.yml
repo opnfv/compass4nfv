@@ -1,0 +1,62 @@
+
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiUser: root
+ipmiVer: '2.0'
+
+hosts:
+  - name: host1
+    mac: '70:7b:e8:75:71:d3'
+    interfaces:
+       - eth1: '70:7b:e8:75:71:d2'
+    ipmiIp: 172.31.123.2
+    ipmiPass: root
+    roles:
+      - controller
+      - ha
+      - opencontrail
+      - ceph-adm
+      - ceph-mon
+
+  - name: host2
+    mac: '70:7b:e8:75:72:21'
+    interfaces:
+      - eth1: '70:7b:e8:75:72:20'
+    ipmiIp: 172.31.123.3
+    ipmiPass: root
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host3
+    mac: '70:7b:e8:75:71:37'
+    interfaces:
+      - eth1: '70:7b:e8:75:71:36'
+    ipmiIp: 172.31.123.4
+    ipmiPass: root
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host4
+    mac: '70:7b:e8:75:71:dc'
+    interfaces:
+      - eth1: '70:7b:e8:75:71:db'
+    ipmiIp: 172.31.123.5
+    ipmiPass: root
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host5
+    mac: '70:7b:e8:75:71:d6'
+    interfaces:
+      - eth1: '70:7b:e8:75:71:d5'
+    ipmiIp: 172.31.123.6
+    ipmiPass: root
+    roles:
+      - compute
+      - ceph-osd
+
