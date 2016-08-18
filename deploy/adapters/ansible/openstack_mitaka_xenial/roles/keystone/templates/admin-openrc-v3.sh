@@ -6,19 +6,14 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
----
+# Verify the Identity Service installation
+export OS_PASSWORD={{ ADMIN_PASS }}
+export OS_TENANT_NAME=admin
+export OS_AUTH_URL=http://{{ internal_vip.ip }}:35357/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_USERNAME=admin
+export OS_VOLUME_API_VERSION=2
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
 
-cron_path: "/var/spool/cron/crontabs"
 
-packages:
-  - keystone
-  - apache2
-  - libapache2-mod-wsgi
-  - python-keystone
-  - python-openstackclient
-
-services:
-  - apache2
-
-apache_config_dir: /etc/apache2
-http_service_name: apache2
