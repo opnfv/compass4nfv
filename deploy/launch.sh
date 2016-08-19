@@ -15,6 +15,7 @@ mkdir -p $WORK_DIR/script
 export DEPLOY_FIRST_TIME=${DEPLOY_FIRST_TIME-"true"}
 
 source ${COMPASS_DIR}/deploy/prepare.sh
+prepare_python_env
 source ${COMPASS_DIR}/util/log.sh
 source ${COMPASS_DIR}/deploy/deploy_parameter.sh
 source $(process_input_para $*) || exit 1
@@ -29,16 +30,6 @@ source ${COMPASS_DIR}/deploy/compass_vm.sh
 source ${COMPASS_DIR}/deploy/deploy_host.sh
 
 ######################### main process
-download_iso
-pre_prepare
-prepare_env
-if [[ "$DEPLOY_COMPASS" == "true" ]]; then
-    if ! prepare_python_env;then
-        echo "prepare_python_env failed"
-        exit 1
-    fi
-fi
-
 print_logo
 
 if [[ ! -z $VIRT_NUMBER ]];then
@@ -55,6 +46,11 @@ fi
 export machines
 
 if [[ "$DEPLOY_COMPASS" == "true" ]]; then
+    if ! prepare_env;then
+        echo "prepare_env failed"
+        exit 1
+    fi
+
     log_info "########## set up network begin #############"
     if ! create_nets;then
         log_error "create_nets failed"

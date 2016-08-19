@@ -33,7 +33,6 @@ set -ex
 cp /*.tar.gz /result -f
 EOF
 
-    sudo apt-get -f install
     sudo apt-get install python-yaml -y
     sudo apt-get install python-cheetah -y
 }
@@ -43,7 +42,7 @@ function make_repo()
     rm -f ${WORK_PATH}/work/repo/install_packages.sh
     rm -f ${WORK_PATH}/work/repo/Dockerfile
 
-    option=`echo "os-ver:,jh-os:,package-tag:,tmpl:,default-package:, \
+    option=`echo "os-ver:,package-tag:,tmpl:,default-package:, \
             special-package:,special-package-script-dir:, \
             special-package-dir:,ansible-dir:,special-package-dir" | sed 's/ //g'`
 
@@ -54,7 +53,6 @@ function make_repo()
     eval set -- "$TEMP"
 
     os_ver=""
-    jh_os=""
     package_tag=""
     tmpl=""
     default_package=""
@@ -66,7 +64,6 @@ function make_repo()
     while :; do
         case "$1" in
             --os-ver) os_ver=$2; shift 2;;
-            --jh-os) jh_os=$2; shift 2;;
             --package-tag) package_tag=$2; shift 2;;
             --tmpl) tmpl=$2; shift 2;;
             --default-package) default_package=$2; shift 2;;
@@ -81,11 +78,6 @@ function make_repo()
 
     if [[ -n ${package_tag} && ${package_tag} == "pip" ]]; then
         make_pip_repo
-        return
-    fi
-
-    if [[ -n ${package_tag} && ${package_tag} == "jhenv" && -n ${jh_os} ]]; then
-        make_jhenv_repo
         return
     fi
 
@@ -275,53 +267,8 @@ function make_pip_repo()
     cd $WORK_PATH/work/repo; tar -zcvf pip.tar.gz ./pip; cd -
 }
 
-function make_jhenv_repo()
-{
-    if [[ ${jh_os} == trusty ]]; then
-        env_os_name=ubuntu
-    fi
-
-    if [[ ${jh_os} == xenial ]]; then
-        env_os_name=ubuntu
-    fi
-
-    if [[ ${jh_os} =~ rhel[0-9]*$ ]]; then
-        env_os_name=centos
-    fi
-
-    if [[ -d ${WORK_PATH}/build/jhenv_template/$env_os_name ]]; then
-
-        jh_env_dockerfile=Dockerfile
-        jh_env_docker_tmpl=${BUILD_PATH}/jhenv_template/$env_os_name/$jh_os/${jh_env_dockerfile}".tmpl"
-        jh_env_docker_tag="$jh_os/env"
-
-        rm -rf ${WORK_PATH}/work/repo/jhenv_template
-        mkdir ${WORK_PATH}/work/repo/jhenv_template
-        cp -rf ${WORK_PATH}/build/jhenv_template/$env_os_name/$jh_os/${jh_env_dockerfile} ${WORK_PATH}/work/repo/jhenv_template
-
-cat <<EOF >${WORK_PATH}/work/repo/jhenv_template/cp_env.sh
-#!/bin/bash
-set -ex
-cp /*.tar.gz /env -f
-EOF
-
-        sudo docker build --no-cache=true -t ${jh_env_docker_tag} -f ${WORK_PATH}/work/repo/jhenv_template/${jh_env_dockerfile} ${WORK_PATH}/work/repo/jhenv_template
-        sudo docker run -t -v ${WORK_PATH}/work/repo:/env ${jh_env_docker_tag}
-
-        image_id=$(sudo docker images|grep ${jh_env_docker_tag}|awk '{print $3}')
-
-        sudo docker rmi -f ${image_id}
-
-#    cd $WORK_PATH/work/repo; tar -zcvf pip.tar.gz ./pip; cd -
-    fi
-}
-
 function make_all_repo()
 {
-    for env_os in trusty xanial rhel7; do
-    make_repo --package-tag jhenv --jh-os $env_os
-    done
-
     make_repo --package-tag pip
 
     make_repo --os-ver rhel7 --package-tag compass \
