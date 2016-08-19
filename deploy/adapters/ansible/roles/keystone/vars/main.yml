@@ -142,7 +142,7 @@ os_users:
     tenant_description: "Service Tenant"
 
   - user: demo
-    password: ""
+    password: "{{ DEMO_PASS }}"
     email: heat@demo.com
     role: heat_stack_user
     tenant: demo
