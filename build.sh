@@ -81,7 +81,7 @@ function download_packages()
      for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA \
               $XENIAL_MITAKA_PPA $UBUNTU_ISO $UBUNTU_ISO1 $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA \
               $CENTOS7_MITAKA_PPA $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG \
-              $PIP_REPO $ANSIBLE_MODULE $JH_ENV_PACKAGE; do
+              $PIP_REPO $ANSIBLE_MODULE; do
 
          if [[ ! $i ]]; then
              continue
@@ -168,8 +168,6 @@ function copy_file()
     cp $COMPASS_DIR/deploy/adapters $new/compass/compass-adapters -rf
 
     tar -zxvf $CACHE_DIR/`basename $PIP_REPO` -C $new/
-
-    tar -zxvf $CACHE_DIR/`basename $JH_ENV_PACKAGE` -C $new/
 
     find $new/compass -name ".git" | xargs rm -rf
 }
