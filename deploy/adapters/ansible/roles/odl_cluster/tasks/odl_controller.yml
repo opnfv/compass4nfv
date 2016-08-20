@@ -197,7 +197,13 @@
     sed -i 'neutron-l3-agent/d' /opt/service ;
     mv /etc/init.d/neutron-l3-agent /home/ ;
     mv /etc/init/neutron-l3-agent.conf /home/ ;
-  when: odl_l3_agent == "Enable"
+  when: odl_l3_agent == "Enable" and ansible_os_family == "Debian"
+
+- name: remove neutron-l3-agent daemon
+  shell: >
+    sed -i 'neutron-l3-agent/d' /opt/service ;
+    mv /lib/systemd/system/neutron-l3-agent.service /home/ ;
+  when: odl_l3_agent == "Enable" and ansible_os_family == "RedHat"
 ####################################################
 
 - name: chown opendaylight directory and files
