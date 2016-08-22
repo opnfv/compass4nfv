@@ -33,6 +33,10 @@
   notify:
     - restart nova-compute services
 
+- name: get number of cpu support virtualization
+  shell: egrep -c '(vmx|svm)' /proc/cpuinfo
+  register: kvm_cpu_num
+
 - name: update nova-compute conf
   template: src={{ item }} dest=/etc/nova/{{ item }}
   with_items:
