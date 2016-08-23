@@ -36,13 +36,6 @@ function download_iso()
 }
 
 function prepare_env() {
-   if [[ "$DEPLOY_FIRST_TIME" == "true" ]]; then
-        sudo apt-get update -y
-        sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
-        sudo apt-get install -y --force-yes git python-dev
-        sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
-        sudo apt-get install -y --force-yes libffi-dev libssl-dev
-    fi
 
     sudo service libvirt-bin restart
     if sudo service openvswitch-switch status|grep stop; then
@@ -78,11 +71,20 @@ function  _prepare_python_env() {
    rm -rf $WORK_DIR/venv
    mkdir -p $WORK_DIR/venv
 
-   sudo apt-get install -y --force-yes python-pip
+   if [[ "$DEPLOY_FIRST_TIME" == "true" ]]; then
+        sudo apt-get update -y
+        sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
+        sudo apt-get install -y --force-yes git python-dev python-pip
+        sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
+        sudo apt-get install -y --force-yes libffi-dev libssl-dev
+   fi
+
    sudo pip install --upgrade virtualenv
    virtualenv $WORK_DIR/venv
    source $WORK_DIR/venv/bin/activate
 
+   pip install --upgrade cffi
+   pip install --upgrade MarkupSafe
    pip install --upgrade pip
    pip install --upgrade cheetah
    pip install --upgrade pyyaml
