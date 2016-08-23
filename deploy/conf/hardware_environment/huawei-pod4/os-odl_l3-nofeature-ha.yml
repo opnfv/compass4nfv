@@ -1,0 +1,67 @@
+
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiUser: root
+ipmiVer: '2.0'
+
+odl_l3_agent: "Enable"
+
+hosts:
+  - name: host1
+    mac: 'E8:4D:D0:BA:63:49'
+    interfaces:
+       - eth1: 'E8:4D:D0:BA:63:4A'
+    ipmiIp: 172.16.131.17
+    ipmiPass: Huawei@123
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-adm
+      - ceph-mon
+
+  - name: host2
+    mac: 'E8:4D:D0:BB:AA:C5'
+    interfaces:
+      - eth1: 'E8:4D:D0:BB:AA:C6'
+    ipmiIp: 172.16.131.18
+    ipmiPass: Huawei@123
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-mon
+
+  - name: host3
+    mac: 'E8:4D:D0:B9:1F:49'
+    interfaces:
+      - eth1: 'E8:4D:D0:B9:1F:4A'
+    ipmiIp: 172.16.131.19
+    ipmiPass: Huawei@123
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-mon
+
+  - name: host4
+    mac: 'E8:4D:D0:BB:AA:E9'
+    interfaces:
+      - eth1: 'E8:4D:D0:BB:AA:EA'
+    ipmiIp: 172.16.131.20
+    ipmiPass: Huawei@123
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host5
+    mac: 'E8:4D:D0:BB:AB:1D'
+    interfaces:
+      - eth1: 'E8:4D:D0:BB:AB:1E'
+    ipmiIp: 172.16.131.21
+    ipmiPass: Huawei@123
+    roles:
+      - compute
+      - ceph-osd
