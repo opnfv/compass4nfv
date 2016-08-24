@@ -72,26 +72,146 @@ function  _prepare_python_env() {
    mkdir -p $WORK_DIR/venv
 
    if [[ "$DEPLOY_FIRST_TIME" == "true" ]]; then
-        sudo apt-get update -y
-        sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
-        sudo apt-get install -y --force-yes git python-dev python-pip
-        sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
-        sudo apt-get install -y --force-yes libffi-dev libssl-dev
+
+        if [[ ! -z "$JHPKG_URL" ]]; then
+             rm -rf $WORK_DIR/prepare
+             mkdir -p $WORK_DIR/prepare
+             jhpkg_url=${JHPKG_URL:7}
+             echo $jhpkg_url
+             if [[ ! -f "$jhpkg_url" ]]; then
+                  echo "There is no jh_env_package."
+                  exit 1
+             fi
+             
+             tar -zxvf $jhpkg_url -C $WORK_DIR/prepare/
+             cd $WORK_DIR/prepare/jh_env_package
+             tar -zxvf trusty-jh-ppa.tar.gz
+             
+             if [[ -f /etc/apt/apt.conf ]]; then
+                  cp /etc/apt/apt.conf /etc/apt/apt.conf.bak
+             fi
+             rm -rf /etc/apt/apt.conf
+
+             cat << EOF > /etc/apt/apt.conf
+APT::Get::Assume-Yes "true";
+APT::Get::force-yes "true";
+Acquire::http::Proxy::127.0.0.1:9998 DIRECT;
+EOF
+
+             if [[ -f /etc/apt/sources.list ]]; then
+                  cp /etc/apt/sources.list /etc/apt/sources.list.bak
+             fi
+             rm -rf /etc/apt/sources.list
+
+             cat << EOF > /etc/apt/sources.list
+deb [arch=amd64] http://127.0.0.1:9998/trusty-jh-ppa trusty main
+EOF
+
+             nohup python -m SimpleHTTPServer 9998 &
+             
+             cd -
+             sleep 5
+             apt-get update
+             apt-get install -y mkisofs bc curl ipmitool openvswitch-switch \
+                 git python-pip python-dev figlet \
+                 libxslt-dev libxml2-dev libvirt-dev \
+                 build-essential qemu-utils qemu-kvm libvirt-bin \
+                 virtinst libmysqld-dev \
+                 libssl-dev libffi-dev python-cffi
+             pid=$(ps -ef | grep SimpleHTTPServer | grep 9998 | awk '{print $2}')
+             echo $pid
+             kill -9 $pid
+
+             sudo cp ${COMPASS_DIR}/deploy/qemu_hook.sh /etc/libvirt/hooks/qemu
+
+             rm -rf /etc/apt/sources.list
+             if [[ -f /etc/apt/sources.list.bak ]]; then
+                  cp /etc/apt/sources.list.bak /etc/apt/sources.list
+             fi
+
+             rm -rf /etc/apt/apt.conf
+             if [[ -f /etc/apt/apt.conf.bak ]]; then
+                  cp /etc/apt/apt.conf.bak /etc/apt/apt.conf
+             fi
+
+        else
+             sudo apt-get update -y
+             sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
+             sudo apt-get install -y --force-yes git python-dev python-pip
+             sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
+             sudo apt-get install -y --force-yes libffi-dev libssl-dev
+
+        fi
    fi
 
-   sudo pip install --upgrade virtualenv
-   virtualenv $WORK_DIR/venv
-   source $WORK_DIR/venv/bin/activate
+   if [[ ! -z "$JHPKG_URL" ]]; then
+        rm -rf ~/.pip
+        mkdir -p ~/.pip
+        rm -rf $WORK_DIR/prepare
+        mkdir -p $WORK_DIR/prepare
+        jhpkg_url=${JHPKG_URL:7}
+        echo $jhpkg_url
+        if [[ ! -f "$jhpkg_url" ]]; then
+             echo "There is no jh_env_package."
+             exit 1
+        fi
+             
+        tar -zxvf $jhpkg_url -C $WORK_DIR/prepare/
+        cd $WORK_DIR/prepare/jh_env_package
+        tar -zxvf env_trusty_pip.tar.gz
 
-   pip install --upgrade cffi
-   pip install --upgrade MarkupSafe
-   pip install --upgrade pip
-   pip install --upgrade cheetah
-   pip install --upgrade pyyaml
-   pip install --upgrade requests
-   pip install --upgrade netaddr
-   pip install --upgrade oslo.config
-   pip install --upgrade ansible
+        cat << EOF > ~/.pip/pip.conf
+[global]
+find-links = http://127.0.0.1:9999/jh_pip
+no-index = true
+[install]
+trusted-host=127.0.0.1
+EOF
+
+        nohup python -m SimpleHTTPServer 9999 &
+
+        sleep 5
+
+        cd -
+
+        pip install --upgrade virtualenv
+
+        rm -rf $WORK_DIR/venv
+        mkdir -p $WORK_DIR/venv
+
+        virtualenv $WORK_DIR/venv
+        source $WORK_DIR/venv/bin/activate
+
+        #pip install --upgrade cffi
+
+        PIP="cffi MarkupSafe pip cheetah pyyaml requests netaddr oslo.config ansible"
+
+        #PIP="paramiko jinja2 PyYAML setuptools pycrypto pyasn1 cryptography MarkupSafe idna six enum34 ipaddress pycparser virtualenv cheetah requests netaddr pbr oslo.config ansible"
+        for i in ${PIP}; do
+           pip install --upgrade $i
+        done
+
+        pid=$(ps -ef | grep SimpleHTTPServer | grep 9999 | awk '{print $2}')
+        echo $pid
+        kill -9 $pid
+
+        rm -rf ~/.pip/pip.conf
+   
+   else
+        sudo pip install --upgrade virtualenv
+        virtualenv $WORK_DIR/venv
+        source $WORK_DIR/venv/bin/activate
+
+        pip install --upgrade cffi
+        pip install --upgrade MarkupSafe
+        pip install --upgrade pip
+        pip install --upgrade cheetah
+        pip install --upgrade pyyaml
+        pip install --upgrade requests
+        pip install --upgrade netaddr
+        pip install --upgrade oslo.config
+        pip install --upgrade ansible
+    fi
 }
 
 function prepare_python_env()
