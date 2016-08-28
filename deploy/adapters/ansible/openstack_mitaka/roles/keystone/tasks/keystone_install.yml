@@ -26,6 +26,15 @@
     state=absent
   when: ansible_os_family == "Debian"
 
+- name: disable boot auto start
+  file:
+    path={{ item }}
+    state=absent
+  with_items:
+    - /etc/init.d/keystone
+    - /etc/init/keystone.conf
+  when: ansible_os_family == "Debian"
+
 - name: generate keystone service list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
   with_items: services | union(services_noarch)
