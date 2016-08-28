@@ -55,6 +55,8 @@
 
 - name: run scripts
   shell: python /opt/setup_networks/setup_networks.py
+  tags:
+    - recovery
 
 - name: add to boot scripts
   service: name=net_init enabled=yes

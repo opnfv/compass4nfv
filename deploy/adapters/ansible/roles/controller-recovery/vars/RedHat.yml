@@ -1,0 +1,38 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+controller_services:
+    - httpd
+    - openstack-nova-api
+    - openstack-nova-cert
+    - openstack-nova-conductor
+    - openstack-nova-consoleauth
+    - openstack-nova-novncproxy
+    - openstack-nova-scheduler
+    - neutron-server
+    - openstack-cinder-api
+    - openstack-cinder-scheduler
+    - openstack-glance-api
+    - openstack-glance-registry
+    - neutron-openvswitch-agent
+    - neutron-l3-agent
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
+    - openstack-ceilometer-central
+    - openstack-ceilometer-notification
+    - openstack-ceilometer-api
+    - openstack-ceilometer-collector
+    - openstack-heat-api
+    - openstack-heat-api-cfn
+    - openstack-heat-engine
+    - openstack-aodh-api
+    - openstack-aodh-notifier
+    - openstack-aodh-evaluator
+    - openstack-aodh-listener
+
