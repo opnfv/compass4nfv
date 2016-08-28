@@ -7,29 +7,20 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
+- name: Register RECOVERY
+  set_fact: RECOVERY_ENV={{RECOVERY_ENV | default('False')}}
+  tags:
+    - recovery
+
 - include_vars: "{{ ansible_os_family }}.yml"
-  tags:
-    - test_mongo
-    - recovery
-
-- include: mariadb_install.yml
-
-- include: mariadb_cluster.yml
+  when: RECOVERY_ENV
   tags:
     - recovery
 
-- include: mariadb_config.yml
-  when:
-    - inventory_hostname == haproxy_hosts.keys()[0]
-
-- include: mongodb_install.yml
+- name: restart controller services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: controller_services | union(controller_services_noarch)
+  when: RECOVERY_ENV
   tags:
-    - test_mongo
+    - recovery
 
-- include: mongodb_config.yml
-  when:
-    - inventory_hostname == haproxy_hosts.keys()[0]
-  tags:
-    - test_mongo
-
-- meta: flush_handlers
