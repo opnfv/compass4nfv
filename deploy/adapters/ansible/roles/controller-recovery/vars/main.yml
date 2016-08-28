@@ -7,29 +7,5 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
-  tags:
-    - test_mongo
-    - recovery
+controller_services_noarch: []
 
-- include: mariadb_install.yml
-
-- include: mariadb_cluster.yml
-  tags:
-    - recovery
-
-- include: mariadb_config.yml
-  when:
-    - inventory_hostname == haproxy_hosts.keys()[0]
-
-- include: mongodb_install.yml
-  tags:
-    - test_mongo
-
-- include: mongodb_config.yml
-  when:
-    - inventory_hostname == haproxy_hosts.keys()[0]
-  tags:
-    - test_mongo
-
-- meta: flush_handlers
