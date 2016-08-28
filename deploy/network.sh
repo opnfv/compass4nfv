@@ -104,6 +104,23 @@ function setup_baremetal_net() {
   setup_bridge_net install $INSTALL_NIC
 }
 
+function setup_network_boot_scripts() {
+    sudo cp $COMPASS_DIR/deploy/network.sh /usr/sbin/network_setup
+    sudo chmod +777 /usr/sbin/network_setup
+    sudo cat << EOF >> /usr/sbin/network_setup
+
+sleep 2
+save_network_info
+clear_forward_rejct_rules
+EOF
+    sudo chmod 755 /usr/sbin/network_setup
+
+    egrep -R "^/usr/sbin/network_setup" /etc/rc.local
+    if [[ $? != 0 ]]; then
+        sudo sed -i '/^exit 0/i\/usr\/sbin\/network_setup' /etc/rc.local
+    fi
+}
+
 function create_nets() {
     setup_nat_net mgmt $MGMT_GW $MGMT_MASK $MGMT_IP_START $MGMT_IP_END
 
@@ -113,4 +130,7 @@ function create_nets() {
     # create external network
     setup_bridge_external
     clear_forward_rejct_rules
+
+    setup_network_boot_scripts
 }
+
