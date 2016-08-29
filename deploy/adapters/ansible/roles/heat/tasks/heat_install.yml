@@ -17,6 +17,18 @@
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
   with_items: services | union(services_noarch)
 
+# '
+
+- name: create heat user domain
+  shell: >
+    . /opt/admin-openrc-v3.sh;
+    openstack domain create --description "Stack projects and users" heat;
+    openstack user create --domain heat --password {{ HEAT_PASS }} heat_domain_admin;
+    openstack role add --domain heat --user-domain heat --user heat_domain_admin admin;
+    openstack role create heat_stack_owner;
+    openstack role add --project demo --user demo heat_stack_owner;
+  when: inventory_hostname == groups['controller'][0] and ansible_os_family == "Debian"
+
 - name: update heat conf
   template: src=heat.j2
             dest=/etc/heat/heat.conf
@@ -24,4 +36,13 @@
   notify:
     - restart heat service
     - remove heat-sqlite-db
+  when: ansible_os_family == "RedHat"
 
+- name: update heat conf
+  template: src=heat_debian.j2
+            dest=/etc/heat/heat.conf
+            backup=yes
+  notify:
+    - restart heat service
+    - remove heat-sqlite-db
+  when: ansible_os_family == "Debian"

@@ -12,6 +12,7 @@ cron_path: "/var/spool/cron/crontabs"
 
 packages:
   - keystone
+  - python-openstackclient
 
 services:
   - apache2
