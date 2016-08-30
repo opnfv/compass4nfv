@@ -83,5 +83,6 @@
   with_items:
     - admin-openrc.sh
     - demo-openrc.sh
+    - admin-openrc-v3.sh
 
 - meta: flush_handlers
