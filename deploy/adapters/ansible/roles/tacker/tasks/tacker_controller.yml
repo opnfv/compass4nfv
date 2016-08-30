@@ -46,8 +46,13 @@
     src: "haproxy-tacker-cfg.j2"
     dest: "/tmp/haproxy-tacker.cfg"
 
+- name: get the current haproxy configuration
+  shell: cat /etc/haproxy/haproxy.cfg
+  register: ha_cfg
+
 - name: "combination of the haproxy configuration"
   shell: "cat /tmp/haproxy-tacker.cfg >> /etc/haproxy/haproxy.cfg"
+  when: ha_cfg.stdout.find('8888') == -1
 
 - name: "delete temporary configuration file"
   file:
@@ -64,6 +69,30 @@
          mysql -e "create database tacker character set utf8;";
          mysql -e "grant all on tacker.* to 'tacker'@'%' identified by 'TACKER_DBPASS';";
   when: inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: get the openstack user info
+  shell: . /opt/admin-openrc.sh; openstack user list
+  register: user_info
+
+- name: get the openstack service info
+  shell: . /opt/admin-openrc.sh; openstack service list
+  register: service_info
+
+- name: get the openstack endpoint info
+  shell: . /opt/admin-openrc.sh; openstack endpoint list
+  register: endpoint_info
+
+- name: delete the existed tacker endpoint
+  shell: . /opt/admin-openrc.sh; openstack endpoint delete $(openstack endpoint list | grep tacker | awk '{print $2}')
+  when: endpoint_info.stdout.find('tacker') != -1 and inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: delete the existed tacker service
+  shell: . /opt/admin-openrc.sh; openstack service delete tacker
+  when: service_info.stdout.find('tacker') != -1 and inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: delete the existed tacker user
+  shell: . /opt/admin-openrc.sh; openstack user delete tacker
+  when: user_info.stdout.find('tacker') != -1 and inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: create tacker user with admin privileges
   shell: . /opt/admin-openrc.sh; openstack user create --password console tacker; openstack role add --project service --user tacker admin;
