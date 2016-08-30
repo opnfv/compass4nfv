@@ -46,8 +46,13 @@
     src: "haproxy-tacker-cfg.j2"
     dest: "/tmp/haproxy-tacker.cfg"
 
+- name: check if tacker is configured in haproxy.cfg
+  shell: cat /etc/haproxy/haproxy.cfg
+  register: ha_cfg
+
 - name: "combination of the haproxy configuration"
   shell: "cat /tmp/haproxy-tacker.cfg >> /etc/haproxy/haproxy.cfg"
+  when: ha_cfg.stdout.find('8888') == -1
 
 - name: "delete temporary configuration file"
   file:
