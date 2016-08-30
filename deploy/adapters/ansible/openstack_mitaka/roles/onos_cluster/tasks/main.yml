@@ -40,11 +40,72 @@
 
 - name: Stop the Open vSwitch service and clear existing OVSDB
   shell: >
-    ovs-vsctl del-br br-int ;
-    ovs-vsctl del-br br-tun ;
-    ovs-vsctl del-manager ;
-    ip link delete onos_port1 type veth peer name onos_port2;
+    service openvswitch-switch stop ;
+    rm -rf /var/log/openvswitch/* ;
+    rm -rf /etc/openvswitch/conf.db ;
+    service openvswitch-switch start ;
   when: groups['onos']|length !=0
+  ignore_errors: True
+
+##################################################################
+###########  Recover External network #################
+##################################################################
+
+- name: add ovs bridge
+  openvswitch_bridge: bridge={{ item["name"] }} state=present
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: item["type"] == "ovs" and groups['onos']|length !=0
+
+- name: add ovs uplink
+  openvswitch_port: bridge={{ item["name"] }} port={{ item["interface"] }} state=present
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: item["type"] == "ovs" and groups['onos']|length !=0
+
+- name: add ovs uplink
+  shell: ip link set {{ item["interface"] }} up
+  with_items: "{{ network_cfg['provider_net_mappings'] }}"
+  when: item["type"] == "ovs" and groups['onos']|length !=0
+
+- name: ensure script dir exist
+  shell: mkdir -p /opt/setup_networks
+  when: groups['onos']|length !=0
+
+- name: copy scripts
+  copy:  src={{ item }} dest=/opt/setup_networks
+  with_items:
+    - setup_networks/log.py
+    - setup_networks/setup_networks.py
+  when: groups['onos']|length !=0
+
+- name: copy boot scripts
+  copy:  src={{ item }} dest=/etc/init.d/ mode=0755
+  with_items:
+    - setup_networks/net_init
+  when: groups['onos']|length !=0
+
+- name: copy config files
+  template: src=network.cfg dest=/opt/setup_networks
+  when: groups['onos']|length !=0
+
+- name: make sure python lib exist
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items:
+    - python-yaml
+    - python-netaddr
+  when: groups['onos']|length !=0
+
+- name: run scripts
+  shell: python /opt/setup_networks/setup_networks.py
+  when: groups['onos']|length !=0
+
+- name: add to boot scripts
+  service: name=net_init enabled=yes
+  when: groups['onos']|length !=0
+##################################################################
+
+- name: restart keepalived to recover external IP
+  shell: service keepalived restart
+  when: inventory_hostname in groups['onos']
   ignore_errors: True
 
 - name: Install ONOS Cluster on Controller
