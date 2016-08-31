@@ -237,7 +237,9 @@
   shell: crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins networking_odl.l3.l3_odl.OpenDaylightL3RouterPlugin;
   when: odl_l3_agent == "Enable"
 
-
+- name: configure metadata for l3 configuration
+  shell: crudini --set /etc/neutron/dhcp_agent.ini DEFAULT enable_isolated_metadata True;
+  when: odl_l3_agent == "Enable"
 
 - name: drop and recreate neutron database
   shell: mysql -e "drop database if exists neutron;";

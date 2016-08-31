@@ -152,7 +152,7 @@
 - name: execute ml2 configuration script
   command: su -s /bin/sh -c "/opt/ml2_conf.sh;"
 
-- name: change odl password for moon
-  shell: crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl password {{ ADMIN_PASS }} 
-  when: moon == "Enable"
+#- name: change odl password for moon
+#  shell: crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl password {{ ADMIN_PASS }} 
+#  when: moon == "Enable"
 
