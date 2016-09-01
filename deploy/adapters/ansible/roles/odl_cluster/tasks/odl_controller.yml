@@ -89,11 +89,21 @@
 
 - name: create karaf config
   template:
-    src: org.apache.karaf.features.cfg
+    src: org.apache.karaf.features.cfg.Debian
     dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
     owner: odl
     group: odl
     mode: 0775
+  when: ansible_os_family == "Debian"
+
+- name: create karaf config
+  template:
+    src: org.apache.karaf.features.cfg.Redhat
+    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
+    owner: odl
+    group: odl
+    mode: 0775
+  when: ansible_os_family == "RedHat"
 
 - name: create tomcat config
   template:
