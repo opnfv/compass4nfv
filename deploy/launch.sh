@@ -32,35 +32,45 @@ source ${COMPASS_DIR}/deploy/deploy_host.sh
 ######################### main process
 print_logo
 
-if [[ ! -z $VIRT_NUMBER ]];then
-    tear_down_machines
-fi
-
-log_info "########## get host mac begin #############"
-machines=`get_host_macs`
-if [[ -z $machines ]]; then
-    log_error "get_host_macs failed"
-    exit 1
-fi
-
-export machines
-
-if [[ "$DEPLOY_COMPASS" == "true" ]]; then
-    if ! prepare_env;then
-        echo "prepare_env failed"
+if [ $EXPANSION -eq 0 ]; then
+    if [[ ! -z $VIRT_NUMBER ]];then
+        tear_down_machines
+    fi
+    
+    log_info "########## get host mac begin #############"
+    machines=`get_host_macs`
+    if [[ -z $machines ]]; then
+        log_error "get_host_macs failed"
+        exit 1
+    fi
+    
+    export machines
+    
+    if [[ "$DEPLOY_COMPASS" == "true" ]]; then
+        if ! prepare_env;then
+            echo "prepare_env failed"
+            exit 1
+        fi
+    
+        log_info "########## set up network begin #############"
+        if ! create_nets;then
+            log_error "create_nets failed"
+            exit 1
+        fi
+    
+        if ! launch_compass;then
+            log_error "launch_compass failed"
+            exit 1
+        fi
+    fi
+else
+    machines=`get_host_macs`
+    if [[ -z $machines ]];then
+        log_error "get_host_macs failed"
         exit 1
     fi
 
-    log_info "########## set up network begin #############"
-    if ! create_nets;then
-        log_error "create_nets failed"
-        exit 1
-    fi
-
-    if ! launch_compass;then
-        log_error "launch_compass failed"
-        exit 1
-    fi
+    log_info "deploy host macs: $machines"
 fi
 
 if [[ -z "$REDEPLOY_HOST" || "$REDEPLOY_HOST" == "false" ]]; then
