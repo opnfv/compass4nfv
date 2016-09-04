@@ -60,13 +60,26 @@ function get_host_macs() {
 
     if [[ $REDEPLOY_HOST == "true" ]]; then
         mac_array=`cat $WORK_DIR/switch_machines`
+        machines=`echo $mac_array|sed 's/ /,/g'`
     else
-        chmod +x $mac_generator
-        mac_array=`$mac_generator $VIRT_NUMBER`
-        echo $mac_array > $WORK_DIR/switch_machines
+        if [[ -z $HOST_MACS ]]; then
+            # TODO: EXPANSION check
+            chmod +x $mac_generator
+            mac_array=`$mac_generator $VIRT_NUMBER`
+            echo $mac_array > $WORK_DIR/switch_machines
+            machines=`echo $mac_array|sed 's/ /,/g'`
+        else
+            if [ $EXPANSION -eq 0 ]; then
+                # TODO: switch_machines set
+                machines=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
+            else
+                new_machines=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
+                mac_array=`cat $WORK_DIR/switch_machines`
+                echo $new_machines $mac_array > $WORK_DIR/switch_machines
+                machines=`echo  $new_machines $mac_array | sed 's/ /,/g'`
+            fi
+        fi
     fi
-
-    machines=`echo $mac_array|sed 's/ /,/g'`
 
     echo $machines
 }

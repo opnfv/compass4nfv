@@ -49,6 +49,9 @@ def byteify(input):
         return input
 
 opts = [
+    cfg.IntOpt('expansion',
+               help='is this an expansion?',
+               default=0),
     cfg.StrOpt('compass_server',
               help='compass server url',
               default='http://127.0.0.1/api'),
@@ -365,20 +368,27 @@ class CompassClient(object):
         assert(subnets)
 
         subnet_mapping = {}
+        _, subnets_in_db = self.client.list_subnets()
         for subnet in subnets:
             try:
                 netaddr.IPNetwork(subnet)
             except:
                 raise RuntimeError('subnet %s format is invalid' % subnet)
 
-            status, resp = self.client.add_subnet(subnet)
-            LOG.info('add subnet %s status %s response %s',
-                         subnet, status, resp)
-            if not self.is_ok(status):
-                raise RuntimeError('failed to add subnet %s' % subnet)
+            if not CONF.expansion:
+                status, resp = self.client.add_subnet(subnet)
+                LOG.info('add subnet %s status %s response %s',
+                             subnet, status, resp)
+                if not self.is_ok(status):
+                    raise RuntimeError('failed to add subnet %s' % subnet)
 
-            subnet_mapping[resp['subnet']] = resp['id']
+                subnet_mapping[resp['subnet']] = resp['id']
+            else:
+                for subnet_in_db in subnets_in_db:
+                    if subnet == subnet_in_db['subnet']:
+                        subnet_mapping[subnet] = subnet_in_db['id'] 
 
+        LOG.info('subnet mapping: %r', subnet_mapping)
         self.subnet_mapping = subnet_mapping
 
     def add_cluster(self, adapter_id, os_id, flavor_id):
@@ -418,7 +428,12 @@ class CompassClient(object):
             if hostname
         ]
 
-        assert(len(machines) == len(hostnames))
+        LOG.info("machines: %r, hostnames: %r", machines, hostnames)
+        if not CONF.expansion:
+            assert(len(machines) == len(hostnames))
+        else:
+            assert(len(machines) >= len(hostnames))
+            machines = machines[-len(hostnames):]
 
         machines_dict = []
         for machine_id, hostname in zip(machines, hostnames):
@@ -439,9 +454,11 @@ class CompassClient(object):
             raise RuntimeError("add host to cluster failed")
 
         for host in resp['hosts']:
-            self.host_mapping[host['hostname']] = host['id']
+            if host['hostname'] in hostnames:
+                self.host_mapping[host['hostname']] = host['id']
 
-        assert(len(self.host_mapping) == len(machines))
+        if not CONF.expansion:
+            assert(len(self.host_mapping) == len(machines))
 
     def set_cluster_os_config(self, cluster_id):
         """set cluster os config."""
@@ -928,29 +945,57 @@ def kill_print_proc():
     os.system("ps aux|grep -v grep|grep -E 'ssh.+root@192.168.200.2'|awk '{print $2}'|xargs kill -9")
 
 def deploy():
-    client = CompassClient()
-    machines = client.get_machines()
+    LOG.info("expension is %r ", CONF.expansion)
+    if not CONF.expansion:
+        client = CompassClient()
+        machines = client.get_machines()
 
-    LOG.info('machines are %s', machines)
+        LOG.info('machines are %s', machines)
+        client.add_subnets()
+        adapter_id, os_id, flavor_id = client.get_adapter()
+        cluster_id = client.add_cluster(adapter_id, os_id, flavor_id)
 
-    client.add_subnets()
-    adapter_id, os_id, flavor_id = client.get_adapter()
-    cluster_id = client.add_cluster(adapter_id, os_id, flavor_id)
+        client.add_cluster_hosts(cluster_id, machines)
+        client.set_host_networking()
+        client.set_cluster_os_config(cluster_id)
 
-    client.add_cluster_hosts(cluster_id, machines)
-    client.set_host_networking()
-    client.set_cluster_os_config(cluster_id)
+        if flavor_id:
+            client.set_cluster_package_config(cluster_id)
 
-    if flavor_id:
+        client.set_all_hosts_roles(cluster_id)
+        client.deploy_clusters(cluster_id)
+
+        LOG.info("compass OS installtion is begin")
+        threading.Thread(target=print_ansible_log).start()
+        client.get_installing_progress(cluster_id)
+        client.check_dashboard_links(cluster_id)
+    else:
+        client = CompassClient()
+        machines = client.get_machines()
+        LOG.info('machines are %s', machines)
+        client.add_subnets()
+#        adapter_id, os_id, distributed_system_id, flavor_id = client.get_adapter()
+#        cluster_id = client.add_cluster(adapter_id, os_id, flavor_id)
+        status, response = client.client.list_clusters()
+        cluster_id = 1
+        for cluster in response:
+            if cluster['name'] == CONF.cluster_name:
+                cluster_id = cluster['id']
+
+        LOG.info('cluster_id is %s', cluster_id)
+        
+        client.add_cluster_hosts(cluster_id, machines)
+        client.set_host_networking()
+        client.set_cluster_os_config(cluster_id)
+
+#        if distributed_system_id:
         client.set_cluster_package_config(cluster_id)
+        #return
 
-    client.set_all_hosts_roles(cluster_id)
-    client.deploy_clusters(cluster_id)
+        client.set_all_hosts_roles(cluster_id)
+        client.deploy_clusters(cluster_id)
 
-    LOG.info("compass OS installtion is begin")
-    threading.Thread(target=print_ansible_log).start()
-    client.get_installing_progress(cluster_id)
-    client.check_dashboard_links(cluster_id)
+        client.get_installing_progress(cluster_id)
 
 def redeploy():
     client = CompassClient()
