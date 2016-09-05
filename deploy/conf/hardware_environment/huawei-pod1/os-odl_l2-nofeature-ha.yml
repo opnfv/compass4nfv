@@ -33,9 +33,9 @@ hosts:
       - ceph-mon
 
   - name: host3
-    mac: 'D8:49:0B:DA:67:1F'
+    mac: '78:D7:52:A0:B1:99'
     interfaces:
-      - eth1: 'D8:49:0B:DA:67:20'
+      - eth1: '78:D7:52:A0:B1:9A'
     ipmiIp: 172.16.130.29
     ipmiPass: Huawei@123
     roles:
