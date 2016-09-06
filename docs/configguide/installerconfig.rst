@@ -63,10 +63,6 @@ To get stable /colorado release, you can use the following command:
 
 - git checkout colorado.1.0
 
-If you don't have a Linux foundation user id, get it first by the url:
-
-https://wiki.opnfv.org/developer/getting_started
-
 If you want to use a daily release ISO, please checkout the corresponding sha1 to
 get the deployment scripts:
 
