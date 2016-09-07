@@ -41,6 +41,15 @@
   script: remove_user.sh
   when: ansible_os_family == "RedHat"
 
+- name: restart mysql for centos noha
+  service:
+    name: mysql
+    state: restarted
+  when: >
+    inventory_hostname == haproxy_hosts.keys()[0]
+    and haproxy_hosts|length == 1
+    and ansible_os_family == "RedHat"
+
 - name: restart first nodes
   service:
     name: mysql
