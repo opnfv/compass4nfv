@@ -244,6 +244,9 @@ opts = [
     cfg.StrOpt('onos_sfc',
               help='onos_sfc enable flag',
               default='Disable'),
+   cfg.StrOpt('odl_sfc',
+              help='odl_sfc enable flag',
+              default='Disable'),
 ]
 CONF.register_cli_opts(opts)
 
@@ -735,6 +738,7 @@ class CompassClient(object):
         package_config['odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"
         package_config['moon'] = "Enable" if CONF.moon == "Enable" else "Disable"
         package_config['onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
+        package_config['odl_sfc'] = "Enable" if CONF.odl_sfc == "Enable" else "Disable"
 
         status, resp = self.client.update_cluster_config(
             cluster_id, package_config=package_config)

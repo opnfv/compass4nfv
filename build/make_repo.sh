@@ -252,7 +252,11 @@ function make_pip_repo()
     local pip_tmp_path=$WORK_PATH/work/repo/pip_tmp
 
     for i in $SPECIAL_PIP_PACKAGE; do
-        curl --connect-timeout 10 -o $pip_path/`basename $i` $i
+        curl --connect-timeout 100 -o $pip_path/`basename $i` $i
+    done
+
+    for i in $PIP3_PACKAGE; do
+        pip3 install $i -d $pip_path
     done
 
     mkdir -p $pip_tmp_path
@@ -309,7 +313,7 @@ function main()
     process_env
 
     if [[ $# -eq 0 ]]; then
-        make_all_repo
+         make_all_repo
     else
         make_repo "$@"
     fi

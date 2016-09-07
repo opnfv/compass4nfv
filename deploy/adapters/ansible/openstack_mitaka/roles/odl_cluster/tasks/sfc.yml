@@ -1,0 +1,45 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: install sfc_compute_packages on compute node
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: sfc_compute_packages
+
+- name: install setuptools
+  shell: pip3 install --upgrade setuptools
+
+- name: install pip3 packages
+  pip: name={{ item }} state=present executable=pip3
+  with_items: sfc_pip
+
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
+- name: creat sfc_home
+  shell: >
+    mkdir -p /opt/sfc
+
+- name: download sfc package file
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/sfc/{{ sfc_pkg }}"  dest=/opt/{{ sfc_pkg }}
+
+- name: extract sfc package
+  command: su -s /bin/sh -c "tar xzf /opt/{{ sfc_pkg }} -C {{ sfc_home }} --strip-components 1 --no-overwrite-dir -k --skip-old-files"
+
+#- name: install setuptools
+#  shell: pip3 install --upgrade setuptools
+
+#- name: install pip3 requirement
+#  shell: pip3 install -r {{ sfc_home }}/sfc-py/requirements.txt
+
+- name: start sfc_agent
+  shell: nohup python3.4 {{ sfc_home }}/sfc-py/sfc/sfc_agent.py --rest --odl-ip-port {{ internal_vip.ip }}:8181 &
+
+

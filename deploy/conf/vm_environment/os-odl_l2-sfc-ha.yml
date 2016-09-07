@@ -1,0 +1,37 @@
+TYPE: virtual
+FLAVOR: cluster
+
+odl_sfc: "Enable"
+
+hosts:
+  - name: host1
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-adm
+      - ceph-mon
+
+  - name: host2
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-mon
+
+  - name: host3
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-mon
+
+  - name: host4
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host5
+    roles:
+      - compute
+      - ceph-osd
