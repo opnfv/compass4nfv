@@ -34,7 +34,6 @@
     router_external: yes
     state: present
   run_once: true
-  when: 'public_net_info.enable == True'
 
 - name: create external subnet
   neutron_subnet:
@@ -52,5 +51,4 @@
     allocation_pool_end: "{{ public_net_info.floating_ip_end }}"
     state: present
   run_once: true
-  when: 'public_net_info.enable == True'
 
