@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_472a6c2d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "\":\" delete it",
+      "range": {
+        "startLine": 7,
+        "startChar": 22,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e720584b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "pls give simple description on how to use this feature.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 42
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a71a6015",
+        "filename": "add.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "pls add license head after this line.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_27109000",
+        "filename": "deploy/client.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "properties :)",
+      "range": {
+        "startLine": 634,
+        "startChar": 60,
+        "endLine": 634,
+        "endChar": 69
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_47134c0d",
+        "filename": "deploy/client.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "properties :)",
+      "range": {
+        "startLine": 643,
+        "startChar": 60,
+        "endLine": 643,
+        "endChar": 69
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_672d2846",
+        "filename": "deploy/client.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "# TODO : print ansible log",
+      "range": {
+        "startLine": 989,
+        "startChar": 7,
+        "endLine": 989,
+        "endChar": 30
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_870964df",
+        "filename": "deploy/conf/vm_environment/virtual_cluster_expansion.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "we still have some issues with ceph expansion",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e7e7f810",
+        "filename": "deploy/host_baremetal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "add \"echo $machines\"",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 65
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_27273066",
+        "filename": "deploy/host_virtual.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "# FIXME: Need test.",
+      "range": {
+        "startLine": 72,
+        "startChar": 16,
+        "endLine": 72,
+        "endChar": 57
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_87d72423",
+        "filename": "run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-07T04:02:43Z",
+      "side": 1,
+      "message": "pls add license head after this line.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "b848c117d2b832a6902478604ae1f8ed35e64d71",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
