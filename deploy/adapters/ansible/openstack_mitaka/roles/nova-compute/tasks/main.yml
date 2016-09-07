@@ -31,7 +31,7 @@
   when: ansible_os_family == "Debian"
 
 - name: update nova-compute conf
-  template: src=templates/{{ item }} dest=/etc/nova/{{ item }}
+  template: src={{ item }} dest=/etc/nova/{{ item }}
   with_items:
     - nova.conf
   notify:
