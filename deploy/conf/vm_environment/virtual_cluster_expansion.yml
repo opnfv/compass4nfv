@@ -1,0 +1,8 @@
+TYPE: virtual
+FLAVOR: cluster
+
+hosts:
+  - name: host6
+    mac: '00:00:aa:bb:cc:dd'
+    roles:
+      - compute
