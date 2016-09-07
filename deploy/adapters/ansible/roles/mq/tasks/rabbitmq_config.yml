@@ -14,8 +14,8 @@
 
 - name: add rabbitmq user
   rabbitmq_user:
-    user='{{ RABBIT_USER }}'
-    password='{{ RABBIT_PASS }}'
+    user='service'
+    password='service'
     vhost=/
     configure_priv=.*
     write_priv=.*
