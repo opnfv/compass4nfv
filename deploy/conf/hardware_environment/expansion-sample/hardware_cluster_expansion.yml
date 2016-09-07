@@ -1,0 +1,15 @@
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiUser: root
+ipmiPass: Huawei@123
+
+hosts:
+  - name: host6
+     mac: 'E8:4D:D0:BA:60:45'
+     interfaces:
+        - eth1: '8:4D:D0:BA:60:44'
+     ipmiIp: 172.16.131.23
+     roles:
+       - compute
