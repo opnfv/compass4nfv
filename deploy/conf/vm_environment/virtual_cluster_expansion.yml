@@ -1,0 +1,9 @@
+TYPE: virtual
+FLAVOR: cluster
+
+hosts:
+  - name: host9
+    mac: '00:00:aa:bb:cc:d9'
+    roles:
+      - compute
+      - ceph-osd

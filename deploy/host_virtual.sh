@@ -60,14 +60,32 @@ function get_host_macs() {
 
     if [[ $REDEPLOY_HOST == "true" ]]; then
         mac_array=`cat $WORK_DIR/switch_machines`
+        machines=`echo $mac_array|sed 's/ /,/g'`
     else
-        chmod +x $mac_generator
-        mac_array=`$mac_generator $VIRT_NUMBER`
-        echo $mac_array > $WORK_DIR/switch_machines
+        if [[ -z $HOST_MACS ]]; then
+            if [ $EXPANSION -eq 0 ]; then
+                chmod +x $mac_generator
+                mac_array=`$mac_generator $VIRT_NUMBER`
+                echo $mac_array > $WORK_DIR/switch_machines
+                machines=`echo $mac_array|sed 's/ /,/g'`
+            else
+                machines_old=`cat $WORK_DIR/switch_machines`
+                chmod +x $mac_generator
+                machines_add=`$mac_generator $VIRT_NUMBER`
+                echo $machines_add $machines_old > $WORK_DIR/switch_machines
+                machines=`echo $machines_add $machines_old|sed 's/ /,/g'`
+            fi
+        else
+            if [ $EXPANSION -eq 0 ]; then
+                machines=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
+            else
+                machines_old=`cat $WORK_DIR/switch_machines`
+                machines_add=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
+                echo $machines_add $machines_old > $WORK_DIR/switch_machines
+                machines=`echo $machines_add $machines_old|sed 's/ /,/g'`
+            fi
+        fi
     fi
-
-    machines=`echo $mac_array|sed 's/ /,/g'`
-
     echo $machines
 }
 
