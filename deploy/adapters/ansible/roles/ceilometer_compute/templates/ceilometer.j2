@@ -5,8 +5,8 @@ auth_strategy = keystone
 
 [oslo_messaging_rabbit]
 rabbit_host = {{ internal_vip.ip }}
-rabbit_userid = {{ RABBIT_USER }}
-rabbit_password = {{ RABBIT_PASS }}
+rabbit_userid = service
+rabbit_password = service
 
 [publisher]
 metering_secret = {{ metering_secret }}

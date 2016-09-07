@@ -80,8 +80,8 @@
 
 - name: add rabbitmq user
   shell: >
-    rabbitmqctl add_user {{ RABBIT_USER }} {{ RABBIT_PASS }} ;
-    rabbitmqctl set_permissions {{ RABBIT_USER }} ".*" ".*" ".*" ;
+    rabbitmqctl add_user service service ;
+    rabbitmqctl set_permissions service ".*" ".*" ".*" ;
 
 - name: "check rabbitmq server"
   shell: netstat -lpen --tcp | grep beam |  grep 5672; while [ $? -ne 0 ]; do sleep 10; netstat -lpen --tcp | grep beam | grep 5672; done
