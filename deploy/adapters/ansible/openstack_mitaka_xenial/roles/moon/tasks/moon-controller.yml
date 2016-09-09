@@ -128,7 +128,7 @@
     sudo chmod g+rw /var/log/moon/keystonemiddleware.log;
     sudo chmod g+rw /var/log/moon/system.log;
     sudo adduser keystone moonlog;
-    sudo adduser swift moonlog;
+    # sudo adduser swift moonlog;
     sudo adduser nova moonlog;
 
 
@@ -217,8 +217,8 @@
 - name: update api-paste.ini
   template: src=api-paste.ini dest=/etc/nova/api-paste.ini backup=yes
 
-- name: update proxy-server conf
-  template: src=proxy-server.conf dest=/etc/swift/proxy-server.conf backup=yes
+#- name: update proxy-server conf
+#  template: src=proxy-server.conf dest=/etc/swift/proxy-server.conf backup=yes
 
 # restart nova
 - name: restart nova
@@ -231,8 +231,8 @@
     - nova-scheduler
 
 # restart swift
-- name: restart swift
-  service: name={{ item }} state=restarted enabled=yes
-  with_items:
-    - swift-proxy
-    - memcached
+#- name: restart swift
+#  service: name={{ item }} state=restarted enabled=yes
+#  with_items:
+#    - swift-proxy
+#    - memcached

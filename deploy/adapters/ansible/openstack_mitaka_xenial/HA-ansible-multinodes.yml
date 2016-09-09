@@ -99,7 +99,6 @@
   accelerate: true
   max_fail_percentage: 0
   roles:
-    - swift
     - moon
 
 - hosts: all
