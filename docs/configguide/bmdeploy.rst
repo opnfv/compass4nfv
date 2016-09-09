@@ -10,9 +10,11 @@ Nodes Configuration (Bare Metal Deployment)
 
 The below file is the inventory template of deployment nodes:
 
-"compass4nfv/deploy/conf/hardware_environment/huawei-pod1/[dha].yml"
+"compass4nfv/deploy/conf/hardware_environment/huawei-pod1/dha.yml"
 
 You can write your own IPMI IP/User/Password/Mac address/roles reference to it.
+
+        - name -- Host name for deployment node after installation.
 
         - ipmiVer -- IPMI interface version for deployment node support. IPMI 1.0
           or IPMI 2.0 is available.
@@ -26,12 +28,26 @@ You can write your own IPMI IP/User/Password/Mac address/roles reference to it.
 
         - mac -- MAC Address of deployment node PXE NIC .
 
-        - name -- Host name for deployment node after installation.
-
         - roles -- Components deployed.
 
+**Set TYPE/FLAVOR and POWER TOOL**
 
-**Assignment of different roles to servers**
+E.g.
+.. code-block:: yaml
+
+    TYPE: baremetal
+    FLAVOR: cluster
+    POWER_TOOL: ipmitool
+
+**Set ipmiUser/ipmiPass and ipmiVer**
+
+E.g.
+
+.. code-block:: yaml
+
+    ipmiUser: USER
+    ipmiPass: PASSWORD
+    ipmiVer: '2.0'
 
 E.g. Openstack only deployment roles setting
 
@@ -39,11 +55,19 @@ E.g. Openstack only deployment roles setting
 
     hosts:
       - name: host1
+        mac: 'F8:4A:BF:55:A2:8D'
+        interfaces:
+           - eth1: 'F8:4A:BF:55:A2:8E'
+        ipmiIp: 172.16.130.26
         roles:
           - controller
           - ha
 
       - name: host2
+        mac: 'D8:49:0B:DA:5A:B7'
+        interfaces:
+          - eth1: 'D8:49:0B:DA:5A:B8'
+        ipmiIp: 172.16.130.27
         roles:
           - compute
 
@@ -56,6 +80,10 @@ E.g. Openstack and ceph deployment roles setting
 
     hosts:
       - name: host1
+        mac: 'F8:4A:BF:55:A2:8D'
+        interfaces:
+           - eth1: 'F8:4A:BF:55:A2:8E'
+        ipmiIp: 172.16.130.26
         roles:
           - controller
           - ha
@@ -63,6 +91,10 @@ E.g. Openstack and ceph deployment roles setting
           - ceph-mon
 
       - name: host2
+        mac: 'D8:49:0B:DA:5A:B7'
+        interfaces:
+          - eth1: 'D8:49:0B:DA:5A:B8'
+        ipmiIp: 172.16.130.27
         roles:
           - compute
           - ceph-osd
@@ -73,12 +105,20 @@ E.g. Openstack and ODL deployment roles setting
 
     hosts:
       - name: host1
+        mac: 'F8:4A:BF:55:A2:8D'
+        interfaces:
+           - eth1: 'F8:4A:BF:55:A2:8E'
+        ipmiIp: 172.16.130.26
         roles:
           - controller
           - ha
           - odl
 
       - name: host2
+        mac: 'D8:49:0B:DA:5A:B7'
+        interfaces:
+          - eth1: 'D8:49:0B:DA:5A:B8'
+        ipmiIp: 172.16.130.27
         roles:
           - compute
 
@@ -88,21 +128,29 @@ E.g. Openstack and ONOS deployment roles setting
 
     hosts:
       - name: host1
+        mac: 'F8:4A:BF:55:A2:8D'
+        interfaces:
+           - eth1: 'F8:4A:BF:55:A2:8E'
+        ipmiIp: 172.16.130.26
         roles:
           - controller
           - ha
           - onos
 
       - name: host2
+        mac: 'D8:49:0B:DA:5A:B7'
+        interfaces:
+          - eth1: 'D8:49:0B:DA:5A:B8'
+        ipmiIp: 172.16.130.27
         roles:
           - compute
-
 
 Network Configuration (Bare Metal Deployment)
 ---------------------------------------------
 
-Before deployment, there are some network configuration to be checked based on your network topology.
-Compass4nfv network default configuration file is "compass4nfv/deploy/conf/network_cfg.yaml".
+Before deployment, there are some network configuration to be checked based
+on your network topology.Compass4nfv network default configuration file is
+"compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml".
 You can write your own reference to it.
 
 **The following figure shows the default network configuration.**
@@ -155,107 +203,125 @@ You can write your own reference to it.
 Start Deployment (Bare Metal Deployment)
 ----------------------------------------
 
-1. Set PXE/Installation NIC for Jumphost. (set eth1 E.g.)
+1. Edit run.sh
 
-.. code-block:: bash
-
-    export INSTALL_NIC=eth1
-
-
-2.Set OS version and OpenStack version for deployment nodes.
-
+Set OS version and OpenStack version for deployment nodes.
     Compass4nfv Colorado supports three OS version based openstack mitaka.
 
-Ubuntu 14.04 mitaka:
-
+E.g.
 .. code-block:: bash
 
+    ########## Ubuntu14.04 Mitaka ##########
     export OS_VERSION=trusty
     export OPENSTACK_VERSION=mitaka
 
-Ubuntu 16.04 mitaka:
+    ########## Ubuntu16.04 Mitaka ##########
+    # export OS_VERSION=xenial
+    # export OPENSTACK_VERSION=mitaka_xenial
 
-.. code-block:: bash
+    ########## Centos7 Mitaka ##########
+    # export OS_VERSION=centos7
+    # export OPENSTACK_VERSION=mitaka
 
-    export OS_VERSION=xenial
-    export OPENSTACK_VERSION=mitaka_xenial
-
-Centos 7 mitaka:
-
-.. code-block:: bash
-
-    export OS_VERSION=centos7
-    export OPENSTACK_VERSION=mitaka
-
-3. Set ISO image that you want to deploy
-
-.. code-block:: bash
-
-    export ISO_URL=file:///${YOUR_OWN}/compass.iso
-    or
-    export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
-
-4. Run ``deploy.sh`` with inventory and network configuration
-
-.. code-block:: bash
-
-    ./deploy.sh --dha ${YOUR_OWN}/dha.yml --network ${YOUR_OWN}/network.yml
+Set ISO image that you want to deploy
 
 E.g.
 
-1. nosdn-nofeature scenario deploy sample
+.. code-block:: bash
+
+    # ISO_URL is your iso's absolute path
+    export ISO_URL=file:///home/compass/compass4nfv.iso
+    # or
+    # export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
+
+Set Jumphost PXE NIC. (set eth1 E.g.)
+
+E.g.
 
 .. code-block:: bash
 
-    ./deploy.sh \
-        --dha ./deploy/conf/hardware_environment/huawei-pod1/os-nosdn-nofeature-ha.yml \
-        --network ./deploy/conf/hardware_environment/huawei-pod1/network.yml
+    ########## Hardware Deploy Jumpserver PXE NIC ##########
+    # you need comment out it when virtual deploy
+    export INSTALL_NIC=eth1
 
-2. ocl-nofeature scenario deploy sample
+Set scenario that you want to deploy
 
-.. code-block:: bash
+E.g.
 
-    ./deploy.sh \
-        --dha ./deploy/conf/hardware_environment/huawei-pod1/os-ocl-nofeature-ha.yml \
-        --network ./deploy/conf/hardware_environment/huawei-pod1/network_ocl.yml
-
-3. odl_l2-moon scenario deploy sample
+nosdn-nofeature scenario deploy sample
 
 .. code-block:: bash
 
-    ./deploy.sh \
-        --dha ./deploy/conf/hardware_environment/huawei-pod1/os-odl_l2-moon-ha.yml \
-        --network ./deploy/conf/hardware_environment/huawei-pod1/network.yml
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-nosdn-nofeature-ha.yml
 
- 4. odl_l2-nofeature scenario deploy template
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network.yml
 
-.. code-block:: bash
-
-    ./deploy.sh \
-        --dha ./deploy/conf/hardware_environment/huawei-pod1/os-odl_l2-nofeature-ha.yml \
-        --network ./deploy/conf/hardware_environment/huawei-pod1/network.yml
-
-5. odl_l3-nofeature scenario deploy sample
+ocl-nofeature scenario deploy sample
 
 .. code-block:: bash
 
-    ./deploy.sh \
-        --dha ./deploy/conf/hardware_environment/huawei-pod1/os-odl_l3-nofeature-ha.yml \
-        --network ./deploy/conf/hardware_environment/huawei-pod1/network.yml
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-ocl-nofeature-ha.yml
 
-6. onos-nofeature scenario deploy sample
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network_ocl.yml
 
-.. code-block:: bash
-
-    ./deploy.sh \
-        --dha ./deploy/conf/hardware_environment/huawei-pod1/os-onos-nofeature-ha.yml \
-        --network ./deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
-
-7. onos-sfc deploy scenario sample
+odl_l2-moon scenario deploy sample
 
 .. code-block:: bash
 
-    ./deploy.sh \
-        --dha ./deploy/conf/hardware_environment/huawei-pod1/os-onos-sfc-ha.yml \
-        --network ./deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-odl_l2-moon-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network.yml
+
+ odl_l2-nofeature scenario deploy template
+
+.. code-block:: bash
+
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-odl_l2-nofeature-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network.yml
+
+odl_l3-nofeature scenario deploy sample
+
+.. code-block:: bash
+
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-odl_l3-nofeature-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network.yml
+
+onos-nofeature scenario deploy sample
+
+.. code-block:: bash
+
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-onos-nofeature-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
+
+onos-sfc deploy scenario sample
+
+.. code-block:: bash
+
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-onos-sfc-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
+
+2. Run ``run.sh``
+
+.. code-block:: bash
+
+    ./run.sh
+
 
