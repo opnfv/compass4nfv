@@ -10,7 +10,7 @@ Nodes Configuration (Virtual Deployment)
 
 The below file is the inventory template of deployment nodes:
 
-"compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml"
+"./deploy/conf/vm_environment/huawei-virtual1/network.yml"
 
 You can write your own address/roles reference to it.
 
@@ -18,6 +18,14 @@ You can write your own address/roles reference to it.
 
         - roles -- Components deployed.
 
+**Set TYPE and FLAVOR**
+
+E.g.
+
+.. code-block:: yaml
+
+    TYPE: virtual
+    FLAVOR: cluster
 
 **Assignment of different roles to servers**
 
@@ -85,12 +93,12 @@ E.g. Openstack and ONOS deployment roles setting
         roles:
           - compute
 
-
 Network Configuration (Virtual Deployment)
 ------------------------------------------
 
-Before deployment, there are some network configuration to be checked based on your network topology.
-Compass4nfv network default configuration file is "compass4nfv/deploy/conf/network_cfg.yaml".
+Before deployment, there are some network configuration to be checked based
+on your network topology.Compass4nfv network default configuration file is
+"compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml".
 You can write your own reference to it.
 
 **The following figure shows the default network configuration.**
@@ -133,107 +141,120 @@ You can write your own reference to it.
       |      External Network     |  |
       +---------------------------+  |
              +-----------------------+---+
-             | PXE(Installation) Network |
+             |    Installation Network   |
              +---------------------------+
-
 
 Start Deployment (Virtual Deployment)
 -------------------------------------
 
-1. Set OS version and OpenStack version for deployment nodes.
+1. Edit run.sh
 
+Set OS version and OpenStack version for deployment nodes.
     Compass4nfv Colorado supports three OS version based openstack mitaka.
-
-Ubuntu 14.04 mitaka:
-
-.. code-block:: bash
-
-    export OS_VERSION=trusty
-    export OPENSTACK_VERSION=mitaka
-
-Ubuntu 16.04 mitaka:
-
-.. code-block:: bash
-
-    export OS_VERSION=xenial
-    export OPENSTACK_VERSION=mitaka_xenial
-
-Centos 7 mitaka:
-
-.. code-block:: bash
-
-    export OS_VERSION=centos7
-    export OPENSTACK_VERSION=mitaka
-
-2. Set ISO image that you want to deploy
-
-.. code-block:: bash
-
-    export ISO_URL=file:///${YOUR_OWN}/compass.iso
-    or
-    export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
-
-3. Run ``deploy.sh`` with inventory and network configuration
-
-.. code-block:: bash
-
-    ./deploy.sh --dha ${YOUR_OWN}/dha.yml --network ${YOUR_OWN}/network.yml
 
 E.g.
 
-1. nosdn-nofeature scenario deploy sample
+.. code-block:: bash
+
+    ########## Ubuntu14.04 Mitaka ##########
+    export OS_VERSION=trusty
+    export OPENSTACK_VERSION=mitaka
+
+    ########## Ubuntu16.04 Mitaka ##########
+    # export OS_VERSION=xenial
+    # export OPENSTACK_VERSION=mitaka_xenial
+
+    ########## Centos7 Mitaka ##########
+    # export OS_VERSION=centos7
+    # export OPENSTACK_VERSION=mitaka
+
+Set ISO image that you want to deploy
+
+E.g.
 
 .. code-block:: bash
 
-    ./deploy.sh \
-        --dha ./deploy/conf/vm_environment/os-nosdn-nofeature-ha.yml \
-        --network ./deploy/conf/vm_environment/huawei-virtual1/network.yml
+    # ISO_URL is your iso's absolute path
+    # export ISO_URL=file:///home/compass/compass4nfv.iso
+    # or
+    # export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
 
-2. ocl-nofeature scenario deploy sample
+Set scenario that you want to deploy
 
-.. code-block:: bash
+E.g.
 
-    ./deploy.sh \
-        --dha ./deploy/conf/vm_environment/os-ocl-nofeature-ha.yml \
-        --network ./deploy/conf/vm_environment/huawei-virtual1/network_ocl.yml
-
-3. odl_l2-moon scenario deploy sample
+nosdn-nofeature scenario deploy sample
 
 .. code-block:: bash
 
-    ./deploy.sh \
-        --dha ./deploy/conf/vm_environment/os-odl_l2-moon-ha.yml \
-        --network ./deploy/conf/vm_environment/huawei-virtual1/network.yml
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/vm_environment/os-nosdn-nofeature-ha.yml
 
-4. odl_l2-nofeature scenario deploy sample
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network.yml
 
-.. code-block:: bash
-
-    ./deploy.sh \
-        --dha ./deploy/conf/vm_environment/os-odl_l2-nofeature-ha.yml \
-        --network ./deploy/conf/vm_environment/huawei-virtual1/network.yml
-
-5. odl_l3-nofeature scenario deploy sample
+ocl-nofeature scenario deploy sample
 
 .. code-block:: bash
 
-    ./deploy.sh \
-        --dha ./deploy/conf/vm_environment/os-odl_l3-nofeature-ha.yml \
-        --network ./deploy/conf/vm_environment/huawei-virtual1/network.yml
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/vm_environment/os-ocl-nofeature-ha.yml
 
-6. onos-nofeature scenario deploy sample
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network_ocl.yml
 
-.. code-block:: bash
-
-    ./deploy.sh \
-        --dha ./deploy/conf/vm_environment/os-onos-nofeature-ha.yml \
-        --network ./deploy/conf/vm_environment/huawei-virtual1/network_onos.yml
-
-7. onos-sfc deploy scenario sample
+odl_l2-moon scenario deploy sample
 
 .. code-block:: bash
 
-    ./deploy.sh \
-        --dha ./deploy/conf/vm_environment/os-onos-sfc-ha.yml \
-        --network ./deploy/conf/vm_environment/huawei-virtual1/network_onos.yml
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/vm_environment/os-odl_l2-moon-ha.yml
 
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network.yml
+
+odl_l2-nofeature scenario deploy sample
+
+.. code-block:: bash
+
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/vm_environment/os-odl_l2-nofeature-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network.yml
+
+odl_l3-nofeature scenario deploy sample
+
+.. code-block:: bash
+
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/vm_environment/os-odl_l3-nofeature-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network.yml
+
+onos-nofeature scenario deploy sample
+
+.. code-block:: bash
+
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/vm_environment/os-onos-nofeature-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network_onos.yml
+
+onos-sfc deploy scenario sample
+
+.. code-block:: bash
+
+    # DHA is your dha.yml's path
+    export DHA=./deploy/conf/vm_environment/os-onos-sfc-ha.yml
+
+    # NETWORK is your network.yml's path
+    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network_onos.yml
+
+2. Run ``run.sh``
+
+.. code-block:: bash
+
+    ./run.sh
