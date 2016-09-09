@@ -83,25 +83,25 @@ function  _prepare_python_env() {
              sudo apt-get install -y --force-yes libffi-dev libssl-dev
 
         fi
-   else
-        if [[ ! -z "$JHPKG_URL" ]]; then
-             _pre_pip_setup
-        else
-             sudo pip install --upgrade virtualenv
-             virtualenv $WORK_DIR/venv
-             source $WORK_DIR/venv/bin/activate
+   fi
 
-             pip install --upgrade cffi
-             pip install --upgrade MarkupSafe
-             pip install --upgrade pip
-             pip install --upgrade cheetah
-             pip install --upgrade pyyaml
-             pip install --upgrade requests
-             pip install --upgrade netaddr
-             pip install --upgrade oslo.config
-             pip install --upgrade ansible
-        fi
-    fi
+   if [[ ! -z "$JHPKG_URL" ]]; then
+        _pre_pip_setup
+   else
+        sudo pip install --upgrade virtualenv
+        virtualenv $WORK_DIR/venv
+        source $WORK_DIR/venv/bin/activate
+
+        pip install --upgrade cffi
+        pip install --upgrade MarkupSafe
+        pip install --upgrade pip
+        pip install --upgrade cheetah
+        pip install --upgrade pyyaml
+        pip install --upgrade requests
+        pip install --upgrade netaddr
+        pip install --upgrade oslo.config
+        pip install --upgrade ansible
+   fi
 }
 
 function _pre_env_setup()
