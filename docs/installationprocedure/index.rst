@@ -1,13 +1,16 @@
-.. This work is licensed under a Creative Commons Attribution 4.0 International License.
+.. This work is licensed under a Creative Commons Attribution 4.0 International Licence.
 .. http://creativecommons.org/licenses/by/4.0
-.. (c) <optionally add copywriters name>
 
-************************************
-Compass4nfv Installation Instruction
-************************************
+********************************************************
+OPNFV(Colorado) Compass4nfv installation instructions
+********************************************************
 
 .. toctree::
    :numbered:
-   :maxdepth: 2
+   :maxdepth: 4
 
+   introduction.rst
    installation.instruction.rst
+   bmdeploy.rst
+   vmdeploy.rst
+   references.rst
