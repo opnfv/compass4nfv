@@ -57,25 +57,11 @@ To retrieve the repository of Compass4nfv on Jumphost use the following command:
 
 - git clone https://gerrit.opnfv.org/gerrit/compass4nfv
 
-NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN root DIRECTORY.
+NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN root DIRECTORY(Include subfolders).
 
 To get stable /colorado release, you can use the following command:
 
 - git checkout colorado.1.0
-
-If you don't have a Linux foundation user id, get it first by the url:
-
-https://wiki.opnfv.org/developer/getting_started
-
-If you want to use a daily release ISO, please checkout the corresponding sha1 to
-get the deployment scripts:
-
-E.g.
-Git sha1 in file "opnfv-2016-01-16_15-03-18.properties" is
-d5a13ce7cc2ce89946d34b0402ecf33c1d291851
-
-- git checkout d5a13ce7cc2ce89946d34b0402ecf33c1d291851
-
 
 Setup Requirements
 ------------------
@@ -167,4 +153,3 @@ In order to execute a deployment, one must gather the following information:
 2.     IPMI login information for the nodes (user/pass).
 
 3.     MAC address of Control Plane / Provisioning interfaces of the Bare Metal nodes.
-..
