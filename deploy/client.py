@@ -888,6 +888,10 @@ class CompassClient(object):
             if current_time() >= deployment_timeout:
                 LOG.info("current_time=%s, deployment_timeout=%s" \
                         % (current_time(), deployment_timeout))
+                LOG.info("print cobbler status")
+                os.system("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+                                 -i %s root@192.168.200.2 \
+                                 'cobbler status'" % (CONF.rsa_file))
                 raise RuntimeError("installation timeout")
 
         try:
