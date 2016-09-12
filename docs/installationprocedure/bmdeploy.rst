@@ -41,6 +41,8 @@ E.g.
 
 **Set ipmiUser/ipmiPass and ipmiVer**
 
+**Assignment of different roles to servers**
+
 E.g.
 
 .. code-block:: yaml
