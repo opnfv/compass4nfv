@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_22cf14b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-12T12:24:54Z",
+      "side": 1,
+      "message": "pls add description on the reason why you do this modification.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "9e1ef2f60c89669a4a0e2223762fca19b25266f8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
