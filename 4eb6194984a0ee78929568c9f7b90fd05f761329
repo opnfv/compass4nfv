@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_3bb180e1",
+        "filename": "docs/configguide/bmdeploy.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-12T01:44:49Z",
+      "side": 1,
+      "message": "sample",
+      "range": {
+        "startLine": 281,
+        "startChar": 34,
+        "endLine": 281,
+        "endChar": 42
+      },
+      "revId": "4eb6194984a0ee78929568c9f7b90fd05f761329",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
