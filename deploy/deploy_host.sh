@@ -44,7 +44,7 @@ function deploy_host(){
     --machines=${machines//\'} --switch_credential="${SWITCH_CREDENTIAL}" --deploy_type="${TYPE}" \
     --deployment_timeout="${DEPLOYMENT_TIMEOUT}" --${POLL_SWITCHES_FLAG} --dashboard_url="${DASHBOARD_URL}" \
     --cluster_vip="${VIP}" --network_cfg="$NETWORK" --neutron_cfg="$NEUTRON" \
-    --enable_secgroup="${ENABLE_SECGROUP}" --enable_fwaas="${ENABLE_FWAAS}" \
+    --enable_secgroup="${ENABLE_SECGROUP}" --enable_fwaas="${ENABLE_FWAAS}" --expansion="${EXPANSION}" \
     --rsa_file="$rsa_file" --enable_vpnaas="${ENABLE_VPNAAS}" --odl_l3_agent="${odl_l3_agent}" --moon="${moon}" --onos_sfc="${onos_sfc}"
 
     RET=$?
