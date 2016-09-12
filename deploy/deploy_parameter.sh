@@ -83,7 +83,6 @@ function generate_input_env_file()
         continue
 
     done
-
     echo $ofile
 }
 
@@ -108,6 +107,65 @@ function process_default_para()
 function process_input_para()
 {
     input_file=`generate_input_env_file $config_file $*`
-
     echo $input_file
 }
+
+function check_valid()
+{
+    set +x
+
+    mac=`awk -F': ' '/mac|eth/{print $2}' $DHA`
+    if [[ -n $mac ]];then
+        for i in $mac
+        do
+            if [[ $i =~ ^\'([a-zA-Z0-9]{2}:){5}[a-zA-Z0-9]{2}\'$ ]]; then
+                :
+            else
+                log_error $i: "mac address invalid"
+                exit 1
+            fi
+        done
+    fi
+
+    ipmi=`awk -F': ' '/ipmiIp/{print $2}' $DHA`
+    if [[ -n $ipmi ]];then
+        for i in $ipmi
+        do
+            if [[ $i =~ ^(([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])$ ]];then
+                :
+            else
+                log_error $i: "ipmi address invalid"
+                exit 1
+            fi
+        done
+    fi
+
+    ip=`awk -F': ' '/^ip:/{print $2}' $NETWORK`
+    if [[ -n $ip ]];then
+        for i in $ip
+        do  
+            if [[ $i =~ ^(([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])$ ]];then
+            :   
+            else    
+                log_error $i: "ip address invalid"
+                exit 1
+            fi  
+        done
+    fi
+
+    ips=`grep -v "ip:" $NETWORK | tr " " "\n" | grep -E ".*[0-9]+[^0-9][0-9]+.*"`
+    if [[ -n $ips ]];then
+        for i in $ips
+        do  
+            if [[ $i =~ ^\"(([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/[0-9]{1,2})?\"$ ]];then
+            :   
+            else    
+                log_error $i: "ip address invalid"
+                exit 1
+            fi  
+        done
+    fi
+
+    set -x
+}
+
