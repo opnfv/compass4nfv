@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_62798c92",
+        "filename": "deploy/deploy_parameter.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-12T12:19:22Z",
+      "side": 0,
+      "message": "why do you delete this line?",
+      "revId": "40752d2aa8796a72e55f9493beb3841f2bfbb43f",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0270d8a3",
+        "filename": "deploy/deploy_parameter.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-12T12:19:22Z",
+      "side": 0,
+      "message": "why do you delete this line?",
+      "revId": "40752d2aa8796a72e55f9493beb3841f2bfbb43f",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}

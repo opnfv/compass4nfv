@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_02f538ed",
+        "filename": "deploy/deploy_parameter.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-12T12:19:22Z",
+      "side": 1,
+      "message": "rename the function name to is_valid_config_file or check_config_file or some others.\nmaybe you can separate dha and network file check into two function",
+      "range": {
+        "startLine": 113,
+        "startChar": 9,
+        "endLine": 113,
+        "endChar": 20
+      },
+      "revId": "67237b45962410a36f7d3782d9d263a8c0272ac8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_824ce871",
+        "filename": "deploy/launch.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-09-12T12:19:22Z",
+      "side": 1,
+      "message": "pls delete blank",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 31
+      },
+      "revId": "67237b45962410a36f7d3782d9d263a8c0272ac8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
