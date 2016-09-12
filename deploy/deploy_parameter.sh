@@ -111,3 +111,12 @@ function process_input_para()
 
     echo $input_file
 }
+
+function check_input_para()
+{
+    python ${COMPASS_DIR}/util/check_valid.py "$DHA" "$NETWORK"
+    if [ $? -ne 0 ];then
+        exit 1
+    fi
+}
+
