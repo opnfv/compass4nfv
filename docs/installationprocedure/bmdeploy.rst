@@ -49,6 +49,8 @@ E.g.
     ipmiPass: PASSWORD
     ipmiVer: '2.0'
 
+**Assignment of different roles to servers**
+
 E.g. Openstack only deployment roles setting
 
 .. code-block:: yaml
