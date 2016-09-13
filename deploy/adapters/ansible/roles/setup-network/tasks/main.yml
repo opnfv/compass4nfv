@@ -38,6 +38,9 @@
   with_items:
     - setup_networks/log.py
     - setup_networks/setup_networks.py
+    - setup_networks/check_network.py
+  tags:
+    - network_check
 
 - name: copy boot scripts
   copy:  src={{ item }} dest=/etc/init.d/ mode=0755
@@ -58,7 +61,16 @@
   tags:
     - recovery
 
+- name: check basic network connectivity
+  shell: >
+    python /opt/setup_networks/check_network.py \
+           "{{ inventory_hostname }}" \
+           "{{ ip_settings }}"
+  tags:
+    - network_check
+
 - name: add to boot scripts
   service: name=net_init enabled=yes
 
 - meta: flush_handlers
+
