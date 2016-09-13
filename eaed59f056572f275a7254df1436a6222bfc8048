@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_a830e3e8",
+        "filename": "docs/installationprocedure/expansion.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-09-13T09:02:03Z",
+      "side": 1,
+      "message": "delete #",
+      "revId": "eaed59f056572f275a7254df1436a6222bfc8048",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_484fcf6b",
+        "filename": "docs/installationprocedure/expansion.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-09-13T09:02:03Z",
+      "side": 1,
+      "message": "delete space",
+      "revId": "eaed59f056572f275a7254df1436a6222bfc8048",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_6852cb14",
+        "filename": "docs/installationprocedure/expansion.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-09-13T09:02:03Z",
+      "side": 1,
+      "message": "Please keep the same with the Bare Metal",
+      "revId": "eaed59f056572f275a7254df1436a6222bfc8048",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0859d735",
+        "filename": "docs/installationprocedure/expansion.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-09-13T09:02:03Z",
+      "side": 1,
+      "message": "delete #",
+      "revId": "eaed59f056572f275a7254df1436a6222bfc8048",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_285cd324",
+        "filename": "docs/installationprocedure/expansion.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-09-13T09:02:03Z",
+      "side": 1,
+      "message": "delete space",
+      "revId": "eaed59f056572f275a7254df1436a6222bfc8048",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
