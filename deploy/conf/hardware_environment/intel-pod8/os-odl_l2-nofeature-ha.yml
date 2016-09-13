@@ -13,49 +13,55 @@ hosts:
     interfaces:
       - eth2: '00:1E:67:C5:5B:28'
       - eth3: '00:1E:67:C5:5B:29'
-    ipmiIp: 10.2.117.127
+    ipmiIp: 10.2.117.134
     roles:
       - controller
       - ha
       - odl
+      - ceph-adm
+      - ceph-mon
 
   - name: host2
     mac: '00:1E:67:D4:39:B5'
     interfaces:
       - eth2: '00:1E:67:C5:52:24'
       - eth3: '00:1E:67:C5:52:25'
-    ipmiIp: 10.2.117.129
+    ipmiIp: 10.2.117.136
     roles:
       - controller
       - ha
       - odl
+      - ceph-mon
 
   - name: host3
     mac: '00:1E:67:D4:31:B2'
     interfaces:
       - eth2: '00:1E:67:C1:FA:E0'
       - eth3: '00:1E:67:C1:FA:E1'
-    ipmiIp: 10.2.117.131
+    ipmiIp: 10.2.117.138
     roles:
       - controller
       - ha
       - odl
+      - ceph-mon
 
   - name: host4
     mac: '00:1E:67:D4:34:67'
     interfaces:
       - eth2: '00:1E:67:E2:58:80'
       - eth3: '00:1E:67:E2:58:81'
-    ipmiIp: 10.2.117.133
+    ipmiIp: 10.2.117.140
     roles:
       - compute
+      - ceph-osd
 
   - name: host5
     mac: '00:1E:67:D4:38:42'
     interfaces:
       - eth2: '00:1E:67:C1:F9:2C'
       - eth3: '00:1E:67:C1:F9:2D'
-    ipmiIp: 10.2.117.135
+    ipmiIp: 10.2.117.142
     roles:
       - compute
+      - ceph-osd
 
