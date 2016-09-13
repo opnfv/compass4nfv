@@ -17,6 +17,9 @@
 - name: restart neutron server
   service: name=neutron-server state=restarted enabled=yes
 
+- name: wait for neutron time
+  shell: "sleep 10"
+
 - name: create external net
   neutron_network:
     login_username: ADMIN
