@@ -13,4 +13,5 @@ OPNFV(Colorado) Compass4nfv Installation Instructions
    installation.instruction.rst
    bmdeploy.rst
    vmdeploy.rst
+   expansion.rst
    references.rst
