@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_65367605",
+        "filename": "docs/installationprocedure/index.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-09-13T08:28:01Z",
+      "side": 1,
+      "message": "License?",
+      "range": {
+        "startLine": 1,
+        "startChar": 80,
+        "endLine": 1,
+        "endChar": 87
+      },
+      "revId": "e54097cc9fbd5b4a5ef7e3d5051f46fcb5f6eb38",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_053d42de",
+        "filename": "docs/installationprocedure/index.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-09-13T08:28:01Z",
+      "side": 1,
+      "message": "It should be installer-instructions.rst.",
+      "range": {
+        "startLine": 13,
+        "startChar": 3,
+        "endLine": 13,
+        "endChar": 18
+      },
+      "revId": "e54097cc9fbd5b4a5ef7e3d5051f46fcb5f6eb38",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
