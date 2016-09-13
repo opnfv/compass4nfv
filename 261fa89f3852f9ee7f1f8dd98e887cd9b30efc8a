@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_653196a1",
+        "filename": "docs/installationprocedure/introduction.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-09-13T02:27:15Z",
+      "side": 1,
+      "message": "Yuenan, it will be better to sign your name for colorado release.",
+      "range": {
+        "startLine": 16,
+        "startChar": 66,
+        "endLine": 16,
+        "endChar": 79
+      },
+      "revId": "261fa89f3852f9ee7f1f8dd98e887cd9b30efc8a",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
