@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_0e431f15",
+        "filename": "docs/installationprocedure/expansion.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-09-14T06:54:13Z",
+      "side": 1,
+      "message": "what is VIRT_NUMBER used for?",
+      "range": {
+        "startLine": 286,
+        "startChar": 11,
+        "endLine": 286,
+        "endChar": 22
+      },
+      "revId": "10181c74a56ff32ae56cc118d1f6651306fae53b",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
