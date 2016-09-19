@@ -5,7 +5,7 @@
 Abstract
 ========
 
-This document describes how to install the Brahmaputra release of OPNFV when
+This document describes how to install the Colorado release of OPNFV when
 using Compass4nfv as a deployment tool covering it's limitations, dependencies
 and required system resources.
 

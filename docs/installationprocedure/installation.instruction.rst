@@ -36,13 +36,12 @@ The stable release ISO can be retrieved via `OPNFV software download page <https
 
 The daily build ISO can be retrieved via OPNFV artifacts repository:
 
-http://artifacts.opnfv.org/
+http://artifacts.opnfv.org/compass4nfv.html
 
 NOTE: Search the keyword "compass4nfv/Colorado" to locate the ISO image.
 
 E.g.
-compass4nfv/colorado/opnfv-2016-01-16_15-03-18.iso
-compass4nfv/colorado/opnfv-2016-01-16_15-03-18.properties
+compass4nfv/colorado/opnfv-2016-09-18_08-15-13.iso
 
 The name of iso image includes the time of iso building, you can get the daily
 ISO according the building time.
@@ -57,7 +56,7 @@ To retrieve the repository of Compass4nfv on Jumphost use the following command:
 
 - git clone https://gerrit.opnfv.org/gerrit/compass4nfv
 
-NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN root DIRECTORY(Include subfolders).
+NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN ROOT DIRECTORY(INCLUDE SUBFOLDERS).
 
 To get stable /colorado release, you can use the following command:
 
