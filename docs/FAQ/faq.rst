@@ -68,7 +68,7 @@ The public virtual IP is configured in "compass4nfv/deploy/conf/network_cfg.yaml
 How to access BM nodes after deployment
 =======================================
 
-1.     First you should login Compass VM via ssh command on JumpHost by default user/pass root/root.
+1.     First you should login Compass VM via ssh command on Jumphost by default user/pass root/root.
 The default login IP of Compass VM is configured in "compass4nfv/deploy/conf/base.conf", defined as below:
 
 .. code-block:: bash
@@ -99,7 +99,7 @@ which are configured in "compass4nfv/deploy/conf/base.conf", defined as below:
          +---+VM+--+               |          +-------------+
     +--------------------+         |
     |                    |         |          +-------------+
-    |      JumpHost      |         |          |             |
+    |      Jumphost      |         |          |             |
     |                    |         +----------+    host3    |
     +--------------------+                    |             |
                                               +-------------+
@@ -111,8 +111,8 @@ Where is OpenStack RC file
 It is located /opt/admin-openrc.sh in each BM node as default. Please source it first if you want to use
 OpenStack CLI.
 
-How to recovery network connection after jumpserver reboot
-==========================================================
+How to recovery network connection after Jumphost reboot
+========================================================
 
 .. code-block:: bash
 

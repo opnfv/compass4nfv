@@ -2,7 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 
 =========================================================
-OPNFV(Brahmaputra) Compass4nfv Frequently Asked Questions
+OPNFV(Colorado) Compass4nfv Frequently Asked Questions
 =========================================================
 
 Contents:
