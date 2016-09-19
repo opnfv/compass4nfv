@@ -14,6 +14,8 @@ OPNFV
 
 `OPNFV Compass4nfv project page <https://wiki.opnfv.org/compass4nfv>`_
 
+`OPNFV Compass4nfv release notes <http://artifacts.opnfv.org/compass4nfv/colorado/docs/release-notes/index.html>`_
+
 OpenStack
 ---------
 
