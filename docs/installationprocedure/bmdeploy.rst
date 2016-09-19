@@ -243,7 +243,7 @@ E.g.
 
 .. code-block:: bash
 
-    ########## Hardware Deploy Jumpserver PXE NIC ##########
+    ########## Hardware Deploy Jumphost PXE NIC ##########
     # you need comment out it when virtual deploy
     export INSTALL_NIC=eth1
 
