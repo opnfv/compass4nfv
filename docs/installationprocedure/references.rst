@@ -17,7 +17,7 @@ OPNFV
 OpenStack
 ---------
 
-`OpenStack Liberty Release artifacts <http://www.openstack.org/software/liberty>`_
+`OpenStack Mitaka Release artifacts <http://www.openstack.org/software/mitaka>`_
 
 `OpenStack documentation <http://docs.openstack.org>`_
 
