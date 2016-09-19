@@ -15,6 +15,6 @@
   with_items:
     - nova-compute
 
-- name: restart swift task
-  shell: swift-init all start
-  ignore_errors: True
+#- name: restart swift task
+#  shell: swift-init all start
+#  ignore_errors: True
