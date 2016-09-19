@@ -5,11 +5,9 @@
 OPNFV((Colorado) Compass4nfv Release Notes
 ============================================
 
-Contents:
-
 .. toctree::
    :numbered:
-   :maxdepth: 4
+   :maxdepth: 2
 
    release-notes.rst
 
