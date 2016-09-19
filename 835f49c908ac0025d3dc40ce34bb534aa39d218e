@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_4dbfd4d0",
+        "filename": "docs/release-notes/release-notes.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-09-19T12:42:05Z",
+      "side": 1,
+      "message": "please update the latest functest testresult page, http://testresults.opnfv.org/reporting/index.html",
+      "range": {
+        "startLine": 145,
+        "startChar": 3,
+        "endLine": 145,
+        "endChar": 24
+      },
+      "revId": "835f49c908ac0025d3dc40ce34bb534aa39d218e",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
