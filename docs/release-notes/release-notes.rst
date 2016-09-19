@@ -2,10 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) Weidong Shao (HUAWEI) and Justin Chi (HUAWEI)
 
-=============================================================================================
-Release Note for the Brahmaputra release of OPNFV when using Compass4nfv as a deployment tool
-=============================================================================================
-
+Release Note for the Colorado release of OPNFV when using Compass4nfv as a deployment tool
 
 Abstract
 ========
@@ -34,7 +31,7 @@ Release Data
 | **Release designation**              | Colorado.1.0                         |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | 2016.2.25                            |
+| **Release date**                     | September 22 2016                    |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | OPNFV Colorado release               |
@@ -65,12 +62,12 @@ Version change
 Module version change
 ~~~~~~~~~~~~~~~~~~~~~
 
-This is the first release of compass4nfv as a deployment toolchain in OPNFV, the following
+This is the Colorado release of compass4nfv as a deployment toolchain in OPNFV, the following
 upstream components supported with this release.
 
  - Ubuntu 14.04.3
 
- - Openstack (Liberty release)
+ - Openstack (Mitaka release)
 
  - Opendaylight (Beryllium rc1 release)
 
@@ -79,7 +76,7 @@ upstream components supported with this release.
 Document version change
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-None due to first release, and you can see document :ref:`document-label`.
+Adjusted the document structure, and you can see document at `OPNFV(Colorado) Compass4nfv installation instructions <http://artifacts.opnfv.org/compass4nfv/docs/configguide/index.html/>`_.
 
 Reason for new version
 ----------------------
@@ -91,13 +88,13 @@ Feature additions
 | **JIRA REFERENCE**                   | **SLOGAN**                              |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
-| JIRA: COMPASS-34                     | Support OpenStack Liberty deployment    |
+| JIRA: COMPASS-438                    | Add A Task Of ONOS-SFC                  |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
-| JIRA: COMPASS-307                    | Integration OpenDaylight Beryllium      |
+| JIRA: COMPASS-443                    | Add MOON in Compass                     |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
-|                                      |                                         |
+| JIRA: COMPASS-444                    | Add Xenial-mitaka ODL Support           |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
 
@@ -111,7 +108,7 @@ Bug corrections
 | **JIRA REFERENCE**                   | **SLOGAN**                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| JIRA:                                |                                      |
+| JIRA: COMPASS-459                    | PXE boot may have NO SIGNAL          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
@@ -138,17 +135,12 @@ Known issues
 
 Workarounds
 -----------
-See JIRA: <link>
+`See JIRA <https://jira.opnfv.org/projects/COMPASS/issues/>`_
 
 Test Result
 ===========
-The Brahmaputra release with the Compass4nfv deployment toolchain has undergone QA test
+The Colorado release with the Compass4nfv deployment toolchain has undergone QA test
 runs with the following results:
 
  - `Functest test result <http://artifacts.opnfv.org/functest/docs/results/overview.html>`_
  - `Yardstick test result <http://testresults.opnfv.org/grafana/>`_
-
-References
-==========
-For more information on the OPNFV Brahmaputra release, please visit
-http://www.opnfv.org/brahmaputra
