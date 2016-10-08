@@ -318,9 +318,9 @@ EOF
 
 function make_all_repo()
 {
-    for env_os in trusty xanial rhel7; do
-    make_repo --package-tag jhenv --jh-os $env_os
-    done
+#    for env_os in trusty xenial rhel7; do
+    make_repo --package-tag jhenv --jh-os trusty
+#    done
 
     make_repo --package-tag pip
 
