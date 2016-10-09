@@ -140,6 +140,9 @@ d-i cdrom-detect/eject boolean false
 d-i preseed/late_command string \
 in-target sed -i '$a UseDNS no' /etc/ssh/sshd_config; \
 in-target sed -i 's/.*GSSAPIAuthentication.*/GSSAPIAuthentication no/g' /etc/ssh/sshd_config; \
+in-target sed -i 's/.*TimeoutStartSec.*/TimeoutStartSec=30sec/g' /lib/systemd/system/networking.service; \
+in-target sed -i 's/.*TimeoutStartSec.*/TimeoutStartSec=30sec/g' /lib/systemd/system/ifup@.service; \
+in-target vgchange -a y; \
 wget -O- \
    http://$http_server/cblr/svc/op/script/$what/$name/?script=preseed_late_default | \
    chroot /target /bin/sh -s; cp /target/etc/network/interfaces /etc/network/interfaces; \
