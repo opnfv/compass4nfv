@@ -25,6 +25,10 @@ export NETWORK=
 # node number when you virtual deploy
 # export VIRT_NUMBER=5
 
+########## Ubuntu16.04 Newton ##########
+# export OS_VERSION=xenial
+# export OPENSTACK_VERSION=newton_xenial
+
 ########## Ubuntu14.04 Mitaka ##########
 export OS_VERSION=trusty
 export OPENSTACK_VERSION=mitaka
