@@ -221,10 +221,17 @@
 ######################  nova plugin workaround  #######################
 #######################################################################
 
-- name: "copy nova plugs on compute"
-  copy:
-    src: "../../templates/nova_contrail_vif.tar.gz"
-    dest: "/opt/nova_contrail_vif.tar.gz"
+#- name: "copy nova plugs on compute"
+#  copy:
+#    src: "../../templates/nova_contrail_vif.tar.gz"
+#    dest: "/opt/nova_contrail_vif.tar.gz"
+
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
+- name: download nova plugin package
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/open-contrail/{{ nova_plugin }}"  dest=/opt/
 
 - name: "unzip nova plugs"
   command: su -s /bin/sh -c "tar xzf /opt/nova_contrail_vif.tar.gz -C /opt/"

@@ -7,6 +7,9 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
+
+swift_lib: swift-lib.tar.gz
+
 packages_noarch: []
 
 services_noarch: []

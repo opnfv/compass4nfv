@@ -17,6 +17,9 @@ contrail_keystone_address: "{{ public_vip.ip }}"
 contrail_admin_user: "admin"
 contrail_admin_password: "console"
 
+neutron_plugin: neutron_plugin_contrail.tar.gz
+nova_plugin: nova_contrail_vif.tar.gz
+
 
 # network infor adapter for compass
 # contrail_address: "{{ internal_ip }}"
