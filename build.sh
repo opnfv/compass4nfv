@@ -78,10 +78,11 @@ function download_local()
 
 function download_packages()
 {
-     for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA \
-              $XENIAL_MITAKA_PPA $UBUNTU_ISO $UBUNTU_ISO1 $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA \
-              $CENTOS7_MITAKA_PPA $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG \
-              $PIP_REPO $ANSIBLE_MODULE; do
+     for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL \
+              $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA $XENIAL_MITAKA_PPA $XENIAL_NEWTON_PPA \
+              $UBUNTU_ISO $UBUNTU_ISO1 \
+              $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA $CENTOS7_MITAKA_PPA \
+              $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG $PIP_REPO $ANSIBLE_MODULE; do
 
          if [[ ! $i ]]; then
              continue
@@ -131,6 +132,10 @@ function copy_file()
 
     if [[  $XENIAL_MITAKA_PPA ]]; then
         cp $CACHE_DIR/`basename $XENIAL_MITAKA_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
+    fi
+
+    if [[  $XENIAL_NEWTON_PPA ]]; then
+        cp $CACHE_DIR/`basename $XENIAL_NEWTON_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
     fi
 
     if [[ $CENTOS_ISO ]]; then
