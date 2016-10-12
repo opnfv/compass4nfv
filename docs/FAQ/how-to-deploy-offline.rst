@@ -1,0 +1,36 @@
+.. two dots create a comment. please leave this logo at the top of each of your rst files.
+
+How to deploy offline
+===================================================
+
+If your Jumphost cannot access internet, compass4nfv also support offline
+deployment. Here is the offline deployment instuction:
+
+In a internet accessed environment:
+
+1. Download compass.iso from OPNFV artifacts repository (Search compass4nfv in
+http://artifacts.opnfv.org/ and download an appropriate ISO. You can also use
+your own compass.iso built via build.sh)
+
+2. Download the Jumphost preparation package from our httpserver. (Download
+jh_env_package.tar.gz from http://205.177.226.237:9999/. It should awared that
+currentlt we only support ubuntu trusty as the Jumphost os.)
+
+3. Clone the compass4nfv code repository.
+
+On your Jumphost:
+
+1. Copy the compass.iso, jh_env_package.tar.gz and the compass4nfv code
+repository to your Jumphost
+
+2. Export the local path of the compass.iso and jh_env_package.tar.gz on
+jumphost.
+
+E.g.
+
+.. code-block:: bash
+    # ISO_URL and JHPKG_URL should be absolute path
+    export ISO_URL=file:///home/compass/compass4nfv.iso
+    export JHPKG_URL=file:///home/compass/jh_env_package.tar.gz
+
+After finishing above steps you can deploy compass without internet access.
