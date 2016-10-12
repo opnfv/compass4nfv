@@ -247,10 +247,17 @@
 ############# neutron plugins workaround ##################
 ###########################################################
 
-- name: "copy neutron plugs on controller"
-  copy:
-    src: "../../templates/neutron_plugin_contrail.tar.gz"
-    dest: "/opt/neutron_plugin_contrail.tar.gz"
+#- name: "copy neutron plugs on controller"
+#  copy:
+#    src: "../../templates/neutron_plugin_contrail.tar.gz"
+#    dest: "/opt/neutron_plugin_contrail.tar.gz"
+
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
+- name: download neutron_plugin_contrail package
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/open-contrail/{{ neutron_plugin }}"  dest=/opt/
 
 - name: "unzip neutron plugs"
   command: su -s /bin/sh -c "tar xzf /opt/neutron_plugin_contrail.tar.gz -C /opt/" 

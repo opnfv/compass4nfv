@@ -36,8 +36,14 @@
 - name: copy settings.xml
   template: src=settings.xml dest=/root/.m2/settings.xml
 
-- name: upload swift lib
-  unarchive: src=odl-aaa-moon.tar.gz dest=/home/
+#- name: upload swift lib
+#  unarchive: src=odl-aaa-moon.tar.gz dest=/home/
+
+- name: download odl-aaa-moon package
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/moon/{{ odl_aaa_moon }}"  dest=/home/
+
+- name: unarchive odl-aaa-moon package
+  command: su -s /bin/sh -c "tar xvf  /home/{{ odl_aaa_moon }} -C /home/"
 
 - name: install aaa
   shell: >
