@@ -1,3 +1,4 @@
+#!/bin/bash
 ##############################################################################
 # Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
@@ -6,26 +7,8 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
----
-- include_vars: "{{ ansible_os_family }}.yml"
-  tags:
-    - recovery
 
-- include: glance_install.yml
-  tags:
-    - install
-    - glance_install
-    - glance
+export DEPLOY_RECOVERY="true"
 
-- include: nfs.yml
-  tags:
-    - nfs
+./run.sh
 
-- include: glance_config.yml
-  when: inventory_hostname == groups['controller'][0]
-  tags:
-    - config
-    - glance_config
-    - glance
-
-- meta: flush_handlers

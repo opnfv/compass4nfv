@@ -54,6 +54,19 @@ function launch_host_vms() {
     IFS=$old_ifs
 }
 
+function recover_host_vms() {
+    old_ifs=$IFS
+    IFS=,
+
+    for host in $HOSTNAMES; do
+        sudo virsh destroy $host
+        sleep 2
+        sudo virsh start $host
+        sleep 2
+    done
+    IFS=$old_ifs
+}
+
 function get_host_macs() {
     local mac_generator=${COMPASS_DIR}/deploy/mac_generator.sh
     local machines=
