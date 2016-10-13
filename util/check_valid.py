@@ -57,7 +57,7 @@ def check_network(network):
 def check_dha(dha):
     if dha['TYPE'] == 'baremetal':
         for i in dha['hosts']:
-            if not (check_mac(i['mac']) and check_mac(i['interface'][0]['eth1']) and check_ip(i['impiIp'])):
+            if not (check_mac(i['mac']) and check_mac(i['interfaces'][0]['eth1']) and check_ip(i['ipmiIp'])):
                 return False
     return True
 
