@@ -1,0 +1,93 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: create account.builder file
+  shell: >
+    cd /etc/swift ; 
+    swift-ring-builder account.builder create 10 3 1;
+
+- name: add each storage node to the ring
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder account.builder add --region 1 --zone 1 --ip {{ ip_settings[item.1]['mgmt']['ip'] }} --port 6002 --device swift1 --weight 100 ;
+    swift-ring-builder account.builder add --region 1 --zone 1 --ip {{ ip_settings[item.1]['mgmt']['ip'] }} --port 6002 --device swift2 --weight 100 ;
+  with_indexed_items: groups['compute']
+
+- name: verify the ring contents 1
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder account.builder;
+
+- name: rebalance the ring
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder account.builder rebalance;
+
+
+#####################
+- name: create contrainer builder file
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder container.builder create 10 3 1;
+
+- name: add each storage node to the ring
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder container.builder add --region 1 --zone 1 --ip {{ ip_settings[item.1]['mgmt']['ip'] }} --port 6001 --device swift1 --weight 100;
+    swift-ring-builder container.builder add --region 1 --zone 1 --ip {{ ip_settings[item.1]['mgmt']['ip'] }} --port 6001 --device swift2 --weight 100;
+  with_indexed_items: groups['compute']
+
+- name: verify the ring contents 2
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder container.builder;
+
+- name: rebalance the ring
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder container.builder rebalance;
+
+#############################
+
+- name: create object builder file
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder object.builder create 10 3 1;
+
+- name: add each storage node to the ring
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder object.builder add --region 1 --zone 1 --ip {{ ip_settings[item.1]['mgmt']['ip'] }} --port 6000 --device swift1 --weight 100;
+    swift-ring-builder object.builder add --region 1 --zone 1 --ip {{ ip_settings[item.1]['mgmt']['ip'] }} --port 6000 --device swift2 --weight 100;
+  with_indexed_items: groups['compute']
+
+- name: verify the ring contents
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder object.builder;
+
+- name: rebalance the ring
+  shell: >
+    cd /etc/swift;
+    swift-ring-builder object.builder rebalance;
+
+##########################
+
+- name: distribute ring configuration files to the other controller
+  shell: >
+    cd /etc/swift;
+    scp account.ring.gz container.ring.gz object.ring.gz root@{{ ip_settings[item.1]['mgmt']['ip'] }}:/etc/swift/;
+  with_indexed_items: groups['controller']
+
+- name: distribute ring configuration files to the all compute
+  shell: >
+    cd /etc/swift;
+    scp account.ring.gz container.ring.gz object.ring.gz root@{{ ip_settings[item.1]['mgmt']['ip'] }}:/etc/swift/;
+  with_indexed_items: groups['compute']
