@@ -12,7 +12,8 @@ WORK_DIR=$COMPASS_DIR/work/deploy
 
 mkdir -p $WORK_DIR/script
 
-export DEPLOY_FIRST_TIME=${DEPLOY_FIRST_TIME-"true"}
+export DEPLOY_FIRST_TIME=${DEPLOY_FIRST_TIME:-"true"}
+export DEPLOY_RECOVERY=${DEPLOY_RECOVERY:-"false"}
 
 source ${COMPASS_DIR}/deploy/prepare.sh
 prepare_python_env
@@ -31,9 +32,14 @@ source ${COMPASS_DIR}/deploy/compass_vm.sh
 source ${COMPASS_DIR}/deploy/deploy_host.sh
 
 ######################### main process
-if [[ "$EXPANSION" == "false" ]]
-then
 
+if [[ "$DEPLOY_RECOVERY"  == "true" ]]; then
+    source ${COMPASS_DIR}/deploy/recovery.sh
+    recover_cluster
+    exit 0
+fi
+
+if [[ "$EXPANSION" == "false" ]]; then
     print_logo
 
     if [[ ! -z $VIRT_NUMBER ]];then
