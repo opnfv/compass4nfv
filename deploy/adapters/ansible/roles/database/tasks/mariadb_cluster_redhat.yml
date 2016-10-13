@@ -7,6 +7,14 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
+- name: Register RECOVERY
+  set_fact: RECOVERY_ENV={{RECOVERY_ENV | default('False')}}
+
+- name: killall mysqld processes
+  shell: sudo killall -9 mysqld
+  when: RECOVERY_ENV
+  ignore_errors: True
+
 - name: get cluster status
   shell: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"'|awk '{print $2}'
   register: cluster_status

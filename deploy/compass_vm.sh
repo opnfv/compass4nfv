@@ -151,3 +151,75 @@ function launch_compass() {
     set +e
     log_info "launch_compass exit"
 }
+
+function recover_compass() {
+    log_info "recover_compass enter"
+
+    sudo virsh start compass
+
+    if ! wait_ok 500;then
+        log_error "install os timeout"
+        exit 1
+    fi
+
+    log_info "launch_compass exit"
+}
+
+function _check_hosts_reachable() {
+    retry=0
+
+    while true; do
+        sleep 1
+        let retry+=1
+        if [[ $retry -ge $1 ]]; then
+            log_error "hosts boot time out"
+            echo "fail"
+            return
+        fi
+
+        ssh $ssh_args root@$MGMT_IP "
+            cd /var/ansible/run/$ADAPTER_NAME'-'$CLUSTER_NAME;
+            ansible -i inventories/inventory.yml $2 -m ping
+        " > /dev/null
+        if [ $? == 0 ]; then
+            break
+        fi
+    done
+    echo "ok"
+}
+
+function check_hosts_reachable() {
+    ret=$(_check_hosts_reachable $1 compute)
+    if [[ "$ret" == "fail" ]]; then
+        echo $ret
+        return
+    fi
+
+    ret=$(_check_hosts_reachable 100 controller)
+    echo $ret
+}
+
+function recover_hosts() {
+    ssh $ssh_args root@$MGMT_IP "
+        cd /var/ansible/run/$ADAPTER_NAME'-'$CLUSTER_NAME;
+        ansible-playbook \
+            -i inventories/inventory.yml HA-ansible-multinodes.yml \
+            -t recovery \
+            -e 'RECOVERY_ENV=True'
+    "
+    if [ $? == 0 ]; then
+        echo "Recovery Complete!"
+    fi
+}
+
+function wait_controller_nodes_ok() {
+    sleep 100
+    ssh $ssh_args root@$MGMT_IP "
+        cd /var/ansible/run/$ADAPTER_NAME'-'$CLUSTER_NAME;
+        ansible-playbook \
+            -i inventories/inventory.yml HA-ansible-multinodes.yml \
+            -t recovery-stop-service \
+            -e 'RECOVERY_ENV=True'
+    "
+    sleep 30
+}
