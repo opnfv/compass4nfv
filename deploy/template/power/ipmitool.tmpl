@@ -40,19 +40,23 @@ for i in {1..5}; do
     fi
 done
 sleep 1
-for i in {1..5}; do
-    if ipmitool -I $interface -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe >/dev/null 2>&1
-    then
-        break
-    elif [[ i -lt 5 ]]
-    then
-        sleep 1
-    else
-        log_error "set $ipmiIp pxe fail"
-        exit 1
-    fi
-done
-sleep 1
+
+if [[ "$DEPLOY_RECOVERY"  != "true" ]]; then
+    for i in {1..5}; do
+        if ipmitool -I $interface -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis bootdev pxe >/dev/null 2>&1
+        then
+            break
+        elif [[ i -lt 5 ]]
+        then
+            sleep 1
+        else
+            log_error "set $ipmiIp pxe fail"
+            exit 1
+        fi
+    done
+    sleep 1
+fi
+
 for i in {1..5}; do
     if ipmitool -I $interface -H $ipmiIp -U $ipmiUser -P $ipmiPass chassis power reset >/dev/null 2>&1
     then
