@@ -22,6 +22,52 @@
       "revId": "9f32681a8c2c92ee7f387ced39ec0dac16c656f5",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_dd8c4e82",
+        "filename": "docs/FAQ/how-to-deploy-offline.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-10-13T07:00:45Z",
+      "side": 1,
+      "message": "remove the space pls",
+      "range": {
+        "startLine": 10,
+        "startChar": 70,
+        "endLine": 10,
+        "endChar": 71
+      },
+      "revId": "9f32681a8c2c92ee7f387ced39ec0dac16c656f5",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_7de9a219",
+        "filename": "docs/FAQ/how-to-deploy-offline.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-10-13T07:00:45Z",
+      "side": 1,
+      "message": "you should also add the jumphost preparation packages url.",
+      "range": {
+        "startLine": 10,
+        "startChar": 36,
+        "endLine": 10,
+        "endChar": 44
+      },
+      "revId": "9f32681a8c2c92ee7f387ced39ec0dac16c656f5",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
