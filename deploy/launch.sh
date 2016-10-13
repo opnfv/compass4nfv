@@ -31,9 +31,14 @@ source ${COMPASS_DIR}/deploy/compass_vm.sh
 source ${COMPASS_DIR}/deploy/deploy_host.sh
 
 ######################### main process
-if [[ "$EXPANSION" == "false" ]]
-then
 
+if [[ "$DEPLOY_RECOVERY"  == "true" ]]; then
+    source ${COMPASS_DIR}/deploy/recovery.sh
+    recover_cluster
+    exit 0
+fi
+
+if [[ "$EXPANSION" == "false" ]]; then
     print_logo
 
     if [[ ! -z $VIRT_NUMBER ]];then
