@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dad5f5cf_3d7c7a72",
+        "filename": "docs/FAQ/how-to-deploy-offline.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-10-13T02:18:53Z",
+      "side": 1,
+      "message": "delete the backspace",
+      "range": {
+        "startLine": 6,
+        "startChar": 73,
+        "endLine": 6,
+        "endChar": 74
+      },
+      "revId": "9f32681a8c2c92ee7f387ced39ec0dac16c656f5",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
