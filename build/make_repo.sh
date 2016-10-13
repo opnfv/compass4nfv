@@ -130,7 +130,7 @@ function make_repo()
         echo "${ansible_dir}"
         cp -rf ${ansible_dir}/roles/ ${WORK_PATH}/work/tmp/
         if [[ ${os_ver} == xenial ]]; then
-            if [[ -d ${ansible_dir}/openstack_${package_tag}/roles && "`ls ${ansible_dir}/openstack_${package_tag}`" != "" ]]; then
+            if [[ -d ${ansible_dir}/openstack_${package_tag}_${os_ver}/roles && "`ls ${ansible_dir}/openstack_${package_tag}_${os_ver}`" != "" ]]; then
                 cp -rf ${ansible_dir}/openstack_${package_tag}_${os_ver}/roles/* ${WORK_PATH}/work/tmp/roles/
             fi
         else
@@ -318,9 +318,11 @@ EOF
 
 function make_all_repo()
 {
-    for env_os in trusty xanial rhel7; do
-    make_repo --package-tag jhenv --jh-os $env_os
-    done
+#    for env_os in trusty xanial rhel7; do
+#    make_repo --package-tag jhenv --jh-os $env_os
+#    done
+# jhenv only support trusty
+    make_repo --package-tag jhenv --jh-os trusty
 
     make_repo --package-tag pip
 
@@ -339,10 +341,12 @@ function make_all_repo()
               --default-package "openssh-server" \
               --special-package "openvswitch-switch"
     done
- 
-    make_repo --os-ver xenial --package-tag mitaka \
+
+    for opv in mitaka newton; do
+    make_repo --os-ver xenial --package-tag $opv \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "openssh-server"
+    done
 
     make_repo --os-ver rhel7 --package-tag juno \
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
