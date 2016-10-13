@@ -37,4 +37,5 @@ controller_services:
     - aodh-notifier
     - aodh-evaluator
     - aodh-listener
+    - cron
 
