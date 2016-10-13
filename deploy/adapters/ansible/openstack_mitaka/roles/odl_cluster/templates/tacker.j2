@@ -7,11 +7,13 @@ debug = True
 verbose = True
 use_syslog = False
 state_path = /var/lib/tacker
+service_plugins = tacker.vm.plugin.VNFMPlugin,tacker.sfc.plugin.SFCPlugin,tacker.sfc_classifier.plugin.SFCCPlugin
 
 [keystone_authtoken]
 password = console
 auth_uri = http://{{ internal_vip.ip }}:5000/v2.0
 auth_url = http://{{ internal_vip.ip }}:35357
+identity_uri = http://{{ internal_vip.ip }}:5000/v2.0
 project_name = service
 
 [agent]
@@ -27,3 +29,19 @@ auth_url = http://{{ internal_vip.ip }}:35357
 [servicevm_heat]
 heat_uri = http://{{ internal_vip.ip }}:8004/v1
 
+[servicevm]
+infra_driver = heat
+[servicevm_heat]
+stack_retries = 10
+stack_retry_wait = 30
+[sfc]
+infra_driver = opendaylight
+
+[sfc_classifier]
+infra_driver = netvirtsfc
+
+[sfc_opendaylight]
+ip = {{ internal_vip.ip }}
+port = 8181
+username = admin
+password = admin
