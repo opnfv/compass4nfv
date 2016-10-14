@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dad5f5cf_90f30d73",
+        "filename": "deploy/network.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-10-14T02:20:18Z",
+      "side": 1,
+      "message": "recover",
+      "range": {
+        "startLine": 170,
+        "startChar": 6,
+        "endLine": 170,
+        "endChar": 12
+      },
+      "revId": "70020da88667e822ab33fa782d0a8c8837f9de6c",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_30e8217c",
+        "filename": "deploy/network.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-10-14T02:20:18Z",
+      "side": 1,
+      "message": "recover",
+      "range": {
+        "startLine": 173,
+        "startChar": 6,
+        "endLine": 173,
+        "endChar": 12
+      },
+      "revId": "70020da88667e822ab33fa782d0a8c8837f9de6c",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_50eda58a",
+        "filename": "recovery.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-10-14T02:20:18Z",
+      "side": 1,
+      "message": "delete this two lines",
+      "range": {
+        "startLine": 13,
+        "startChar": 15,
+        "endLine": 14,
+        "endChar": 22
+      },
+      "revId": "70020da88667e822ab33fa782d0a8c8837f9de6c",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
