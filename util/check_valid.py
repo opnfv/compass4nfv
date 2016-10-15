@@ -4,7 +4,7 @@ import yaml
 import sys
 import traceback
 
-def init(file):
+def load_file(file):
     with open (file) as fd:
         try:
             return yaml.load(fd)
@@ -15,54 +15,100 @@ def init(file):
 def err_print(info):
     print '\033[0;31m%s\033[0m' %info
 
-def check_ip(ip):
+def is_valid_ip(ip):
+    """return True if the given string is a well-formed IP address
+       currently only support IPv4
+    """
     if not ip:
         return False
     res=re.search("^(0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}(\/(\d|[1-2]\d|3[0-2]))?$",ip)!=None
     return res
 
-def check_mac(mac):
+def is_valid_mac(mac):
+    """return True if the given string is a well-formed MAC address
+    """
     if not mac:
         return False
     res=re.search("^([a-zA-Z0-9]{2}:){5}[a-zA-Z0-9]{2}$",mac)!=None
     return res
 
-def check_network(network):
-    for i in network.get('ip_settings'):
-        if not (check_ip(i['cidr']) and check_ip(i['ip_ranges'][0][0]) and check_ip(i['ip_ranges'][0][1])):
-            return False
-        if i['name'] == 'external' and not check_ip(i['gw']):
-            return False
+def check_network_file(network):
+    err_print("WTF")
+    invalid = False
+    for i in network['ip_settings']:
+        if not is_valid_ip(i['cidr']):
+            err_print('''invalid address:
+                ip_settings:
+                  - name: %s
+                    cidr: %s''' %(i['name'],i['cidr']))
+            invalid = True
+        if not is_valid_ip(i['ip_ranges'][0][0]):
+            err_print('''invalid address:
+                ip_settings:
+                 - name: %s
+                   ip_ranges:
+                   - - %s''' %(i['name'],i['ip_ranges'][0][0]))
+            invalid = True
+        if not is_valid_ip(i['ip_ranges'][0][1]):
+            err_print('''invalid address:
+                ip_settings:
+                    - name:  %s
+                    ip_ranges:
+                    - %s''' %(i,i['ip_ranges'][0][1]))
+            invalid = True
+        if i['name'] == 'external' and not is_valid_ip(i['gw']):
+            err_print(i['gw'])
+            err_print('''invalid address:
+                ip_settings:
+                    - name: %s
+                    gw: %s''' %(i['name'],i['gw']))
+            invalid = True
 
-    if not check_ip(network['internal_vip']['ip']):
+    for i in network['public_net_info'].keys():
+        if i in ('external_gw', 'floating_ip_cidr', 'floating_ip_start', 'floating_ip_end'):
+            if not is_valid_ip(network['public_net_info'][i]):
+                err_print('''invalid address:
+                public_net_info:
+                  %s: %s''' %(i,network['public_net_info'][i]))
+                invalid = True
+
+    if not invalid:
+        return True
+    else:
         return False
 
-    if not check_ip(network['public_vip']['ip']):
-        return False
-
-    if not check_ip(network['public_net_info']['external_gw']):
-        return False
-
-    if not check_ip(network['public_net_info']['floating_ip_cidr']):
-        return False
-
-    if not check_ip(network['public_net_info']['floating_ip_start']):
-        return False
-
-    if not check_ip(network['public_net_info']['floating_ip_end']):
-        return False
-
-    return True
-
-def check_dha(dha):
+def check_dha_file(dha):
+    invalid = False
     if dha['TYPE'] == 'baremetal':
         for i in dha['hosts']:
-            if not (check_mac(i['mac']) and check_mac(i['interfaces'][0]['eth1']) and check_ip(i['ipmiIp'])):
-                return False
-    return True
+            if not is_valid_mac(i['mac']):
+                err_print('''invalid address:
+                hosts:
+                 - name: %s
+                   mac: %s''' %(i['name'],i['mac']))
+                invalid = True
+            if not is_valid_mac(i['interfaces'][0]['eth1']):
+                err_print('''invalid address:
+                hosts:
+                 - name: %s
+                   interfaces:
+                    - eth1: %s''' %(i['name'],i['interfaces'][0]['eth1']))
+                invalid = True
+            if not is_valid_ip(i['ipmiIp']):
+                err_print('''invalid address:
+                hosts:
+                 - name: %s
+                   ipmiIp: %s''' %(i['name'],i['ipmiIp']))
+                invalid = True
+
+    if not invalid:
+        return True
+    else:
+        return False
 
 if __name__ == "__main__":
-    flag = 0
+    
+    has_invalid = False
 
     if len(sys.argv) != 3:
         err_print('input file error')
@@ -71,26 +117,31 @@ if __name__ == "__main__":
     _, dha_file, network_file = sys.argv
 
     if not os.path.exists(dha_file):
+        err_print("DHA file doesn't exit")
         sys.exit(1)
     else:
-        dha = init(dha_file)
+        dha = load_file(dha_file)
         if not dha:
-            err_print('format error in DHA')
+            err_print('format error in DHA: %s' %dha_file)
+            has_invalid = True
         else:
-            if not check_dha(dha):
-                err_print('invalid address in DHA')
-                flag = 1
+            if not check_dha_file(dha):
+                err_print('in DHA: %s' %dha_file)
+                has_invalid = True
 
     if not os.path.exists(network_file):
+        err_print("NETWORK file doesn't exit")
         sys.exit(1)
     else:
-        network = init(network_file)
+        network = load_file(network_file)
+        err_print('WTF 1')
         if not network:
-            err_print('format error in NETWORK')
+            err_print('format error in NETWORK: %s' %network_file)
+            has_invalid = True
         else:
-            if not check_network(network):
-                err_print('invalid address in NETWORK')
-                flag = 1
+            if not check_network_file(network):
+                err_print('in NETWORK: %s' %network_file)
+                has_invalid = True
 
-    if flag == 1:
+    if has_invalid:
         sys.exit(1)
