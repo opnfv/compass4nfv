@@ -28,38 +28,76 @@ def check_mac(mac):
     return res
 
 def check_network(network):
-    for i in network.get('ip_settings'):
-        if not (check_ip(i['cidr']) and check_ip(i['ip_ranges'][0][0]) and check_ip(i['ip_ranges'][0][1])):
-            return False
+    invalid = 0
+    for i in network['ip_settings']:
+        if not check_ip(i['cidr']):
+            err_print('''invalid address:
+                ip_settings:
+                  - name: %s
+                    cidr: %s''' %(i['name'],i['cidr']))
+            invalid = 1
+        if not check_ip(i['ip_ranges'][0][0]):
+            err_print('''invalid address:
+                ip_settings:
+                 - name: %s
+                   ip_ranges:
+                   - - %s''' %(i['name'],i['ip_ranges'][0][0]))
+            invalid = 1
+        if not check_ip(i['ip_ranges'][0][1]):
+            err_print('''invalid address:
+                ip_settings:
+                    - name:  %s
+                    ip_ranges:
+                    - %s''' %(i,i['ip_ranges'][0][1]))
+            invalid = 1
         if i['name'] == 'external' and not check_ip(i['gw']):
-            return False
+            err_print('''invalid address:
+                ip_settings:
+                    - name: %s
+                    gw: %s''' %(i['name'],i['gw']))
+            invalid = 1
 
-    if not check_ip(network['internal_vip']['ip']):
+    for i in network['public_net_info'].keys():
+        if i in ('external_gw', 'floating_ip_cidr', 'floating_ip_start', 'floating_ip_end'):
+            if not check_ip(network['public_net_info'][i]):
+                err_print('''invalid address:
+                public_net_info:
+                  %s: %s''' %(i,network['public_net_info'][i]))
+                invalid = 1
+
+    if invalid == 0:
+        return True
+    else:
         return False
-
-    if not check_ip(network['public_vip']['ip']):
-        return False
-
-    if not check_ip(network['public_net_info']['external_gw']):
-        return False
-
-    if not check_ip(network['public_net_info']['floating_ip_cidr']):
-        return False
-
-    if not check_ip(network['public_net_info']['floating_ip_start']):
-        return False
-
-    if not check_ip(network['public_net_info']['floating_ip_end']):
-        return False
-
-    return True
 
 def check_dha(dha):
+    invalid = 0
     if dha['TYPE'] == 'baremetal':
         for i in dha['hosts']:
-            if not (check_mac(i['mac']) and check_mac(i['interfaces'][0]['eth1']) and check_ip(i['ipmiIp'])):
-                return False
-    return True
+            if not check_mac(i['mac']):
+                err_print('''invalid address:
+                hosts:
+                 - name: %s
+                   mac: %s''' %(i['name'],i['mac']))
+                invalid = 1
+            if not check_mac(i['interfaces'][0]['eth1']):
+                err_print('''invalid address:
+                hosts:
+                 - name: %s
+                   interfaces:
+                    - eth1: %s''' %(i['name'],i['interfaces'][0]['eth1']))
+                invalid = 1
+            if not check_ip(i['ipmiIp']):
+                err_print('''invalid address:
+                hosts:
+                 - name: %s
+                   ipmiIp: %s''' %(i['name'],i['ipmiIp']))
+                invalid = 1
+
+    if invalid == 0:
+        return True
+    else:
+        return False
 
 if __name__ == "__main__":
     flag = 0
@@ -75,10 +113,10 @@ if __name__ == "__main__":
     else:
         dha = init(dha_file)
         if not dha:
-            err_print('format error in DHA')
+            err_print('format error in DHA: %s' %dha_file)
         else:
             if not check_dha(dha):
-                err_print('invalid address in DHA')
+                err_print('in DHA: %s' %dha_file)
                 flag = 1
 
     if not os.path.exists(network_file):
@@ -86,10 +124,10 @@ if __name__ == "__main__":
     else:
         network = init(network_file)
         if not network:
-            err_print('format error in NETWORK')
+            err_print('format error in NETWORK: %s' %network_file)
         else:
             if not check_network(network):
-                err_print('invalid address in NETWORK')
+                err_print('in NETWORK: %s' %network_file)
                 flag = 1
 
     if flag == 1:
