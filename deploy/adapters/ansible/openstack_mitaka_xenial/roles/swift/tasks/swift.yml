@@ -9,6 +9,10 @@
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- name: get image http server
+  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
+  register: http_server
+
 - include: swift-controller1.yml
   when: inventory_hostname in groups['controller']
 
@@ -42,8 +46,14 @@
     - rsync
   when: inventory_hostname in groups['compute']
 
-- name: upload swift lib
-  unarchive: src=swift-lib.tar.gz dest=/tmp/
+#- name: upload swift lib
+#  unarchive: src=swift-lib.tar.gz dest=/tmp/
+
+- name: download swift lib package
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/moon/{{ swift_lib }}"  dest=/tmp/
+
+- name: unarchive swift lib
+  command: su -s /bin/sh -c "tar xvf  /tmp/{{ swift_lib }} -C /tmp/"
 
 - name: copy swift lib
   command: su -s /bin/sh -c "cp /tmp/swift-lib/* /usr/lib/"

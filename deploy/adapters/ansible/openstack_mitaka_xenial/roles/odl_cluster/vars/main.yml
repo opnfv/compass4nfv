@@ -19,6 +19,8 @@ odl_base_features: ['config', 'standard', 'region', 'package', 'kar', 'ssh', 'ma
 odl_extra_features: ['odl-restconf-all','odl-mdsal-clustering','odl-openflowplugin-flow-services','http','jolokia-osgi']
 odl_features: "{{ odl_base_features + odl_extra_features }}"
 
+odl_aaa_moon: odl-aaa-moon.tar.gz
+
 jdk8_pkg_name: jdk-8u51-linux-x64.tar.gz
 
 controller_packages_noarch: []
