@@ -29,6 +29,13 @@ function setup_bridge_net()
     sudo virsh net-start $net_name
 }
 
+function recover_bridge_net()
+{
+    net_name=$1
+
+    sudo virsh net-start $net_name
+}
+
 function save_network_info()
 {
     sudo ovs-vsctl list-br |grep br-external
@@ -69,6 +76,13 @@ function setup_bridge_external()
     python $COMPASS_DIR/deploy/setup_vnic.py
 }
 
+function recover_bridge_external()
+{
+    sudo virsh net-start external
+
+    python $COMPASS_DIR/deploy/setup_vnic.py
+}
+
 function setup_nat_net() {
     net_name=$1
     gw=$2
@@ -92,9 +106,18 @@ function setup_nat_net() {
     sudo virsh net-start $net_name
 }
 
+function recover_nat_net() {
+    net_name=$1
+
+    sudo virsh net-start $net_name
+}
 
 function setup_virtual_net() {
   setup_nat_net install $INSTALL_GW $INSTALL_MASK
+}
+
+function recover_virtual_net() {
+  recover_nat_net install
 }
 
 function setup_baremetal_net() {
@@ -102,6 +125,13 @@ function setup_baremetal_net() {
     exit 1
   fi
   setup_bridge_net install $INSTALL_NIC
+}
+
+function recover_baremetal_net() {
+  if [[ -z $INSTALL_NIC ]]; then
+    exit 1
+  fi
+  recover_bridge_net install
 }
 
 function setup_network_boot_scripts() {
@@ -132,5 +162,16 @@ function create_nets() {
     clear_forward_rejct_rules
 
     setup_network_boot_scripts
+}
+
+function recover_nets() {
+    recover_nat_net mgmt
+
+    # recover install network
+    recover_"$TYPE"_net
+
+    # recover external network
+    recover_bridge_external
+    clear_forward_rejct_rules
 }
 
