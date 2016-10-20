@@ -12,7 +12,6 @@
 - name: install packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
   with_items: packages | union(packages_noarch)
-  when ansible_os_family != 'Debian'
 
 - name: assure listen port exist
   template:
