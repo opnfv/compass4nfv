@@ -61,10 +61,10 @@
   max_fail_percentage: 0
   roles:
     - memcached
+    - apache
     - database
     - mq
     - keystone
-    - apache
     - nova-controller
     - neutron-controller
     - cinder-controller
