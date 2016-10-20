@@ -5,7 +5,8 @@ set -ex
 
 # add openstack $OPV repo
 apt-get update && apt-get install -y software-properties-common
-# sudo add-apt-repository -y cloud-archive:$OPV
+add-apt-repository -y cloud-archive:$OPV
+apt-get update && apt-get -y dist-upgrade
 apt-get install -d nova-compute-kvm -y
 
 #make pernoca database
