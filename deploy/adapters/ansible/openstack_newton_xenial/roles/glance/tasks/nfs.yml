@@ -42,10 +42,14 @@
 - name: get mount info
   command: mount
   register: mount_info
+  tags:
+    - recovery
 
 - name: get nfs server
   shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
   register: ip_info
+  tags:
+    - recovery
 
 - name: restart host nfs service
   service: name={{ item }} state=restarted enabled=yes
@@ -59,3 +63,5 @@
   when: mount_info.stdout.find('images') == -1
   retries: 5
   delay: 3
+  tags:
+    - recovery
