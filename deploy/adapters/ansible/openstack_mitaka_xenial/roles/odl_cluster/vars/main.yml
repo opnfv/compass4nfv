@@ -22,6 +22,7 @@ odl_features: "{{ odl_base_features + odl_extra_features }}"
 odl_aaa_moon: odl-aaa-moon.tar.gz
 
 jdk8_pkg_name: jdk-8u51-linux-x64.tar.gz
+jdk8_script_name: install_jdk8.tar
 
 controller_packages_noarch: []
 compute_packages_noarch: []
