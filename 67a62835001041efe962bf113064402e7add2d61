@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_92ac7a8e",
+        "filename": "util/check_valid.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-10-22T03:45:25Z",
+      "side": 1,
+      "message": "add blank -\u003e % dha_file",
+      "range": {
+        "startLine": 116,
+        "startChar": 48,
+        "endLine": 116,
+        "endChar": 57
+      },
+      "revId": "67a62835001041efe962bf113064402e7add2d61",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
