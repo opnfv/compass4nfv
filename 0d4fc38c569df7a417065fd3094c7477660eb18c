@@ -1,0 +1,8 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: Yifei Xue <xueyifei@huawei.com>
+Code-Review+2: shuai chen <chenshuai@huawei.com>
+Submitted-by: shuai chen <chenshuai@huawei.com>
+Submitted-at: Tue, 25 Oct 2016 06:33:25 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/23397
+Project: compass4nfv
+Branch: refs/heads/master
