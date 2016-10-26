@@ -140,6 +140,12 @@ d-i cdrom-detect/eject boolean false
 d-i preseed/late_command string \
 in-target sed -i '$a UseDNS no' /etc/ssh/sshd_config; \
 in-target sed -i 's/.*GSSAPIAuthentication.*/GSSAPIAuthentication no/g' /etc/ssh/sshd_config; \
+in-target sed -i '$d' /usr/share/initramfs-tools/scripts/local-top/lvm2; \
+in-target echo "lvm vgchange -ay" >> /usr/share/initramfs-tools/scripts/local-top/lvm2; \
+in-target echo "exit 0" >> /usr/share/initramfs-tools/scripts/local-top/lvm2; \
+in-target touch /etc/initramfs-tools/scripts/local-top/lvm2; \
+in-target chmod 777 /etc/initramfs-tools/scripts/local-top/lvm2; \
+in-target echo "vgchange -a y" >> /etc/initramfs-tools/scripts/local-top/lvm2; \
 wget -O- \
    http://$http_server/cblr/svc/op/script/$what/$name/?script=preseed_late_default | \
    chroot /target /bin/sh -s; cp /target/etc/network/interfaces /etc/network/interfaces; \
