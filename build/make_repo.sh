@@ -104,6 +104,12 @@ function make_repo()
         os_name=centos
     fi
 
+    if [[ ${os_ver} =~ redhat[0-9]*$ ]]; then
+        arch=RedHat
+        os_name=redhat
+        tmpl=${BUILD_PATH}/templates/${arch}_${os_ver}_${package_tag}.tmpl
+    fi
+
     if [[ -z $arch ]]; then
         echo "unsupported ${os_ver} os"
         exit 1
@@ -316,6 +322,7 @@ EOF
     fi
 }
 
+# FIXME: rhel7 -> centos7, redhat7 -> rhel7
 function make_all_repo()
 {
 #    for env_os in trusty xanial rhel7; do
@@ -358,6 +365,12 @@ function make_all_repo()
               --ansible-dir $WORK_PATH/deploy/adapters/ansible \
               --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
                                  dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
+    done
+
+    for opv in osp9; do
+    make_repo --os-ver redhat7 --package-tag $opv \
+              --ansible-dir $WORK_PATH/deploy/adapters/ansible \
+              --default-package "strace net-tools wget vim openssh-server"
     done
 }
 
