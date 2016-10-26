@@ -12,3 +12,7 @@ Contents:
    :maxdepth: 4
 
    faq.rst
+   how-to-build-customized-iso.rst
+   how-to-deploy-while-jumphost-cannot-access-internet.rst
+   how-to-deploy-without-internet-access.rst
+   how-to-integrate-plugins.rst
