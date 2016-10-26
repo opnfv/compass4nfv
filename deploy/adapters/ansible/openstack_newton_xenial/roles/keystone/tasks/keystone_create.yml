@@ -1,0 +1,77 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: add service
+  shell:
+    . /opt/admin-openrc.sh;
+    openstack service create \
+        --name "{{ item.name }}"
+        --description "{{ item.description }}" \
+        {{ item.type }}
+  with_items: "{{ os_services[1:] }}"
+
+- name: add project
+  shell:
+    . /opt/admin-openrc.sh;
+    openstack project create --description "Service Project" service;
+    openstack project create --domain default --description "Demo Project" demo;
+
+- name: set admin user
+  shell:
+    . /opt/admin-openrc.sh;
+    openstack user set \
+        --email "{{ item.email }}" \
+        --project "{{ item.tenant }}" \
+        --description "{{ item.tenant_description }}" \
+        --password "{{ item.password }}" \
+        {{ item.user }}
+  with_items: "{{ os_users }}"
+  when: item["user"] == "admin"
+
+- name: add user
+  shell:
+    . /opt/admin-openrc.sh;
+    openstack user create \
+        --email "{{ item.email }}" \
+        --project "{{ item.tenant }}" \
+        --description "{{ item.tenant_description }}" \
+        --password "{{ item.password }}" \
+        {{ item.user }}
+  with_items: "{{ os_users[1:] }}"
+
+- name: add roles
+  shell:
+    . /opt/admin-openrc.sh;
+    openstack role create {{ item.role }}
+  with_items: "{{ os_users }}"
+  when: item["user"] == "demo"
+
+- name: grant roles
+  shell:
+    . /opt/admin-openrc.sh;
+    openstack role add \
+        --project "{{ item.tenant }}" \
+        --user "{{ item.user }}" \
+        {{ item.role }}
+  with_items: "{{ os_users }}"
+
+- name: add endpoints
+  shell:
+    . /opt/admin-openrc.sh;
+    openstack endpoint create \
+        --region {{ item.region }} \
+        {{ item.name }} public {{ item.publicurl }};
+    openstack endpoint create \
+        --region {{ item.region }} \
+        {{ item.name }} internal {{ item.publicurl }};
+    openstack endpoint create \
+        --region {{ item.region }} \
+        {{ item.name }} admin {{ item.publicurl }};
+  with_items: "{{ os_services[1:] }}"
+
