@@ -441,7 +441,7 @@ echo "" >> /etc/network/interfaces
 
 used_logical_interface_$iname=$iname
 
-    #if $iface_type in ("slave","bond_slave","bridge_slave","bonded_bridge_slave")
+    #if $iface_type in ("slave","bond_slave","bridge_slave","bonded_bridge_slave","static")
         #set $static = 1
     #end if
 echo "auto $iname" >> /etc/network/interfaces
