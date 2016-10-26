@@ -41,6 +41,10 @@ export OPENSTACK_VERSION=mitaka
 # export OS_VERSION=centos7
 # export OPENSTACK_VERSION=mitaka
 
+########## Redhat7 OSP9 ##########
+# export OS_VERSION=redhat7
+# export OPENSTACK_VERSION=osp9
+
 ########## Hardware Deploy Jumpserver PXE NIC ##########
 # you need comment out it when virtual deploy
 # export INSTALL_NIC=eth1
