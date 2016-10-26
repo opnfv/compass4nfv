@@ -1,0 +1,7 @@
+
+# localhost
+127.0.0.1 localhost
+# controller
+172.16.1.1 host1
+# compute
+172.16.1.1 host1
