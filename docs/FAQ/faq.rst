@@ -21,7 +21,9 @@ What's the additional setting in switch if use the default network configuration
 ================================================================================
 
 Here is the Compass4nfv default network configration file:
-compass4nfv/deploy/conf/network_cfg.yaml
+compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml
+OR
+compass4nfv_FAQ/deploy/conf/vm_environment/huawei-virtual1/network.yml
 
 It uses a VLAN network for mgmt and storage networks that are share one NIC(eth1) as a
 default network configuration. So you need add an additional tagged VLAN (101) and VLAN (102) on
@@ -58,25 +60,26 @@ How to visit OpenStack Dashboard
 
 You can visit OpenStack Dashboard by URL: http://{puclib_vip}/horizon
 
-The public virtual IP is configured in "compass4nfv/deploy/conf/network_cfg.yaml", defined as below:
+The public virtual IP is configured in "compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml"
+or "compass4nfv_FAQ/deploy/conf/vm_environment/huawei-virtual1/network.yml", defined as below:
 
 .. code-block:: yaml
 
     public_vip:
       ip: 192.168.50.240
 
-How to access BM nodes after deployment
-=======================================
+How to access controller nodes after deployment
+===============================================
 
-1.     First you should login Compass VM via ssh command on Jumphost by default user/pass root/root.
+1. First you should login Compass VM via ssh command on Jumphost by default user/pass root/root.
 The default login IP of Compass VM is configured in "compass4nfv/deploy/conf/base.conf", defined as below:
 
 .. code-block:: bash
 
     export MGMT_IP=${MGMT_IP:-192.168.200.2}
 
-2.     Then you can login the BM nodes (host1-3) by default user/pass root/root via the install network IPs
-which are configured in "compass4nfv/deploy/conf/base.conf", defined as below:
+2. Then you can login the controller nodes (host1-3) by default user/pass root/root via the install
+network IPs which are configured in "compass4nfv/deploy/conf/base.conf", defined as below:
 
 .. code-block:: bash
 
@@ -108,8 +111,8 @@ which are configured in "compass4nfv/deploy/conf/base.conf", defined as below:
 Where is OpenStack RC file
 ==========================
 
-It is located /opt/admin-openrc.sh in each BM node as default. Please source it first if you want to use
-OpenStack CLI.
+It is located /opt/admin-openrc.sh in each controller node as default. Please source it first if you
+want to use OpenStack CLI.
 
 How to recovery network connection after Jumphost reboot
 ========================================================
