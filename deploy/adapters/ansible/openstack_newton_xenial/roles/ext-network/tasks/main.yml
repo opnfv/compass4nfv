@@ -18,37 +18,27 @@
 - name: restart neutron server
   service: name=neutron-server state=restarted enabled=yes
 
+- name: wait for neutron ready
+  wait_for: port=9696 delay=10 timeout=30 host={{ internal_vip.ip }}
+
 - name: create external net
-  neutron_network:
-    login_username: ADMIN
-    login_password: "{{ ADMIN_PASS }}"
-    login_tenant_name: admin
-    auth_url: "http://{{ internal_vip.ip }}:35357/v2.0"
-    name: "{{ public_net_info.network }}"
-    provider_network_type: "{{ public_net_info.type }}"
-    provider_physical_network: "{{ public_net_info.provider_network }}"
-    provider_segmentation_id: "{{ public_net_info.segment_id}}"
-    shared: false
-    router_external: yes
-    state: present
-  run_once: true
-  when: 'public_net_info.enable == True'
+  shell:
+    . /opt/admin-openrc.sh;
+    neutron net-create \
+        {{ public_net_info.network }} \
+        --provider:network_type {{ public_net_info.type }} \
+        --provider:physical_network {{ public_net_info.provider_network }} \
+        --router:external True
+  when: public_net_info.enable == True and inventory_hostname == groups['controller'][0]
 
 - name: create external subnet
-  neutron_subnet:
-    login_username: ADMIN
-    login_password: "{{ ADMIN_PASS }}"
-    login_tenant_name: admin
-    auth_url: "http://{{ internal_vip.ip }}:35357/v2.0"
-    name: "{{ public_net_info.subnet }}"
-    network_name: "{{ public_net_info.network }}"
-    cidr: "{{ public_net_info.floating_ip_cidr }}"
-    enable_dhcp: "{{ public_net_info.enable_dhcp }}"
-    no_gateway: "{{ public_net_info.no_gateway }}"
-    gateway_ip: "{{ public_net_info.external_gw }}"
-    allocation_pool_start: "{{ public_net_info.floating_ip_start }}"
-    allocation_pool_end: "{{ public_net_info.floating_ip_end }}"
-    state: present
-  run_once: true
-  when: 'public_net_info.enable == True'
+  shell:
+    . /opt/admin-openrc.sh;
+    neutron subnet-create \
+        --name {{ public_net_info.subnet }} \
+        --gateway {{ public_net_info.external_gw }} \
+        --allocation-pool \
+        start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }} \
+        {{ public_net_info.network }} {{ public_net_info.floating_ip_cidr }}
+  when: public_net_info.enable == True and inventory_hostname == groups['controller'][0]
 
