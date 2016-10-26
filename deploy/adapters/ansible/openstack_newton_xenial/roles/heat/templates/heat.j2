@@ -17,10 +17,10 @@ use_db_reconnect = True
 pool_timeout = 10
 
 [ec2authtoken]
-auth_uri = http://{{ internal_vip.ip }}:5000/v2.0
+auth_uri = http://{{ internal_vip.ip }}:5000/v3
 
 [keystone_authtoken]
-auth_uri = http://{{ internal_vip.ip }}:5000/v2.0
+auth_uri = http://{{ internal_vip.ip }}:5000/v3
 identity_uri = http://{{ internal_vip.ip }}:35357
 admin_tenant_name = service
 admin_user = heat

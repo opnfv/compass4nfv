@@ -21,7 +21,7 @@
 
 - name: create heat user domain
   shell: >
-    . /opt/admin-openrc-v3.sh;
+    . /opt/admin-openrc.sh;
     openstack domain create --description "Stack projects and users" heat;
     openstack user create --domain heat --password {{ HEAT_PASS }} heat_domain_admin;
     openstack role add --domain heat --user-domain heat --user heat_domain_admin admin;
