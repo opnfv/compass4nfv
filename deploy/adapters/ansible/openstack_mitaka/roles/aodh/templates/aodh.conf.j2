@@ -21,7 +21,7 @@ rabbit_password = {{ RABBIT_PASS }}
 connection = mysql://aodh:{{ AODH_DBPASS }}@{{ db_host }}/aodh
 
 [keystone_authtoken]
-auth_uri = http://{{ internal_vip.ip }}:5000
+auth_uri = http://{{ internal_vip.ip }}:5000/v2.0
 auth_url = http://{{ internal_vip.ip }}:35357
 identity_uri = http://{{ internal_vip.ip }}:35357
 auth_plugin = password
