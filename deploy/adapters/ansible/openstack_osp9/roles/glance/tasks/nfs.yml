@@ -57,7 +57,8 @@
 
 - name: mount image directory
   shell: |
-    mount -t nfs  -onfsvers=3 {{ ip_info.stdout_lines[0] }}:/opt/images /var/lib/glance/images
+    mkdir -p /var/lib/glance/images
+    mount -t nfs -onfsvers=3 {{ ip_info.stdout_lines[0] }}:/opt/images /var/lib/glance/images
     sed -i '/\/var\/lib\/glance\/images/d' /etc/fstab
     #echo {{ ip_info.stdout_lines[0] }}:/opt/images /var/lib/glance/images/ nfs nfsvers=3 >> /etc/fstab
   when: mount_info.stdout.find('images') == -1
