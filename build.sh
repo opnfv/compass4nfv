@@ -80,7 +80,7 @@ function download_packages()
 {
      for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL \
               $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA $XENIAL_MITAKA_PPA $XENIAL_NEWTON_PPA \
-              $UBUNTU_ISO $UBUNTU_ISO1 \
+              $UBUNTU_ISO $UBUNTU_ISO1 $REDHAT7_ISO $REDHAT7_OSP9_PPA \
               $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA $CENTOS7_MITAKA_PPA \
               $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG $PIP_REPO $ANSIBLE_MODULE; do
 
@@ -106,7 +106,7 @@ function copy_file()
 
     # main process
     mkdir -p $new/compass $new/bootstrap $new/pip $new/guestimg $new/app_packages $new/ansible
-    mkdir -p $new/repos/cobbler/{ubuntu,centos}/{iso,ppa}
+    mkdir -p $new/repos/cobbler/{ubuntu,centos,redhat}/{iso,ppa}
 
     rm -rf $new/.rr_moved
 
@@ -156,6 +156,14 @@ function copy_file()
 
     if [[ $CENTOS7_MITAKA_PPA ]]; then
         cp $CACHE_DIR/`basename $CENTOS7_MITAKA_PPA` $new/repos/cobbler/centos/ppa/ -rf
+    fi
+
+    if [[ $REDHAT7_ISO ]]; then
+        cp $CACHE_DIR/`basename $REDHAT7_ISO` $new/repos/cobbler/redhat/iso/ -rf
+    fi
+
+    if [[ $REDHAT7_OSP9_PPA ]]; then
+        cp $CACHE_DIR/`basename $REDHAT7_OSP9_PPA` $new/repos/cobbler/redhat/ppa/ -rf
     fi
 
     cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1
