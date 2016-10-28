@@ -1,0 +1,136 @@
+#!/bin/bash
+set -x
+
+#set OPV="osp9"
+
+#raw
+# FIXME: remove hard coded ip, use loop to create repo conf
+cat << EOF > /etc/yum.repos.d/rhel.repo
+[rhel-7-server-extras]
+name=My Red Hat Enterprise Linux \$releasever - \$basearch
+baseurl=http://192.168.21.21/rhel7-repos/rhel-7-server-extras-rpms
+enabled=1
+gpgcheck=0
+
+[rhel-7-server-openstack-9-rpms]
+name=My Red Hat Enterprise Linux \$releasever - \$basearch
+baseurl=http://192.168.21.21/rhel7-repos/rhel-7-server-openstack-9-rpms
+enabled=1
+gpgcheck=0
+
+[rhel-7-server-rh-common-rpms]
+name=My Red Hat Enterprise Linux \$releasever - \$basearch
+baseurl=http://192.168.21.21/rhel7-repos/rhel-7-server-rh-common-rpms
+enabled=1
+gpgcheck=0
+
+[rhel-7-server-rpms]
+name=My Red Hat Enterprise Linux \$releasever - \$basearch
+baseurl=http://192.168.21.21/rhel7-repos/rhel-7-server-rpms
+enabled=1
+gpgcheck=0
+
+[rhel-7-server-rhceph-1.3-calamari-rpms]
+name=My Red Hat Enterprise Linux \$releasever - \$basearch
+baseurl=http://192.168.21.21/rhel7-repos/rhel-7-server-rhceph-1.3-calamari-rpms
+enabled=1
+gpgcheck=0
+
+[rhel-7-server-rhceph-1.3-installer-rpms]
+name=My Red Hat Enterprise Linux \$releasever - \$basearch
+baseurl=http://192.168.21.21/rhel7-repos/rhel-7-server-rhceph-1.3-installer-rpms
+enabled=1
+gpgcheck=0
+
+[rhel-7-server-rhceph-1.3-mon-rpms]
+name=My Red Hat Enterprise Linux \$releasever - \$basearch
+baseurl=http://192.168.21.21/rhel7-repos/rhel-7-server-rhceph-1.3-mon-rpms
+enabled=1
+gpgcheck=0
+
+[rhel-7-server-rhceph-1.3-tools-rpms]
+name=My Red Hat Enterprise Linux \$releasever - \$basearch
+baseurl=http://192.168.21.21/rhel7-repos/rhel-7-server-rhceph-1.3-tools-rpms
+enabled=1
+gpgcheck=0
+
+EOF
+
+yum update -y
+
+#end raw
+
+# yum install yum-plugin-priorities -y
+# yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm -y
+# yum install http://rdo.fedorapeople.org/openstack-$OPV/rdo-release-${OPV}.rpm -y
+# yum install -y centos-release-openstack-${OPV}
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+
+# modify centos7 repo for workaround
+# sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
+
+# add mongodb repo
+cat <<EOF >/etc/yum.repos.d/mongodb.repo
+[mongodb]
+name=MongoDB Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/
+gpgcheck=0
+enabled=1
+EOF
+
+# add galeracluster repo
+cat <<EOF >/etc/yum.repos.d/MariaDB.repo
+[mariadb]
+name =MariaDB
+baseurl = http://yum.mariadb.org/5.5/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+EOF
+
+cat <<EOF >/etc/yum.repos.d/syslog.repo
+[rsyslog_v7]
+name=rsyslog
+baseurl="http://rpms.adiscon.com/v7-stable/epel-7/x86_64"
+enabled=1
+gpgcheck=0
+gpgkey=http://rpms.adiscon.com/RPM-GPG-KEY-Adiscon
+protect=1
+EOF
+
+cat <<EOF >>/etc/yum.conf
+exclude=mongodb-org,mongodb-org-server
+EOF
+
+yum update -y
+yum install createrepo tar -y
+
+yum -y install --downloadonly MariaDB-Galera-server
+#download packages
+#set packages = $getVar('default_packages', [])
+yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
+#set packages = $getVar('packages', [])
+#silent packages.pop(packages.index('MariaDB-Galera-server'))
+yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
+
+mkdir -p /var/cache/yum/repotrack
+repotrack -a x86_64 -p /var/cache/yum/repotrack lvm2 python-devel \
+    dracut-network dracut-config-rescue
+
+#make repo
+mkdir -p /redhat7-$OPV-ppa/{Packages,repodata}
+
+find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /redhat7-$OPV-ppa/Packages/
+
+rm /redhat7-$OPV-ppa/Packages/selinux-policy* -f
+rm /redhat7-$OPV-ppa/Packages/systemd* -f
+
+mv /epel-release-7-5.noarch.rpm /redhat7-$OPV-ppa/Packages/
+cp /comps.xml /redhat7-$OPV-ppa/
+cp /ceph_key_release.asc /redhat7-$OPV-ppa/
+createrepo -g comps.xml /redhat7-$OPV-ppa
+mkdir /redhat7-$OPV-ppa/noarch
+mkdir /redhat7-$OPV-ppa/noarch/Packages
+cp -r /redhat7-$OPV-ppa/Packages/ceph* /redhat7-$OPV-ppa/noarch/Packages/
+cp -r /redhat7-$OPV-ppa/repodata/ /redhat7-$OPV-ppa/noarch/
+tar -zcvf /redhat7-$OPV-ppa.tar.gz /redhat7-$OPV-ppa
