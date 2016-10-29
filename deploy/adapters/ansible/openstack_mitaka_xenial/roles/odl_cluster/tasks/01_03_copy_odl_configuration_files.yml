@@ -1,0 +1,53 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: opendaylight system file
+  copy:
+    src: "{{ service_file.src }}"
+    dest: "{{ service_file.dst }}"
+    mode: 0755
+
+- name: set l3 fwd enable in custom.properties
+  template:
+    src: custom.properties
+    dest: "{{ odl_home }}/etc/custom.properties"
+    owner: odl
+    group: odl
+    mode: 0775
+  when: odl_l3_agent == "Enable"
+
+- name: create karaf config
+  template:
+    src: org.apache.karaf.features.cfg.Debian
+    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
+    owner: odl
+    group: odl
+    mode: 0775
+  when: ansible_os_family == "Debian"
+
+- name: create karaf config
+  template:
+    src: org.apache.karaf.features.cfg.Redhat
+    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
+    owner: odl
+    group: odl
+    mode: 0775
+  when: ansible_os_family == "RedHat"
+
+- name: create tomcat config
+  template:
+    src: tomcat-server.xml
+    dest: "{{ odl_home }}/configuration/tomcat-server.xml"
+
+- name: create tomcat config
+  template:
+    src: jetty.xml
+    dest: "{{ odl_home }}/etc/jetty.xml"
+
+

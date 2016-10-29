@@ -8,14 +8,9 @@
 ##############################################################################
 ---
 
-common_packages:
-  - crudini
-
-service_ovs_name: openvswitch-switch
-service_ovs_agent_name: neutron-openvswitch-agent
-
-service_file:
-   src: opendaylight.service
-   dst: /lib/systemd/system/opendaylight.service
-
-networking_odl_pkg_name: networking-odl-2.0.0.tar.gz
+- name: Stop the Open vSwitch service and clear existing OVSDB
+  shell: >
+    service {{ service_ovs_name }} stop ;
+    rm -rf /var/log/openvswitch/* ;
+    rm -rf /etc/openvswitch/conf.db ;
+    service {{ service_ovs_name }} start ;
