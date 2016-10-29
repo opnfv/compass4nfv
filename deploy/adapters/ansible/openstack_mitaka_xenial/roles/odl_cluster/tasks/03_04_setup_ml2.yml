@@ -1,0 +1,24 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: configure opendaylight -> ml2
+  shell: >
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling True;
+
+- name: copy ml2 configuration script
+  template:
+    src: ml2_conf.sh
+    dest: "/opt/ml2_conf.sh"
+    mode: 0777
+
+- name: execute ml2 configuration script
+  command: su -s /bin/sh -c "/opt/ml2_conf.sh;"
