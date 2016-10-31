@@ -11,14 +11,18 @@
   tags:
     - test_odl
 
-- name: Install ODL Cluster on Controller
-  include: odl_controller.yml
+- name: Provision Common on all nodes
+  include: 00_odl_common.yml
+  when: groups['odl']|length !=0
+
+- name: Provision ODL on Controller nodes
+  include: 01_odl_controller.yml
   when: inventory_hostname in groups['odl']
 
-- name: Install ODL Cluster on Compute
-  include: openvswitch.yml
+- name: Provision ODL on Compute nodes
+  include: 02_odl_compute.yml
   when: groups['odl']|length !=0 and inventory_hostname not in groups['odl']
 
 - name: Config nova
-  include: odl_l3_nova.yml
+  include: 04_odl_l3_nova.yml
   when: groups['odl']|length !=0 and odl_l3_agent == "Enable"

@@ -8,12 +8,15 @@
 ##############################################################################
 ---
 
-common_packages:
-  - crudini
+- name: turn off neutron-server neutron-plugins-openvswitch-agent Daemon on control node
+  shell: >
+    sed -i '/{{ service_ovs_agent_name }}/d' /opt/service ;
+    sed -i '/neutron-server/d' /opt/service;
+    sed -i '/keepalived/d' /opt/service;
 
-service_ovs_name: openvswitch
-service_ovs_agent_name: neutron-openvswitch-agent
+- name: turn off neutron-server on control node
+  service: name=neutron-server state=stopped
 
-service_file:
-   src: opendaylight
-   dst: /etc/init.d/opendaylight
+- name: turn off keepalived on control node
+  service: name=keepalived state=stopped
+  when: ansible_os_family == "Debian"

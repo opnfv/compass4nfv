@@ -1,0 +1,26 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: patch odl pip package
+  shell: |
+    cd /opt
+    tar xf /opt/{{ networking_odl_pkg_name }}
+    rm -rf /opt/{{ networking_odl_pkg_name }}
+    sed -i 's/^neutron-lib.*/neutron-lib/' networking-odl-2.0.0/requirements.txt
+    tar zcf /opt/{{ networking_odl_pkg_name }} networking-odl-2.0.0
+    rm -rf networking-odl-2.0.0
+    cd -
+
+- name: odl pip package install
+  shell: |
+    cd /opt
+    pip install {{ networking_odl_pkg_name }}
+    rm -rf {{ networking_odl_pkg_name }}
+    cd -

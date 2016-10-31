@@ -8,11 +8,7 @@
 ##############################################################################
 ---
 
-controller_packages:
-#  - openjdk-7-jdk
-  - crudini
-
-compute_packages:
+common_packages:
   - crudini
 
 service_ovs_name: openvswitch-switch

@@ -8,12 +8,14 @@
 ##############################################################################
 ---
 
-common_packages:
-  - crudini
+- name: create odl group
+  group: name=odl system=yes state=present
 
-service_ovs_name: openvswitch
-service_ovs_agent_name: neutron-openvswitch-agent
-
-service_file:
-   src: opendaylight
-   dst: /etc/init.d/opendaylight
+- name: create odl user
+  user:
+    name: odl
+    group: odl
+    home: "{{ odl_home }}"
+    createhome: "yes"
+    system: "yes"
+    shell: "/bin/false"

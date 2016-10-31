@@ -8,12 +8,11 @@
 ##############################################################################
 ---
 
-common_packages:
-  - crudini
+- name: unarchive onos driver package
+  command: su -s /bin/sh -c "tar xvf  /opt/install_jdk8.tar -C /opt/"
 
-service_ovs_name: openvswitch
-service_ovs_agent_name: neutron-openvswitch-agent
+- name: install install_jdk8 package
+  command: su -s /bin/sh -c "/opt/install_jdk8/install_jdk8.sh"
 
-service_file:
-   src: opendaylight
-   dst: /etc/init.d/opendaylight
+- name: extract odl package
+  command: su -s /bin/sh -c "tar xzf /opt/{{ odl_pkg_name }} -C {{ odl_home }} --strip-components 1 --no-overwrite-dir -k --skip-old-files" odl

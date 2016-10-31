@@ -8,12 +8,15 @@
 ##############################################################################
 ---
 
-common_packages:
-  - crudini
+- name: recover external network for L3
+  include: 03_03_00_recover_external_network_l3.yml
+  when: odl_l3_agent == "Enable"
 
-service_ovs_name: openvswitch
-service_ovs_agent_name: neutron-openvswitch-agent
+- name: recover external network for L2
+  include: 03_03_01_recover_external_network_l2.yml
+  when: odl_l3_agent == "Disable"
 
-service_file:
-   src: opendaylight
-   dst: /etc/init.d/opendaylight
+- name: restart keepalived to recover external IP
+  shell: service keepalived restart
+  when: inventory_hostname in groups['odl']
+  ignore_errors: True

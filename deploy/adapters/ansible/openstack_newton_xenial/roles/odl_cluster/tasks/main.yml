@@ -7,13 +7,18 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
+- include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - test_odl
 
-common_packages:
-  - crudini
+- name: Provision Common on all nodes
+  include: 00_odl_common.yml
+  when: groups['odl']|length !=0
 
-service_ovs_name: openvswitch
-service_ovs_agent_name: neutron-openvswitch-agent
+- name: Provision ODL on Controller nodes
+  include: 01_odl_controller.yml
+  when: inventory_hostname in groups['odl']
 
-service_file:
-   src: opendaylight
-   dst: /etc/init.d/opendaylight
+- name: Provision ODL on Compute nodes
+  include: 02_odl_compute.yml
+  when: groups['odl']|length !=0 and inventory_hostname not in groups['odl']
