@@ -7,7 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-
 - name: remove neutron-openvswitch-agent service daemon
   shell: sed -i '/{{ service_ovs_agent_name }}/d' /opt/service ;
 
