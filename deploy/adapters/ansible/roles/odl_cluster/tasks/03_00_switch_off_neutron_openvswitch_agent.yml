@@ -1,0 +1,22 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: remove neutron-openvswitch-agent service daemon
+  shell: sed -i '/{{ service_ovs_agent_name }}/d' /opt/service ;
+
+- name: shut down and disable Neutron's openvswitch  agent services
+  service: name={{ service_ovs_agent_name }} state=stopped enabled=no
+
+- name: remove Neutron's openvswitch agent services
+  shell: >
+    update-rc.d -f {{ service_ovs_agent_name }} remove;
+    mv /etc/init.d/{{ service_ovs_agent_name }} /home/{{ service_ovs_agent_name }};
+    mv /etc/init/{{ service_ovs_agent_name }}.conf /home/{{ service_ovs_agent_name }}.conf;
+  when: ansible_os_family == "Debian"

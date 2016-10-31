@@ -23,8 +23,7 @@ odl_api_port: 8080
 jdk8_pkg_name: jdk-8u51-linux-x64.tar.gz
 jdk8_script_name: install_jdk8.tar
 
-controller_packages_noarch: []
-compute_packages_noarch: []
+common_packages_noarch: []
 
 odl_pip:
   - networking_odl

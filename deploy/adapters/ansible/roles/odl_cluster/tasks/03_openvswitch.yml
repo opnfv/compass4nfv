@@ -8,12 +8,17 @@
 ##############################################################################
 ---
 
-common_packages:
-  - crudini
+- name: switch off neutron-openvswitch-agent
+  include: 03_00_switch_off_neutron_openvswitch_agent.yml
 
-service_ovs_name: openvswitch
-service_ovs_agent_name: neutron-openvswitch-agent
+- name: clean up and restart openvswitch
+  include: 03_01_clean_up_and_restart_openvswitch.yml
 
-service_file:
-   src: opendaylight
-   dst: /etc/init.d/opendaylight
+- name: openvswitch connect with opendaylight and check br-int
+  include: 03_02_openvswitch_connect_opendaylight.yml
+
+- name: recover external network
+  include: 03_03_recover_external_network.yml
+
+- name: set up ml2
+  include: 03_04_setup_ml2.yml

@@ -8,12 +8,8 @@
 ##############################################################################
 ---
 
-common_packages:
-  - crudini
+- name: install odl pip packages
+  pip: name={{ item }} state=present
+  with_items: odl_pip
 
-service_ovs_name: openvswitch
-service_ovs_agent_name: neutron-openvswitch-agent
 
-service_file:
-   src: opendaylight
-   dst: /etc/init.d/opendaylight

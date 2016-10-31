@@ -8,12 +8,5 @@
 ##############################################################################
 ---
 
-common_packages:
-  - crudini
-
-service_ovs_name: openvswitch
-service_ovs_agent_name: neutron-openvswitch-agent
-
-service_file:
-   src: opendaylight
-   dst: /etc/init.d/opendaylight
+- name: remove karaf data directory
+  shell: rm -rf {{ odl_home }}/data/*;
