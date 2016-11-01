@@ -95,7 +95,7 @@ function  _prepare_python_env() {
         pip install --upgrade requests
         pip install --upgrade netaddr
         pip install --upgrade oslo.config
-        pip install --upgrade ansible
+        pip install --upgrade ansible==2.1.1.0
    fi
 }
 
