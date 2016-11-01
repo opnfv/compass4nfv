@@ -12,6 +12,9 @@ The below file is the inventory template of deployment nodes:
 
 "compass4nfv/deploy/conf/hardware_environment/huawei-pod1/dha.yml"
 
+The "dha.yml" is a collectively name for "os-nosdn-nofeature-ha.yml
+os-ocl-nofeature-ha.yml os-odl_l2-moon-ha.yml etc".
+
 You can write your own IPMI IP/User/Password/Mac address/roles reference to it.
 
         - name -- Host name for deployment node after installation.
@@ -205,7 +208,7 @@ You can write your own reference to it.
 Start Deployment (Bare Metal Deployment)
 ----------------------------------------
 
-1. Edit run.sh
+1. Edit deploy.sh
 
 Set OS version and OpenStack version for deployment nodes.
     Compass4nfv Colorado supports three OS version based openstack mitaka.
@@ -214,17 +217,26 @@ E.g.
 
 .. code-block:: bash
 
-    ########## Ubuntu14.04 Mitaka ##########
-    export OS_VERSION=trusty
-    export OPENSTACK_VERSION=mitaka
+    ######################### The environment for Openstack ######################
+    # Ubuntu16.04 Newton
+    #export OS_VERSION=xenial
+    #export OPENSTACK_VERSION=newton_xenial
 
-    ########## Ubuntu16.04 Mitaka ##########
-    # export OS_VERSION=xenial
-    # export OPENSTACK_VERSION=mitaka_xenial
+    # Ubuntu14.04 Mitaka
+    #export OS_VERSION=trusty
+    #export OPENSTACK_VERSION=mitaka
 
-    ########## Centos7 Mitaka ##########
-    # export OS_VERSION=centos7
-    # export OPENSTACK_VERSION=mitaka
+    # Ubuntu16.04 Mitaka
+    #export OS_VERSION=xenial
+    #export OPENSTACK_VERSION=mitaka_xenial
+
+    # Centos7 Mitaka
+    #export OS_VERSION=centos7
+    #export OPENSTACK_VERSION=mitaka
+
+    # Redhat7 OSP9
+    #export OS_VERSION=redhat7
+    #export OPENSTACK_VERSION=osp9
 
 Set ISO image that you want to deploy
 
@@ -321,8 +333,8 @@ onos-sfc deploy scenario sample
     # NETWORK is your network.yml's path
     export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
 
-2. Run ``run.sh``
+2. Run ``deploy.sh``
 
 .. code-block:: bash
 
-    ./run.sh
+    ./deploy.sh

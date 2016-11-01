@@ -100,26 +100,54 @@ E.g. Increase two compute nodes
 Start Expansion
 ~~~~~~~~~~~~~~~
 
-1. Edit add.sh
+1. Edit deploy.sh
 
-Set OS version and OpenStack version for deployment nodes.
-    Compass4nfv Colorado supports three OS version based openstack mitaka.
+Set the EXPANSION to true.
 
 E.g.
 
 .. code-block:: bash
 
-    ########## Ubuntu14.04 Mitaka ##########
-    export OS_VERSION=trusty
-    export OPENSTACK_VERSION=mitaka
+    ######################### Deploy or Expansion ###############################
+    # Modify network.yml and virtual_cluster_expansion.yml or
+    # hardware_cluster_expansion.yml.
+    # Edit the DHA and NETWORK envionment variables.
+    # External subnet's ip_range and management ip should be changed as the
+    # first 6 IPs are already taken by the first deployment.
+    # VIRT_NUMBER decide how many virtual machines needs to expand when virtual expansion
 
-    ########## Ubuntu16.04 Mitaka ##########
-    # export OS_VERSION=xenial
-    # export OPENSTACK_VERSION=mitaka_xenial
+    export EXPANSION="true"
+    export MANAGEMENT_IP_START="10.1.0.55"
+    #export VIRT_NUMBER=1
+    export DEPLOY_FIRST_TIME="false"
 
-    ########## Centos7 Mitaka ##########
-    # export OS_VERSION=centos7
-    # export OPENSTACK_VERSION=mitaka
+
+Set OS version and OpenStack version for deployment nodes.
+
+E.g.
+
+.. code-block:: bash
+
+    ######################### The environment for Openstack ######################
+    # Ubuntu16.04 Newton
+    #export OS_VERSION=xenial
+    #export OPENSTACK_VERSION=newton_xenial
+
+    # Ubuntu14.04 Mitaka
+    #export OS_VERSION=trusty
+    #export OPENSTACK_VERSION=mitaka
+
+    # Ubuntu16.04 Mitaka
+    #export OS_VERSION=xenial
+    #export OPENSTACK_VERSION=mitaka_xenial
+
+    # Centos7 Mitaka
+    #export OS_VERSION=centos7
+    #export OPENSTACK_VERSION=mitaka
+
+    # Redhat7 OSP9
+    #export OS_VERSION=redhat7
+    #export OPENSTACK_VERSION=osp9
 
 NOTE:
 The OS version and OpenStack version should be same as the first deployment.
@@ -135,6 +163,9 @@ E.g.
     # or
     # export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
 
+NOTE:
+The ISO should be same as the first deployment.
+
 Set scenario that you want to expansion
 
 E.g.
@@ -147,14 +178,6 @@ E.g.
     # NETWORK is your network.yml's path
     export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network.yml
 
-Comment out VIRT_NUMBER when bare metal expansion
-
-E.g.
-
-.. code-block:: bash
-
-    #export VIRT_NUMBER=1
-
 Set jumpserver PXE NIC
 
 E.g.
@@ -165,11 +188,11 @@ E.g.
 
 Check the environment variable.
 
-2. Run ``add.sh``
+2. Run ``deploy.sh``
 
 .. code-block:: bash
 
-    ./add.sh
+    ./deploy.sh
 
 Virtual Expansion
 -----------------
@@ -232,24 +255,51 @@ Start Expansion
 
 1. Edit add.sh
 
-Set OS version and OpenStack version for deployment nodes.
-    Compass4nfv Colorado supports three OS version based openstack mitaka.
+Set the EXPANSION to true.
 
 E.g.
 
 .. code-block:: bash
 
-    ########## Ubuntu14.04 Mitaka ##########
-    export OS_VERSION=trusty
-    export OPENSTACK_VERSION=mitaka
+    ######################### Deploy or Expansion ###############################
+    # Modify network.yml and virtual_cluster_expansion.yml or
+    # hardware_cluster_expansion.yml.
+    # Edit the DHA and NETWORK envionment variables.
+    # External subnet's ip_range and management ip should be changed as the
+    # first 6 IPs are already taken by the first deployment.
+    # VIRT_NUMBER decide how many virtual machines needs to expand when virtual expansion
 
-    ########## Ubuntu16.04 Mitaka ##########
-    # export OS_VERSION=xenial
-    # export OPENSTACK_VERSION=mitaka_xenial
+    export EXPANSION="true"
+    export MANAGEMENT_IP_START="10.1.0.55"
+    export VIRT_NUMBER=1
+    export DEPLOY_FIRST_TIME="false"
 
-    ########## Centos7 Mitaka ##########
-    # export OS_VERSION=centos7
-    # export OPENSTACK_VERSION=mitaka
+Set OS version and OpenStack version for deployment nodes.
+
+E.g.
+
+.. code-block:: bash
+
+    ######################### The environment for Openstack ######################
+    # Ubuntu16.04 Newton
+    #export OS_VERSION=xenial
+    #export OPENSTACK_VERSION=newton_xenial
+
+    # Ubuntu14.04 Mitaka
+    #export OS_VERSION=trusty
+    #export OPENSTACK_VERSION=mitaka
+
+    # Ubuntu16.04 Mitaka
+    #export OS_VERSION=xenial
+    #export OPENSTACK_VERSION=mitaka_xenial
+
+    # Centos7 Mitaka
+    #export OS_VERSION=centos7
+    #export OPENSTACK_VERSION=mitaka
+
+    # Redhat7 OSP9
+    #export OS_VERSION=redhat7
+    #export OPENSTACK_VERSION=osp9
 
 NOTE:
 The OS version and OpenStack version should be same as the first deployment.
@@ -265,6 +315,9 @@ E.g.
     # or
     # export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
 
+NOTE:
+The OS version and OpenStack version should be same as the first deployment.
+
 Set scenario that you want to expansion
 
 E.g.
@@ -277,26 +330,10 @@ E.g.
     # NETWORK is your network.yml's path
     export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network.yml
 
-Set nodes number need to expansion
-
-E.g.
-
-.. code-block:: bash
-
-    export VIRT_NUMBER=1
-
-Comment out NIC when virtual expansion
-
-E.g.
-
-.. code-block:: bash
-
-    #INSTALL_NIC=${INSTALL_NIC:-eth1}
-
 Check the environment variable.
 
-2. Run ``add.sh``
+2. Run ``deploy.sh``
 
 .. code-block:: bash
 
-    ./add.sh
+    ./deploy.sh

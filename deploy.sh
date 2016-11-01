@@ -7,6 +7,78 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
+
+# ISO_URL is your iso's absolute path
+# export ISO_URL=file:///home/compass/compass4nfv.iso
+# or
+# export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
+#export ISO_URL=
+
+# DHA is your dha.yml's path
+# export DHA=/home/compass4nfv/deploy/conf/vm_environment/os-nosdn-nofeature-ha.yml
+#export DHA=
+
+# NETWORK is your network.yml's path
+# export NETWORK=/home/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml
+#export NETWORK=
+
+######################### The environment for Openstack ######################
+# Ubuntu16.04 Newton
+#export OS_VERSION=xenial
+#export OPENSTACK_VERSION=newton_xenial
+
+# Ubuntu14.04 Mitaka
+#export OS_VERSION=trusty
+#export OPENSTACK_VERSION=mitaka
+
+# Ubuntu16.04 Mitaka
+#export OS_VERSION=xenial
+#export OPENSTACK_VERSION=mitaka_xenial
+
+# Centos7 Mitaka
+#export OS_VERSION=centos7
+#export OPENSTACK_VERSION=mitaka
+
+# Redhat7 OSP9
+#export OS_VERSION=redhat7
+#export OPENSTACK_VERSION=osp9
+
+######################### Hardware Deploy Jumpserver PXE NIC ################
+# You need comment out it when virtual deploy.
+#export INSTALL_NIC=eth1
+
+######################### Virtual Deploy Nodes Number ########################
+# How many nodes do you need when virtual deploy. The default number is 5.
+#export VIRT_NUMBER=5
+
+######################### Deploy or Expansion ###############################
+# Modify network.yml and virtual_cluster_expansion.yml or
+# hardware_cluster_expansion.yml.
+# Edit the DHA and NETWORK envionment variables.
+# External subnet's ip_range and management ip should be changed as the
+# first 6 IPs are already taken by the first deployment.
+# VIRT_NUMBER decide how many virtual machines needs to expand when virtual expansion
+
+#export EXPANSION="true"
+#export MANAGEMENT_IP_START="10.1.0.55"
+#export VIRT_NUMBER=1
+#export DEPLOY_FIRST_TIME="false"
+
+######################### Deploy Compass ####################################
+# If you only need to deploy compass, set this variable.
+#export DEPLOY_COMPASS="true"
+
+######################### Deploy or Redeploy Host ###########################
+# If you only need to deploy host, set these variables.
+#export DEPLOY_HOST="true"
+#export REDEPLOY_HOST="true"
+
+######################### Reconvery #########################################
+# After restart jumpserver, set these variables and run deploy.sh again.
+#export DEPLOY_RECOVERY="true"
+#export DEPLOY_FIRST_TIME="false"
+
+
 #set -x
 COMPASS_DIR=`cd ${BASH_SOURCE[0]%/*}/;pwd`
 export COMPASS_DIR
