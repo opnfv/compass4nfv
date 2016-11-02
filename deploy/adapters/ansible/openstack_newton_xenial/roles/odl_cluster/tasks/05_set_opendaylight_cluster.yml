@@ -1,0 +1,34 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: combine odl controller
+  shell: rm -f /opt/cluster; touch /opt/cluster;
+
+- name: combine odl controller
+  shell: echo "{{ ip_settings[item.1]['mgmt']['ip'] }} \c" >> /opt/cluster; >> /opt/cluster;
+  with_indexed_items: groups['odl']
+
+- name: combine odl controller
+  shell: cat /opt/cluster
+  register: cluster
+
+#- debug: msg="{{ cluster.stdout_lines[0] }}"
+
+- name: combine odl controller
+  shell: uname -n | cut -b 5,5
+  register: number
+
+#- debug: msg="{{ number.stdout_lines[0] }}"
+
+- debug: msg="{{ odl_home }}/bin/configure_cluster.sh {{ number.stdout_lines[0] }} {{ cluster.stdout_lines[0] }}"
+
+- name: configure odl controller in cluster
+  shell: "{{ odl_home }}/bin/configure_cluster.sh {{ number.stdout_lines[0] }} {{ cluster.stdout_lines[0] }}"
+
