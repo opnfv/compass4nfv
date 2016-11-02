@@ -9,12 +9,20 @@
 ##############################################################################
 set -ex
 
-SCRIPT_DIR=`cd ${BASH_SOURCE[0]%/*};pwd`
-COMPASS_DIR=${SCRIPT_DIR}
-WORK_DIR=$SCRIPT_DIR/work/building
+#COMPASS_PATH=$(cd "$(dirname "$0")"/..; pwd)
+COMPASS_PATH=`cd ${BASH_SOURCE[0]%/*};pwd`
+WORK_DIR=$COMPASS_PATH/work/building
+
+echo $COMPASS_PATH
+
+# REPO related setting
+REPO_PATH=$COMPASS_PATH/repo
+WORK_PATH=$COMPASS_PATH
+
 PACKAGES="fuse fuseiso createrepo genisoimage curl"
 
-source $SCRIPT_DIR/build/build.conf
+# PACKAGE_URL will be reset in Jenkins for different branch
+export PACKAGE_URL=${PACKAGE_URL:-http://205.177.226.237:9999}
 
 mkdir -p $WORK_DIR
 
@@ -178,7 +186,7 @@ function copy_file()
         cp $CACHE_DIR/`basename $i | sed 's/.git//g'` $new/compass/ -rf
     done
 
-    cp $COMPASS_DIR/deploy/adapters $new/compass/compass-adapters -rf
+    cp $COMPASS_PATH/deploy/adapters $new/compass/compass-adapters -rf
 
     tar -zxvf $CACHE_DIR/`basename $PIP_REPO` -C $new/
     tar -zxvf $CACHE_DIR/`basename $PIP_OPS_REPO` -C $new/
@@ -191,7 +199,7 @@ function rebuild_ppa()
     name=`basename $COMPASS_PKG`
     rm -rf ${name%%.*} $name
     cp $CACHE_DIR/$name $WORK_DIR
-    cp $SCRIPT_DIR/build/os/centos/comps.xml $WORK_DIR
+    cp $COMPASS_PATH/repo/openstack/make_ppa/centos/comps.xml $WORK_DIR
     tar -zxvf $name
     cp ${name%%.*}/*.rpm $1/Packages -f
     rm -rf $1/repodata/*
@@ -227,7 +235,7 @@ function make_iso()
 
 function process_param()
 {
-    TEMP=`getopt -o c:d:f: --long iso-dir:,iso-name:,cache-dir: -n 'build.sh' -- "$@"`
+    TEMP=`getopt -o c:d:f:s:t: --long iso-dir:,iso-name:,cache-dir:,openstack_build:,feature_build:,feature_version: -n 'build.sh' -- "$@"`
 
     if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
@@ -238,6 +246,9 @@ function process_param()
             -d|--iso-dir) export ISO_DIR=$2; shift 2;;
             -f|--iso-name) export ISO_NAME=$2; shift 2;;
             -c|--cache-dir) export CACHE_DIR=$2; shift 2;;
+            -s|--openstack_build) export OPENSTACK_BUILD=$2; shift 2;;
+            -t|--feature_build) export FEATURE_BUILD=$2; shift 2;;
+            -v|--feature_version) export FEATURE_VERSION=$2; shift 2;;
             --) shift; break;;
             *) echo "Internal error!" ; exit 1 ;;
         esac
@@ -246,6 +257,9 @@ function process_param()
     export CACHE_DIR=${CACHE_DIR:-$WORK_DIR/cache}
     export ISO_DIR=${ISO_DIR:-$WORK_DIR}
     export ISO_NAME=${ISO_NAME:-"compass.iso"}
+    export OPENSTACK_BUILD=${OPENSTACK_BUILD:-"stable"}
+    export FEATURE_BUILD=${FEATURE_BUILD:-"stable"}
+#    export FEATURE_VERSION=${FEATURE_VERSION:-"colorado"}
 }
 
 function copy_iso()
@@ -257,7 +271,42 @@ function copy_iso()
    cp $WORK_DIR/compass.iso $ISO_DIR/$ISO_NAME -f
 }
 
+# get daily repo or stable repo
+function get_repo_pkg()
+{
+   source $COMPASS_PATH/repo/repo_func.sh
+
+   # switch to compass4nfv directory
+   cd $COMPASS_PATH
+
+   # set openstack ppa url
+   if [[ $OPENSTACK_BUILD == daily ]]; then
+       process_env
+       make_osppa
+       export PPA_URL=${PPA_URL:-$COMPASS_PATH/work/repo}
+   else
+       export PPA_URL=${PPA_URL:-$PACKAGE_URL}
+   fi
+
+   # set feature pkg url
+   if [[ $FEATURE_BUILD == daily ]]; then
+       process_env
+       make_repo --package-tag feature
+
+###TODO should the packages.tar.gz include all the packages from different OPNFV versions?
+
+       export FEATURE_URL=${FEATURE_URL:-$COMPASS_PATH/work/repo}
+   else
+       export FEATURE_URL=${FEATURE_URL:-$PACKAGE_URL}
+   fi
+
+   source $COMPASS_PATH/build/build.conf
+
+   # switch to building directory
+   cd $WORK_DIR
+}
 process_param $*
 prepare_env
+get_repo_pkg
 make_iso
 copy_iso
