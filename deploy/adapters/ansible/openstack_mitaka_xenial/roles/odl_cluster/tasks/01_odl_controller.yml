@@ -29,6 +29,10 @@
 - name: stop openstack services
   include: 01_06_stop_openstack_services.yml
 
+- name: set opendaylight cluster
+  include: 05_set_opendaylight_cluster.yml
+  when: groups['odl']|length > 1
+
 - name: install moon
   include: moon-odl.yml
   when: moon == "Enable"
