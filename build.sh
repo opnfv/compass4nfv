@@ -82,7 +82,7 @@ function download_packages()
               $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA $XENIAL_MITAKA_PPA $XENIAL_NEWTON_PPA \
               $UBUNTU_ISO $UBUNTU_ISO1 $REDHAT7_ISO $REDHAT7_OSP9_PPA \
               $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA $CENTOS7_MITAKA_PPA \
-              $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG $PIP_REPO $ANSIBLE_MODULE; do
+              $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG $PIP_REPO $PIP_OPS_REPO $ANSIBLE_MODULE; do
 
          if [[ ! $i ]]; then
              continue
@@ -105,7 +105,7 @@ function copy_file()
     new=$1
 
     # main process
-    mkdir -p $new/compass $new/bootstrap $new/pip $new/guestimg $new/app_packages $new/ansible
+    mkdir -p $new/compass $new/bootstrap $new/pip $new/pip-ops $new/guestimg $new/app_packages $new/ansible
     mkdir -p $new/repos/cobbler/{ubuntu,centos,redhat}/{iso,ppa}
 
     rm -rf $new/.rr_moved
@@ -181,6 +181,7 @@ function copy_file()
     cp $COMPASS_DIR/deploy/adapters $new/compass/compass-adapters -rf
 
     tar -zxvf $CACHE_DIR/`basename $PIP_REPO` -C $new/
+    tar -zxvf $CACHE_DIR/`basename $PIP_OPS_REPO` -C $new/
 
     find $new/compass -name ".git" | xargs rm -rf
 }
