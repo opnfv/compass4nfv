@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_20ac47ed",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/keystone/templates/keystone.conf",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-09T05:48:42Z",
+      "side": 1,
+      "message": "delete spaces, please",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "1f9d95cf803d0c9be12236034000e378bb0ff9c4",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
