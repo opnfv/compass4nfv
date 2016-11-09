@@ -17,9 +17,9 @@ os_services:
     type: identity
     region: RegionOne
     description: "OpenStack Identity"
-    publicurl: "http://{{ public_vip.ip }}:5000/v2.0"
-    internalurl: "http://{{ internal_vip.ip }}:5000/v2.0"
-    adminurl: "http://{{ internal_vip.ip }}:35357/v2.0"
+    publicurl: "http://{{ public_vip.ip }}:5000/v3"
+    internalurl: "http://{{ internal_vip.ip }}:5000/v3"
+    adminurl: "http://{{ internal_vip.ip }}:35357/v3"
 
   - name: glance
     type: image
@@ -33,9 +33,9 @@ os_services:
     type: compute
     region: RegionOne
     description: "OpenStack Compute"
-    publicurl: "http://{{ public_vip.ip }}:8774/v2/%(tenant_id)s"
-    internalurl: "http://{{ internal_vip.ip }}:8774/v2/%(tenant_id)s"
-    adminurl: "http://{{ internal_vip.ip }}:8774/v2/%(tenant_id)s"
+    publicurl: "http://{{ public_vip.ip }}:8774/v2.1/%\\(tenant_id\\)s"
+    internalurl: "http://{{ internal_vip.ip }}:8774/v2.1/%\\(tenant_id\\)s"
+    adminurl: "http://{{ internal_vip.ip }}:8774/v2.1/%\\(tenant_id\\)s"
 
   - name: neutron
     type: network
@@ -65,25 +65,25 @@ os_services:
     type: volume
     region: RegionOne
     description: "OpenStack Block Storage"
-    publicurl: "http://{{ public_vip.ip }}:8776/v1/%(tenant_id)s"
-    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
-    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
+    publicurl: "http://{{ public_vip.ip }}:8776/v1/%\\(tenant_id\\)s"
+    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%\\(tenant_id\\)s"
+    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%\\(tenant_id\\)s"
 
   - name: cinderv2
     type: volumev2
     region: RegionOne
     description: "OpenStack Block Storage v2"
-    publicurl: "http://{{ public_vip.ip }}:8776/v2/%(tenant_id)s"
-    internalurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
-    adminurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
+    publicurl: "http://{{ public_vip.ip }}:8776/v2/%\\(tenant_id\\)s"
+    internalurl: "http://{{ internal_vip.ip }}:8776/v2/%\\(tenant_id\\)s"
+    adminurl: "http://{{ internal_vip.ip }}:8776/v2/%\\(tenant_id\\)s"
 
   - name: heat
     type: orchestration
     region: RegionOne
     description: "OpenStack Orchestration"
-    publicurl: "http://{{ public_vip.ip }}:8004/v1/%(tenant_id)s"
-    internalurl: "http://{{ internal_vip.ip }}:8004/v1/%(tenant_id)s"
-    adminurl: "http://{{ internal_vip.ip }}:8004/v1/%(tenant_id)s"
+    publicurl: "http://{{ public_vip.ip }}:8004/v1/%\\(tenant_id\\)s"
+    internalurl: "http://{{ internal_vip.ip }}:8004/v1/%\\(tenant_id\\)s"
+    adminurl: "http://{{ internal_vip.ip }}:8004/v1/%\\(tenant_id\\)s"
 
   - name: heat-cfn
     type: cloudformation
@@ -97,9 +97,9 @@ os_services:
 #    type: object-store
 #    region: RegionOne
 #    description: "OpenStack Object Storage"
-#    publicurl: "http://{{ public_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
-#    internalurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
-#    adminurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
+#    publicurl: "http://{{ public_vip.ip }}:8080/v1/AUTH_%\\(tenant_id\\)s"
+#    internalurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%\\(tenant_id\\)s"
+#    adminurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%\\(tenant_id\\)s"
 
 os_users:
   - user: admin
@@ -178,3 +178,4 @@ os_users:
 #    role: admin
 #    tenant: service
 #    tenant_description: "Service Tenant"
+
