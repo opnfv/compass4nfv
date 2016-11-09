@@ -11,6 +11,7 @@ hosts:
   - name: host1
     mac: '00:1E:67:D4:30:D2'
     interfaces:
+      - eth1: '00:1E:67:D4:30:D1'
       - eth2: '00:1E:67:C5:5B:28'
       - eth3: '00:1E:67:C5:5B:29'
     ipmiIp: 10.2.117.134
@@ -24,6 +25,7 @@ hosts:
   - name: host2
     mac: '00:1E:67:D4:39:B5'
     interfaces:
+      - eth1: '00:1E:67:D4:39:B4'
       - eth2: '00:1E:67:C5:52:24'
       - eth3: '00:1E:67:C5:52:25'
     ipmiIp: 10.2.117.136
@@ -36,6 +38,7 @@ hosts:
   - name: host3
     mac: '00:1E:67:D4:31:B2'
     interfaces:
+      - eth1: '00:1E:67:D4:31:B1'
       - eth2: '00:1E:67:C1:FA:E0'
       - eth3: '00:1E:67:C1:FA:E1'
     ipmiIp: 10.2.117.138
@@ -48,6 +51,7 @@ hosts:
   - name: host4
     mac: '00:1E:67:D4:34:67'
     interfaces:
+      - eth1: '00:1E:67:D4:34:66'
       - eth2: '00:1E:67:E2:58:80'
       - eth3: '00:1E:67:E2:58:81'
     ipmiIp: 10.2.117.140
@@ -58,6 +62,7 @@ hosts:
   - name: host5
     mac: '00:1E:67:D4:38:42'
     interfaces:
+      - eth1: '00:1E:67:D4:38:41'
       - eth2: '00:1E:67:C1:F9:2C'
       - eth3: '00:1E:67:C1:F9:2D'
     ipmiIp: 10.2.117.142

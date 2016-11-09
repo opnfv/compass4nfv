@@ -4,7 +4,7 @@ bond_mappings: []
 provider_net_mappings:
   - name: br-prv
     network: physnet
-    interface: eth3
+    interface: eth1
     type: ovs
     role:
       - controller
@@ -12,8 +12,8 @@ provider_net_mappings:
 
 sys_intf_mappings:
   - name: mgmt
-    interface: eth2
-    vlan_tag: 804
+    interface: eth3
+    vlan_tag: 854
     type: vlan
     role:
       - controller
@@ -21,7 +21,7 @@ sys_intf_mappings:
 
   - name: storage
     interface: eth2
-    vlan_tag: 802
+    vlan_tag: 804
     type: vlan
     role:
       - controller
@@ -29,8 +29,7 @@ sys_intf_mappings:
 
   - name: external
     interface: br-prv
-    vlan_tag: 805
-    type: vlan
+    type: ovs
     role:
       - controller
       - compute
@@ -59,6 +58,7 @@ ip_settings:
     - - "10.8.15.10"
       - "10.8.15.30"
     cidr: "10.8.15.0/24"
+    gw: "10.8.15.1"
     role:
       - controller
       - compute
