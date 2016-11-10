@@ -22,6 +22,30 @@
       "revId": "5a8fd2ee35b57810292d3b4de0442d472a475d0a",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_3bdd5a43",
+        "filename": "deploy/conf/hardware_environment/intel-pod8/network.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-11-10T03:05:25Z",
+      "side": 1,
+      "message": "fake gw ip, the ip actually hosted on jumpserver.",
+      "parentUuid": "5ac10518_3b0f9ae3",
+      "range": {
+        "startLine": 61,
+        "startChar": 18,
+        "endLine": 61,
+        "endChar": 19
+      },
+      "revId": "5a8fd2ee35b57810292d3b4de0442d472a475d0a",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
