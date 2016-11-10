@@ -19,6 +19,7 @@ import json
 import logging
 import requests
 
+
 class Client(object):
     """compass restful api wrapper"""
 
