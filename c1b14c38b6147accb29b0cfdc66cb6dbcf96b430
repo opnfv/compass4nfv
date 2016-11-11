@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_a19b58c8",
+        "filename": "README.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-11T08:21:02Z",
+      "side": 1,
+      "message": "delete these unused",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 57
+      },
+      "revId": "c1b14c38b6147accb29b0cfdc66cb6dbcf96b430",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_015fcc0f",
+        "filename": "README.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-11T08:21:02Z",
+      "side": 1,
+      "message": "It\u0027s a markdown file, please write it in markdown.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 23
+      },
+      "revId": "c1b14c38b6147accb29b0cfdc66cb6dbcf96b430",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_01b6ec3d",
+        "filename": "repo/make_repo.sh",
+        "patchSetId": 12
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-11T08:21:02Z",
+      "side": 1,
+      "message": "add a usage() function to explain how to use this command.",
+      "revId": "c1b14c38b6147accb29b0cfdc66cb6dbcf96b430",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_a1827850",
+        "filename": "repo/make_repo.sh",
+        "patchSetId": 12
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-11T08:21:02Z",
+      "side": 1,
+      "message": "add a case para all, do not process any reasonable in else branch exception print usage().",
+      "range": {
+        "startLine": 37,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 14
+      },
+      "revId": "c1b14c38b6147accb29b0cfdc66cb6dbcf96b430",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_a1e9181c",
+        "filename": "repo/repo_func.sh",
+        "patchSetId": 12
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-11T08:21:02Z",
+      "side": 1,
+      "message": "delete",
+      "revId": "c1b14c38b6147accb29b0cfdc66cb6dbcf96b430",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
