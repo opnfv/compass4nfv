@@ -4,32 +4,40 @@ import yaml
 import sys
 import traceback
 
+
 def init(file):
-    with open (file) as fd:
+    with open(file) as fd:
         try:
             return yaml.load(fd)
         except:
             traceback.print_exc()
             return None
 
+
 def err_print(info):
-    print '\033[0;31m%s\033[0m' %info
+    print '\033[0;31m%s\033[0m' % info
+
 
 def check_ip(ip):
     if not ip:
         return False
-    res=re.search("^(0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}(\/(\d|[1-2]\d|3[0-2]))?$",ip)!=None
+    res = re.search(
+        "^(0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}(\/(\d|[1-2]\d|3[0-2]))?$",
+        ip) is not None
     return res
+
 
 def check_mac(mac):
     if not mac:
         return False
-    res=re.search("^([a-zA-Z0-9]{2}:){5}[a-zA-Z0-9]{2}$",mac)!=None
+    res = re.search("^([a-zA-Z0-9]{2}:){5}[a-zA-Z0-9]{2}$", mac) is not None
     return res
+
 
 def check_network(network):
     for i in network.get('ip_settings'):
-        if not (check_ip(i['cidr']) and check_ip(i['ip_ranges'][0][0]) and check_ip(i['ip_ranges'][0][1])):
+        if not (check_ip(i['cidr']) and check_ip(
+                i['ip_ranges'][0][0]) and check_ip(i['ip_ranges'][0][1])):
             return False
         if i['name'] == 'external' and not check_ip(i['gw']):
             return False
@@ -54,10 +62,12 @@ def check_network(network):
 
     return True
 
+
 def check_dha(dha):
     if dha['TYPE'] == 'baremetal':
         for i in dha['hosts']:
-            if not (check_mac(i['mac']) and check_mac(i['interfaces'][0]['eth1']) and check_ip(i['ipmiIp'])):
+            if not (check_mac(i['mac']) and check_mac(
+                    i['interfaces'][0]['eth1']) and check_ip(i['ipmiIp'])):
                 return False
     return True
 

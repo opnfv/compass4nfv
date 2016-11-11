@@ -3,9 +3,11 @@ import yaml
 import sys
 from Cheetah.Template import Template
 
+
 def init(file):
     with open(file) as fd:
         return yaml.load(fd)
+
 
 def decorator(func):
     def wrapter(s, seq):
@@ -14,7 +16,7 @@ def decorator(func):
         for host in host_list:
             s = func(s, seq, host)
             if not s:
-               continue
+                continue
             result.append(s)
         if len(result) == 0:
             return ""
@@ -22,17 +24,21 @@ def decorator(func):
             return "\"" + seq.join(result) + "\""
     return wrapter
 
+
 @decorator
 def hostnames(s, seq, host=None):
     return host.get('name', '')
+
 
 @decorator
 def hostroles(s, seq, host=None):
     return "%s=%s" % (host.get('name', ''), ','.join(host.get('roles', [])))
 
+
 @decorator
 def hostmacs(s, seq, host=None):
     return host.get('mac', '')
+
 
 def export_dha_file(s, dha_file, conf_dir, ofile):
     env = {}
@@ -54,18 +60,27 @@ def export_dha_file(s, dha_file, conf_dir, ofile):
     for k, v in env.items():
         os.system("echo 'export %s=${%s:-%s}' >> %s" % (k, k, v, ofile))
 
+
 def export_reset_file(s, tmpl_dir, output_dir, output_file):
     tmpl_file_name = s.get('POWER_TOOL', '')
     if not tmpl_file_name:
         return
 
-    tmpl = Template(file=os.path.join(tmpl_dir,'power', tmpl_file_name + '.tmpl'), searchList=s)
+    tmpl = Template(
+        file=os.path.join(
+            tmpl_dir,
+            'power',
+            tmpl_file_name +
+            '.tmpl'),
+        searchList=s)
 
     reset_file_name = os.path.join(output_dir, tmpl_file_name + '.sh')
     with open(reset_file_name, 'w') as f:
         f.write(tmpl.respond())
 
-    os.system("echo 'export POWER_MANAGE=%s' >> %s" % (reset_file_name, output_file))
+    os.system(
+        "echo 'export POWER_MANAGE=%s' >> %s" %
+        (reset_file_name, output_file))
 
 if __name__ == "__main__":
     if len(sys.argv) != 6:
@@ -80,8 +95,19 @@ if __name__ == "__main__":
 
     data = init(dha_file)
 
-    export_dha_file(data, dha_file, conf_dir, os.path.join(output_dir, output_file))
-    export_reset_file(data, tmpl_dir, output_dir, os.path.join(output_dir, output_file))
+    export_dha_file(
+        data,
+        dha_file,
+        conf_dir,
+        os.path.join(
+            output_dir,
+            output_file))
+    export_reset_file(
+        data,
+        tmpl_dir,
+        output_dir,
+        os.path.join(
+            output_dir,
+            output_file))
 
     sys.exit(0)
-

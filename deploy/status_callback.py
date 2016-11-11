@@ -3,13 +3,15 @@ import json
 import sys
 import logging
 
+
 def task_error(host, data):
     logging.info("task_error: host=%s,data=%s" % (host, data))
 
-    if type(data) == dict:
+    if isinstance(data, dict):
         invocation = data.pop('invocation', {})
 
     notify_host("localhost", host, "failed")
+
 
 class CallbackModule(object):
     """
@@ -58,7 +60,8 @@ class CallbackModule(object):
     def playbook_on_task_start(self, name, is_conditional):
         pass
 
-    def playbook_on_vars_prompt(self, varname, private=True, prompt=None, encrypt=None, confirm=False, salt_size=None, salt=None, default=None):
+    def playbook_on_vars_prompt(self, varname, private=True, prompt=None,
+                                encrypt=None, confirm=False, salt_size=None, salt=None, default=None):
         pass
 
     def playbook_on_setup(self):
@@ -101,7 +104,10 @@ class CallbackModule(object):
 
 def raise_for_status(resp):
     if resp.status < 200 or resp.status > 300:
-        raise RuntimeError("%s, %s, %s" % (resp.status, resp.reason, resp.read()))
+        raise RuntimeError(
+            "%s, %s, %s" %
+            (resp.status, resp.reason, resp.read()))
+
 
 def auth(conn):
     credential = {}
@@ -116,6 +122,7 @@ def auth(conn):
     raise_for_status(resp)
     return json.loads(resp.read())["token"]
 
+
 def notify_host(compass_host, host, status):
     if status == "succ":
         body = {"ready": True}
@@ -125,8 +132,8 @@ def notify_host(compass_host, host, status):
         host = host.strip("host")
         url = "/api/clusterhosts/%s/state" % host
     else:
-        logging.error("notify_host: host %s with status %s is not supported" \
-                % (host, status))
+        logging.error("notify_host: host %s with status %s is not supported"
+                      % (host, status))
         return
 
     headers = {"Content-type": "application/json",
@@ -135,12 +142,15 @@ def notify_host(compass_host, host, status):
     conn = httplib.HTTPConnection(compass_host, 80)
     token = auth(conn)
     headers["X-Auth-Token"] = token
-    logging.info("host=%s,url=%s,body=%s,headers=%s" % (compass_host,url,json.dumps(body),headers))
+    logging.info("host=%s,url=%s,body=%s,headers=%s" %
+                 (compass_host, url, json.dumps(body), headers))
     conn.request("POST", url, json.dumps(body), headers)
     resp = conn.getresponse()
     try:
         raise_for_status(resp)
-        logging.info("notify host status success!!! status=%s, body=%s" % (resp.status, resp.read()))
+        logging.info(
+            "notify host status success!!! status=%s, body=%s" %
+            (resp.status, resp.read()))
     except Exception as e:
         logging.error("http request failed %s" % str(e))
         raise
