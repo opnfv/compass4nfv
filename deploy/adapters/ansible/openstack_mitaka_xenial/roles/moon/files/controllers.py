@@ -1,13 +1,13 @@
 # Copyright 2015 Open Platform for NFV Project, Inc. and its contributors
-# This software is distributed under the terms and conditions of the 'Apache-2.0'
-# license which can be found in the file 'LICENSE' in this package distribution
-# or at 'http://www.apache.org/licenses/LICENSE-2.0'.
+# This software is distributed under the terms and conditions of
+# the 'Apache-2.0' license which can be found in the file 'LICENSE' in this
+# package distribution or at 'http://www.apache.org/licenses/LICENSE-2.0'.
 
 from keystone.common import controller
 from keystone import config
 from keystone import exception
 from keystone.models import token_model
-from keystone.contrib.moon.exception import *
+from keystone.contrib.moon.exception import *   # noqa
 from oslo_log import log
 from uuid import uuid4
 import requests
@@ -66,7 +66,7 @@ class Tenants(controller.V3Controller):
         return self.tenant_api.get_tenants_dict(user_id)
 
     def __get_keystone_tenant_dict(
-            self, tenant_id="", tenant_name="", tenant_description="", domain="default"):
+            self, tenant_id="", tenant_name="", tenant_description="", domain="default"):   # noqa
         tenants = self.resource_api.list_projects()
         for tenant in tenants:
             if tenant_id and tenant_id == tenant['id']:
@@ -305,7 +305,7 @@ class IntraExtensions(controller.V3Controller):
         subject_category_dict['description'] = kw.get(
             'subject_category_description', None)
         return self.admin_api.set_subject_category_dict(
-            user_id, intra_extension_id, subject_category_id, subject_category_dict)
+            user_id, intra_extension_id, subject_category_id, subject_category_dict)  # noqa
 
     @controller.protected()
     def get_object_categories(self, context, **kw):
@@ -351,7 +351,7 @@ class IntraExtensions(controller.V3Controller):
         object_category_dict['description'] = kw.get(
             'object_category_description', None)
         return self.admin_api.set_object_category_dict(
-            user_id, intra_extension_id, object_category_id, object_category_dict)
+            user_id, intra_extension_id, object_category_id, object_category_dict)  # noqa
 
     @controller.protected()
     def get_action_categories(self, context, **kw):
@@ -397,7 +397,7 @@ class IntraExtensions(controller.V3Controller):
         action_category_dict['description'] = kw.get(
             'action_category_description', None)
         return self.admin_api.set_action_category_dict(
-            user_id, intra_extension_id, action_category_id, action_category_dict)
+            user_id, intra_extension_id, action_category_id, action_category_dict)   # noqa
 
     # Perimeter functions
     @controller.protected()
@@ -547,7 +547,7 @@ class IntraExtensions(controller.V3Controller):
         subject_scope_dict['description'] = kw.get(
             'subject_scope_description', None)
         return self.admin_api.add_subject_scope_dict(
-            user_id, intra_extension_id, subject_category_id, subject_scope_dict)
+            user_id, intra_extension_id, subject_category_id, subject_scope_dict)   # noqa
 
     @controller.protected()
     def get_subject_scope(self, context, **kw):
@@ -581,7 +581,7 @@ class IntraExtensions(controller.V3Controller):
         subject_scope_dict['description'] = kw.get(
             'subject_scope_description', None)
         return self.admin_api.set_subject_scope_dict(
-            user_id, intra_extension_id, subject_category_id, subject_scope_id, subject_scope_dict)
+            user_id, intra_extension_id, subject_category_id, subject_scope_id, subject_scope_dict)   # noqa
 
     @controller.protected()
     def get_object_scopes(self, context, **kw):
@@ -635,7 +635,7 @@ class IntraExtensions(controller.V3Controller):
         object_scope_dict['description'] = kw.get(
             'object_scope_description', None)
         return self.admin_api.set_object_scope_dict(
-            user_id, intra_extension_id, object_category_id, object_scope_id, object_scope_dict)
+            user_id, intra_extension_id, object_category_id, object_scope_id, object_scope_dict)   # noqa
 
     @controller.protected()
     def get_action_scopes(self, context, **kw):
@@ -689,7 +689,7 @@ class IntraExtensions(controller.V3Controller):
         action_scope_dict['description'] = kw.get(
             'action_scope_description', None)
         return self.admin_api.set_action_scope_dict(
-            user_id, intra_extension_id, action_category_id, action_scope_id, action_scope_dict)
+            user_id, intra_extension_id, action_category_id, action_scope_id, action_scope_dict)   # noqa
 
     # Assignment functions
 
@@ -701,7 +701,7 @@ class IntraExtensions(controller.V3Controller):
         subject_category_id = kw.get('subject_category_id', None)
         subject_scope_id = kw.get('subject_scope_id', None)
         return self.admin_api.add_subject_assignment_list(
-            user_id, intra_extension_id, subject_id, subject_category_id, subject_scope_id)
+            user_id, intra_extension_id, subject_id, subject_category_id, subject_scope_id)   # noqa
 
     @controller.protected()
     def get_subject_assignment(self, context, **kw):
@@ -734,7 +734,7 @@ class IntraExtensions(controller.V3Controller):
         object_category_id = kw.get('object_category_id', None)
         object_scope_id = kw.get('object_scope_id', None)
         return self.admin_api.add_object_assignment_list(
-            user_id, intra_extension_id, object_id, object_category_id, object_scope_id)
+            user_id, intra_extension_id, object_id, object_category_id, object_scope_id)  # noqa
 
     @controller.protected()
     def get_object_assignment(self, context, **kw):
@@ -767,7 +767,7 @@ class IntraExtensions(controller.V3Controller):
         action_category_id = kw.get('action_category_id', None)
         action_scope_id = kw.get('action_scope_id', None)
         return self.admin_api.add_action_assignment_list(
-            user_id, intra_extension_id, action_id, action_category_id, action_scope_id)
+            user_id, intra_extension_id, action_id, action_category_id, action_scope_id)   # noqa
 
     @controller.protected()
     def get_action_assignment(self, context, **kw):
@@ -921,7 +921,7 @@ class IntraExtensions(controller.V3Controller):
         subject_category_list = kw.get('subject_categories', [])
         object_category_list = kw.get('object_categories', [])
         action_category_list = kw.get('action_categories', [])
-        rule_list = subject_category_list + action_category_list + object_category_list
+        rule_list = subject_category_list + action_category_list + object_category_list   # noqa
         return self.admin_api.set_rule_dict(
             user_id, intra_extension_id, sub_meta_rule_id, rule_id, rule_list)
 
@@ -1031,7 +1031,7 @@ class MoonAuth(controller.V3Controller):
             else:
                 message = {
                     "error": {
-                        "message": "Unable to find project {}".format(kw['project']),
+                        "message": "Unable to find project {}".format(kw['project']),   # noqa
                         "code": 200,
                         "title": "UnScopedToken"
                     }}

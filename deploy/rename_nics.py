@@ -20,13 +20,13 @@ def rename_nics(dha_info, rsa_file, compass_ip, os_version):
                 if os_version == 'xenial':
                     exec_cmd("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
                               -i %s root@%s \
-                              'cobbler system edit --name=%s --interface=%s --mac=%s --interface_type=static'"
-                             % (rsa_file, compass_ip, host_name, nic_name, mac))
+                              'cobbler system edit --name=%s --interface=%s --mac=%s --interface_type=static'"   # noqa
+                             % (rsa_file, compass_ip, host_name, nic_name, mac))   # noqa
                 else:
                     exec_cmd("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
                               -i %s root@%s \
-                              'cobbler system edit --name=%s --interface=%s --mac=%s'"
-                             % (rsa_file, compass_ip, host_name, nic_name, mac))
+                              'cobbler system edit --name=%s --interface=%s --mac=%s'"   # noqa
+                             % (rsa_file, compass_ip, host_name, nic_name, mac))  # noqa
 
     exec_cmd("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
               -i %s root@%s \

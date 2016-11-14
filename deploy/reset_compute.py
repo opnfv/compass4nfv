@@ -32,7 +32,7 @@ def reset_baremetal(dha_info):
             print ipmiPass
             print ipmiIp
             exec_cmd(
-                "ipmitool -I lanplus -H %s -U %s -P %s chassis power reset >/dev/null" %
+                "ipmitool -I lanplus -H %s -U %s -P %s chassis power reset >/dev/null" %   # noqa
                 (ipmiIp, ipmiUser, ipmiPass))
 
 

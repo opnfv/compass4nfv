@@ -14,10 +14,10 @@ def setup_bondings(bond_mappings):
 def setup_ips_new(config):
     LOG.info("setup_ips_new enter")
     network = netaddr.IPNetwork(config["ip_settings"]["br-prv"]["cidr"])
-    intf_name = config["provider_net_mappings"][0]["interface"]
+#    intf_name = config["provider_net_mappings"][0]["interface"]
     cmd = "ip link set br-ex up;"
     cmd += "ip addr add %s/%s brd %s dev %s;" \
-        % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), 'br-ex')
+        % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), 'br-ex')  # noqa
     cmd += "route del default;"
     cmd += "ip route add default via %s dev %s" % (
         config["ip_settings"]["br-prv"]["gw"], 'br-ex')
@@ -29,6 +29,6 @@ def main(config):
     setup_ips_new(config)
 
 if __name__ == "__main__":
-    os.system("service openvswitch-switch status|| service openvswitch-switch start")
+    os.system("service openvswitch-switch status|| service openvswitch-switch start")  # noqa
     config = yaml.load(open(config_path))
     main(config)
