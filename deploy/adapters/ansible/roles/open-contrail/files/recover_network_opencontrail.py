@@ -16,14 +16,14 @@ def setup_ips_new(config):
     network = netaddr.IPNetwork(config["ip_settings"]["br-prv"]["cidr"])
     intf_name = config["provider_net_mappings"][0]["interface"]
     cmd = "ip addr add %s/%s brd %s dev %s;" \
-          % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), intf_name)
-    #cmd = "ip link set br-ex up;"
-    #cmd += "ip addr add %s/%s brd %s dev %s;" \
-    #      % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), 'br-ex')
+          % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), intf_name)  # noqa
+    # cmd = "ip link set br-ex up;"
+    # cmd += "ip addr add %s/%s brd %s dev %s;" \
+    #      % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), 'br-ex')   # noqa
     cmd += "route del default;"
     cmd += "ip route add default via %s dev %s" % (
         config["ip_settings"]["br-prv"]["gw"], intf_name)
-    #cmd += "ip route add default via %s dev %s" % (config["ip_settings"]["br-prv"]["gw"], 'br-ex')
+    # cmd += "ip route add default via %s dev %s" % (config["ip_settings"]["br-prv"]["gw"], 'br-ex')  # noqa
     LOG.info("setup_ips_new: cmd=%s" % cmd)
     os.system(cmd)
 

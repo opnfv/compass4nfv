@@ -6,7 +6,7 @@ if __name__ == "__main__":
     network_config_file = os.environ["NETWORK"]
     network_config = yaml.load(open(network_config_file, "r"))
     os.system(
-        "sudo ovs-vsctl --may-exist add-port br-external mgmt_vnic -- set Interface mgmt_vnic type=internal")
+        "sudo ovs-vsctl --may-exist add-port br-external mgmt_vnic -- set Interface mgmt_vnic type=internal")   # noqa
     os.system("sudo ip addr flush mgmt_vnic")
     os.system("sudo ip link set mgmt_vnic up")
     for sys_intf in network_config["sys_intf_mappings"]:

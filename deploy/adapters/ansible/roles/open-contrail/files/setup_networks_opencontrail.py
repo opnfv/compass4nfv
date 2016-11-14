@@ -25,7 +25,7 @@ def add_vlan_link(interface, ifname, vlan_id):
 #    if vlan_id:
 #        cmd += " tag=%s" % vlan_id
 #    cmd += " -- set Interface %s type=internal;" % ifname
-#    cmd += "ip link set dev %s address `ip link show %s |awk '/link\/ether/{print $2}'`;" \
+#    cmd += "ip link set dev %s address `ip link show %s |awk '/link\/ether/{print $2}'`;" \  # noqa
 #            % (ifname, uplink)
 #    cmd += "ip link set %s up;" % ifname
 #    LOG.info("add_ovs_port: cmd=%s" % cmd)
@@ -61,10 +61,10 @@ def setup_ips(ip_settings, sys_intf_mappings):
         if "gw" in intf_info:
             continue
         cmd = "ip addr add %s/%s brd %s dev %s;" \
-              % (intf_info["ip"], intf_info["netmask"], str(network.broadcast), intf_name)
+              % (intf_info["ip"], intf_info["netmask"], str(network.broadcast), intf_name)  # noqa
 #        if "gw" in intf_info:
 #            cmd += "route del default;"
-#            cmd += "ip route add default via %s dev %s" % (intf_info["gw"], intf_name)
+#            cmd += "ip route add default via %s dev %s" % (intf_info["gw"], intf_name)  # noqa
         LOG.info("setup_ips: cmd=%s" % cmd)
         os.system(cmd)
 
@@ -74,22 +74,22 @@ def setup_ips_new(config):
     network = netaddr.IPNetwork(config["ip_settings"]["br-prv"]["cidr"])
     intf_name = config["provider_net_mappings"][0]["interface"]
     cmd = "ip addr add %s/%s brd %s dev %s;" \
-          % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), intf_name)
+          % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), intf_name)  # noqa
 #    cmd = "ip link set br-ex up;"
 #    cmd += "ip addr add %s/%s brd %s dev %s;" \
-#          % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), 'br-ex')
+#          % (config["ip_settings"]["br-prv"]["ip"], config["ip_settings"]["br-prv"]["netmask"], str(network.broadcast), 'br-ex')   # noqa
     cmd += "route del default;"
     cmd += "ip route add default via %s dev %s" % (
         config["ip_settings"]["br-prv"]["gw"], intf_name)
-#    cmd += "ip route add default via %s dev %s" % (config["ip_settings"]["br-prv"]["gw"], 'br-ex')
+#    cmd += "ip route add default via %s dev %s" % (config["ip_settings"]["br-prv"]["gw"], 'br-ex')  # noqa
     LOG.info("setup_ips_new: cmd=%s" % cmd)
     os.system(cmd)
 
 
 def setup_default_router(config):
     LOG.info("setup_ips_new enter")
-    network = netaddr.IPNetwork(config["ip_settings"]["br-prv"]["cidr"])
-    intf_name = config["provider_net_mappings"][0]["interface"]
+#    network = netaddr.IPNetwork(config["ip_settings"]["br-prv"]["cidr"])
+#    intf_name = config["provider_net_mappings"][0]["interface"]
     cmd = "route del default;"
     cmd += "ip route add default via %s dev %s" % (
         config["ip_settings"]["br-prv"]["gw"], "vhost0")

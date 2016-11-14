@@ -17,8 +17,7 @@ def add_ovs_port(ovs_br, ifname, uplink, vlan_id=None):
     if vlan_id:
         cmd += " tag=%s" % vlan_id
     cmd += " -- set Interface %s type=internal;" % ifname
-    cmd += "ip link set dev %s address `ip link show %s |awk '/link\/ether/{print $2}'`;" \
-        % (ifname, uplink)
+    cmd += "ip link set dev %s address `ip link show %s |awk '/link\/ether/{print $2}'`;" % (ifname, uplink)   # noqa
     cmd += "ip link set %s up;" % ifname
     LOG.info("add_ovs_port: cmd=%s" % cmd)
     os.system(cmd)
@@ -34,7 +33,7 @@ def setup_ips(ip_settings, sys_intf_mappings):
             intf_name = intf_info["alias"]
         if "gw" in intf_info:
             cmd = "ip addr add %s/%s brd %s dev %s;" \
-                  % (intf_info["ip"], intf_info["netmask"], str(network.broadcast), intf_name)
+                  % (intf_info["ip"], intf_info["netmask"], str(network.broadcast), intf_name)  # noqa
             cmd += "route del default;"
             cmd += "ip route add default via %s dev %s" % (
                 intf_info["gw"], intf_name)
@@ -66,6 +65,6 @@ def main(config):
 
 
 if __name__ == "__main__":
-    os.system("service openvswitch-switch status|| service openvswitch-switch start")
+    os.system("service openvswitch-switch status|| service openvswitch-switch start")  # noqa
     config = yaml.load(open(config_path))
     main(config)
