@@ -17,7 +17,6 @@
 """binary to deploy a cluster by compass client api."""
 import os
 import re
-import socket
 import sys
 import time
 import yaml
@@ -28,14 +27,15 @@ import itertools
 import threading
 from collections import defaultdict
 from restful import Client
+import log as logging
+from oslo_config import cfg
+
 
 ROLE_UNASSIGNED = True
 ROLE_ASSIGNED = False
 
-import log as logging
 LOG = logging.getLogger(__name__)
 
-from oslo_config import cfg
 CONF = cfg.CONF
 
 
@@ -159,7 +159,7 @@ opts = [
     cfg.StrOpt('host_networks',
                help=(
                    'semicomma seperated host name and its networks '
-                   '<hostname>:<interface_name>=<ip>|<is_mgmt>|<is_promiscuous>,...'
+                   '<hostname>:<interface_name>=<ip>|<is_mgmt>|<is_promiscuous>,...'  # noqa
                ),
                default=''),
     cfg.StrOpt('partitions',
@@ -167,7 +167,7 @@ opts = [
                    'comma seperated partitions '
                    '<partition name>=<partition_value>'
                ),
-               default='tmp:percentage=10%,var:percentage=30%,home:percentage=30%'),
+               default='tmp:percentage=10%,var:percentage=30%,home:percentage=30%'),  # noqa
     cfg.StrOpt('network_mapping',
                help=(
                    'comma seperated network mapping '
@@ -677,7 +677,7 @@ class CompassClient(object):
         for service_credential in service_credentials:
             if ':' not in service_credential:
                 raise Exception(
-                    'there is no : in service credential %s' % service_credential
+                    'there is no : in service credential %s' % service_credential  # noqa
                 )
             service_name, service_pair = service_credential.split(':', 1)
             if '=' not in service_pair:
@@ -705,7 +705,7 @@ class CompassClient(object):
         for console_credential in console_credentials:
             if ':' not in console_credential:
                 raise Exception(
-                    'there is no : in console credential %s' % console_credential
+                    'there is no : in console credential %s' % console_credential  # noqa
                 )
             console_name, console_pair = console_credential.split(':', 1)
             if '=' not in console_pair:
@@ -718,8 +718,8 @@ class CompassClient(object):
                 'password': password
             }
 
-        package_config["security"] = {"service_credentials": service_credential_cfg,
-                                      "console_credentials": console_credential_cfg}
+        package_config["security"] = {"service_credentials": service_credential_cfg,  # noqa
+                                      "console_credentials": console_credential_cfg}  # noqa
 
         network_mapping = dict([
             network_pair.split('=', 1)
@@ -752,7 +752,7 @@ class CompassClient(object):
         package_config['enable_fwaas'] = (CONF.enable_fwaas == "true")
         package_config['enable_vpnaas'] = (CONF.enable_vpnaas == "true")
         package_config[
-            'odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"
+            'odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"   # noqa
         package_config[
             'moon'] = "Enable" if CONF.moon == "Enable" else "Disable"
         package_config[
@@ -796,8 +796,7 @@ class CompassClient(object):
             self.set_host_roles(cluster_id, host_id, roles)
             self.host_roles[hostname] = roles
 
-        unassigned_hostnames = list(set(self.host_mapping.keys())
-                                    - set(self.host_roles.keys()))
+        unassigned_hostnames = list(set(self.host_mapping.keys()) - set(self.host_roles.keys()))  # noqa
 
         unassigned_roles = [role for role, status in self.role_mapping.items()
                             if is_role_unassigned(status)]
@@ -810,8 +809,7 @@ class CompassClient(object):
             self.set_host_roles(cluster_id, host_id, [role])
             self.host_roles[hostname] = [role]
 
-        unassigned_hostnames = list(set(self.host_mapping.keys())
-                                    - set(self.host_roles.keys()))
+        unassigned_hostnames = list(set(self.host_mapping.keys()) - set(self.host_roles.keys()))  # noqa
 
         if not unassigned_hostnames:
             return
@@ -888,7 +886,7 @@ class CompassClient(object):
     def get_installing_progress(self, cluster_id):
         def _get_installing_progress():
             """get intalling progress."""
-            deployment_timeout = time.time() + 60 * float(CONF.deployment_timeout)
+            deployment_timeout = time.time() + 60 * float(CONF.deployment_timeout)  # noqa
             current_time = time.time
             while current_time() < deployment_timeout:
                 status, cluster_state = self.get_cluster_state(cluster_id)
@@ -948,14 +946,17 @@ class CompassClient(object):
 
 
 def print_ansible_log():
-    os.system("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i %s root@192.168.200.2 \
-              'while ! tail -f /var/ansible/run/%s-%s/ansible.log 2>/dev/null; do :; sleep 1; done'" %
+    os.system("ssh -o StrictHostKeyChecking=no -o \
+              UserKnownHostsFile=/dev/null -i %s root@192.168.200.2 \
+              'while ! tail -f \
+              /var/ansible/run/%s-%s/ansible.log 2>/dev/null; do :; \
+              sleep 1; done'" %
               (CONF.rsa_file, CONF.adapter_name, CONF.cluster_name))
 
 
 def kill_print_proc():
     os.system(
-        "ps aux|grep -v grep|grep -E 'ssh.+root@192.168.200.2'|awk '{print $2}'|xargs kill -9")
+        "ps aux|grep -v grep|grep -E 'ssh.+root@192.168.200.2'|awk '{print $2}'|xargs kill -9")   # noqa
 
 
 def deploy():

@@ -49,8 +49,8 @@ def get_packages_name_list(file_list, special_packages):
     return package_name_list
 
 
-def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_packages="",
-                             special_packages="", special_packages_script_dir="", special_packages_dir=""):
+def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_packages="",  # noqa
+                             special_packages="", special_packages_script_dir="", special_packages_dir=""):   # noqa
     package_name_list = get_packages_name_list(
         get_file_list(root, arch), special_packages) if root else []
 
@@ -85,5 +85,5 @@ def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_
 
 if __name__ == '__main__':
     # generate_download_script('ansible', 'Debian', 'Debian.tmpl')
-    generate_download_script(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4],
-                             sys.argv[5].split(' '), sys.argv[6].split(' '), sys.argv[7], sys.argv[8])
+    generate_download_script(sys.argv[1], sys.argv[2], sys.argv[3],
+                             sys.argv[4], sys.argv[5].split(' '), sys.argv[6].split(' '), sys.argv[7], sys.argv[8])   # noqa

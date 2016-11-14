@@ -7,8 +7,8 @@ import logging
 def task_error(host, data):
     logging.info("task_error: host=%s,data=%s" % (host, data))
 
-    if isinstance(data, dict):
-        invocation = data.pop('invocation', {})
+#    if isinstance(data, dict):
+#        invocation = data.pop('invocation', {})
 
     notify_host("localhost", host, "failed")
 
@@ -61,7 +61,7 @@ class CallbackModule(object):
         pass
 
     def playbook_on_vars_prompt(self, varname, private=True, prompt=None,
-                                encrypt=None, confirm=False, salt_size=None, salt=None, default=None):
+                                encrypt=None, confirm=False, salt_size=None, salt=None, default=None):   # noqa
         pass
 
     def playbook_on_setup(self):
