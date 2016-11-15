@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_0f0cd341",
+        "filename": "repo/make_repo.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-15T08:53:30Z",
+      "side": 1,
+      "message": "it is better to use make_pip_repo directly",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 17
+      },
+      "revId": "d0817e6c8f7f8914b45df0ef3467365cd085adc3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_4a09692b",
+        "filename": "repo/make_repo.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-15T08:53:30Z",
+      "side": 1,
+      "message": "use make_feature_repo better.",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 17
+      },
+      "revId": "d0817e6c8f7f8914b45df0ef3467365cd085adc3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_2a109d4d",
+        "filename": "repo/make_repo.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-15T08:53:30Z",
+      "side": 1,
+      "message": "use make_jhenv_repo better",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 12
+      },
+      "revId": "d0817e6c8f7f8914b45df0ef3467365cd085adc3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_ca1c796d",
+        "filename": "repo/make_repo.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-15T08:53:30Z",
+      "side": 1,
+      "message": "create a new wrapper function named \"make_compass_repo\" etc....",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 48
+      },
+      "revId": "d0817e6c8f7f8914b45df0ef3467365cd085adc3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_8a2671b9",
+        "filename": "repo/repo_func.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-15T08:53:30Z",
+      "side": 1,
+      "message": "too complicated, make it easy and simple.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 20
+      },
+      "revId": "d0817e6c8f7f8914b45df0ef3467365cd085adc3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_ea19357a",
+        "filename": "repo/repo_func.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-15T08:53:30Z",
+      "side": 1,
+      "message": "make_all_repo should just call pip,feature,openstack....etc. I think should not use make_repo directly.",
+      "range": {
+        "startLine": 378,
+        "startChar": 0,
+        "endLine": 379,
+        "endChar": 1
+      },
+      "revId": "d0817e6c8f7f8914b45df0ef3467365cd085adc3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
