@@ -8,6 +8,7 @@ from keystone import config
 from keystone import exception
 from keystone.models import token_model
 from keystone.contrib.moon.exception import *   # noqa
+from keystone.contrib.moon.exception import dependency
 from oslo_log import log
 from uuid import uuid4
 import requests
