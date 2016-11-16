@@ -17,7 +17,7 @@ CONF = config.CONF
 LOG = log.getLogger(__name__)
 
 
-@dependency.requires('configuration_api')
+@dependency.requires('configuration_api')   # noqa
 class Configuration(controller.V3Controller):
     collection_name = 'configurations'
     member_name = 'configuration'
@@ -48,7 +48,7 @@ class Configuration(controller.V3Controller):
             user_id)
 
 
-@dependency.requires('tenant_api', 'resource_api')
+@dependency.requires('tenant_api', 'resource_api')   # noqa
 class Tenants(controller.V3Controller):
 
     def __init__(self):
@@ -152,7 +152,7 @@ def callback(self, context, prep_info, *args, **kwargs):
         raise exception.Unauthorized
 
 
-@dependency.requires('authz_api')
+@dependency.requires('authz_api')   # noqa
 class Authz_v3(controller.V3Controller):
 
     def __init__(self):
@@ -168,7 +168,7 @@ class Authz_v3(controller.V3Controller):
             return {'authz': False, 'comment': unicode(e)}
 
 
-@dependency.requires('admin_api', 'root_api')
+@dependency.requires('admin_api', 'root_api')   # noqa
 class IntraExtensions(controller.V3Controller):
     collection_name = 'intra_extensions'
     member_name = 'intra_extension'
@@ -926,7 +926,7 @@ class IntraExtensions(controller.V3Controller):
             user_id, intra_extension_id, sub_meta_rule_id, rule_id, rule_list)
 
 
-@dependency.requires('authz_api')
+@dependency.requires('authz_api')   # noqa
 class InterExtensions(controller.V3Controller):
 
     def __init__(self):
@@ -968,7 +968,7 @@ class InterExtensions(controller.V3Controller):
     # self.interextension_api.delete_inter_extension(kw['inter_extension_id'])
 
 
-@dependency.requires('moonlog_api', 'authz_api')
+@dependency.requires('moonlog_api', 'authz_api')   # noqa
 class Logs(controller.V3Controller):
 
     def __init__(self):
@@ -987,7 +987,7 @@ class Logs(controller.V3Controller):
         return self.moonlog_api.get_logs(user_id, options)
 
 
-@dependency.requires('identity_api', "token_provider_api", "resource_api")
+@dependency.requires('identity_api', "token_provider_api", "resource_api")   # noqa
 class MoonAuth(controller.V3Controller):
 
     def __init__(self):
