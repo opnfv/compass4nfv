@@ -7,7 +7,7 @@ from keystone.common import controller
 from keystone import config
 from keystone import exception
 from keystone.models import token_model
-from keystone.contrib.moon.exception import *   # noqa 
+from keystone.contrib.moon.exception import *   # noqa
 from oslo_log import log
 from uuid import uuid4
 import requests
@@ -17,7 +17,7 @@ CONF = config.CONF
 LOG = log.getLogger(__name__)
 
 
-@dependency.requires('configuration_api')   # noqa
+@dependency.requires('configuration_api')  # noqa: F405
 class Configuration(controller.V3Controller):
     collection_name = 'configurations'
     member_name = 'configuration'
