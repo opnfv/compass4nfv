@@ -1,7 +1,6 @@
 import re
-import os
 import yaml
-import sys
+import sys,os
 import traceback
 
 
@@ -101,7 +100,8 @@ def check_dha_file(dha):
                     hosts:
                         - name: %s
                           interfaces:
-                            - %s: %s''' % (i['name'], j.keys()[0], j.values()[0]))
+                            - %s: %s''' % 
+                             (i['name'], j.keys()[0], j.values()[0]))
                     invalid = True
             if not is_valid_ip(i['ipmiIp']):
                 err_print('''invalid address:
