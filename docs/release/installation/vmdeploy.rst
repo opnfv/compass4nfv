@@ -99,99 +99,36 @@ E.g. Openstack and ONOS deployment roles setting
 Network Configuration (Virtual Deployment)
 ------------------------------------------
 
-Before deployment, there are some network configuration to be checked based
-on your network topology.Compass4nfv network default configuration file is
-"compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml".
-You can write your own reference to it.
-
-**The following figure shows the default network configuration.**
-
-.. code-block:: console
-
-
-      +--+                          +--+
-      |  |                          |  |
-      |  |      +------------+      |  |
-      |  +------+  Jumphost  +------+  |
-      |  |      +------+-----+      |  |
-      |  |             |            |  |
-      |  |             +------------+  |
-      |  |                          |  |
-      |  |      +------------+      |  |
-      |  +------+    host1   +------+  |
-      |  |      +------+-----+      |  |
-      |  |             |            |  |
-      |  |             +------------+  |
-      |  |                          |  |
-      |  |      +------------+      |  |
-      |  +------+    host2   +------+  |
-      |  |      +------+-----+      |  |
-      |  |             |            |  |
-      |  |             +------------+  |
-      |  |                          |  |
-      |  |      +------------+      |  |
-      |  +------+    host3   +------+  |
-      |  |      +------+-----+      |  |
-      |  |             |            |  |
-      |  |             +------------+  |
-      |  |                          |  |
-      |  |                          |  |
-      +-++                          ++-+
-        ^                            ^
-        |                            |
-        |                            |
-      +-+-------------------------+  |
-      |      External Network     |  |
-      +---------------------------+  |
-             +-----------------------+---+
-             |    Installation Network   |
-             +---------------------------+
+The same with Baremetal Deployment.
 
 Start Deployment (Virtual Deployment)
 -------------------------------------
 
 1. Edit deploy.sh
 
-Set OS version and OpenStack version for deployment nodes.
-    Compass4nfv Colorado supports three OS version based openstack mitaka.
+1.1. Set OS version for deployment nodes.
+     Compass4nfv supports ubuntu and centos based openstack newton.
 
 E.g.
 
 .. code-block:: bash
 
-    ######################### The environment for Openstack ######################
-    # Ubuntu16.04 Newton
-    #export OS_VERSION=xenial
-    #export OPENSTACK_VERSION=newton_xenial
+    # Set OS version for target hosts
+    # Ubuntu16.04 or CentOS7
+    export OS_VERSION=xenial
+    or
+    export OS_VERSION=centos7
 
-    # Ubuntu14.04 Mitaka
-    #export OS_VERSION=trusty
-    #export OPENSTACK_VERSION=mitaka
-
-    # Ubuntu16.04 Mitaka
-    #export OS_VERSION=xenial
-    #export OPENSTACK_VERSION=mitaka_xenial
-
-    # Centos7 Mitaka
-    #export OS_VERSION=centos7
-    #export OPENSTACK_VERSION=mitaka
-
-    # Redhat7 OSP9
-    #export OS_VERSION=redhat7
-    #export OPENSTACK_VERSION=osp9
-
-Set ISO image that you want to deploy
+1.2. Set ISO image corresponding to your code
 
 E.g.
 
 .. code-block:: bash
 
-    # ISO_URL is your iso's absolute path
-    # export ISO_URL=file:///home/compass/compass4nfv.iso
-    # or
-    # export ISO_URL=http://artifacts.opnfv.org/compass4nfv/colorado/opnfv-colorado.1.0.iso
+    # Set ISO image corresponding to your code
+    export ISO_URL=file:///home/compass/compass4nfv.iso
 
-Set scenario that you want to deploy
+1.3. Set scenario that you want to deploy
 
 E.g.
 
