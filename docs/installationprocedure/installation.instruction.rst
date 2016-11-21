@@ -92,7 +92,7 @@ The Jumphost requirements are outlined below:
 
 5.     16 GB of RAM for a Bare Metal deployment, 64 GB of RAM for a Virtual deployment.
 
-6.     CPU cores: 32, Memory: 64 GB, Hard Disk: 500 GB, (Virtual Deloment needs 1 TB Hard Disk)
+6.     CPU cores: 32, Memory: 64 GB, Hard Disk: 500 GB, (Virtual Deployment needs 1 TB Hard Disk)
 
 
 Bare Metal Node Requirements
@@ -152,3 +152,13 @@ In order to execute a deployment, one must gather the following information:
 2.     IPMI login information for the nodes (user/pass).
 
 3.     MAC address of Control Plane / Provisioning interfaces of the Bare Metal nodes.
+
+
+
+Configurations
+---------------
+
+There are three configuration files a user needs to modify for a cluster deployment.
+``network_cfg.yaml`` for openstack networks on hosts.
+``dha file`` for host role, IPMI credential and host nic idenfitication (MAC address).
+``deploy.sh`` for os and openstack version.
