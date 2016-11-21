@@ -29,7 +29,9 @@ You can write your own IPMI IP/User/Password/Mac address/roles reference to it.
 
         - ipmiPass -- IPMI Password for deployment node.
 
-        - mac -- MAC Address of deployment node PXE NIC .
+        - mac -- MAC Address of deployment node PXE NIC.
+
+        - interfaces -- Host NIC renamed according to NIC MAC addresses when OS provisioning.
 
         - roles -- Components deployed.
 
@@ -77,7 +79,7 @@ E.g. Openstack only deployment roles setting
           - compute
 
 NOTE:
-IF YOU SELECT MUTIPLE NODES AS CONTROLLER, THE 'ha' role MUST BE SELECT, TOO.
+THE 'ha' role MUST BE SELECT WITH CONTROLLERS, EVEN THERE IS ONLY ONE CONTROLLER NODE.
 
 E.g. Openstack and ceph deployment roles setting
 
@@ -156,7 +158,107 @@ Network Configuration (Bare Metal Deployment)
 Before deployment, there are some network configuration to be checked based
 on your network topology.Compass4nfv network default configuration file is
 "compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml".
-You can write your own reference to it.
+This file is an example, you can customize by yourself according to specific network environment.
+
+In this network.yml, there are several config sections listed following(corresponed to the ordre of the config file):
+
+Provider Mapping
+~~~~~~~~~~~~~~~~
+
+        - name -- provider network name.
+
+        - network -- default as physnet, do not change it.
+
+        - interfaces -- the NIC or Bridge attached by the Network.
+
+        - type -- the type of the NIC or Bridge(vlan for NIC and ovs for Bridge, either).
+
+        - roles -- all the possible roles of the host machines which connected by this network(mostly put both
+controller and compute).
+
+System Interface
+~~~~~~~~~~~~~~~~
+
+        - name -- Network name.
+
+        - interfaces -- the NIC or Bridge attached by the Network.
+
+        - vlan_tag -- if type is vlan, add this tag before 'type' tag.
+
+        - type -- the type of the NIC or Bridge(vlan for NIC and ovs for Bridge, either).
+
+        - roles -- all the possible roles of the host machines which connected by this network(mostly put both
+controller and compute).
+
+IP Settings
+~~~~~~~~~~~
+
+        - name -- network name corresponding the the network name in System Interface section one by one.
+
+        - ip_ranges -- ip addresses range provided for this network.
+
+        - cidr -- the IPv4 address and its associated routing prefix and subnet maskã
+
+        - gw -- need to add this line only if network is external.
+
+        - roles -- all the possible roles of the host machines which connected by this network(mostly put both
+controller and compute).
+
+Internal VIP(virtual or proxy IP)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        - ip -- virtual or proxy ip address, must be in the same subnet with mgmt network but must not be in the
+range of mgmt network.
+
+        - netmask -- the length of netmask
+
+        - interface -- mostly mgmt.
+
+Public VIP
+~~~~~~~~~~
+
+        - ip -- virtual or proxy ip address, must be in the same subnet with external network but must not be
+in the range of external network.
+
+        - netmask -- the length of netmask
+
+        - interface -- mostly external.
+
+ONOS NIC
+~~~~~~~~
+
+        - the NIC for ONOS, if there is no ONOS configured, leave it unchanged.
+
+
+Public Network
+~~~~~~~~~~~~~~
+
+        - enable -- must be True(if False, you need to set up provider network manually).
+
+        - network -- leave it ext-net.
+
+        - type -- the type of the ext-net above, such as flat or vlan.
+
+        - segment_id -- when the type is vlan, this should be id of vlan.
+
+        - subnet -- leave it ext-subnet.
+
+        - provider_network -- leave it physnet.
+
+        - router -- leave it router-ext.
+
+        - enable_dhcp -- must be False.
+
+        - no_gateway -- must be False.
+
+        - external_gw -- same as gw in ip_settings.
+
+        - floating_ip_cidr -- cidr for floating ip, see explanation in ip_settings.
+
+        - floating_ip_start -- define range of floating ip with floating_ip_end.(this defined range must not be included in ip range of external configured in ip_settings section)
+
+        - floating_ip_end -- define range of floating ip with floating_ip_start.
+
 
 **The following figure shows the default network configuration.**
 
@@ -203,6 +305,134 @@ You can write your own reference to it.
                      +-------------------------+-+
                      | PXE(Installation) Network |
                      +---------------------------+
+
+
+
+
+**The following figure shows the interfaces and nics of JumpHost and deployment nodes in huawei-pod1
+network configuration(default one nic for openstack networks).**
+
+.. code-block:: console
+
+
+    +--------------JumpHost-------------+
+    |                                   |
+    |   +-+Compass+-+                   |
+    |   |           +     +--------+    |    External-network
+    |   |         eth2+---+br-ext  +-+eth0+----------------------+
+    |   |           +     +--------+    |                        |
+    |   |           |                   |                        |
+    |   |           |                   |                        |
+    |   |           +     +--------+    |    Install-network     |
+    |   |         eth1+---+install +-+eth1+-----------------+    |
+    |   |           +     +--------+    |                   |    |
+    |   |           |                   |                   |    |
+    |   |           |                   |                   |    |
+    |   |           +                   |    IPMI-network   |    |
+    |   |         eth0                eth2+-----------+     |    |
+    |   |           +                   |             |     |    |
+    |   +---+VM+----+                   |             |     |    |
+    +-----------------------------------+             |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+    +---------------Host1---------------+             |     |    |
+    |                                   |             |     |    |
+    |                                  eth0+----------------+    |
+    |                                   |             |     |    |
+    |                   mgmt +--------+ |             |     |    |
+    |                                 | |             |     |    |
+    |                +-----------+    | |             |     |    |
+    |   external+----+  br-prv   +----+eth1+---------------------+
+    |                +-----------+    | |             |     |    |
+    |                                 | |             |     |    |
+    |                   storage +-----+ |             |     |    |
+    |                                   |             |     |    |
+    +-----------------------------------+             |     |    |
+    |                                 IPMI+-----------+     |    |
+    +-----------------------------------+             |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+    +---------------Host2---------------+             |     |    |
+    |                                   |             |     |    |
+    |                                  eth0+----------------+    |
+    |                                   |             |          |
+    |                   mgmt +--------+ |             |          |
+    |                                 | |             |          |
+    |                +-----------+    | |             |          |
+    |   external+----+  br-prv   +----+eth1+---------------------+
+    |                +-----------+    | |             |
+    |                                 | |             |
+    |                   storage +-----+ |             |
+    |                                   |             |
+    +-----------------------------------+             |
+    |                                 IPMI+-----------+
+    +-----------------------------------+
+
+**The following figure shows the interfaces and nics of JumpHost and deployment nodes in intel-pod8
+network configuration(openstack networks are seperated by multiple NICs).**
+
+.. code-block:: console
+
+
+    +-------------+JumpHost+------------+
+    |                                   |
+    |   +-+Compass+-+                   |
+    |   |           +     +--------+    |    External-network
+    |   |         eth2+---+br-ext  +-+eth0+----------------------+
+    |   |           +     +--------+    |                        |
+    |   |           |                   |                        |
+    |   |           |                   |                        |
+    |   |           +     +--------+    |    Install-network     |
+    |   |         eth1+---+install +-+eth1+-----------------+    |
+    |   |           +     +--------+    |                   |    |
+    |   |           |                   |                   |    |
+    |   |           |                   |                   |    |
+    |   |           +                   |    IPMI-network   |    |
+    |   |         eth0                eth2+-----------+     |    |
+    |   |           +                   |             |     |    |
+    |   +---+VM+----+                   |             |     |    |
+    +-----------------------------------+             |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+    +--------------+Host1+--------------+             |     |    |
+    |                                   |             |     |    |
+    |                                  eth0+----------------+    |
+    |                                   |             |     |    |
+    |                      +--------+   |             |     |    |
+    |         external+----+br-prv  +-+eth1+---------------------+
+    |                      +--------+   |             |     |    |
+    |         storage +---------------+eth2+-------------------------+
+    |                                   |             |     |    |   |
+    |         Mgmt    +---------------+eth3+----------------------------+
+    |                                   |             |     |    |   |  |
+    |                                   |             |     |    |   |  |
+    +-----------------------------------+             |     |    |   |  |
+    |                                 IPMI+-----------+     |    |   |  |
+    +-----------------------------------+             |     |    |   |  |
+                                                      |     |    |   |  |
+                                                      |     |    |   |  |
+                                                      |     |    |   |  |
+                                                      |     |    |   |  |
+    +--------------+Host2+--------------+             |     |    |   |  |
+    |                                   |             |     |    |   |  |
+    |                                  eth0+----------------+    |   |  |
+    |                                   |             |          |   |  |
+    |                      +--------+   |             |          |   |  |
+    |         external+----+br-prv  +-+eth1+---------------------+   |  |
+    |                      +--------+   |             |              |  |
+    |         storage +---------------+eth2+-------------------------+  |
+    |                                   |             | storage-network |
+    |         Mgmt    +---------------+eth3+----------------------------+
+    |                                   |             | mgmt-network
+    |                                   |             |
+    +-----------------------------------+             |
+    |                                 IPMI+-----------+
+    +-----------------------------------+
 
 
 Start Deployment (Bare Metal Deployment)
