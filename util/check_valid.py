@@ -101,7 +101,7 @@ def check_dha_file(dha):
                     hosts:
                         - name: %s
                           interfaces:
-                            - %s: %s''' % (i['name'], j.keys()[0], j.values()[0]))
+                            - %s: %s''' % (i['name'], j.keys()[0], j.values()[0]))   # noqa
                     invalid = True
             if not is_valid_ip(i['ipmiIp']):
                 err_print('''invalid address:
