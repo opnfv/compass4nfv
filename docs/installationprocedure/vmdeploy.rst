@@ -99,53 +99,7 @@ E.g. Openstack and ONOS deployment roles setting
 Network Configuration (Virtual Deployment)
 ------------------------------------------
 
-Before deployment, there are some network configuration to be checked based
-on your network topology.Compass4nfv network default configuration file is
-"compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml".
-You can write your own reference to it.
-
-**The following figure shows the default network configuration.**
-
-.. code-block:: console
-
-
-      +--+                          +--+
-      |  |                          |  |
-      |  |      +------------+      |  |
-      |  +------+  Jumphost  +------+  |
-      |  |      +------+-----+      |  |
-      |  |             |            |  |
-      |  |             +------------+  |
-      |  |                          |  |
-      |  |      +------------+      |  |
-      |  +------+    host1   +------+  |
-      |  |      +------+-----+      |  |
-      |  |             |            |  |
-      |  |             +------------+  |
-      |  |                          |  |
-      |  |      +------------+      |  |
-      |  +------+    host2   +------+  |
-      |  |      +------+-----+      |  |
-      |  |             |            |  |
-      |  |             +------------+  |
-      |  |                          |  |
-      |  |      +------------+      |  |
-      |  +------+    host3   +------+  |
-      |  |      +------+-----+      |  |
-      |  |             |            |  |
-      |  |             +------------+  |
-      |  |                          |  |
-      |  |                          |  |
-      +-++                          ++-+
-        ^                            ^
-        |                            |
-        |                            |
-      +-+-------------------------+  |
-      |      External Network     |  |
-      +---------------------------+  |
-             +-----------------------+---+
-             |    Installation Network   |
-             +---------------------------+
+The same with Baremetal Deployment.
 
 Start Deployment (Virtual Deployment)
 -------------------------------------
