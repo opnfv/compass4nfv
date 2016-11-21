@@ -29,7 +29,9 @@ You can write your own IPMI IP/User/Password/Mac address/roles reference to it.
 
         - ipmiPass -- IPMI Password for deployment node.
 
-        - mac -- MAC Address of deployment node PXE NIC .
+        - mac -- MAC Address of deployment node PXE NIC.
+
+        - interfaces -- Host NIC renamed according to NIC MAC addresses when OS provisioning.
 
         - roles -- Components deployed.
 
@@ -77,7 +79,7 @@ E.g. Openstack only deployment roles setting
           - compute
 
 NOTE:
-IF YOU SELECT MUTIPLE NODES AS CONTROLLER, THE 'ha' role MUST BE SELECT, TOO.
+THE 'ha' role MUST BE SELECT WITH CONTROLLERS, EVEN THERE IS ONLY ONE CONTROLLER NODE.
 
 E.g. Openstack and ceph deployment roles setting
 
@@ -203,6 +205,134 @@ You can write your own reference to it.
                      +-------------------------+-+
                      | PXE(Installation) Network |
                      +---------------------------+
+
+
+
+
+**The following figure shows the interfaces and nics of JumpHost and deployment nodes in huawei-pod1
+network configuration(default one nic for openstack networks).**
+
+.. code-block:: console
+
+
+    +--------------JumpHost-------------+
+    |                                   |
+    |   +-+Compass+-+                   |
+    |   |           +     +--------+    +    External-network
+    |   |         eth2+---+br-ext  +-+eth0+----------------------+
+    |   |           +     +--------+    +                        |
+    |   |           |                   |                        |
+    |   |           |                   |                        |
+    |   |           +     +--------+    +    Install-network     |
+    |   |         eth1+---+install +-+eth1+-----------------+    |
+    |   |           +     +--------+    +                   |    |
+    |   |           |                   |                   |    |
+    |   |           |                   |                   |    |
+    |   |           +                   +    IPMI-network   |    |
+    |   |         eth0                eth2+-----------+     |    |
+    |   |           +                   +             |     |    |
+    |   +---+VM+----+                   |             |     |    |
+    +-----------------------------------+             |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+    +---------------Host1---------------+             |     |    |
+    |                                   +             |     |    |
+    |                                  eth0+----------------+    |
+    |                                   +             |     |    |
+    |                   mgmt +--------+ |             |     |    |
+    |                                 | |             |     |    |
+    |                +-----------+    | +             |     |    |
+    |   external+----+  br-prv   +----+eth1+---------------------+
+    |                +-----------+    | +             |     |    |
+    |                                 | |             |     |    |
+    |                   storage +-----+ |             |     |    |
+    |                                   |             |     |    |
+    +-----------------------------------+             |     |    |
+    |                                 IPMI+-----------+     |    |
+    +-----------------------------------+             |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+    +---------------Host2---------------+             |     |    |
+    |                                   +             |     |    |
+    |                                  eth0+----------------+    |
+    |                                   +             |          |
+    |                   mgmt +--------+ |             |          |
+    |                                 | |             |          |
+    |                +-----------+    | +             |          |
+    |   external+----+  br-prv   +----+eth1+---------------------+
+    |                +-----------+    | +             |
+    |                                 | |             |
+    |                   storage +-----+ |             |
+    |                                   |             |
+    +-----------------------------------+             |
+    |                                 IPMI+-----------+
+    +-----------------------------------+
+
+**The following figure shows the interfaces and nics of JumpHost and deployment nodes in intel-pod8
+network configuration(openstack networks are seperated by multiple NICs).**
+
+.. code-block:: console
+
+
+    +-------------+JumpHost+------------+
+    |                                   |
+    |   +-+Compass+-+                   |
+    |   |           +     +--------+    +    External-network
+    |   |         eth2+---+br-ext  +-+eth0+----------------------+
+    |   |           +     +--------+    +                        |
+    |   |           |                   |                        |
+    |   |           |                   |                        |
+    |   |           +     +--------+    +    Install-network     |
+    |   |         eth1+---+install +-+eth1+-----------------+    |
+    |   |           +     +--------+    +                   |    |
+    |   |           |                   |                   |    |
+    |   |           |                   |                   |    |
+    |   |           +                   +    IPMI-network   |    |
+    |   |         eth0                eth2+-----------+     |    |
+    |   |           +                   +             |     |    |
+    |   +---+VM+----+                   |             |     |    |
+    +-----------------------------------+             |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+                                                      |     |    |
+    +--------------+Host1+--------------+             |     |    |
+    |                                   +             |     |    |
+    |                                  eth0+----------------+    |
+    |                                   +             |     |    |
+    |                      +--------+   +             |     |    |
+    |         external+----+br-prv  +-+eth1+---------------------+
+    |                      +--------+   +             |     |    |
+    |         storage +---------------+eth2+-----------------------+
+    |                                   +             |     |    | |
+    |         Mgmt    +---------------+eth3+----------------------------+
+    |                                   +             |     |    | |    |
+    |                                   |             |     |    | |    |
+    +-----------------------------------+             |     |    | |    |
+    |                                 IPMI+-----------+     |    | |    |
+    +-----------------------------------+             |     |    | |    |
+                                                      |     |    | |    |
+                                                      |     |    | |    |
+                                                      |     |    | |    |
+                                                      |     |    | |    |
+    +--------------+Host2+--------------+             |     |    | |    |
+    |                                   +             |     |    | |    |
+    |                                  eth0+----------------+    | |    |
+    |                                   +             |          | |    |
+    |                      +--------+   +             |          | |    |
+    |         external+----+br-prv  +-+eth1+---------------------+ |    |
+    |                      +--------+   +             |            |    |
+    |         storage +---------------+eth2+-----------------------+    |
+    |                                   +             | storage-network |
+    |         Mgmt    +---------------+eth3+----------------------------+
+    |                                   +             | mgmt-network
+    |                                   |             |
+    +-----------------------------------+             |
+    |                                 IPMI+-----------+
+    +-----------------------------------+
 
 
 Start Deployment (Bare Metal Deployment)
