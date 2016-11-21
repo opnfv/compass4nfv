@@ -6,7 +6,7 @@ Compass4nfv configuration
 =========================
 
 This document describes providing guidelines on how to install and
-configure the Colorado release of OPNFV when using Compass as a
+configure the Danube release of OPNFV when using Compass as a
 deployment tool including required software and hardware
 configurations.
 
@@ -21,7 +21,7 @@ networking and Unix/Linux administration.
 Preconditions
 -------------
 
-Before starting the installation of the Colorado release of OPNFV,
+Before starting the installation of the Danube release of OPNFV,
 some planning must be done.
 
 
@@ -38,10 +38,10 @@ The daily build ISO can be retrieved via OPNFV artifacts repository:
 
 http://artifacts.opnfv.org/compass4nfv.html
 
-NOTE: Search the keyword "compass4nfv/Colorado" to locate the ISO image.
+NOTE: Search the keyword "compass4nfv/Danube" to locate the ISO image.
 
 E.g.
-compass4nfv/colorado/opnfv-2016-09-18_08-15-13.iso
+compass4nfv/Danube/opnfv-2016-09-18_08-15-13.iso
 
 The name of iso image includes the time of iso building, you can get the daily
 ISO according the building time.
@@ -58,9 +58,9 @@ To retrieve the repository of Compass4nfv on Jumphost use the following command:
 
 NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN ROOT DIRECTORY(INCLUDE SUBFOLDERS).
 
-To get stable /colorado release, you can use the following command:
+To get stable /Danube release, you can use the following command:
 
-- git checkout colorado.1.0
+- git checkout Danube.1.0
 
 Setup Requirements
 ------------------
@@ -92,7 +92,7 @@ The Jumphost requirements are outlined below:
 
 5.     16 GB of RAM for a Bare Metal deployment, 64 GB of RAM for a Virtual deployment.
 
-6.     CPU cores: 32, Memory: 64 GB, Hard Disk: 500 GB, (Virtual Deloment needs 1 TB Hard Disk)
+6.     CPU cores: 32, Memory: 64 GB, Hard Disk: 500 GB, (Virtual Deployment needs 1 TB Hard Disk)
 
 
 Bare Metal Node Requirements
@@ -152,3 +152,12 @@ In order to execute a deployment, one must gather the following information:
 2.     IPMI login information for the nodes (user/pass).
 
 3.     MAC address of Control Plane / Provisioning interfaces of the Bare Metal nodes.
+
+
+Configurations
+---------------
+
+There are three configuration files a user needs to modify for a cluster deployment.
+``network_cfg.yaml`` for openstack networks on hosts.
+``dha file`` for host role, IPMI credential and host nic idenfitication (MAC address).
+``deploy.sh`` for os and openstack version.

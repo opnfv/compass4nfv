@@ -11,6 +11,8 @@
 /docs_output/
 /releng/
 /work
+/docs/output/
+/docs/source/
 
 # Packages #
 ############
