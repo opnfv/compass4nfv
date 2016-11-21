@@ -2,7 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) Weidong Shao (HUAWEI) and Justin Chi (HUAWEI)
 
-Release Note for the Colorado release of OPNFV when using Compass4nfv as a deployment tool.
+Release Note for the Danube release of OPNFV when using Compass4nfv as a deployment tool.
 
 Abstract
 ========
@@ -25,16 +25,16 @@ Release Data
 | **Project**                          | Compass4nfv                          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Repo/tag**                         | Compass4nfv/Colorado.1.0             |
+| **Repo/tag**                         | Compass4nfv/Danube.1.0               |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release designation**              | Colorado.1.0                         |
+| **Release designation**              | Danube.1.0                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | September 22 2016                    |
+| **Release date**                     | March 27 2017                        |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Purpose of the delivery**          | OPNFV Colorado release               |
+| **Purpose of the delivery**          | OPNFV Danube release                 |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
@@ -44,16 +44,16 @@ Deliverables
 Software deliverables
 ~~~~~~~~~~~~~~~~~~~~~
 
- - Compass4nfv/Colorado.1.0 ISO, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
+ - Compass4nfv/Danube.1.0 ISO, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
 
 .. _document-label:
 
 Documentation deliverables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- - OPNFV(Colorado) Compass4nfv installation instructions
+ - OPNFV(Danube) Compass4nfv installation instructions
 
- - OPNFV(Colorado) Compass4nfv Release Notes
+ - OPNFV(Danube) Compass4nfv Release Notes
 
 Version change
 --------------
@@ -62,21 +62,21 @@ Version change
 Module version change
 ~~~~~~~~~~~~~~~~~~~~~
 
-This is the Colorado release of compass4nfv as a deployment toolchain in OPNFV, the following
+This is the Danube release of compass4nfv as a deployment toolchain in OPNFV, the following
 upstream components supported with this release.
 
- - Ubuntu 14.04.3
+ - Ubuntu 16.04/Centos 7.3
 
- - Openstack (Mitaka release)
+ - Openstack (Newton release)
 
- - Opendaylight (Beryllium SR2 release)
+ - Opendaylight (Boron SR2 release)
 
- - ONOS (Goldeneye release)
+ - ONOS (J-bird release/later release)
 
 Document version change
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Adjusted the document structure, and you can see document at `OPNFV(Colorado) Compass4nfv installation instructions <http://artifacts.opnfv.org/compass4nfv/docs/configguide/index.html>`_.
+Adjusted the document structure, and you can see document at `OPNFV(Danube) Compass4nfv installation instructions <http://artifacts.opnfv.org/compass4nfv/docs/configguide/index.html>`_.
 
 Reason for new version
 ----------------------
@@ -157,7 +157,7 @@ Workarounds
 
 Test Result
 ===========
-The Colorado release with the Compass4nfv deployment toolchain has undergone QA test
+The Danube release with the Compass4nfv deployment toolchain has undergone QA test
 runs with the following results:
 
  - `Functest test result <http://testresults.opnfv.org/reporting/functest/release/colorado/index-status-compass.html>`_
