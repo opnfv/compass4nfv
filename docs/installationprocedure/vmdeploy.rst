@@ -147,6 +147,14 @@ You can write your own reference to it.
              |    Installation Network   |
              +---------------------------+
 
+
+interfaces and nics (default one nic for openstack networks)
+
+.. image:: ./Compass-Virtual-Deploy-Network.jpg
+
+
+
+
 Start Deployment (Virtual Deployment)
 -------------------------------------
 
