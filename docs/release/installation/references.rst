@@ -8,20 +8,14 @@ References
 OPNFV
 -----
 
-`OPNFV Home Page <www.opnfv.org>`_
-
-`OPNFV Genesis project page <https://wiki.opnfv.org/get_started>`_
-
 `OPNFV Compass4nfv project page <https://wiki.opnfv.org/compass4nfv>`_
 
-`OPNFV Compass4nfv release notes <http://artifacts.opnfv.org/compass4nfv/colorado/docs/release-notes/index.html>`_
+`Tutoring videos <https://wiki.opnfv.org/display/compass4nfv/Compass+101>`_
 
 OpenStack
 ---------
 
-`OpenStack Mitaka Release artifacts <http://www.openstack.org/software/mitaka>`_
-
-`OpenStack documentation <http://docs.openstack.org>`_
+`OpenStack Newton Release artifacts <http://www.openstack.org/software/Newton>`_
 
 OpenDaylight
 ------------
