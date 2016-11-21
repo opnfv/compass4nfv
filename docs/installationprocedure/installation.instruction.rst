@@ -152,3 +152,10 @@ In order to execute a deployment, one must gather the following information:
 2.     IPMI login information for the nodes (user/pass).
 
 3.     MAC address of Control Plane / Provisioning interfaces of the Bare Metal nodes.
+
+
+
+Configurations
+---------------
+
+There are three configuration files a user needs to modify for a cluster deployment. ``network_cfg.yaml`` for openstack networks on hosts; ``dha file`` for host role, IPMI credential and host nic idenfitication (mac address), ``deploy.sh`` for os and openstack version.

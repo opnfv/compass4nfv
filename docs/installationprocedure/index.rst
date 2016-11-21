@@ -10,9 +10,13 @@ OPNFV(Colorado) Compass4nfv Installation Instructions
    :maxdepth: 4
 
    introduction.rst
+   featureTable.rst
    installation.instruction.rst
+   configure-network.cfg.rst
    bmdeploy.rst
    vmdeploy.rst
    offline-deploy.rst
    expansion.rst
    references.rst
+   
+   

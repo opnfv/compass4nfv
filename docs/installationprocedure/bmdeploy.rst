@@ -205,6 +205,14 @@ You can write your own reference to it.
                      +---------------------------+
 
 
+
+
+
+interfaces and nics (default one nic for openstack networks)
+
+.. image:: ./Compass-BareMetal-Deploy-Network.jpg
+
+
 Start Deployment (Bare Metal Deployment)
 ----------------------------------------
 
