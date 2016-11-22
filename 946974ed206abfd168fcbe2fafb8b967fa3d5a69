@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_33dd7571",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_compute/tasks/ceilometer_install.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "delete it",
+      "range": {
+        "startLine": 33,
+        "startChar": 15,
+        "endLine": 33,
+        "endChar": 16
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_53c1217f",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_compute/templates/ceilometer.conf.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "make sure \"v3\" or not?",
+      "range": {
+        "startLine": 36,
+        "startChar": 29,
+        "endLine": 36,
+        "endChar": 44
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_f3e60d44",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_compute/vars/Debian.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "Why do you want to install nova-compute here?",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 16
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_13e4f939",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_compute/vars/RedHat.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "delete it",
+      "range": {
+        "startLine": 17,
+        "startChar": 26,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_b3d08554",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_compute/vars/main.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "What is this?",
+      "range": {
+        "startLine": 11,
+        "startChar": 17,
+        "endLine": 11,
+        "endChar": 37
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_d3d51144",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_controller/tasks/ceilometer_config.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "delete it",
+      "range": {
+        "startLine": 35,
+        "startChar": 13,
+        "endLine": 35,
+        "endChar": 14
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_73ca1da3",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_controller/tasks/ceilometer_install.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "delete it",
+      "range": {
+        "startLine": 33,
+        "startChar": 15,
+        "endLine": 33,
+        "endChar": 16
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_13bb990f",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_controller/vars/Debian.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "suggest to separate glance services and cinder services from ceilometer services",
+      "range": {
+        "startLine": 21,
+        "startChar": 11,
+        "endLine": 21,
+        "endChar": 19
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_7341bd0a",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_controller/vars/RedHat.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "suggest to separate",
+      "range": {
+        "startLine": 21,
+        "startChar": 11,
+        "endLine": 21,
+        "endChar": 19
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_9346a922",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_controller/vars/main.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2016-11-22T11:06:15Z",
+      "side": 1,
+      "message": "what is this?",
+      "range": {
+        "startLine": 11,
+        "startChar": 17,
+        "endLine": 11,
+        "endChar": 37
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
