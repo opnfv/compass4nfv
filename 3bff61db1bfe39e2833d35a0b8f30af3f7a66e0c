@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_f3f12d96",
+        "filename": "deploy/network.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-11-22T15:44:47Z",
+      "side": 1,
+      "message": "shuld we check the nic configuration, such as dhcp? static? ip or not ?",
+      "range": {
+        "startLine": 20,
+        "startChar": 19,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "3bff61db1bfe39e2833d35a0b8f30af3f7a66e0c",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
