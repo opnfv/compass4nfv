@@ -8,20 +8,10 @@
 ##############################################################################
 ---
 ceilometer_packages:
-  - openstack-ceilometer-api
-  - openstack-ceilometer-collector
-  - openstack-ceilometer-central
-  - openstack-ceilometer-notification
+  - openstack-ceilometer-compute
   - python-ceilometerclient
+  - python-pecan
 
 ceilometer_services:
-  - openstack-ceilometer-central
-  - openstack-ceilometer-notification
-  - openstack-ceilometer-collector
-  - openstack-ceilometer-api
-
-glance_cinder_service:
-  - glance-registry
-  - glance-api
-  - cinder-api
-  - cinder-scheduler
+  - openstack-ceilometer-compute
+  - openstack-nova-compute 

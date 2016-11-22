@@ -1,0 +1,97 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: disable auto start
+  copy:
+    content: "#!/bin/sh\nexit 101"
+    dest: "/usr/sbin/policy-rc.d"
+    mode: 0755
+  when: ansible_os_family == "Debian"
+
+- name: install ceilometer packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: ceilometer_packages | union(packages_noarch)
+
+- name: enable auto start
+  file:
+    path=/usr/sbin/policy-rc.d
+    state=absent
+  when: ansible_os_family == "Debian"
+
+- name: stop ceilometer-api service
+  service: name=ceilometer-api state=stop
+
+- name: copy ceilometer configs
+  template:
+    src: ceilometer.conf.j2
+    dest: /etc/ceilometer/ceilometer.conf
+  notify: restart ceilometer service
+
+- name: update apache2 configs
+  template:
+    src: wsgi-ceilometer.conf.j2
+    dest: /etc/apache2/sites-available/ceilometer.conf
+  notify: reload apache server
+
+- name: enable ceilometer server
+  file:
+    src: /etc/apache2/sites-available/ceilometer.conf
+    dest: /etc/apache2/sites-enabled/ceilometer.conf
+    state: "link"
+  when: ansible_os_family == 'Debian'
+  notify: reload apache server
+
+- name: assure listen port exist
+  shell: echo "Listen {{ internal_ip }}:8777" >> /etc/apache2/ports.conf
+  notify:
+    - restart apache server
+
+- name: copy glance & cinder configs
+  template:
+    src: "{{ item }}"
+    dest: /opt/os_templates
+  with_items: 
+    - cinder.conf.j2
+    - glance-api.conf.j2
+    - glance-registry.conf.j2
+
+- name: update glance & cinder configs
+  shell: crudini --merge {{ item.dest }} < /opt/os_templates/{{ item.src }}
+  with_items: 
+    - src: cinder.conf.j2
+      dest: /etc/cinder/cinder.conf
+    - src: glance-api.conf.j2
+      dest: /etc/glance/glance-api.conf
+    - src: glance-registry.conf.j2
+      dest: /etc/glance/glance-registry.conf
+  notify: restart glance & cinder service
+
+- name: delete glance & cinder configs
+  file:
+    path: /opt/os_templates/{{ item }}
+    state: absent
+  with_items:
+    - cinder.conf.j2
+    - glance-api.conf.j2
+    - glance-registry.conf.j2
+
+- name: change meter polling interval to 300s
+  replace:
+    dest: /etc/ceilometer/pipeline.yaml
+    regexp: 'interval: .+'
+    replace: 'interval: 300'
+  notify: restart ceilometer service
+
+- name: write services to monitor list
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
+  with_items: ceilometer_services
+
+- meta: flush_handlers
