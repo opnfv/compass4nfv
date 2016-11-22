@@ -1,0 +1,43 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: update ceilometer configs
+  template:
+    src: ceilometer.conf.j2
+    dest: /etc/ceilometer/ceilometer.conf
+  notify: restart ceilometer service
+
+- name: copy configs
+  template:
+    src: "{{ item }}"
+    dest: /opt/os_templates
+  with_items:
+   - ceilometer.conf.j2
+   - nova.conf.j2
+
+- name: update ceilometer configs
+  shell: crudini --merge {{ item.dest }} < /opt/os_templates/{{ item.src }}
+  with_items:
+   - src: nova.conf.j2
+     dest: /etc/nova/nova.conf
+  notify: restart ceilometer service
+
+- name: delete config
+  file:
+    path: /opt/os_templates/nova.conf.j2
+    state: absent
+
+- name: write services to monitor list
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
+  with_items: ceilometer_services
+
+- meta: flush_handlers
+
