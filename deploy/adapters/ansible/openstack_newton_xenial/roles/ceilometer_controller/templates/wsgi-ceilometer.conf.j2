@@ -1,0 +1,25 @@
+{% set work_threads = (ansible_processor_vcpus + 1) // 2 %}
+{% if work_threads > 10 %}
+    set work_threads = 10
+{% endif %}
+
+<VirtualHost {{ internal_ip }}:8777>
+    WSGIDaemonProcess ceilometer-api processes=4 threads={{ work_threads }} user=ceilometer group=ceilometer display-name=%{GROUP}
+    WSGIProcessGroup ceilometer-api
+    WSGIScriptAlias / /usr/lib/python2.7/dist-packages/ceilometer/api/app.wsgi
+    WSGIApplicationGroup %{GLOBAL}
+    ErrorLog /var/log/apache2/ceilometer_error.log
+    CustomLog /var/log/apache2/ceilometer_access.log combined
+
+    <Directory /usr/lib/python2.7/dist-packages/ceilometer/api/>
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+            Order allow,deny
+            Allow from all
+        </IfVersion>
+    </Directory>
+</VirtualHost>
+
+WSGISocketPrefix /var/run/apache2
