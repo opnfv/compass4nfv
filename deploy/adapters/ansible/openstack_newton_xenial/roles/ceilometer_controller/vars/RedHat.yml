@@ -8,29 +8,17 @@
 ##############################################################################
 ---
 ceilometer_packages:
-  - openstack-ceilometer-api
-  - openstack-ceilometer-collector
-  - openstack-ceilometer-central
-  - openstack-ceilometer-notification
-#  - openstack-ceilometer-alarm
+  - ceilometer-api
+  - ceilometer-collector
+  - ceilometer-agent-central
+  - ceilometer-agent-notification
   - python-ceilometerclient
 
 ceilometer_services:
-  - openstack-ceilometer-central
-  - openstack-ceilometer-notification
-  - openstack-ceilometer-api
-  - openstack-ceilometer-collector
-#  - openstack-ceilometer-alarm-evaluator
-#  - openstack-ceilometer-alarm-notifier
-
-ceilometer_configs_templates:
-  - src: ceilometer.j2
-    dest:
-      - /etc/ceilometer/ceilometer.conf
-  - src: cinder.j2
-    dest:
-      - /etc/cinder/cinder.conf
-  - src: glance.j2
-    dest:
-      - /etc/glance/glance-api.conf
-      - /etc/glance/glance-registry.conf
+  - ceilometer-agent-central
+  - ceilometer-agent-notification
+  - ceilometer-collector
+  - glance-registry
+  - glance-api
+  - cinder-api
+  - cinder-scheduler

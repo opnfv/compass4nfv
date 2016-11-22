@@ -1,0 +1,21 @@
+
+<VirtualHost {{ internal_ip }}:8777>
+    WSGIDaemonProcess ceilometer-api processes=2 threads=10 user=ceilometer group=ceilometer display-name=%{GROUP}
+    WSGIProcessGroup ceilometer-api
+    WSGIScriptAlias / /usr/lib/python2.7/dist-packages/ceilometer/api/app.wsgi
+    WSGIApplicationGroup %{GLOBAL}
+    ErrorLog /var/log/apache2/ceilometer_error.log
+    CustomLog /var/log/apache2/ceilometer_access.log combined
+
+    <Directory /usr/lib/python2.7/dist-packages/ceilometer/api/>
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+            Order allow,deny
+            Allow from all
+        </IfVersion>
+    </Directory>
+</VirtualHost>
+
+WSGISocketPrefix /var/run/apache2

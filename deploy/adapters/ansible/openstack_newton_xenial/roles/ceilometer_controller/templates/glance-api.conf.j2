@@ -1,0 +1,10 @@
+[DEFAULT]
+rpc_backend = rabbit
+
+[oslo_messaging_notifications]
+driver = messagingv2
+
+[oslo_messaging_rabbit]
+rabbit_host = {{ rabbit_host }}
+rabbit_userid = {{ RABBIT_USER }}
+rabbit_password = {{ RABBIT_PASS }}
