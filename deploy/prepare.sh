@@ -31,7 +31,8 @@ function download_iso()
 }
 
 function prepare_env() {
-
+    sed -i -e 's/^#user =.*/user = "root"/g' /etc/libvirt/qemu.conf
+    sed -i -e 's/^#group =.*/group = "root"/g' /etc/libvirt/qemu.conf
     sudo service libvirt-bin restart
     if sudo service openvswitch-switch status|grep stop; then
         sudo service openvswitch-switch start
