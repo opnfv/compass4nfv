@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "5ac10518_b35e45e8",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_compute/templates/ceilometer.conf.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-11-23T03:09:12Z",
+      "side": 1,
+      "message": "I am sure!",
+      "parentUuid": "5ac10518_53c1217f",
+      "range": {
+        "startLine": 36,
+        "startChar": 29,
+        "endLine": 36,
+        "endChar": 44
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ac10518_f3e60d44",
         "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_compute/vars/Debian.yml",
         "patchSetId": 4
@@ -59,6 +83,30 @@
       "writtenOn": "2016-11-22T11:06:15Z",
       "side": 1,
       "message": "Why do you want to install nova-compute here?",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 16
+      },
+      "revId": "946974ed206abfd168fcbe2fafb8b967fa3d5a69",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_d363d1af",
+        "filename": "deploy/adapters/ansible/openstack_newton_xenial/roles/ceilometer_compute/vars/Debian.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-11-23T03:09:12Z",
+      "side": 1,
+      "message": "It should be ceilometer_services.",
+      "parentUuid": "5ac10518_f3e60d44",
       "range": {
         "startLine": 12,
         "startChar": 4,
