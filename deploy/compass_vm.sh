@@ -74,6 +74,11 @@ function inject_compass_conf() {
     _inject_dashboard_conf
 }
 
+function refresh_compass_core () {
+    cmd="/opt/compass/bin/refresh.sh"
+    exec_cmd_on_compass $cmd
+}
+
 function wait_ok() {
     set +x
     log_info "wait_compass_ok enter"
