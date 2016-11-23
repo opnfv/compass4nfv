@@ -71,6 +71,8 @@ if [[ "$EXPANSION" == "false" ]]; then
             log_error "launch_compass failed"
             exit 1
         fi
+    else
+        refresh_compass_core
     fi
 else
     machines=`get_host_macs`
