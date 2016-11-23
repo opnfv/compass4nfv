@@ -16,3 +16,4 @@ OPNFV(Colorado) Compass4nfv Installation Instructions
    offline-deploy.rst
    expansion.rst
    references.rst
+   test.rst
