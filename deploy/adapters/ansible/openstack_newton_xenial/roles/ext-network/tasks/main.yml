@@ -19,7 +19,7 @@
   service: name=neutron-server state=restarted enabled=yes
 
 - name: wait for neutron ready
-  wait_for: port=9696 delay=10 timeout=30 host={{ internal_vip.ip }}
+  wait_for: port=9696 delay=10 timeout=60 host={{ internal_ip }}
 
 - name: create external net
   shell:
