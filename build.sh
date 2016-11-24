@@ -187,6 +187,7 @@ function copy_file()
     done
 
     cp $COMPASS_PATH/deploy/adapters $new/compass/compass-adapters -rf
+    cp $COMPASS_PATH/deploy/compass_conf/* $new/compass/compass-core/conf -rf
 
     tar -zxvf $CACHE_DIR/`basename $PIP_REPO` -C $new/
     tar -zxvf $CACHE_DIR/`basename $PIP_OPENSTACK_REPO` -C $new/
