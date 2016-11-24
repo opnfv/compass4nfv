@@ -21,8 +21,14 @@
 
 #"
 
-- name: upload install_jdk8 scripts
-  unarchive: src=install_jdk8.tar dest=/opt/
+- name: download oracle-jdk8 script file
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_script_name }}"  dest=/opt/
+
+- name: unarchive onos driver package
+  command: su -s /bin/sh -c "tar xvf  /opt/install_jdk8.tar -C /opt/"
+
+#- name: upload install_jdk8 scripts
+#  unarchive: src=install_jdk8.tar dest=/opt/
 
 - name: install install_jdk8 package
   command: su -s /bin/sh -c "/opt/install_jdk8/install_jdk8.sh"
