@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_746d2232",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-11-24T10:22:46Z",
+      "side": 1,
+      "message": "It\u0027s too long.",
+      "range": {
+        "startLine": 7,
+        "startChar": 72,
+        "endLine": 7,
+        "endChar": 83
+      },
+      "revId": "5886734bf29000de92b3bcc835dcf9cfc1b45654",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_946a0e19",
+        "filename": "docs/installationprocedure/index.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-11-24T10:22:46Z",
+      "side": 1,
+      "message": "delete space.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 3
+      },
+      "revId": "5886734bf29000de92b3bcc835dcf9cfc1b45654",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_34779a04",
+        "filename": "docs/installationprocedure/installation.instruction.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2016-11-24T10:22:46Z",
+      "side": 1,
+      "message": "too long",
+      "range": {
+        "startLine": 161,
+        "startChar": 99,
+        "endLine": 161,
+        "endChar": 103
+      },
+      "revId": "5886734bf29000de92b3bcc835dcf9cfc1b45654",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
