@@ -71,7 +71,7 @@
     - glance
     - neutron-common
     - neutron-network
-#    - ceilometer_controller
+    - ceilometer_controller
     - dashboard
     - heat
 #    - aodh
