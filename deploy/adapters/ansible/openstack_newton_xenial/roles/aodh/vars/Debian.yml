@@ -13,7 +13,7 @@ packages:
   - aodh-notifier
   - aodh-listener
   - aodh-expirer
-  - python-ceilometerclient
+  - python-aodhclient
 
 services:
   - aodh-api

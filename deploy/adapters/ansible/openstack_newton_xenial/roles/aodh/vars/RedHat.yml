@@ -13,7 +13,7 @@ packages:
   - openstack-aodh-notifier
   - openstack-aodh-listener
   - openstack-aodh-expirer
-  - python-ceilometerclient
+  - python-aodhclient
 
 services:
   - openstack-aodh-api
