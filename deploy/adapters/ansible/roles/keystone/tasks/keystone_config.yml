@@ -12,7 +12,7 @@
   shell: su -s /bin/sh -c 'keystone-manage db_sync' keystone
 
 - name: wait for keystone ready
-  wait_for: port=35357 delay=3 timeout=10 host={{ internal_vip.ip }}
+  wait_for: port=35357 delay=3 timeout=10 host={{ internal_ip }}
 
 - name: cron job to purge expired tokens hourly
   cron:
