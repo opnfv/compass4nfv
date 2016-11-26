@@ -46,6 +46,9 @@
 - name: make config template dir exist
   file: path=/opt/os_templates state=directory mode=0755
 
+- name: upgrade pip
+  pip: name=pip state=latest
+
 - name: create pip config directory
   file: path=~/.pip state=directory
 
