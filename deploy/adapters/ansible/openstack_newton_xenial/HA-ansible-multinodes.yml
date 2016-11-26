@@ -74,7 +74,7 @@
     - ceilometer_controller
     - dashboard
     - heat
-#    - aodh
+    - aodh
 
 - hosts: all
   remote_user: root
