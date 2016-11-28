@@ -17,6 +17,8 @@ function setup_bridge_net()
     net_name=$1
     nic=$2
 
+    sudo ifconfig $nic up
+
     sudo virsh net-destroy $net_name
     sudo virsh net-undefine $net_name
 
