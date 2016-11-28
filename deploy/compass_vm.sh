@@ -48,6 +48,29 @@ function install_compass() {
     fi
 }
 
+function exec_cmd_on_compass() {
+    ssh $ssh_args root@$MGMT_IP "$@"
+}
+
+function _inject_dashboard_conf() {
+    if [[ "$ENABLE_UBUNTU_THEME" == "true" ]]; then
+        cmd="
+            sed -i '/enable_ubuntu_theme/d' /etc/compass/templates/ansible_installer/openstack_mitaka/vars/HA-ansible-multinodes.tmpl; \
+            echo enable_ubuntu_theme: True >> /etc/compass/templates/ansible_installer/openstack_mitaka/vars/HA-ansible-multinodes.tmpl
+        "
+    else
+        cmd="
+            sed -i '/enable_ubuntu_theme/d' /etc/compass/templates/ansible_installer/openstack_mitaka/vars/HA-ansible-multinodes.tmpl; \
+            echo enable_ubuntu_theme: False >> /etc/compass/templates/ansible_installer/openstack_mitaka/vars/HA-ansible-multinodes.tmpl
+        "
+    fi
+    exec_cmd_on_compass $cmd
+}
+
+function inject_compass_conf() {
+    _inject_dashboard_conf
+}
+
 function wait_ok() {
     set +x
     log_info "wait_compass_ok enter"
