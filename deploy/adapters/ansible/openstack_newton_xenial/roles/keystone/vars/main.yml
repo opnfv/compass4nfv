@@ -9,7 +9,6 @@
 ---
 packages_noarch:
   - python-keystoneclient
-  - python3-keystoneclient
 
 services_noarch: []
 os_services:
@@ -17,9 +16,9 @@ os_services:
     type: identity
     region: RegionOne
     description: "OpenStack Identity"
-    publicurl: "http://{{ public_vip.ip }}:5000/v3"
-    internalurl: "http://{{ internal_vip.ip }}:5000/v3"
-    adminurl: "http://{{ internal_vip.ip }}:35357/v3"
+    publicurl: "http://{{ public_vip.ip }}:5000/v2.0"
+    internalurl: "http://{{ internal_vip.ip }}:5000/v2.0"
+    adminurl: "http://{{ internal_vip.ip }}:35357/v2.0"
 
   - name: glance
     type: image
@@ -33,9 +32,9 @@ os_services:
     type: compute
     region: RegionOne
     description: "OpenStack Compute"
-    publicurl: "http://{{ public_vip.ip }}:8774/v2.1/%\\(tenant_id\\)s"
-    internalurl: "http://{{ internal_vip.ip }}:8774/v2.1/%\\(tenant_id\\)s"
-    adminurl: "http://{{ internal_vip.ip }}:8774/v2.1/%\\(tenant_id\\)s"
+    publicurl: "http://{{ public_vip.ip }}:8774/v2/%(tenant_id)s"
+    internalurl: "http://{{ internal_vip.ip }}:8774/v2/%(tenant_id)s"
+    adminurl: "http://{{ internal_vip.ip }}:8774/v2/%(tenant_id)s"
 
   - name: neutron
     type: network
@@ -65,25 +64,25 @@ os_services:
     type: volume
     region: RegionOne
     description: "OpenStack Block Storage"
-    publicurl: "http://{{ public_vip.ip }}:8776/v1/%\\(tenant_id\\)s"
-    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%\\(tenant_id\\)s"
-    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%\\(tenant_id\\)s"
+    publicurl: "http://{{ public_vip.ip }}:8776/v1/%(tenant_id)s"
+    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
+    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
 
   - name: cinderv2
     type: volumev2
     region: RegionOne
     description: "OpenStack Block Storage v2"
-    publicurl: "http://{{ public_vip.ip }}:8776/v2/%\\(tenant_id\\)s"
-    internalurl: "http://{{ internal_vip.ip }}:8776/v2/%\\(tenant_id\\)s"
-    adminurl: "http://{{ internal_vip.ip }}:8776/v2/%\\(tenant_id\\)s"
+    publicurl: "http://{{ public_vip.ip }}:8776/v2/%(tenant_id)s"
+    internalurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
+    adminurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
 
   - name: heat
     type: orchestration
     region: RegionOne
     description: "OpenStack Orchestration"
-    publicurl: "http://{{ public_vip.ip }}:8004/v1/%\\(tenant_id\\)s"
-    internalurl: "http://{{ internal_vip.ip }}:8004/v1/%\\(tenant_id\\)s"
-    adminurl: "http://{{ internal_vip.ip }}:8004/v1/%\\(tenant_id\\)s"
+    publicurl: "http://{{ public_vip.ip }}:8004/v1/%(tenant_id)s"
+    internalurl: "http://{{ internal_vip.ip }}:8004/v1/%(tenant_id)s"
+    adminurl: "http://{{ internal_vip.ip }}:8004/v1/%(tenant_id)s"
 
   - name: heat-cfn
     type: cloudformation
@@ -93,13 +92,21 @@ os_services:
     internalurl: "http://{{ internal_vip.ip }}:8000/v1"
     adminurl: "http://{{ internal_vip.ip }}:8000/v1"
 
+  - name: congress
+    type: policy
+    region: RegionOne
+    description: "OpenStack Policy Service"
+    publicurl: "http://{{ public_vip.ip }}:1789"
+    internalurl: "http://{{ internal_vip.ip }}:1789"
+    adminurl: "http://{{ internal_vip.ip }}:1789"
+
 #  - name: swift
 #    type: object-store
 #    region: RegionOne
 #    description: "OpenStack Object Storage"
-#    publicurl: "http://{{ public_vip.ip }}:8080/v1/AUTH_%\\(tenant_id\\)s"
-#    internalurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%\\(tenant_id\\)s"
-#    adminurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%\\(tenant_id\\)s"
+#    publicurl: "http://{{ public_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
+#    internalurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
+#    adminurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
 
 os_users:
   - user: admin
@@ -165,8 +172,15 @@ os_users:
     tenant: service
     tenant_description: "Service Tenant"
 
+  - user: congress
+    password: "{{ CONGRESS_PASS }}"
+    email: congress@admin.com
+    role: admin
+    tenant: service
+    tenant_description: "Service Tenant"
+
   - user: demo
-    password: "{{ DEMO_PASS }}"
+    password: ""
     email: heat@demo.com
     role: heat_stack_user
     tenant: demo
@@ -178,4 +192,3 @@ os_users:
 #    role: admin
 #    tenant: service
 #    tenant_description: "Service Tenant"
-
