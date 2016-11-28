@@ -46,14 +46,14 @@
 - name: make config template dir exist
   file: path=/opt/os_templates state=directory mode=0755
 
-- name: upgrade pip
-  pip: name=pip state=latest
-
 - name: create pip config directory
   file: path=~/.pip state=directory
 
 - name: update pip.conf
   template: src=pip.conf dest=~/.pip/{{ pip_conf }}
+
+- name: upgrade pip
+  pip: name=pip state=latest
 
 - name: install pip packages
   pip: name={{ item }} state=present extra_args='--pre'
