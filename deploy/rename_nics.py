@@ -17,7 +17,7 @@ def rename_nics(dha_info, rsa_file, compass_ip):
 
                 exec_cmd("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
                           -i %s root@%s \
-                          'cobbler system edit --name=%s --interface=%s --mac=%s --interface_type=static'" \
+                          'cobbler system edit --name=%s --interface=%s --mac=%s --static=1'" \
                           % (rsa_file, compass_ip, host_name, nic_name, mac))
 
     exec_cmd("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
