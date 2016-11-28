@@ -1,6 +1,6 @@
 {% set work_threads = (ansible_processor_vcpus + 1) // 2 %}
 {% if work_threads > 10 %}
-    set work_threads = 10
+{%  set work_threads = 10 %}
 {% endif %}
 
 <VirtualHost {{ internal_ip }}:80>
