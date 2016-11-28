@@ -62,6 +62,8 @@ if [[ "$DEPLOY_COMPASS" == "true" ]]; then
         log_error "launch_compass failed"
         exit 1
     fi
+else
+    refresh_compass_core
 fi
 
 if [[ -z "$REDEPLOY_HOST" || "$REDEPLOY_HOST" == "false" ]]; then
