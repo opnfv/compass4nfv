@@ -59,7 +59,16 @@ function wait_ok() {
         sleep 1
         let retry+=1
         if [[ $retry -ge $1 ]];then
-            timeout 1s ssh $ssh_args root@$MGMT_IP "exit"
+            # first try
+            ssh $ssh_args root@$MGMT_IP "exit"
+            # second try
+            ssh $ssh_args root@$MGMT_IP "exit"
+            exit_status=$?
+            if [[ $exit_status == 0 ]]; then
+                log_warn "final ssh login compass success !!!"
+                break
+            fi
+            log_error "final ssh retry failed with status: " $exit_status
             log_error "os install time out"
             exit 1
         fi
