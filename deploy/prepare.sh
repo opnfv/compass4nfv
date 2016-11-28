@@ -114,6 +114,10 @@ function _pre_env_setup()
      cd $WORK_DIR/prepare/jh_env_package
      tar -zxvf trusty-jh-ppa.tar.gz
 
+     if [[ ! -z /etc/apt/sources.list.d ]]; then
+          mv /etc/apt/sources.list.d /etc/apt/sources.list.d.bak
+     fi
+
      if [[ -f /etc/apt/apt.conf ]]; then
           mv /etc/apt/apt.conf /etc/apt/apt.conf.bak
      fi
@@ -157,6 +161,10 @@ EOF
      rm -rf /etc/apt/apt.conf
      if [[ -f /etc/apt/apt.conf.bak ]]; then
           mv /etc/apt/apt.conf.bak /etc/apt/apt.conf
+     fi
+
+     if [[ ! -z /etc/apt/sources.list.d.bak ]]; then
+          mv /etc/apt/sources.list.d.bak /etc/apt/sources.list.d
      fi
 }
 
