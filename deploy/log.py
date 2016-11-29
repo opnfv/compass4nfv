@@ -1,8 +1,6 @@
 import logging
 import os
 loggers = {}
-
-
 def getLogger(name):
     if name in loggers:
         return loggers[name]
