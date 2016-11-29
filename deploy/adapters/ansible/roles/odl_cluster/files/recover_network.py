@@ -6,8 +6,10 @@ import log as logging
 LOG = logging.getLogger("net-recover")
 config_path = os.path.join(os.path.dirname(__file__), "network.cfg")
 
+
 def setup_bondings(bond_mappings):
     print bond_mappings
+
 
 def add_ovs_port(ovs_br, ifname, uplink, vlan_id=None):
     LOG.info("add_ovs_port enter")
@@ -15,11 +17,13 @@ def add_ovs_port(ovs_br, ifname, uplink, vlan_id=None):
     if vlan_id:
         cmd += " tag=%s" % vlan_id
     cmd += " -- set Interface %s type=internal;" % ifname
-    cmd += "ip link set dev %s address `ip link show %s |awk '/link\/ether/{print $2}'`;" \
-            % (ifname, uplink)
+    cmd += "ip link set dev %s address `ip link show %s |awk \
+           '/link\/ether/{print $2}'`;" \
+        % (ifname, uplink)
     cmd += "ip link set %s up;" % ifname
     LOG.info("add_ovs_port: cmd=%s" % cmd)
     os.system(cmd)
+
 
 def setup_ips(ip_settings, sys_intf_mappings):
     LOG.info("setup_ips enter")
@@ -31,23 +35,26 @@ def setup_ips(ip_settings, sys_intf_mappings):
             intf_name = intf_info["alias"]
         if "gw" in intf_info:
             cmd = "ip addr add %s/%s brd %s dev %s;" \
-                  % (intf_info["ip"], intf_info["netmask"], str(network.broadcast),intf_name)
+                  % (intf_info["ip"], intf_info["netmask"], str(network.broadcast), intf_name)  # noqa: E501
             cmd += "route del default;"
-            cmd += "ip route add default via %s dev %s" % (intf_info["gw"], intf_name)
+            cmd += "ip route add default via %s dev %s" % (
+                intf_info["gw"], intf_name)
         LOG.info("setup_ips: cmd=%s" % cmd)
         os.system(cmd)
+
 
 def setup_intfs(sys_intf_mappings, uplink_map):
     LOG.info("setup_intfs enter")
     for intf_name, intf_info in sys_intf_mappings.items():
         if intf_info["type"] == "ovs":
             add_ovs_port(
-                    intf_info["interface"],
-                    intf_name,
-                    uplink_map[intf_info["interface"]],
-                    vlan_id=intf_info.get("vlan_tag"))
+                intf_info["interface"],
+                intf_name,
+                uplink_map[intf_info["interface"]],
+                vlan_id=intf_info.get("vlan_tag"))
         else:
             pass
+
 
 def main(config):
     uplink_map = {}
@@ -60,6 +67,7 @@ def main(config):
 
 
 if __name__ == "__main__":
-    os.system("service openvswitch-switch status|| service openvswitch-switch start")
+    os.system(
+        "service openvswitch-switch status|| service openvswitch-switch start")
     config = yaml.load(open(config_path))
     main(config)

@@ -17,7 +17,6 @@
 """binary to deploy a cluster by compass client api."""
 import os
 import re
-import socket
 import sys
 import time
 import yaml
@@ -28,19 +27,19 @@ import itertools
 import threading
 from collections import defaultdict
 from restful import Client
+import log as logging
+from oslo_config import cfg
 
 ROLE_UNASSIGNED = True
 ROLE_ASSIGNED = False
 
-import log as logging
 LOG = logging.getLogger(__name__)
-
-from oslo_config import cfg
 CONF = cfg.CONF
+
 
 def byteify(input):
     if isinstance(input, dict):
-        return dict([(byteify(key),byteify(value)) for key,value in input.iteritems()])
+        return dict([(byteify(key), byteify(value)) for key, value in input.iteritems()])  # noqa: E501
     elif isinstance(input, list):
         return [byteify(element) for element in input]
     elif isinstance(input, unicode):
@@ -50,205 +49,207 @@ def byteify(input):
 
 opts = [
     cfg.StrOpt('compass_server',
-              help='compass server url',
-              default='http://127.0.0.1/api'),
+               help='compass server url',
+               default='http://127.0.0.1/api'),
     cfg.StrOpt('compass_user_email',
-              help='compass user email',
-              default='admin@huawei.com'),
+               help='compass user email',
+               default='admin@huawei.com'),
     cfg.StrOpt('compass_user_password',
-              help='compass user password',
-              default='admin'),
+               help='compass user password',
+               default='admin'),
     cfg.StrOpt('switch_ips',
-              help='comma seperated switch ips',
-              default=''),
+               help='comma seperated switch ips',
+               default=''),
     cfg.StrOpt('switch_credential',
-              help='comma separated <credential key>=<credential value>',
-              default='version=2c,community=public'),
+               help='comma separated <credential key>=<credential value>',
+               default='version=2c,community=public'),
     cfg.IntOpt('switch_max_retries',
-              help='max retries of poll switch',
-              default=10),
+               help='max retries of poll switch',
+               default=10),
     cfg.IntOpt('switch_retry_interval',
-              help='interval to repoll switch',
-              default=10),
+               help='interval to repoll switch',
+               default=10),
     cfg.BoolOpt('poll_switches',
                 help='if the client polls switches',
                 default=True),
     cfg.StrOpt('machines',
-              help='comma separated mac addresses of machines',
-              default=''),
+               help='comma separated mac addresses of machines',
+               default=''),
     cfg.StrOpt('subnets',
-              help='comma seperated subnets',
-              default=''),
+               help='comma seperated subnets',
+               default=''),
     cfg.StrOpt('adapter_name',
-              help='adapter name',
-              default=''),
+               help='adapter name',
+               default=''),
     cfg.StrOpt('adapter_os_pattern',
-              help='adapter os name',
-              default=r'^(?i)centos.*'),
+               help='adapter os name',
+               default=r'^(?i)centos.*'),
     cfg.StrOpt('adapter_target_system_pattern',
-              help='adapter target system name',
-              default='^openstack$'),
+               help='adapter target system name',
+               default='^openstack$'),
     cfg.StrOpt('adapter_flavor_pattern',
-              help='adapter flavor name',
-              default='allinone'),
+               help='adapter flavor name',
+               default='allinone'),
     cfg.StrOpt('cluster_name',
-              help='cluster name',
-              default='cluster1'),
+               help='cluster name',
+               default='cluster1'),
     cfg.StrOpt('language',
-              help='language',
-              default='EN'),
+               help='language',
+               default='EN'),
     cfg.StrOpt('timezone',
-              help='timezone',
-              default='GMT'),
+               help='timezone',
+               default='GMT'),
     cfg.StrOpt('http_proxy',
-              help='http proxy',
-              default=''),
+               help='http proxy',
+               default=''),
     cfg.StrOpt('https_proxy',
-              help='https proxy',
-              default=''),
+               help='https proxy',
+               default=''),
     cfg.StrOpt('no_proxy',
-              help='no proxy',
-              default=''),
+               help='no proxy',
+               default=''),
     cfg.StrOpt('ntp_server',
-              help='ntp server',
-              default=''),
+               help='ntp server',
+               default=''),
     cfg.StrOpt('dns_servers',
-              help='dns servers',
-              default=''),
+               help='dns servers',
+               default=''),
     cfg.StrOpt('domain',
-              help='domain',
-              default=''),
+               help='domain',
+               default=''),
     cfg.StrOpt('search_path',
-              help='search path',
-              default=''),
+               help='search path',
+               default=''),
     cfg.StrOpt('local_repo_url',
-              help='local repo url',
-              default=''),
+               help='local repo url',
+               default=''),
     cfg.StrOpt('default_gateway',
-              help='default gateway',
-              default=''),
+               help='default gateway',
+               default=''),
     cfg.StrOpt('server_credential',
-              help=(
-                  'server credential formatted as '
-                  '<username>=<password>'
-              ),
-              default='root=root'),
+               help=(
+                'server credential formatted as '
+                '<username>=<password>'
+               ),
+               default='root=root'),
     cfg.StrOpt('os_config_json_file',
-              help='json formatted os config file',
-              default=''),
+               help='json formatted os config file',
+               default=''),
     cfg.StrOpt('service_credentials',
-              help=(
-                  'comma seperated service credentials formatted as '
-                  '<servicename>:<username>=<password>,...'
-              ),
-              default=''),
+               help=(
+                'comma seperated service credentials formatted as '
+                '<servicename>:<username>=<password>,...'
+               ),
+               default=''),
     cfg.StrOpt('console_credentials',
-              help=(
-                  'comma seperated console credential formated as '
-                  '<consolename>:<username>=<password>'
-              ),
-              default=''),
+               help=(
+                'comma seperated console credential formated as '
+                '<consolename>:<username>=<password>'
+               ),
+               default=''),
     cfg.StrOpt('hostnames',
-              help='comma seperated hostname',
-              default=''),
+               help='comma seperated hostname',
+               default=''),
     cfg.StrOpt('host_networks',
-              help=(
-                  'semicomma seperated host name and its networks '
-                  '<hostname>:<interface_name>=<ip>|<is_mgmt>|<is_promiscuous>,...'
-              ),
-              default=''),
+               help=(
+                'semicomma seperated host name and its networks '
+                '<hostname>:<interface_name>=<ip>|<is_mgmt>|<is_promiscuous>,...'  # noqa: E501
+               ),
+               default=''),
     cfg.StrOpt('partitions',
-              help=(
-                  'comma seperated partitions '
-                  '<partition name>=<partition_value>'
-              ),
-              default='tmp:percentage=10%,var:percentage=30%,home:percentage=30%'),
+               help=(
+                'comma seperated partitions '
+                '<partition name>=<partition_value>'
+               ),
+               default='tmp:percentage=10%,var:percentage=30%,home:percentage=30%'),  # noqa: E501
     cfg.StrOpt('network_mapping',
-              help=(
-                  'comma seperated network mapping '
-                  '<network_type>=<interface_name>'
-              ),
-              default=''),
+               help=(
+                'comma seperated network mapping '
+                '<network_type>=<interface_name>'
+               ),
+               default=''),
     cfg.StrOpt('package_config_json_file',
-              help='json formatted os config file',
-              default=''),
+               help='json formatted os config file',
+               default=''),
     cfg.StrOpt('host_roles',
-              help=(
-                  'semicomma separated host roles '
-                  '<hostname>=<comma separated roles>'
-              ),
-              default=''),
+               help=(
+                'semicomma separated host roles '
+                '<hostname>=<comma separated roles>'
+               ),
+               default=''),
     cfg.StrOpt('default_roles',
-              help=(
-                  'comma seperated default roles '
-                  '<rolename>'
-              ),
-              default=''),
+               help=(
+                'comma seperated default roles '
+                '<rolename>'
+               ),
+               default=''),
     cfg.IntOpt('action_timeout',
-              help='action timeout in seconds',
-              default=60),
+               help='action timeout in seconds',
+               default=60),
     cfg.IntOpt('deployment_timeout',
-              help='deployment timeout in minutes',
-              default=60),
+               help='deployment timeout in minutes',
+               default=60),
     cfg.IntOpt('progress_update_check_interval',
-              help='progress update status check interval in seconds',
-              default=60),
+               help='progress update status check interval in seconds',
+               default=60),
     cfg.StrOpt('dashboard_url',
-              help='dashboard url',
-              default=''),
+               help='dashboard url',
+               default=''),
     cfg.StrOpt('dashboard_link_pattern',
-              help='dashboard link pattern',
-              default=r'(?m)(http://\d+\.\d+\.\d+\.\d+:5000/v2\.0)'),
+               help='dashboard link pattern',
+               default=r'(?m)(http://\d+\.\d+\.\d+\.\d+:5000/v2\.0)'),
     cfg.StrOpt('cluster_vip',
-              help='cluster ip address',
-              default=''),
+               help='cluster ip address',
+               default=''),
     cfg.StrOpt('enable_secgroup',
-              help='enable security group',
-              default='true'),
+               help='enable security group',
+               default='true'),
     cfg.StrOpt('enable_vpnaas',
-              help='enable vpn as service',
-              default='true'),
+               help='enable vpn as service',
+               default='true'),
     cfg.StrOpt('enable_fwaas',
-              help='enable firewall as service',
-              default='true'),
+               help='enable firewall as service',
+               default='true'),
     cfg.StrOpt('network_cfg',
-              help='netowrk config file',
-              default=''),
+               help='netowrk config file',
+               default=''),
     cfg.StrOpt('neutron_cfg',
-              help='netowrk config file',
-              default=''),
+               help='netowrk config file',
+               default=''),
     cfg.StrOpt('cluster_pub_vip',
-              help='cluster ip address',
-              default=''),
+               help='cluster ip address',
+               default=''),
     cfg.StrOpt('cluster_prv_vip',
-              help='cluster ip address',
-              default=''),
+               help='cluster ip address',
+               default=''),
     cfg.StrOpt('repo_name',
-              help='repo name',
-              default=''),
+               help='repo name',
+               default=''),
     cfg.StrOpt('deploy_type',
-              help='deploy type',
-              default='virtual'),
+               help='deploy type',
+               default='virtual'),
     cfg.StrOpt('deploy_flag',
-              help='deploy flag',
-              default='deploy'),
+               help='deploy flag',
+               default='deploy'),
     cfg.StrOpt('rsa_file',
-              help='ssh rsa key file',
-              default=''),
+               help='ssh rsa key file',
+               default=''),
     cfg.StrOpt('odl_l3_agent',
-              help='odl l3 agent enable flag',
-              default='Disable'),
+               help='odl l3 agent enable flag',
+               default='Disable'),
     cfg.StrOpt('moon',
-              help='moon enable flag',
-              default='Disable'),
+               help='moon enable flag',
+               default='Disable'),
     cfg.StrOpt('onos_sfc',
-              help='onos_sfc enable flag',
-              default='Disable'),
+               help='onos_sfc enable flag',
+               default='Disable'),
 ]
 CONF.register_cli_opts(opts)
 
+
 def is_role_unassigned(role):
     return role
+
 
 def _load_config(config_filename):
     if not config_filename:
@@ -259,6 +260,7 @@ def _load_config(config_filename):
 
 
 class CompassClient(object):
+
     def __init__(self):
         LOG.info("xh: compass_server=%s" % CONF.compass_server)
         self.client = Client(CONF.compass_server)
@@ -306,7 +308,10 @@ class CompassClient(object):
         ]))
 
         machines_db = [str(m["mac"]) for m in resp]
-        LOG.info('machines in db: %s\n to add: %s', machines_db, machines_to_add)
+        LOG.info(
+            'machines in db: %s\n to add: %s',
+            machines_db,
+            machines_to_add)
         if not set(machines_to_add).issubset(set(machines_db)):
             raise RuntimeError('unidentify machine to add')
 
@@ -373,7 +378,7 @@ class CompassClient(object):
 
             status, resp = self.client.add_subnet(subnet)
             LOG.info('add subnet %s status %s response %s',
-                         subnet, status, resp)
+                     subnet, status, resp)
             if not self.is_ok(status):
                 raise RuntimeError('failed to add subnet %s' % subnet)
 
@@ -393,7 +398,7 @@ class CompassClient(object):
             raise RuntimeError("add cluster failed")
 
         LOG.info('add cluster %s status: %s resp:%s',
-                     cluster_name, status,resp)
+                 cluster_name, status, resp)
 
         if isinstance(resp, list):
             cluster = resp[0]
@@ -433,7 +438,7 @@ class CompassClient(object):
             {'machines': machines_dict})
 
         LOG.info('add machines %s to cluster %s status: %s, resp: %s',
-                     machines_dict, cluster_id, status, resp)
+                 machines_dict, cluster_id, status, resp)
 
         if not self.is_ok(status):
             raise RuntimeError("add host to cluster failed")
@@ -574,8 +579,8 @@ class CompassClient(object):
             'set os config %s to cluster %s status: %s, resp: %s',
             os_config, cluster_id, status, resp)
         if not self.is_ok(status):
-            raise RuntimeError('failed to set os config %s to cluster %s' \
-                    % (os_config, cluster_id))
+            raise RuntimeError('failed to set os config %s to cluster %s'
+                               % (os_config, cluster_id))
 
     def set_host_networking(self):
         """set cluster hosts networking."""
@@ -658,7 +663,7 @@ class CompassClient(object):
         for service_credential in service_credentials:
             if ':' not in service_credential:
                 raise Exception(
-                    'there is no : in service credential %s' % service_credential
+                    'there is no : in service credential %s' % service_credential   # noqa: E501
                 )
             service_name, service_pair = service_credential.split(':', 1)
             if '=' not in service_pair:
@@ -686,7 +691,7 @@ class CompassClient(object):
         for console_credential in console_credentials:
             if ':' not in console_credential:
                 raise Exception(
-                    'there is no : in console credential %s' % console_credential
+                    'there is no : in console credential %s' % console_credential   # noqa: E501
                 )
             console_name, console_pair = console_credential.split(':', 1)
             if '=' not in console_pair:
@@ -699,8 +704,9 @@ class CompassClient(object):
                 'password': password
             }
 
-        package_config["security"] = {"service_credentials": service_credential_cfg,
-                                      "console_credentials": console_credential_cfg}
+        package_config[
+            "security"] = {"service_credentials": service_credential_cfg,
+                           "console_credentials": console_credential_cfg}
 
         network_mapping = dict([
             network_pair.split('=', 1)
@@ -730,11 +736,14 @@ class CompassClient(object):
             package_config["ha_proxy"]["vip"] = CONF.cluster_vip
 
         package_config['enable_secgroup'] = (CONF.enable_secgroup == "true")
-        package_config['enable_fwaas'] = (CONF.enable_fwaas== "true")
-        package_config['enable_vpnaas'] = (CONF.enable_vpnaas== "true")
-        package_config['odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"
-        package_config['moon'] = "Enable" if CONF.moon == "Enable" else "Disable"
-        package_config['onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
+        package_config['enable_fwaas'] = (CONF.enable_fwaas == "true")
+        package_config['enable_vpnaas'] = (CONF.enable_vpnaas == "true")
+        package_config[
+            'odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"    # noqa: E501
+        package_config[
+            'moon'] = "Enable" if CONF.moon == "Enable" else "Disable"
+        package_config[
+            'onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
 
         status, resp = self.client.update_cluster_config(
             cluster_id, package_config=package_config)
@@ -774,20 +783,20 @@ class CompassClient(object):
             self.set_host_roles(cluster_id, host_id, roles)
             self.host_roles[hostname] = roles
 
-        unassigned_hostnames = list(set(self.host_mapping.keys()) \
+        unassigned_hostnames = list(set(self.host_mapping.keys())
                                     - set(self.host_roles.keys()))
 
-        unassigned_roles = [ role for role, status in self.role_mapping.items()
-                             if is_role_unassigned(status)]
+        unassigned_roles = [role for role, status in self.role_mapping.items()
+                            if is_role_unassigned(status)]
 
         assert(len(unassigned_hostnames) >= len(unassigned_roles))
 
-        for hostname, role in map(None, unassigned_hostnames, unassigned_roles):
+        for hostname, role in map(None, unassigned_hostnames, unassigned_roles):   # noqa: E501
             host_id = self.host_mapping[hostname]
             self.set_host_roles(cluster_id, host_id, [role])
             self.host_roles[hostname] = [role]
 
-        unassigned_hostnames = list(set(self.host_mapping.keys()) \
+        unassigned_hostnames = list(set(self.host_mapping.keys())
                                     - set(self.host_roles.keys()))
 
         if not unassigned_hostnames:
@@ -819,7 +828,7 @@ class CompassClient(object):
             cluster_id, host_ids, status, response
         )
 
-        #TODO, what this doning?
+        # TODO, what this doning?
         if not self.is_ok(status):
             raise RuntimeError("review cluster host failed")
 
@@ -849,7 +858,8 @@ class CompassClient(object):
     def get_cluster_state(self, cluster_id):
         for _ in range(10):
             try:
-                status, cluster_state = self.client.get_cluster_state(cluster_id)
+                status, cluster_state = self.client.get_cluster_state(
+                    cluster_id)
                 if self.is_ok(status):
                     break
             except:
@@ -864,7 +874,8 @@ class CompassClient(object):
     def get_installing_progress(self, cluster_id):
         def _get_installing_progress():
             """get intalling progress."""
-            deployment_timeout = time.time() + 60 * float(CONF.deployment_timeout)
+            deployment_timeout = time.time() + 60 * float(
+                CONF.deployment_timeout)
             current_time = time.time
             while current_time() < deployment_timeout:
                 status, cluster_state = self.get_cluster_state(cluster_id)
@@ -873,21 +884,21 @@ class CompassClient(object):
 
                 elif cluster_state['state'] == 'SUCCESSFUL':
                     LOG.info(
-                         'get cluster %s state status %s: %s, successful',
-                         cluster_id, status, cluster_state
+                        'get cluster %s state status %s: %s, successful',
+                        cluster_id, status, cluster_state
                     )
                     break
                 elif cluster_state['state'] == 'ERROR':
                     raise RuntimeError(
-                         'get cluster %s state status %s: %s, error',
-                         (cluster_id, status, cluster_state)
+                        'get cluster %s state status %s: %s, error',
+                        (cluster_id, status, cluster_state)
                     )
 
                 time.sleep(5)
 
             if current_time() >= deployment_timeout:
-                LOG.info("current_time=%s, deployment_timeout=%s" \
-                        % (current_time(), deployment_timeout))
+                LOG.info("current_time=%s, deployment_timeout=%s"
+                         % (current_time(), deployment_timeout))
                 raise RuntimeError("installation timeout")
 
         try:
@@ -920,12 +931,18 @@ class CompassClient(object):
 
 
 def print_ansible_log():
-    os.system("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i %s root@192.168.200.2 \
-              'while ! tail -f /var/ansible/run/%s-%s/ansible.log 2>/dev/null; do :; sleep 1; done'" %
+    os.system("ssh -o StrictHostKeyChecking=no -o \
+              UserKnownHostsFile=/dev/null -i %s root@192.168.200.2 \
+              'while ! tail -f /var/ansible/run/%s-%s/ansible.log \
+              2>/dev/null; do :; sleep 1; done'" %
               (CONF.rsa_file, CONF.adapter_name, CONF.cluster_name))
 
+
 def kill_print_proc():
-    os.system("ps aux|grep -v grep|grep -E 'ssh.+root@192.168.200.2'|awk '{print $2}'|xargs kill -9")
+    os.system(
+        "ps aux|grep -v grep|grep -E 'ssh.+root@192.168.200.2'|awk \
+        '{print $2}'|xargs kill -9")
+
 
 def deploy():
     client = CompassClient()
@@ -952,6 +969,7 @@ def deploy():
     client.get_installing_progress(cluster_id)
     client.check_dashboard_links(cluster_id)
 
+
 def redeploy():
     client = CompassClient()
 
@@ -961,6 +979,7 @@ def redeploy():
 
     client.get_installing_progress(cluster_id)
     client.check_dashboard_links(cluster_id)
+
 
 def main():
     if CONF.deploy_flag == "redeploy":

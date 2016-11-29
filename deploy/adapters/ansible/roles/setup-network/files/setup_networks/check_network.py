@@ -6,9 +6,14 @@ import log as logging
 
 LOG = logging.getLogger("net-check")
 
+
 def is_ip_reachable(ip):
     cmd = "ping -c 2 %s" % ip
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=None, shell=True)
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=None,
+        shell=True)
 
     output = process.communicate()[0]
     if " 0% packet loss" in output:
@@ -21,6 +26,7 @@ def is_ip_reachable(ip):
 
     return True
 
+
 def is_host_ips_reachable(settings):
     external = settings["br-prv"]["ip"]
     external_gw = settings["br-prv"]["gw"]
@@ -28,9 +34,10 @@ def is_host_ips_reachable(settings):
     mgmt = settings["mgmt"]["ip"]
 
     return is_ip_reachable(external) \
-           and is_ip_reachable(external_gw) \
-           and is_ip_reachable(storage) \
-           and is_ip_reachable(mgmt)
+        and is_ip_reachable(external_gw) \
+        and is_ip_reachable(storage) \
+        and is_ip_reachable(mgmt)
+
 
 def main(hostname, config):
     LOG.info("host is %s", hostname)
@@ -53,4 +60,3 @@ if __name__ == "__main__":
     config.pop(hostname, None)
 
     main(hostname, config)
-

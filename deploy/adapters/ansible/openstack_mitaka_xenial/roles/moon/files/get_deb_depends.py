@@ -6,7 +6,13 @@ import subprocess
 pkts = []
 
 for arg in sys.argv[1:]:
-    proc = subprocess.Popen(["dpkg-deb", "--info", arg], stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc = subprocess.Popen(
+        ["dpkg-deb",
+         "--info",
+         arg],
+        stdin=None,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
     out = proc.stdout.read()
     err = proc.stderr.read()
     if err:

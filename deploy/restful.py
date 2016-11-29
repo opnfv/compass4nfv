@@ -19,7 +19,9 @@ import json
 import logging
 import requests
 
+
 class Client(object):
+
     """compass restful api wrapper"""
 
     def __init__(self, url, headers=None, proxies=None, stream=None):

@@ -1,18 +1,22 @@
-import yaml, os, sys
+import yaml
+import os
+import sys
 from Cheetah.Template import Template
+
 
 def get_file_list(root, arch):
     files = []
 
     dirs = os.listdir(os.path.join(root, 'roles'))
 
-    for  dir in dirs:
+    for dir in dirs:
         var_dir = os.path.join(root, 'roles', dir, 'vars')
         for name in ['main.yml', arch + r'.yml']:
             if os.path.exists(os.path.join(var_dir, name)):
                 files.append(os.path.join(var_dir, name))
 
     return files
+
 
 def get_packages_name_list(file_list, special_packages):
     package_name_list = []
@@ -24,9 +28,9 @@ def get_packages_name_list(file_list, special_packages):
 
         for key, value in datas.items():
             if key == "pip_packages":
-                 continue
+                continue
 
-            if not key.endswith("packages") and not key.endswith("packages_noarch"):
+            if not key.endswith("packages") and not key.endswith("packages_noarch"):  # noqa: E501
                 continue
 
             if not value:
@@ -43,11 +47,18 @@ def get_packages_name_list(file_list, special_packages):
 
     return package_name_list
 
-def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_packages="",
-                             special_packages="", special_packages_script_dir="", special_packages_dir=""):
-    package_name_list = get_packages_name_list(get_file_list(root, arch), special_packages) if root else []
 
-    tmpl = Template(file=tmpl, searchList={'packages':package_name_list, 'default_packages':default_packages})
+def generate_download_script(
+    root="", arch="", tmpl="", docker_tmpl="", default_packages="",
+        special_packages="", special_packages_script_dir="", special_packages_dir=""):  # noqa: E501
+    package_name_list = get_packages_name_list(
+        get_file_list(root, arch), special_packages) if root else []
+
+    tmpl = Template(
+        file=tmpl,
+        searchList={
+            'packages': package_name_list,
+            'default_packages': default_packages})
     with open('work/repo/install_packages.sh', 'w') as f:
         f.write(tmpl.respond())
 
@@ -57,23 +68,23 @@ def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_
         if os.path.exists(os.path.join(special_packages_script_dir, name)):
             make_script.append(name)
 
-    searchList = {'scripts':make_script}
+    searchList = {'scripts': make_script}
     if os.path.exists(special_packages_dir):
-        special_packages_names=[]
+        special_packages_names = []
 
         for parent, dirname, filenames in os.walk(special_packages_dir):
             for filename in filenames:
-                 if os.path.isfile(os.path.join(parent, filename)):
-                      special_packages_names.append(filename)
-        searchList.update({'spcial_packages':special_packages_names})
+                if os.path.isfile(os.path.join(parent, filename)):
+                    special_packages_names.append(filename)
+        searchList.update({'spcial_packages': special_packages_names})
 
-    Dockerfile=os.path.basename(docker_tmpl).split('.')[0]
+    Dockerfile = os.path.basename(docker_tmpl).split('.')[0]
     tmpl = Template(file=docker_tmpl, searchList=searchList)
     with open(os.path.join('work/repo', Dockerfile), 'w') as f:
         f.write(tmpl.respond())
 
-if __name__=='__main__':
+if __name__ == '__main__':
     # generate_download_script('ansible', 'Debian', 'Debian.tmpl')
-    generate_download_script(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4],
-                             sys.argv[5].split(' '), sys.argv[6].split(' '), sys.argv[7], sys.argv[8])
-
+    generate_download_script(
+        sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4],
+        sys.argv[5].split(' '), sys.argv[6].split(' '), sys.argv[7], sys.argv[8])  # noqa: E501

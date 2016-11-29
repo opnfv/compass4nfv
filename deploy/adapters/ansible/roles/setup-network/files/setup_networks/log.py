@@ -1,11 +1,12 @@
 import logging
 import os
 loggers = {}
-log_dir="/var/log/setup_network"
+log_dir = "/var/log/setup_network"
 try:
     os.makedirs(log_dir)
 except:
     pass
+
 
 def getLogger(name):
     if name in loggers:
@@ -29,7 +30,8 @@ def getLogger(name):
     ch.setLevel(logging.ERROR)
 
     # create formatter and add it to the handlers
-    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     ch.setFormatter(formatter)
     fh.setFormatter(formatter)
 

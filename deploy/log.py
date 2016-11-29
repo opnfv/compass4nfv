@@ -1,6 +1,8 @@
 import logging
 import os
 loggers = {}
+
+
 def getLogger(name):
     if name in loggers:
         return loggers[name]
@@ -23,7 +25,8 @@ def getLogger(name):
     ch.setLevel(logging.ERROR)
 
     # create formatter and add it to the handlers
-    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     ch.setFormatter(formatter)
     fh.setFormatter(formatter)
 
@@ -33,4 +36,3 @@ def getLogger(name):
 
     loggers[name] = logger
     return logger
-

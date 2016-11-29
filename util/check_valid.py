@@ -25,7 +25,7 @@ def is_valid_ip(ip):
     if not ip:
         return False
     res = re.search(
-        "^(0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}(\/(\d|[1-2]\d|3[0-2]))?$",
+        "^(0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}(\/(\d|[1-2]\d|3[0-2]))?$",  # noqa: E501
         ip) is not None
     return res
 
@@ -101,7 +101,7 @@ def check_dha_file(dha):
                     hosts:
                         - name: %s
                           interfaces:
-                            - %s: %s''' % (i['name'], j.keys()[0], j.values()[0]))
+                            - %s: %s''' % (i['name'], j.keys()[0], j.values()[0]))  # noqa: E501
                     invalid = True
             if not is_valid_ip(i['ipmiIp']):
                 err_print('''invalid address:
