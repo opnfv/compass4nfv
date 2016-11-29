@@ -76,7 +76,6 @@ function download_url()
 
     curl --connect-timeout 10 -o $CACHE_DIR/$1 $2
 }
-
 function download_local()
 {
     if [[ $2 != $CACHE_DIR/$1 ]]; then
