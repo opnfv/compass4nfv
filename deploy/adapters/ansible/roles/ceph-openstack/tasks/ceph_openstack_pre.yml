@@ -9,8 +9,36 @@
 ---
 - name: gen ceph uuid
   shell: uuidgen
-  register: ceph_uuid
+  register: ceph_uuid_out
   run_once: true
+  tags:
+    - ceph_copy_secret
+
+- name: set ceph uuid var
+  set_fact:
+    ceph_uuid: "{{ ceph_uuid_out.stdout_lines[0] }}"
+  when: not compute_expansion
+  tags:
+    - ceph_copy_secret
+
+- name: save ceph uuid for expansion
+  copy: content="{{ ceph_uuid }}" dest=/etc/ceph/ceph.uuid.libvirt
+  when: not compute_expansion and inventory_hostname in groups['controller']
+  tags:
+    - ceph_copy_secret
+
+- name: fetch ceph uuid from controller node for expansion
+  shell: cat /etc/ceph/ceph.uuid.libvirt
+  register: ceph_uuid_out
+  delegate_to: "{{ public_vip.ip }}"
+  when: compute_expansion and inventory_hostname in groups['compute']
+  tags:
+    - ceph_copy_secret
+
+- name: set ceph uuid var for expansion
+  set_fact:
+    ceph_uuid: "{{ ceph_uuid_out.stdout_lines[0] }}"
+  when: compute_expansion and inventory_hostname in groups['compute']
   tags:
     - ceph_copy_secret
 
@@ -68,7 +96,7 @@
 
 
 - name: create key for libvirt on compute nodes
-  shell: "virsh secret-define --file ~/secret.xml && virsh secret-set-value --secret {{ ceph_uuid.stdout_lines[0] }} --base64 $(cat client.cinder.key)"
+  shell: "virsh secret-define --file ~/secret.xml && virsh secret-set-value --secret {{ ceph_uuid }} --base64 $(cat client.cinder.key)"
   when: inventory_hostname in groups['compute']
   tags:
     - ceph_copy_secret
