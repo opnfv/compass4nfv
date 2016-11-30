@@ -18,6 +18,11 @@
     dest: "/tmp/ceph.conf"
   when: inventory_hostname in groups['ceph_adm']
 
+- name: fetch ceph conf from ceph_adm
+  fetch: src="/etc/ceph/ceph.conf" dest="/tmp/ceph.conf" flat=yes
+  delegate_to: "{{ internal_vip.ip }}"
+  when: compute_expansion
+
 - name: "make directory for ceph config file"
   file: path="/etc/ceph" state="directory"
 
@@ -53,9 +58,19 @@
   fetch: src="/tmp/ceph.mon.keyring" dest="/tmp/ceph.mon.keyring" flat=yes
   when: inventory_hostname in groups['ceph_adm']
 
+- name: fetch mon.keyring from ceph_adm
+  fetch: src="/tmp/ceph.mon.keyring" dest="/tmp/ceph.mon.keyring" flat=yes
+  delegate_to: "{{ internal_vip.ip }}"
+  when: compute_expansion
+
 - name: fetch client.admin.keyring to local
   fetch: src="/etc/ceph/ceph.client.admin.keyring" dest="/tmp/ceph.client.admin.keyring" flat=yes
   when: inventory_hostname in groups['ceph_adm']
+
+- name: fetch mon.keyring from ceph_adm
+  fetch: src="/etc/ceph/ceph.client.admin.keyring" dest="/tmp/ceph.client.admin.keyring" flat=yes
+  delegate_to: "{{ internal_vip.ip }}"
+  when: compute_expansion
 
 - name: copy mon.keyring to remote nodes
   copy: src="/tmp/ceph.mon.keyring" dest="/tmp/ceph.mon.keyring"

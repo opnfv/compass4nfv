@@ -11,6 +11,11 @@
 - name: create osd lv and mount it on /var/local/osd
   script: create_osd.sh
 
+- name: fetch osd keyring from ceph_adm
+  fetch: src="/var/lib/ceph/bootstrap-osd/ceph.keyring" dest="/tmp/ceph.osd.keyring" flat=yes
+  delegate_to: "{{ internal_vip.ip }}"
+  when: compute_expansion
+
 - name: copy osd keyring
   copy: src="/tmp/ceph.osd.keyring" dest="/var/lib/ceph/bootstrap-osd/ceph.keyring"
 
