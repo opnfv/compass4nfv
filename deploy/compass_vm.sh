@@ -70,8 +70,27 @@ function _inject_dashboard_conf() {
     done
 }
 
+function _inject_ceph_expansion_conf() {
+    for os in mitaka mitaka_xenial newton_xenial osp9; do
+        CONF_TEMPLATES_DIR=/etc/compass/templates/ansible_installer/openstack_$os/vars
+        if [[ "$EXPANSION" == "true" ]]; then
+            cmd="
+                sed -i '/compute_expansion/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+                echo compute_expansion: True >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+            "
+        else
+            cmd="
+                sed -i '/compute_expansion/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+                echo compute_expansion: False >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+            "
+        fi
+        exec_cmd_on_compass $cmd
+    done
+}
+
 function inject_compass_conf() {
     _inject_dashboard_conf
+    _inject_ceph_expansion_conf
 }
 
 function refresh_compass_core () {
