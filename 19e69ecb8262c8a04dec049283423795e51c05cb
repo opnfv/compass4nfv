@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_73776603",
+        "filename": "ci/deploy_ci.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-12-05T12:37:20Z",
+      "side": 1,
+      "message": "where is the definition of ROOT_BUILD_CAUSE?",
+      "range": {
+        "startLine": 13,
+        "startChar": 7,
+        "endLine": 13,
+        "endChar": 23
+      },
+      "revId": "19e69ecb8262c8a04dec049283423795e51c05cb",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
