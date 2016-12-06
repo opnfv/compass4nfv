@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_2e197188",
+        "filename": "deploy/adapters/ansible/openstack_mitaka/roles/ceph-osd/tasks/install_osd.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-06T09:38:10Z",
+      "side": 1,
+      "message": "-\u003e public_vip\ninternal_vip may unreachable from compass-core, when doing BM deployment with multi nics.",
+      "range": {
+        "startLine": 16,
+        "startChar": 19,
+        "endLine": 16,
+        "endChar": 31
+      },
+      "revId": "d1f9e8f3805649faa642dc993547f270593cad13",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
