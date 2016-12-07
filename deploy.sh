@@ -78,7 +78,7 @@
 #export DEPLOY_RECOVERY="true"
 #export DEPLOY_FIRST_TIME="false"
 
-
+#begin at this
 #set -x
 COMPASS_DIR=`cd ${BASH_SOURCE[0]%/*}/;pwd`
 export COMPASS_DIR
