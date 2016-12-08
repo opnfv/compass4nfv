@@ -12,16 +12,35 @@
 
 CI_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 
-if [[ $ROOT_BUILD_CAUSE = MANUALTRIGGER ]]; then
-    # For manual ci trigger buid, directly use the value pass from CI
-    export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-trusty}
-    export OPENSTACK_VERSION=${OPENSTACK_VERSION:-mitaka}
+if [[ $ROOT_BUILD_CAUSE == MANUALTRIGGER ]]; then
+    # For manual ci trigger build, directly use the value pass from CI
+    if [[ $COMPASS_OPENSTACK_VERSION == newton ]]; then
+        export COMPASS_OS_VERSION=newton_xenial
+    else
+        case $DEPLOY_SCENARIO in
+        os-odl_l2-moon-ha)
+            # os-odl_l2-moon-ha scenario supports xenial mitaka only
+            export COMPASS_OS_VERSION=xenial
+            export OPENSTACK_VERSION=mitaka_xenial
+            ;;
+        os-ocl-nofeature-ha)
+            # os-ocl-nofeature-ha scenario supports liberty only
+            export COMPASS_OS_VERSION=trusty
+            export OPENSTACK_VERSION=liberty
+            ;;
+        *)
+            # setup for testing mitaka by default
+            export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-trusty}
+            export OPENSTACK_VERSION=${OPENSTACK_VERSION:-mitaka}
+            ;;
+        esac
+    fi
 
 else
     # For daily build or verify build, adjust COMPASS_OS_VERSION and OPENSTACK_VERSION
     # value according to COMPASS_OS_VERSION and DEPLOY_SCENARIO pass from CI
 
-    if [[ $COMPASS_OS_VERSION == centos ]]; then
+    if [[ $COMPASS_OS_VERSION == centos7 ]]; then
         case $DEPLOY_SCENARIO in
         os-odl_l2-moon-ha)
             # os-odl_l2-moon-ha scenario supports xenial mitaka only
@@ -75,4 +94,4 @@ echo 'COMPASS_OS_VERSION='$COMPASS_OS_VERSION
 echo 'OPENSTACK_VERSION='$OPENSTACK_VERSION
 echo "########################################"
 
-$CI_DIR/../deploy.sh
+./$CI_DIR/../deploy.sh
