@@ -121,4 +121,24 @@ if [[ "$DEPLOY_HOST" == "true" || $REDEPLOY_HOST == "true" ]]; then
     fi
 fi
 
+public_vip=$(get_public_vip)
+set +x
+
 figlet -ctf slant Installation Complete!
+echo ""
+echo "+-----------------+----------+--------------------------------+"
+echo "| Dashboard       | Web      | http://$public_vip/horizon |"
+echo "|                 | Domain   | default                        |"
+echo "|                 | User     | admin                          |"
+echo "|                 | Password | console                        |"
+echo "+-------------------------------------------------------------+"
+echo "| Compass         | IP       | 192.168.200.2                  |"
+echo "| Virtual Machine | User     | root                           |"
+echo "|                 | Password | root                           |"
+echo "+-------------------------------------------------------------+"
+echo "| Openrc Path     | admin    | /opt/admin-openrc.sh           |"
+echo "|                 | demo     | /opt/demo-openrc.sh            |"
+echo "+-----------------+----------+--------------------------------+"
+echo "NOTE: openrc file is in the controller nodes"
+echo ""
+
