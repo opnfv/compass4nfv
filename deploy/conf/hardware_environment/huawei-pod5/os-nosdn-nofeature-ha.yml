@@ -8,11 +8,11 @@ ipmiVer: '2.0'
 
 hosts:
   - name: host1
-    mac: '70:7b:e8:75:71:d3'
+    mac: 'E0:97:96:10:67:83'
     interfaces:
-       - eth1: '70:7b:e8:75:71:d2'
-    ipmiIp: 172.31.123.2
-    ipmiPass: root
+       - eth1: 'E0:97:96:10:67:8B'
+    ipmiIp: 192.168.5.173
+    ipmiPass: Huawei12#$
     roles:
       - controller
       - ha
@@ -20,44 +20,45 @@ hosts:
       - ceph-mon
 
   - name: host2
-    mac: '70:7b:e8:75:72:21'
+    mac: 'E0:97:96:10:5A:C8'
     interfaces:
-      - eth1: '70:7b:e8:75:72:20'
-    ipmiIp: 172.31.123.3
-    ipmiPass: root
+      - eth1: 'E0:97:96:10:5A:D0'
+    ipmiIp: 192.168.5.174
+    ipmiPass: Huawei12#$
     roles:
       - controller
       - ha
       - ceph-mon
 
   - name: host3
-    mac: '70:7b:e8:75:71:37'
+    mac: 'E0:97:96:10:67:4D'
     interfaces:
-      - eth1: '70:7b:e8:75:71:36'
-    ipmiIp: 172.31.123.4
-    ipmiPass: root
+      - eth1: 'E0:97:96:10:67:55'
+    ipmiIp: 192.168.5.175
+    ipmiPass: Huawei12#$
     roles:
       - controller
       - ha
       - ceph-mon
 
   - name: host4
-    mac: '70:7b:e8:75:71:dc'
+    mac: 'E0:97:96:10:5D:44'
     interfaces:
-      - eth1: '70:7b:e8:75:71:db'
-    ipmiIp: 172.31.123.5
-    ipmiPass: root
+      - eth1: 'E0:97:96:10:5D:4C'
+    ipmiIp: 192.168.5.176
+    ipmiPass: Huawei12#$
     roles:
       - compute
       - ceph-osd
 
   - name: host5
-    mac: '70:7b:e8:75:71:d6'
+    mac: 'E0:97:96:10:63:29'
     interfaces:
-      - eth1: '70:7b:e8:75:71:d5'
-    ipmiIp: 172.31.123.6
-    ipmiPass: root
+      - eth1: 'E0:97:96:10:63:31'
+    ipmiIp: 192.168.5.177
+    ipmiPass: Huawei12#$
     roles:
       - compute
       - ceph-osd
+
 

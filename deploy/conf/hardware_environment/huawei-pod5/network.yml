@@ -13,7 +13,7 @@ provider_net_mappings:
 sys_intf_mappings:
   - name: mgmt
     interface: eth1
-    vlan_tag: 125
+    vlan_tag: 3011
     type: vlan
     role:
       - controller
@@ -21,7 +21,7 @@ sys_intf_mappings:
 
   - name: storage
     interface: eth1
-    vlan_tag: 126
+    vlan_tag: 3012
     type: vlan
     role:
       - controller
@@ -55,10 +55,10 @@ ip_settings:
 
   - name: external
     ip_ranges:
-    - - "10.145.140.10"
-      - "10.145.140.50"
-    cidr: "10.145.140.0/24"
-    gw: "10.145.140.1"
+    - - "192.168.5.204"
+      - "192.168.5.210"
+    cidr: "192.168.5.0/24"
+    gw: "192.168.5.1"
     role:
       - controller
       - compute
@@ -69,7 +69,7 @@ internal_vip:
   interface: mgmt
 
 public_vip:
-  ip: 10.145.140.115
+  ip: 192.168.5.211
   netmask: "24"
   interface: external
 
@@ -84,7 +84,7 @@ public_net_info:
   router: router-ext
   enable_dhcp: False
   no_gateway: False
-  external_gw: "10.145.140.1"
-  floating_ip_cidr: "10.145.140.0/24"
-  floating_ip_start: "10.145.140.100"
-  floating_ip_end: "10.145.140.200"
+  external_gw: "192.168.5.1"
+  floating_ip_cidr: "192.168.5.0/24"
+  floating_ip_start: "192.168.5.215"
+  floating_ip_end: "192.168.5.250"
