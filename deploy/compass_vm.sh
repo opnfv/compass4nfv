@@ -263,3 +263,10 @@ function wait_controller_nodes_ok() {
     "
     sleep 30
 }
+
+function get_public_vip () {
+    ssh $ssh_args root@$MGMT_IP "
+        cd /var/ansible/run/openstack_newton_xenial-opnfv2
+        cat group_vars/all | grep -A 3 public_vip: | sed -n '2p' |sed -e 's/  ip: //g'
+    "
+}
