@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_a8354bf8",
+        "filename": "deploy/launch.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-12-13T14:34:37Z",
+      "side": 1,
+      "message": "replace with $MGMT_IP",
+      "range": {
+        "startLine": 114,
+        "startChar": 22,
+        "endLine": 114,
+        "endChar": 36
+      },
+      "revId": "4d6fcecfc23835db9c10a497354b6fc86eb23177",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_085fbf42",
+        "filename": "deploy/launch.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-12-13T14:34:37Z",
+      "side": 1,
+      "message": "you can use $MGMT_IP directly, if source conf/base.conf first",
+      "range": {
+        "startLine": 135,
+        "startChar": 37,
+        "endLine": 135,
+        "endChar": 51
+      },
+      "revId": "4d6fcecfc23835db9c10a497354b6fc86eb23177",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
