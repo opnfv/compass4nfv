@@ -22,7 +22,7 @@
 
 - name: install python-mysqldb
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: maridb_packages | union(packages_noarch)
+  with_items: "{{ maridb_packages | union(packages_noarch) }}"
 
 - name: create conf dir for wsrep
   file: path=/etc/my.cnf.d state=directory mode=0755
@@ -34,7 +34,7 @@
     dest: '{{ item.dest }}'
     backup: yes
     mode: 0644
-  with_items: mysql_config
+  with_items: "{{ mysql_config }}"
 
 - name: bugfix for rsync version 3.1
   lineinfile:

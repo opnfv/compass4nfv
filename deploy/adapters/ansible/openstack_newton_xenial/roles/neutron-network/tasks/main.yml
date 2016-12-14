@@ -40,7 +40,7 @@
 
 - name: install neutron network related packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: packages | union(packages_noarch)
+  with_items: "{{ packages | union(packages_noarch) }}"
 
 - name: enable auto start
   file:
@@ -50,7 +50,7 @@
 
 - name: generate neutron network service list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: services | union(services_noarch)
+  with_items: "{{ services | union(services_noarch) }}"
 
 - name: fix openstack neutron plugin config file
   shell: |
