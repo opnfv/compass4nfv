@@ -30,13 +30,6 @@
     state=absent
   when: ansible_os_family == "Debian"
 
-- name: update nova-compute conf
-  template: src=templates/{{ item }} dest=/etc/nova/{{ item }}
-  with_items:
-    - nova.conf
-  notify:
-    - restart nova-compute services
-
 - name: get number of cpu support virtualization
   shell: egrep -c '(vmx|svm)' /proc/cpuinfo
   register: kvm_cpu_num
@@ -44,6 +37,7 @@
 - name: update nova-compute conf
   template: src={{ item }} dest=/etc/nova/{{ item }}
   with_items:
+    - nova.conf
     - nova-compute.conf
   notify:
     - restart nova-compute services
