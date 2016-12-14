@@ -34,7 +34,7 @@
 
     - authorized_key:
         user: root
-        key:  "{{ lookup('file', 'item') }}"
+        key:  "{{ lookup('file', item) }}"
       with_fileglob:
         - /tmp/ssh-keys-*
   max_fail_percentage: 0

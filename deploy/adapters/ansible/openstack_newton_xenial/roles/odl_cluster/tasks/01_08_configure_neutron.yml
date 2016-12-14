@@ -1,0 +1,34 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: configure l2 configuration
+  shell: crudini --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-prv;
+  when: odl_l3_agent == "Disable"
+
+- name: configure l3 configuration
+  shell: crudini --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-ex;
+  when: odl_l3_agent == "Enable"
+
+- name: configure odl l3 driver
+  shell: crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins networking_odl.l3.l3_odl.OpenDaylightL3RouterPlugin;
+  when: odl_l3_agent == "Enable"
+
+- name: configure metadata for l3 configuration
+  shell: crudini --set /etc/neutron/dhcp_agent.ini DEFAULT enable_isolated_metadata True;
+  when: odl_l3_agent == "Enable"
+
+- name: drop and recreate neutron database
+  shell: mysql -e "drop database if exists neutron;";
+         mysql -e "create database neutron character set utf8;";
+         mysql -e "grant all on neutron.* to 'neutron'@'%' identified by '{{ NEUTRON_DBPASS }}';";
+         su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+  tags:
+    - test_odl
