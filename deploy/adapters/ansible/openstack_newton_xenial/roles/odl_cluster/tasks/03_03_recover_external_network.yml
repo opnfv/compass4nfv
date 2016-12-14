@@ -6,9 +6,17 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-cat <<EOT>> /etc/neutron/plugins/ml2/ml2_conf.ini
-[ml2_odl]
-password = admin
-username = admin
-url = http://{{ internal_vip.ip }}:8080/controller/nb/v2/neutron
-EOT
+---
+
+- name: recover external network for L3
+  include: 03_03_00_recover_external_network_l3.yml
+  when: odl_l3_agent == "Enable"
+
+- name: recover external network for L2
+  include: 03_03_01_recover_external_network_l2.yml
+  when: odl_l3_agent == "Disable"
+
+- name: restart keepalived to recover external IP
+  shell: service keepalived restart
+  when: inventory_hostname in groups['odl']
+  ignore_errors: True

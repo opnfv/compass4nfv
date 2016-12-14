@@ -19,6 +19,6 @@
   include: 01_odl_controller.yml
   when: inventory_hostname in groups['odl']
 
-- name: Provision ODL on Compute nodes
-  include: 02_odl_compute.yml
-  when: groups['odl']|length !=0 and inventory_hostname not in groups['odl']
+#- name: Provision ODL on Compute nodes
+#  include: 02_odl_compute.yml
+#  when: groups['odl']|length !=0 and inventory_hostname not in groups['odl']
