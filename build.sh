@@ -65,7 +65,7 @@ function download_git()
 function download_url()
 {
     rm -f $CACHE_DIR/$1.md5
-    curl --connect-timeout 10 -o $CACHE_DIR/$1.md5 $2.md5 2>/dev/null
+    curl --connect-timeout 10 -o $CACHE_DIR/$1.md5 $2.md5 2>/dev/null || true
     if [[ -f $CACHE_DIR/$1 ]]; then
         local_md5=`md5sum $CACHE_DIR/$1 | cut -d ' ' -f 1`
         repo_md5=`cat $CACHE_DIR/$1.md5 | cut -d ' ' -f 1`

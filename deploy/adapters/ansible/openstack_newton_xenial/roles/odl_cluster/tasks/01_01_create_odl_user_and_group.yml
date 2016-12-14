@@ -6,9 +6,16 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-cat <<EOT>> /etc/neutron/plugins/ml2/ml2_conf.ini
-[ml2_odl]
-password = admin
-username = admin
-url = http://{{ internal_vip.ip }}:8080/controller/nb/v2/neutron
-EOT
+---
+
+- name: create odl group
+  group: name=odl system=yes state=present
+
+- name: create odl user
+  user:
+    name: odl
+    group: odl
+    home: "{{ odl_home }}"
+    createhome: "yes"
+    system: "yes"
+    shell: "/bin/false"

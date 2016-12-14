@@ -26,5 +26,3 @@
 
 - name: set local ip in openvswitch
   shell: ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) other_config={'local_ip'=' {{ internal_ip }} '};
-
-#'

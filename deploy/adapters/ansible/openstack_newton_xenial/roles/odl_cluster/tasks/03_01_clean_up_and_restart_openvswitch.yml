@@ -6,9 +6,11 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-cat <<EOT>> /etc/neutron/plugins/ml2/ml2_conf.ini
-[ml2_odl]
-password = admin
-username = admin
-url = http://{{ internal_vip.ip }}:8080/controller/nb/v2/neutron
-EOT
+---
+
+- name: Stop the Open vSwitch service and clear existing OVSDB
+  shell: >
+    service {{ service_ovs_name }} stop ;
+    rm -rf /var/log/openvswitch/* ;
+    rm -rf /etc/openvswitch/conf.db ;
+    service {{ service_ovs_name }} start ;
