@@ -6,9 +6,19 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-cat <<EOT>> /etc/neutron/plugins/ml2/ml2_conf.ini
-[ml2_odl]
-password = admin
-username = admin
-url = http://{{ internal_vip.ip }}:8080/controller/nb/v2/neutron
-EOT
+---
+
+- name: switch off neutron-openvswitch-agent
+  include: 03_00_switch_off_neutron_openvswitch_agent.yml
+
+- name: clean up and restart openvswitch
+  include: 03_01_clean_up_and_restart_openvswitch.yml
+
+- name: openvswitch connect with opendaylight and check br-int
+  include: 03_02_openvswitch_connect_opendaylight.yml
+
+- name: recover external network
+  include: 03_03_recover_external_network.yml
+
+- name: set up ml2
+  include: 03_04_setup_ml2.yml

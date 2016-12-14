@@ -18,4 +18,4 @@ service_file:
    src: opendaylight.service
    dst: /lib/systemd/system/opendaylight.service
 
-networking_odl_pkg_name: networking-odl-2.0.0.tar.gz
+networking_odl_pkg_name: networking-odl-3.2.0.tar.gz
