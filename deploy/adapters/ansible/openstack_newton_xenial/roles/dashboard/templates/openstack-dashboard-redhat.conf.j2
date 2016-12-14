@@ -1,0 +1,21 @@
+{% set work_threads = (ansible_processor_vcpus + 1) // 2 %}
+
+WSGIDaemonProcess horizon processes={{ work_threads }} threads={{ work_threads }}
+WSGIProcessGroup horizon
+WSGISocketPrefix run/wsgi
+
+WSGIScriptAlias /horizon {{ horizon_dir }}/openstack_dashboard/wsgi/django.wsgi
+Alias /horizon/static {{ horizon_dir }}/static
+
+<Directory {{ horizon_dir }}/openstack_dashboard/wsgi>
+  Options All
+  AllowOverride All
+  Require all granted
+</Directory>
+
+<Directory {{ horizon_dir }}/static>
+  Options All
+  AllowOverride All
+  Require all granted
+</Directory>
+
