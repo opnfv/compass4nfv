@@ -111,9 +111,8 @@ if [[ "$DEPLOY_HOST" == "true" || $REDEPLOY_HOST == "true" ]]; then
     echo $DHA
     if [[ `echo $HOST_ROLES | grep opencontrail` ]]; then
         ssh_options="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-        installer_ip="192.168.200.2"
-        vgw_ip=$(sshpass -p 'root' ssh $ssh_options root@$installer_ip 'cat /home/opencontrail1.rc')
-        externet_cidr=$(sshpass -p 'root' ssh $ssh_options root@$installer_ip 'cat /home/opencontrail2.rc')
+        vgw_ip=$(sshpass -p 'root' ssh $ssh_options root@$MGMT_IP 'cat /home/opencontrail1.rc')
+        externet_cidr=$(sshpass -p 'root' ssh $ssh_options root@$MGMT_IP 'cat /home/opencontrail2.rc')
         sudo ip route add $externet_cidr via $vgw_ip dev br-external 2>/dev/null
         sleep 60
         sudo python ${COMPASS_DIR}/deploy/reset_compute.py $TYPE $DHA
@@ -121,4 +120,24 @@ if [[ "$DEPLOY_HOST" == "true" || $REDEPLOY_HOST == "true" ]]; then
     fi
 fi
 
+public_vip=$(get_public_vip)
+set +x
+
 figlet -ctf slant Installation Complete!
+echo ""
+echo "+-----------------+----------+--------------------------------+"
+echo "| Dashboard       | Web      | http://$public_vip/horizon |"
+echo "|                 | Domain   | default                        |"
+echo "|                 | User     | admin                          |"
+echo "|                 | Password | console                        |"
+echo "+-------------------------------------------------------------+"
+echo "| Compass         | IP       | $MGMT_IP                  |"
+echo "| Virtual Machine | User     | root                           |"
+echo "|                 | Password | root                           |"
+echo "+-------------------------------------------------------------+"
+echo "| Openrc Path     | admin    | /opt/admin-openrc.sh           |"
+echo "|                 | demo     | /opt/demo-openrc.sh            |"
+echo "+-----------------+----------+--------------------------------+"
+echo "NOTE: openrc file is in the controller nodes"
+echo ""
+
