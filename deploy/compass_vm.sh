@@ -53,7 +53,7 @@ function exec_cmd_on_compass() {
 }
 
 function _inject_dashboard_conf() {
-    for os in mitaka mitaka_xenial newton_xenial; do
+    for os in mitaka mitaka_xenial newton; do
         CONF_TEMPLATES_DIR=/etc/compass/templates/ansible_installer/openstack_$os/vars
         if [[ "$ENABLE_UBUNTU_THEME" == "true" ]]; then
             cmd="
@@ -71,7 +71,7 @@ function _inject_dashboard_conf() {
 }
 
 function _inject_ceph_expansion_conf() {
-    for os in mitaka mitaka_xenial newton_xenial osp9; do
+    for os in mitaka mitaka_xenial newtonosp9; do
         CONF_TEMPLATES_DIR=/etc/compass/templates/ansible_installer/openstack_$os/vars
         if [[ "$EXPANSION" == "true" ]]; then
             cmd="
@@ -285,7 +285,7 @@ function wait_controller_nodes_ok() {
 
 function get_public_vip () {
     ssh $ssh_args root@$MGMT_IP "
-        cd /var/ansible/run/openstack_newton_xenial-opnfv2
+        cd /var/ansible/run/$ADAPTER_NAME'-'$CLUSTER_NAME
         cat group_vars/all | grep -A 3 public_vip: | sed -n '2p' |sed -e 's/  ip: //g'
     "
 }

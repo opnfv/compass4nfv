@@ -162,23 +162,11 @@ E.g.
     ######################### The environment for Openstack ######################
     # Ubuntu16.04 Newton
     #export OS_VERSION=xenial
-    #export OPENSTACK_VERSION=newton_xenial
+    #export OPENSTACK_VERSION=newton
 
-    # Ubuntu14.04 Mitaka
-    #export OS_VERSION=trusty
-    #export OPENSTACK_VERSION=mitaka
-
-    # Ubuntu16.04 Mitaka
-    #export OS_VERSION=xenial
-    #export OPENSTACK_VERSION=mitaka_xenial
-
-    # Centos7 Mitaka
+    # Centos7 Newton
     #export OS_VERSION=centos7
-    #export OPENSTACK_VERSION=mitaka
-
-    # Redhat7 OSP9
-    #export OS_VERSION=redhat7
-    #export OPENSTACK_VERSION=osp9
+    #export OPENSTACK_VERSION=newton
 
 Set ISO image that you want to deploy
 
