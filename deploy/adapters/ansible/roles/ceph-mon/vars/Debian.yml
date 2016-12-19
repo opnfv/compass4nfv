@@ -8,5 +8,5 @@
 ##############################################################################
 ---
 
-ceph_start_script: "start ceph-mon id={{ inventory_hostname }}"
-ceph_start_type: "upstart"
+ceph_start_script: "service ceph-mon start"
+ceph_start_type: "systemd"

@@ -1,6 +1,6 @@
 [securitygroup]
-firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
-enable_security_group = False
+firewall_driver = neutron.agent.firewall.NoopFirewallDriver
+enable_security_group = True
 
 [agent]
 prevent_arp_spoofing = False

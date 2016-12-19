@@ -4,17 +4,17 @@
 
 - name: remove ovs and ovs-plugin daeman
   shell: >
-    sed -i '/neutron-plugin-openvswitch-agent/d' /opt/service ;
+    sed -i '/neutron-openvswitch-agent/d' /opt/service ;
     sed -i '/openvswitch-switch/d' /opt/service ;
 
 - name: stop ovs and ovs-plugin
-  shell: service openvswitch-switch stop; service neutron-plugin-openvswitch-agent stop;
+  shell: service openvswitch-switch stop; service neutron-openvswitch-agent stop;
 
 - name: remove ovs and ovs-plugin files
   shell: >
-    update-rc.d -f neutron-plugin-openvswitch-agent remove;
-    mv /etc/init.d/neutron-plugin-openvswitch-agent /home/neutron-plugin-openvswitch-agent;
-    mv /etc/init/neutron-plugin-openvswitch-agent.conf /home/neutron-plugin-openvswitch-agent.conf;
+    update-rc.d -f neutron-openvswitch-agent remove;
+    mv /etc/init.d/neutron-openvswitch-agent /home/neutron-openvswitch-agent;
+    mv /etc/init/neutron-openvswitch-agent.conf /home/neutron-openvswitch-agent.conf;
     update-rc.d -f openvswitch-switch remove ;
     mv /etc/init.d/openvswitch-switch /home/openvswitch-switch ;
     mv /etc/init/openvswitch-switch.conf /home/openvswitch-switch.conf ;

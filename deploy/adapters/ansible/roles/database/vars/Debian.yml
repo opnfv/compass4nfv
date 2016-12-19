@@ -17,11 +17,21 @@ mysql_packages:
   - mysql-server
 
 maridb_packages:
-  - libaio1
-  - libssl0.9.8
+  - apt-transport-https 
+  - debconf-utils 
+  - libaio1 
+  - libc6 
+  - libdbd-mysql-perl 
+  - libgcc1 
+  - libgcrypt20 
+  - libstdc++6 
+  - python-software-properties 
+  - mariadb-client 
+  - galera-3 
+  - rsync 
+  - socat
+  - mariadb-galera-server-10.0
   - python-mysqldb
-  - mysql-wsrep-server-5.5
-  - galera-3
 
 pip_packages: []
 

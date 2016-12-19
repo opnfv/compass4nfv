@@ -72,9 +72,9 @@
     - neutron-common
     - neutron-network
     - ceilometer_controller
-#    - ext-network
     - dashboard
     - heat
+    - aodh
 
 - hosts: all
   remote_user: root
@@ -92,6 +92,13 @@
     - neutron-compute
     - cinder-volume
     - ceilometer_compute
+
+#- hosts: all
+#  remote_user: root
+#  accelerate: true
+#  max_fail_percentage: 0
+#  roles:
+#    - moon
 
 - hosts: all
   remote_user: root
@@ -229,6 +236,7 @@
 
 - hosts: controller
   remote_user: root
+  accelerate: true
   max_fail_percentage: 0
   roles:
     - ext-network

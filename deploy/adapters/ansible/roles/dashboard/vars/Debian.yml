@@ -11,6 +11,7 @@ packages: []
 
 services:
   - memcached
+  - apache2
 
 apache_config_dir: /etc/apache2
 horizon_dir: /usr/share/openstack-dashboard/openstack_dashboard
