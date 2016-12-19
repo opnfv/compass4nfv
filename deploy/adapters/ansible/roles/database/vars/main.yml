@@ -23,6 +23,9 @@ credentials:
     db: glance
     password: "{{ GLANCE_DBPASS }}"
   - user: nova
+    db: nova_api
+    password: "{{ NOVA_DBPASS }}"
+  - user: nova
     db: nova
     password: "{{ NOVA_DBPASS }}"
   - user: cinder
@@ -31,4 +34,6 @@ credentials:
   - user: heat
     db: heat
     password: "{{ HEAT_DBPASS }}"
-
+  - user: aodh
+    db: aodh
+    password: "{{ AODH_DBPASS }}"

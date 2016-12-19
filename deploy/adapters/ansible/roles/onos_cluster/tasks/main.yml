@@ -46,8 +46,6 @@
   include: onos_controller.yml
   when: inventory_hostname in groups['onos']
 
-- name: Install ONOS Cluster on Compute
+- name: Config ONOS Cluster
   include: openvswitch.yml
   when: groups['onos']|length !=0
-#  when: groups['onos']|length !=0 and inventory_hostname not in groups['onos']
-

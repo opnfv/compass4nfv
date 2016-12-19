@@ -10,11 +10,12 @@
 packages:
   - ubuntu-cloud-keyring
   - python-dev
-  - openvswitch-datapath-dkms
   - openvswitch-switch
+  - openvswitch-switch-dpdk
   - python-memcache
   - python-iniparse
   - python-lxml
+  - python-crypto
   #- python-d* #TODO, need remove
 
 pip_packages:

@@ -14,12 +14,4 @@ ceilometer_packages:
 
 ceilometer_services:
   - openstack-ceilometer-compute
-  - openstack-nova-compute 
-
-ceilometer_configs_templates:
-  - src: ceilometer.j2
-    dest:
-      - /etc/ceilometer/ceilometer.conf
-  - src: nova.j2
-    dest:
-      - /etc/nova/nova.conf
+  - openstack-nova-compute
