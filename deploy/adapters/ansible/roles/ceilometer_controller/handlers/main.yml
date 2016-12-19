@@ -7,6 +7,16 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: restart ceilometer relation service
+- name: restart ceilometer service
   service: name={{ item }} state=restarted enabled=yes
   with_items: ceilometer_services
+
+- name: restart glance_cinder service
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: glance_cinder_services
+
+- name: reload apache server
+  service: name=apache2 state=reloaded
+
+- name: restart apache server
+  service: name=apache2 state=restarted enabled=yes

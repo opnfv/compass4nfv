@@ -14,15 +14,15 @@
     mode: 0755
   when: ansible_os_family == "Debian"
 
-- name: install python-mysqldb
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: maridb_packages | union(packages_noarch)
-
 - name: change open file limit
   copy:
     content: "* - nofile 65536 }}"
     dest: "/etc/security/limits.conf"
     mode: 0755
+
+- name: install python-mysqldb
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items: maridb_packages | union(packages_noarch)
 
 - name: create conf dir for wsrep
   file: path=/etc/my.cnf.d state=directory mode=0755
@@ -52,7 +52,7 @@
   when: ansible_os_family == "Debian"
 
 - name: set owner
-  file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory
+  file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory mode=0755
 
 - name: get logfile stat
   stat: path='{{ mysql_data_dir }}/ib_logfile0'
@@ -67,3 +67,4 @@
   when: |
     logfile_stat.stat.exists
     and logfile_stat.stat.size != 1073741824
+
