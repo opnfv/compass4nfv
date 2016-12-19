@@ -11,9 +11,9 @@ packages:
   - ceph-deploy
   - python-flask
   - libgoogle-perftools4
-  - libleveldb1
+  - libleveldb1v5
   - liblttng-ust0
-  - libsnappy1
+  - libsnappy1v5
   - librbd1
   - librados2
   - python-ceph

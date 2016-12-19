@@ -11,6 +11,9 @@ packages:
   - glance
   - nfs-common
 
+nfs_packages:
+  - nfs-common
+
 nfs_services: []
 
 services:

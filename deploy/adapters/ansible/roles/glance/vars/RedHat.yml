@@ -11,6 +11,10 @@ packages:
   - openstack-glance
   - rpcbind
 
+nfs_packages:
+  - nfs-utils
+  - rpcbind
+
 nfs_services:
   - rpcbind
 

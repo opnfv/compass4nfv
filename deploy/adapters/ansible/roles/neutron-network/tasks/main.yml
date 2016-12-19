@@ -58,6 +58,12 @@
     systemctl daemon-reload
   when: ansible_os_family == 'RedHat'
 
+- name: fix openstack neutron plugin config file ubuntu
+  shell: |
+    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' /etc/init/neutron-openvswitch-agent.conf
+    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' /etc/init.d/neutron-openvswitch-agent
+  when: ansible_os_family == "Debian"
+
 - name: config l3 agent
   template: src=l3_agent.ini dest=/etc/neutron/l3_agent.ini
             backup=yes

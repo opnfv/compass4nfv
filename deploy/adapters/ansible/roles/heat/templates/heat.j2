@@ -1,11 +1,17 @@
+{% set memcached_servers = [] %}
+{% for host in haproxy_hosts.values() %}
+{% set _ = memcached_servers.append('%s:11211'% host) %}
+{% endfor %}
+{% set memcached_servers = memcached_servers|join(',') %}
+
 [DEFAULT]
 heat_metadata_server_url = http://{{ internal_vip.ip }}:8000
 heat_waitcondition_server_url = http://{{ internal_vip.ip }}:8000/v1/waitcondition
 rpc_backend = rabbit
-rabbit_host = {{ rabbit_host }}
-rabbit_userid = {{ RABBIT_USER }}
-rabbit_password = {{ RABBIT_PASS }}
 log_dir = /var/log/heat
+stack_domain_admin = heat_domain_admin
+stack_domain_admin_password = {{ HEAT_PASS }}
+stack_user_domain_name = heat
 
 [database]
 connection = mysql://heat:{{ HEAT_DBPASS }}@{{ db_host }}/heat
@@ -14,12 +20,35 @@ use_db_reconnect = True
 pool_timeout = 10
 
 [ec2authtoken]
-auth_uri = http://{{ internal_vip.ip }}:5000/v2.0
+auth_uri = http://{{ internal_vip.ip }}:5000
+
+[clients_keystone]
+auth_uri = http://{{ internal_vip.ip }}:35357
 
 [keystone_authtoken]
-auth_uri = http://{{ internal_vip.ip }}:5000/v2.0
+auth_uri = http://{{ internal_vip.ip }}:5000
+auth_url = http://{{ internal_vip.ip }}:35357
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = heat
+password = {{ HEAT_PASS }}
+
 identity_uri = http://{{ internal_vip.ip }}:35357
 admin_tenant_name = service
 admin_user = heat
 admin_password = {{ HEAT_PASS }}
 
+[oslo_messaging_rabbit]
+rabbit_host = {{ rabbit_host }}
+rabbit_userid = {{ RABBIT_USER }}
+rabbit_password = {{ RABBIT_PASS }}
+
+[trustee]
+auth_type = password
+auth_url = http://{{ internal_vip.ip }}:35357
+username = heat
+password = {{ HEAT_PASS }}
+user_domain_name = default
