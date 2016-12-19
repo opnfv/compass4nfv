@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 - name: opendaylight system file
-  template:
+  copy:
     src: "{{ service_file.src }}"
     dest: "{{ service_file.dst }}"
     mode: 0755
@@ -44,3 +44,10 @@
   template:
     src: tomcat-server.xml
     dest: "{{ odl_home }}/configuration/tomcat-server.xml"
+
+- name: create tomcat config
+  template:
+    src: jetty.xml
+    dest: "{{ odl_home }}/etc/jetty.xml"
+
+

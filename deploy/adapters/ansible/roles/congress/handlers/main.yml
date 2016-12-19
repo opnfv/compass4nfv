@@ -7,10 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: restart ceilometer service
+- name: restart congress services
   service: name={{ item }} state=restarted enabled=yes
-  with_items: ceilometer_services
-
-- name: restart nova service
-  service: name={{ item }} state=restarted enabled=yes
-  with_items: nova_services
+  with_items: "{{ services | union(services_noarch) }}"

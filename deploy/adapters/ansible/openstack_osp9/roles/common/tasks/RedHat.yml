@@ -1,3 +1,0 @@
----
-- name: add yum repository for openstack
-  template: src=openstack_ppa_repo.repo.j2 dest=/etc/yum.repos.d/openstack_ppa_repo.repo

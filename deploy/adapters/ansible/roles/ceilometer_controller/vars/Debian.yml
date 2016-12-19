@@ -17,17 +17,10 @@ ceilometer_packages:
 ceilometer_services:
   - ceilometer-agent-central
   - ceilometer-agent-notification
-  - ceilometer-api
   - ceilometer-collector
 
-ceilometer_configs_templates:
-  - src: ceilometer.j2
-    dest:
-      - /etc/ceilometer/ceilometer.conf
-  - src: cinder.j2
-    dest:
-      - /etc/cinder/cinder.conf
-  - src: glance.j2
-    dest:
-      - /etc/glance/glance-api.conf
-      - /etc/glance/glance-registry.conf
+glance_cinder_services:
+  - glance-registry
+  - glance-api
+  - cinder-api
+  - cinder-scheduler
