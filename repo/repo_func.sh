@@ -383,38 +383,9 @@ EOF
 # Make all the openstack ppas
 function make_osppa()
 {
-
-    for opv in juno kilo liberty mitaka; do
-    make_repo --os-ver trusty --package-tag $opv \
-              --ansible-dir $COMPASS_PATH/deploy/adapters/ansible \
-              --default-package "openssh-server" \
-              --special-package "openvswitch-switch"
-    done
-
-    for opv in mitaka newton; do
-    make_repo --os-ver xenial --package-tag $opv \
+    make_repo --os-ver xenial --package-tag newton \
               --ansible-dir $COMPASS_PATH/deploy/adapters/ansible \
               --default-package "openssh-server"
-    done
-
-    make_repo --os-ver rhel7 --package-tag juno \
-              --ansible-dir $COMPASS_PATH/deploy/adapters/ansible \
-              --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
-                                 dracut-config-rescue-033-241.el7_1.3 dracut-network-033-241.el7_1.3"
-
-    for opv in kilo liberty mitaka; do
-    make_repo --os-ver rhel7 --package-tag $opv \
-              --ansible-dir $COMPASS_PATH/deploy/adapters/ansible \
-              --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
-                                 dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
-    done
-
-#    for opv in osp9; do
-#    make_repo --os-ver redhat7 --package-tag $opv \
-#              --ansible-dir $COMPASS_PATH/deploy/adapters/ansible \
-#              --default-package "strace net-tools wget vim openssh-server"
-#    done
-
 }
 
 function make_compass_repo()
