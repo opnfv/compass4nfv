@@ -71,19 +71,9 @@
     - restart dashboard services
 
 - name: update ubuntu horizon settings
-  lineinfile:
-    dest: /etc/openstack-dashboard/local_settings.py
-    regexp: '{{ item.regexp }}'
-    line: '{{ item.line }}'
-  with_items:
-    - regexp: '^WEBROOT[ \t]*=.*'
-      line: 'WEBROOT = "/horizon"'
-    - regexp: '^COMPRESS_OFFLINE[ \t]*=.*'
-      line: 'COMPRESS_OFFLINE=True'
-    - regexp: '^ALLOWED_HOSTS[ \t]*=.*'
-      line: 'ALLOWED_HOSTS = ["*"]'
-    - regexp: '^OPENSTACK_HOST[ \t]*=.*'
-      line: 'OPENSTACK_HOST = "{{ internal_ip }}"'
+  template:
+    src: local_settings.py.j2
+    dest: "/etc/openstack-dashboard/local_settings.py"
   when: ansible_os_family == 'Debian'
   notify:
     - restart dashboard services

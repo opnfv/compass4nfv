@@ -8,7 +8,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 set -ex
-
 #COMPASS_PATH=$(cd "$(dirname "$0")"/..; pwd)
 COMPASS_PATH=`cd ${BASH_SOURCE[0]%/*};pwd`
 WORK_DIR=$COMPASS_PATH/work/building
@@ -86,11 +85,10 @@ function download_local()
 
 function download_packages()
 {
-     for i in $CENTOS_BASE $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL \
-              $TRUSTY_JUNO_PPA $TRUSTY_LIBERTY_PPA $TRUSTY_MITAKA_PPA $XENIAL_MITAKA_PPA $XENIAL_NEWTON_PPA \
-              $UBUNTU_ISO $UBUNTU_ISO1 $REDHAT7_ISO $REDHAT7_OSP9_PPA \
-              $CENTOS_ISO $CENTOS7_JUNO_PPA $CENTOS7_KILO_PPA $CENTOS7_LIBERTY_PPA $CENTOS7_MITAKA_PPA \
-              $LOADERS $CIRROS $APP_PACKAGE $COMPASS_PKG $PIP_REPO $PIP_OPENSTACK_REPO $ANSIBLE_MODULE; do
+     for i in $CENTOS_BASE $LOADERS $CIRROS $APP_PACKAGE \
+              $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $COMPASS_PKG \
+              $PIP_REPO $PIP_OPENSTACK_REPO $ANSIBLE_MODULE \
+              $UBUNTU_ISO $CENTOS_ISO $XENIAL_NEWTON_PPA; do
 
          if [[ ! $i ]]; then
              continue
@@ -122,26 +120,6 @@ function copy_file()
         cp $CACHE_DIR/`basename $UBUNTU_ISO` $new/repos/cobbler/ubuntu/iso/ -rf
     fi
 
-    if [[ $UBUNTU_ISO1 ]]; then
-        cp $CACHE_DIR/`basename $UBUNTU_ISO1` $new/repos/cobbler/ubuntu/iso/ -rf
-    fi
-
-    if [[  $TRUSTY_JUNO_PPA ]]; then
-        cp $CACHE_DIR/`basename $TRUSTY_JUNO_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
-    fi
-
-    if [[  $TRUSTY_LIBERTY_PPA ]]; then
-        cp $CACHE_DIR/`basename $TRUSTY_LIBERTY_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
-    fi
-
-    if [[  $TRUSTY_MITAKA_PPA ]]; then
-        cp $CACHE_DIR/`basename $TRUSTY_MITAKA_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
-    fi
-
-    if [[  $XENIAL_MITAKA_PPA ]]; then
-        cp $CACHE_DIR/`basename $XENIAL_MITAKA_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
-    fi
-
     if [[  $XENIAL_NEWTON_PPA ]]; then
         cp $CACHE_DIR/`basename $XENIAL_NEWTON_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
     fi
@@ -150,28 +128,8 @@ function copy_file()
         cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
     fi
 
-    if [[ $CENTOS7_JUNO_PPA ]]; then
-        cp $CACHE_DIR/`basename $CENTOS7_JUNO_PPA` $new/repos/cobbler/centos/ppa/ -rf
-    fi
-
-    if [[ $CENTOS7_KILO_PPA ]]; then
-        cp $CACHE_DIR/`basename $CENTOS7_KILO_PPA` $new/repos/cobbler/centos/ppa/ -rf
-    fi
-
-    if [[ $CENTOS7_LIBERTY_PPA ]]; then
-        cp $CACHE_DIR/`basename $CENTOS7_LIBERTY_PPA` $new/repos/cobbler/centos/ppa/ -rf
-    fi
-
-    if [[ $CENTOS7_MITAKA_PPA ]]; then
-        cp $CACHE_DIR/`basename $CENTOS7_MITAKA_PPA` $new/repos/cobbler/centos/ppa/ -rf
-    fi
-
     if [[ $REDHAT7_ISO ]]; then
         cp $CACHE_DIR/`basename $REDHAT7_ISO` $new/repos/cobbler/redhat/iso/ -rf
-    fi
-
-    if [[ $REDHAT7_OSP9_PPA ]]; then
-        cp $CACHE_DIR/`basename $REDHAT7_OSP9_PPA` $new/repos/cobbler/redhat/ppa/ -rf
     fi
 
     cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1

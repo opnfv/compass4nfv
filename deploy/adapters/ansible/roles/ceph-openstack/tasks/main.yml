@@ -11,6 +11,7 @@
     - ceph_deploy
     - ceph_openstack_pre
     - ceph_openstack_conf
+    - ceph_openstack_post
     - ceph_openstack
 
 - include: ceph_openstack_pre.yml
@@ -23,4 +24,10 @@
   tags:
     - ceph_deploy
     - ceph_openstack_conf
+    - ceph_openstack
+
+- include: ceph_openstack_post.yml
+  tags:
+    - ceph_deploy
+    - ceph_openstack_post
     - ceph_openstack

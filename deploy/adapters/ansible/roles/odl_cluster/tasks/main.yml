@@ -22,7 +22,3 @@
 - name: Provision ODL on Compute nodes
   include: 02_odl_compute.yml
   when: groups['odl']|length !=0 and inventory_hostname not in groups['odl']
-
-- name: Config nova
-  include: 04_odl_l3_nova.yml
-  when: groups['odl']|length !=0 and odl_l3_agent == "Enable"

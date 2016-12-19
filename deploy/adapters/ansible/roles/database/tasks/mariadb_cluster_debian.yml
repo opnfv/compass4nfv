@@ -7,14 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: Register RECOVERY
-  set_fact: RECOVERY_ENV={{RECOVERY_ENV | default('False')}}
-
-- name: killall mysqld processes
-  shell: sudo killall -9  mysqld
-  when: RECOVERY_ENV
-  ignore_errors: True
-
 - name: get cluster status
   shell: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"'|awk '{print $2}'
   register: cluster_status
@@ -22,11 +14,9 @@
     - inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: start first node to create new cluster
-  service:
-    name: mysql
-    state: restarted
-    enabled: yes
-    args: "--wsrep-new-cluster"
+  shell: >
+    service mysql bootstrap;
+    service mysql start;
   when: |
     inventory_hostname == haproxy_hosts.keys()[0]
     and not cluster_status.stdout | search("OPERATIONAL")
@@ -47,19 +37,30 @@
   register: cluster_nodes
   changed_when: false
 
-- name: restart other nodes and join cluster
-  service:
-    name: mysql
-    state: restarted
-    enabled: yes
+- name: restart other nodes and join cluster1
+  shell: service mysql restart;
+  when: |
+    inventory_hostname != haproxy_hosts.keys()[0]
+    and not cluster_nodes.stdout | search( "{{ internal_ip }}" )
+  ignore_errors: True
+
+- name: delay 60 seconds
+  shell: sleep 60
+
+- name: restart other nodes and join cluster2
+  shell: service mysql restart;
   when: |
     inventory_hostname != haproxy_hosts.keys()[0]
     and not cluster_nodes.stdout | search( "{{ internal_ip }}" )
 
+- name: chmod directory
+  shell: >
+    chmod 755 -R /var/lib/mysql/ ; 
+    chmod 755 -R /var/log/mysql/ ;
+    chmod 755 -R /etc/mysql/conf.d/; 
+
 - name: restart first nodes
-  service:
-    name: mysql
-    state: restarted
+  shell: service mysql restart
   when: |
     (inventory_hostname == haproxy_hosts.keys()[0] 
     and haproxy_hosts|length > 1

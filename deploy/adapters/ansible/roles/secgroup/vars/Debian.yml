@@ -25,11 +25,11 @@ controller_services:
   - nova-novncproxy
   - nova-scheduler
   - neutron-server
-  - neutron-plugin-openvswitch-agent
+  - neutron-openvswitch-agent
   - neutron-l3-agent
   - neutron-dhcp-agent
   - neutron-metadata-agent
 
 compute_services:
   - nova-compute
-  - neutron-plugin-openvswitch-agent
+  - neutron-openvswitch-agent

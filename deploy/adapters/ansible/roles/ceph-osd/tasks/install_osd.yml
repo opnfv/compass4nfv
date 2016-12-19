@@ -22,6 +22,10 @@
 - name: prepare osd disk
   shell: ceph-disk prepare --fs-type xfs /var/local/osd
 
+- name: change local/osd dir owner to ceph
+  shell: chown -R ceph:ceph /var/local/osd
+  when: ansible_os_family == "Debian"
+
 - name: activate osd node
   shell: ceph-disk activate /var/local/osd
 

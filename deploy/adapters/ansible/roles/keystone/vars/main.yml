@@ -52,6 +52,14 @@ os_services:
     internalurl: "http://{{ internal_vip.ip }}:8777"
     adminurl: "http://{{ internal_vip.ip }}:8777"
 
+  - name: aodh
+    type: alarming
+    region: RegionOne
+    description: "OpenStack Telemetry"
+    publicurl: "http://{{ public_vip.ip }}:8042"
+    internalurl: "http://{{ internal_vip.ip }}:8042"
+    adminurl: "http://{{ internal_vip.ip }}:8042"
+
   - name: cinder
     type: volume
     region: RegionOne
@@ -83,6 +91,22 @@ os_services:
     publicurl: "http://{{ public_vip.ip }}:8000/v1"
     internalurl: "http://{{ internal_vip.ip }}:8000/v1"
     adminurl: "http://{{ internal_vip.ip }}:8000/v1"
+
+  - name: congress
+    type: policy
+    region: RegionOne
+    description: "OpenStack Policy Service"
+    publicurl: "http://{{ public_vip.ip }}:1789"
+    internalurl: "http://{{ internal_vip.ip }}:1789"
+    adminurl: "http://{{ internal_vip.ip }}:1789"
+
+#  - name: swift
+#    type: object-store
+#    region: RegionOne
+#    description: "OpenStack Object Storage"
+#    publicurl: "http://{{ public_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
+#    internalurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
+#    adminurl: "http://{{ internal_vip.ip }}:8080/v1/AUTH_%(tenant_id)s"
 
 os_users:
   - user: admin
@@ -134,6 +158,13 @@ os_users:
     tenant: service
     tenant_description: "Service Tenant"
 
+  - user: aodh
+    password: "{{ AODH_PASS }}"
+    email: aodh@admin.com
+    role: admin
+    tenant: service
+    tenant_description: "Service Tenant"
+
   - user: heat
     password: "{{ HEAT_PASS }}"
     email: heat@admin.com
@@ -141,9 +172,23 @@ os_users:
     tenant: service
     tenant_description: "Service Tenant"
 
+  - user: congress
+    password: "{{ CONGRESS_PASS }}"
+    email: congress@admin.com
+    role: admin
+    tenant: service
+    tenant_description: "Service Tenant"
+
   - user: demo
-    password: "{{ DEMO_PASS }}"
+    password: ""
     email: heat@demo.com
     role: heat_stack_user
     tenant: demo
     tenant_description: "Demo Tenant"
+
+#  - user: swift
+#    password: "{{ CINDER_PASS }}"
+#    email: swift@admin.com
+#    role: admin
+#    tenant: service
+#    tenant_description: "Service Tenant"

@@ -8,6 +8,16 @@
 ##############################################################################
 ---
 
+- name: restart keepalived to recover external IP before check br-int
+  shell: service keepalived restart
+  when: inventory_hostname in groups['odl']
+  ignore_errors: True
+
+- name: restart opendaylight (for newton, opendaylight doesn't listen 6640 port, need restart)
+  shell: service opendaylight restart; sleep 60
+  when: inventory_hostname in groups['odl']
+  ignore_errors: True
+
 - name: set opendaylight as the manager
   command: su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_vip.ip }}:6640;"
 
@@ -18,4 +28,3 @@
   shell: ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) other_config={'local_ip'=' {{ internal_ip }} '};
 
 #'
-
