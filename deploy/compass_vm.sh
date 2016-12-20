@@ -53,39 +53,37 @@ function exec_cmd_on_compass() {
 }
 
 function _inject_dashboard_conf() {
-    for os in mitaka mitaka_xenial newton_xenial; do
-        CONF_TEMPLATES_DIR=/etc/compass/templates/ansible_installer/openstack_$os/vars
-        if [[ "$ENABLE_UBUNTU_THEME" == "true" ]]; then
-            cmd="
-                sed -i '/enable_ubuntu_theme/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
-                echo enable_ubuntu_theme: True >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl
-            "
-        else
-            cmd="
-                sed -i '/enable_ubuntu_theme/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
-                echo enable_ubuntu_theme: False >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl
-            "
-        fi
-        exec_cmd_on_compass $cmd
-    done
+os=newton
+    CONF_TEMPLATES_DIR=/etc/compass/templates/ansible_installer/openstack_$os/vars
+    if [[ "$ENABLE_UBUNTU_THEME" == "true" ]]; then
+        cmd="
+            sed -i '/enable_ubuntu_theme/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+            echo enable_ubuntu_theme: True >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl
+        "
+    else
+        cmd="
+            sed -i '/enable_ubuntu_theme/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+            echo enable_ubuntu_theme: False >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl
+        "
+    fi
+    exec_cmd_on_compass $cmd
 }
 
 function _inject_ceph_expansion_conf() {
-    for os in mitaka mitaka_xenial newton_xenial osp9; do
-        CONF_TEMPLATES_DIR=/etc/compass/templates/ansible_installer/openstack_$os/vars
-        if [[ "$EXPANSION" == "true" ]]; then
-            cmd="
-                sed -i '/compute_expansion/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
-                echo compute_expansion: True >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
-            "
-        else
-            cmd="
-                sed -i '/compute_expansion/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
-                echo compute_expansion: False >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
-            "
-        fi
-        exec_cmd_on_compass $cmd
-    done
+os=newton
+    CONF_TEMPLATES_DIR=/etc/compass/templates/ansible_installer/openstack_$os/vars
+    if [[ "$EXPANSION" == "true" ]]; then
+        cmd="
+            sed -i '/compute_expansion/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+            echo compute_expansion: True >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+        "
+    else
+        cmd="
+            sed -i '/compute_expansion/d' ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+            echo compute_expansion: False >> ${CONF_TEMPLATES_DIR}/HA-ansible-multinodes.tmpl; \
+        "
+    fi
+    exec_cmd_on_compass $cmd
 }
 
 function inject_compass_conf() {
@@ -212,8 +210,7 @@ function launch_compass() {
 }
 
 function recover_compass() {
-    log_info "recover_compass enter"
-
+    log_info "recover_compass enter" 
     sudo virsh start compass
 
     if ! wait_ok 500;then
@@ -285,7 +282,7 @@ function wait_controller_nodes_ok() {
 
 function get_public_vip () {
     ssh $ssh_args root@$MGMT_IP "
-        cd /var/ansible/run/openstack_newton_xenial-opnfv2
+        cd /var/ansible/run/$ADAPTER_NAME'-'$CLUSTER_NAME
         cat group_vars/all | grep -A 3 public_vip: | sed -n '2p' |sed -e 's/  ip: //g'
     "
 }
