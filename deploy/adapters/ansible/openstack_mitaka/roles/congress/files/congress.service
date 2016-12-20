@@ -1,0 +1,19 @@
+[Unit]
+Description=OpenStack Congress server
+After=
+
+[Service]
+User=root
+Group=root
+Type=simple
+WorkingDirectory=/var/lib/congress
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/lock/congress /var/log/congress /var/lib/congress
+ExecStartPre=/usr/bin/touch /var/log/congress/congress.log
+ExecStart=/usr/bin/congress-server --config-file /etc/congress/congress.conf
+Restart=on-failure
+LimitNOFILE=65535
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
