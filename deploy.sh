@@ -23,25 +23,13 @@
 #export NETWORK=
 
 ######################### The environment for Openstack ######################
-# Ubuntu16.04 Newton
+# Ubuntu16.04
 #export OS_VERSION=xenial
-#export OPENSTACK_VERSION=newton_xenial
 
-# Ubuntu14.04 Mitaka
-#export OS_VERSION=trusty
-#export OPENSTACK_VERSION=mitaka
-
-# Ubuntu16.04 Mitaka
-#export OS_VERSION=xenial
-#export OPENSTACK_VERSION=mitaka_xenial
-
-# Centos7 Mitaka
+# Centos7
 #export OS_VERSION=centos7
-#export OPENSTACK_VERSION=mitaka
 
-# Redhat7 OSP9
-#export OS_VERSION=redhat7
-#export OPENSTACK_VERSION=osp9
+#export OPENSTACK_VERSION=newton
 
 ######################### Hardware Deploy Jumpserver PXE NIC ################
 # You need comment out it when virtual deploy.
