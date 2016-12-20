@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "5ac10518_7d0aba22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-20T01:29:35Z",
+      "side": 1,
+      "message": "please create a jira for ansible role refactor related patches.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 7
+      },
+      "revId": "0c660906fcb0e74147f4602888e68702c4e6dcf2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ac10518_823ce3e3",
         "filename": "build.sh",
         "patchSetId": 6
