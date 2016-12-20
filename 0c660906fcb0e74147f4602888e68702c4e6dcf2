@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_823ce3e3",
+        "filename": "build.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-20T01:25:54Z",
+      "side": 1,
+      "message": "update",
+      "range": {
+        "startLine": 90,
+        "startChar": 13,
+        "endLine": 90,
+        "endChar": 27
+      },
+      "revId": "0c660906fcb0e74147f4602888e68702c4e6dcf2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_0230f3ff",
+        "filename": "repo/repo_func.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-20T01:25:54Z",
+      "side": 1,
+      "message": "delete this line",
+      "range": {
+        "startLine": 382,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 43
+      },
+      "revId": "0c660906fcb0e74147f4602888e68702c4e6dcf2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
