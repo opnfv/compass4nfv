@@ -13,29 +13,22 @@
 CI_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 
 if [[ $ROOT_BUILD_CAUSE == MANUALTRIGGER ]]; then
-    # For manual ci trigger build, directly use the value pass from CI
-    if [[ $COMPASS_OPENSTACK_VERSION == newton ]]; then
-        export COMPASS_OS_VERSION=xenial
-        export COMPASS_OPENSTACK_VERSION=newton_xenial
-    else
-        case $DEPLOY_SCENARIO in
-        os-odl_l2-moon-ha)
-            # os-odl_l2-moon-ha scenario supports xenial mitaka only
-            export COMPASS_OS_VERSION=xenial
-            export COMPASS_OPENSTACK_VERSION=mitaka_xenial
-            ;;
-        os-ocl-nofeature-ha)
-            # os-ocl-nofeature-ha scenario supports liberty only
-            export COMPASS_OS_VERSION=trusty
-            export COMPASS_OPENSTACK_VERSION=liberty
-            ;;
-        *)
-            # setup for testing mitaka by default
-            export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-trusty}
-            export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-mitaka}
-            ;;
-        esac
-    fi
+# For manual ci trigger build, directly use the value pass from CI
+    case $DEPLOY_SCENARIO in
+    os-odl_l2-moon-ha)
+        echo "os-odl_l2-moon-ha scenario supports xenial mitaka only"
+        exit 1
+        ;;
+    os-ocl-nofeature-ha)
+        echo "os-ocl-nofeature-ha scenario supports liberty only"
+        exit 1
+        ;;
+    *)
+        # setup for testing newton by default
+        export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-xenial}
+        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-newton}
+        ;;
+    esac
 
 else
     # For daily build or verify build, adjust COMPASS_OS_VERSION and OPENSTACK_VERSION
@@ -44,48 +37,34 @@ else
     if [[ $COMPASS_OS_VERSION == centos7 ]]; then
         case $DEPLOY_SCENARIO in
         os-odl_l2-moon-ha)
-            # os-odl_l2-moon-ha scenario supports xenial mitaka only
-            export COMPASS_OS_VERSION=xenial
-            export COMPASS_OPENSTACK_VERSION=mitaka_xenial
+            echo "os-odl_l2-moon-ha scenario supports xenial mitaka only"
+            exit 1
             ;;
         os-ocl-nofeature-ha)
-            # os-ocl-nofeature-ha scenario supports liberty only
-            export COMPASS_OS_VERSION=centos7
-            export COMPASS_OPENSTACK_VERSION=liberty
+            echo "os-ocl-nofeature-ha scenario supports liberty only"
+            exit 1
             ;;
         *)
-            # setup for testing mitaka by default
+            # setup for testing newton by default
             export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-centos7}
-            export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-mitaka}
+            export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-newton}
             ;;
         esac
 
     else
         case $DEPLOY_SCENARIO in
-        os-nosdn-nofeature-ha)
-            # temporarily setup for testing newton
-            export COMPASS_OS_VERSION=xenial
-            export COMPASS_OPENSTACK_VERSION=newton_xenial
-            ;;
-        os-odl_2-nofeature-ha)
-            # temporarily setup for testing newton
-            export COMPASS_OS_VERSION=xenial
-            export COMPASS_OPENSTACK_VERSION=newton_xenial
-            ;;
         os-odl_l2-moon-ha)
-            # os-odl_l2-moon-ha scenario supports xenial mitaka only
-            export COMPASS_OS_VERSION=xenial
-            export COMPASS_OPENSTACK_VERSION=mitaka_xenial
+            echo "os-odl_l2-moon-ha scenario supports xenial mitaka only"
+            exit 1
             ;;
         os-ocl-nofeature-ha)
-            # os-ocl-nofeature-ha scenario supports liberty only
-            export COMPASS_OS_VERSION=trusty
-            export COMPASS_OPENSTACK_VERSION=liberty
+            echo "os-ocl-nofeature-ha scenario supports liberty only"
+            exit 1
             ;;
         *)
-            # setup for testing mitaka by default
-            export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-trusty}
-            export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-mitaka}
+            # setup for testing newton by default
+            export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-xenial}
+            export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-newton}
             ;;
         esac
     fi
