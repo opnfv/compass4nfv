@@ -23,13 +23,13 @@
 
 - name: assert kernel support for vxlan
   command: modinfo -F version vxlan
-  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
+  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES | to_json }}"
 
 - name: assert iproute2 suppport for vxlan
   command: ip link add type vxlan help
   register: iproute_out
   failed_when: iproute_out.rc == 255
-  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
+  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES | to_json }}"
 
 - name: disable auto start
   copy:
@@ -40,7 +40,7 @@
 
 - name: install neutron network related packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: packages | union(packages_noarch)
+  with_items: "{{ packages | union(packages_noarch) }}"
 
 - name: enable auto start
   file:
@@ -50,7 +50,7 @@
 
 - name: generate neutron network service list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: services | union(services_noarch)
+  with_items: "{{ services | union(services_noarch) }}"
 
 - name: fix openstack neutron plugin config file
   shell: |
@@ -97,7 +97,7 @@
     dest: /etc/neutron/dnsmasq-neutron.conf
     regexp: '^dhcp-option-force'
     line: 'dhcp-option-force=26,1450'
-  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES }}"
+  when: "'vxlan' in {{ NEUTRON_TUNNEL_TYPES | to_json }}"
 
 - include: firewall.yml
   when: enable_fwaas == True
@@ -106,12 +106,12 @@
   when: enable_vpnaas == True
 
 - include: odl.yml
-  when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
+  when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS | to_json }}"
 
 - name: restart neutron network relation service
   service: name={{ item }} state=restarted enabled=yes
   with_flattened:
-    - services_noarch
-    - services
+    - "{{ services_noarch }}"
+    - "{{ services }}"
 
 - meta: flush_handlers

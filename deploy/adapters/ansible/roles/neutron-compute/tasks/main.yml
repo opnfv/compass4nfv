@@ -30,7 +30,7 @@
 
 - name: install compute-related neutron packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: packages | union(packages_noarch)
+  with_items: "{{ packages | union(packages_noarch) }}"
 
 - name: enable auto start
   file:
@@ -52,7 +52,7 @@
 
 - name: generate neutron compute service list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: services | union(services_noarch)
+  with_items: "{{ services | union(services_noarch) }}"
 
 - name: config ml2 plugin
   template: src=templates/ml2_conf.ini
@@ -72,4 +72,4 @@
 - meta: flush_handlers
 
 - include: ../../neutron-network/tasks/odl.yml
-  when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS }}"
+  when: "'opendaylight' in {{ NEUTRON_MECHANISM_DRIVERS | to_json }}"

@@ -23,6 +23,11 @@
          --url {{ item.adminurl }} \
          $(openstack endpoint list | grep keystone | grep admin | awk '{print $2}');
   with_items: "{{ os_services[0:1] }}"
+  register: result
+  run_once: True
+  until: result.rc == 0
+  retries: 5
+  delay: 3
 
 - name: add service
   shell:
@@ -32,12 +37,22 @@
         --description "{{ item.description }}" \
         {{ item.type }}
   with_items: "{{ os_services[1:] }}"
+  register: result
+  run_once: True
+  until: result.rc == 0
+  retries: 5
+  delay: 3
 
 - name: add project
   shell:
     . /opt/admin-openrc.sh;
     openstack project create --description "Service Project" service;
     openstack project create --domain default --description "Demo Project" demo;
+  register: result
+  run_once: True
+  until: result.rc == 0
+  retries: 5
+  delay: 3
 
 - name: set admin user
   shell:
@@ -50,6 +65,11 @@
         {{ item.user }}
   with_items: "{{ os_users }}"
   when: item["user"] == "admin"
+  register: result
+  run_once: True
+  until: result.rc == 0
+  retries: 5
+  delay: 3
 
 - name: add user
   shell:
@@ -61,6 +81,11 @@
         --password "{{ item.password }}" \
         {{ item.user }}
   with_items: "{{ os_users[1:] }}"
+  register: result
+  run_once: True
+  until: result.rc == 0
+  retries: 5
+  delay: 3
 
 - name: add roles
   shell:
@@ -68,6 +93,11 @@
     openstack role create {{ item.role }}
   with_items: "{{ os_users }}"
   when: item["user"] == "demo"
+  register: result
+  run_once: True
+  until: result.rc == 0
+  retries: 5
+  delay: 3
 
 - name: grant roles
   shell:
@@ -77,6 +107,11 @@
         --user "{{ item.user }}" \
         {{ item.role }}
   with_items: "{{ os_users }}"
+  register: result
+  run_once: True
+  until: result.rc == 0
+  retries: 5
+  delay: 3
 
 - name: add endpoints
   shell:
@@ -91,3 +126,9 @@
         --region {{ item.region }} \
         {{ item.name }} admin {{ item.adminurl }};
   with_items: "{{ os_services[1:] }}"
+  register: result
+  run_once: True
+  until: result.rc == 0
+  retries: 5
+  delay: 3
+

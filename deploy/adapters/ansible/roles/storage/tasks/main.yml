@@ -50,7 +50,7 @@
 
 
 - name: enable service
-  service: name=storage enabled=yes
+  shell: update-rc.d storage defaults
   tags:
     - storage
 
