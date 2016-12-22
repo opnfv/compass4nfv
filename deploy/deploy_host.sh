@@ -17,6 +17,7 @@ function deploy_host(){
     export AYNC_TIMEOUT=20
     ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks
     scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/status_callback.py
+    scp $ssh_args -r ${COMPASS_DIR}/deploy/playbook_done.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/playbook_done.py
 
     # avoid nodes reboot to fast, cobbler can not give response
     (sleep $AYNC_TIMEOUT; rename_nics; reboot_hosts) &

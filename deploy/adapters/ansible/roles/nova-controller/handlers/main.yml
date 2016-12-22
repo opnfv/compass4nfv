@@ -9,7 +9,7 @@
 ---
 - name: restart nova service
   service: name={{ item}} state=restarted enabled=yes
-  with_items: services | union(services_noarch)
+  with_items: "{{ services | union(services_noarch) }}"
 
 - name: remove nova-sqlite-db
   shell: rm /var/lib/nova/nova.sqlite || touch nova.sqlite.db.removed

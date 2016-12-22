@@ -18,7 +18,7 @@
 
 - name: install packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
-  with_items: packages | union(packages_noarch)
+  with_items: "{{ packages | union(packages_noarch) }}"
 
 - name: enable auto start
   file:
