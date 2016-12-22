@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_b64920b9",
+        "filename": "deploy/compass_vm.sh",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-22T02:52:09Z",
+      "side": 1,
+      "message": "align",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 9
+      },
+      "revId": "99177f558572c21d58d3a6aaccf78658af49c297",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_365e9077",
+        "filename": "deploy/conf/cluster.conf",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-22T02:52:09Z",
+      "side": 1,
+      "message": "xenial",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 8
+      },
+      "revId": "99177f558572c21d58d3a6aaccf78658af49c297",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_76641849",
+        "filename": "deploy/conf/cluster.conf",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-22T02:52:09Z",
+      "side": 1,
+      "message": "xenial",
+      "range": {
+        "startLine": 2,
+        "startChar": 33,
+        "endLine": 2,
+        "endChar": 39
+      },
+      "revId": "99177f558572c21d58d3a6aaccf78658af49c297",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_964e64c0",
+        "filename": "deploy/conf/cluster.conf",
+        "patchSetId": 9
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-22T02:52:09Z",
+      "side": 1,
+      "message": "pls clean",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 2
+      },
+      "revId": "99177f558572c21d58d3a6aaccf78658af49c297",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
