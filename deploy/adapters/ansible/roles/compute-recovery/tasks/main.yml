@@ -19,7 +19,7 @@
 
 - name: restart compute services
   service: name={{ item }} state=restarted enabled=yes
-  with_items: compute_services | union(compute_services_noarch)
+  with_items: "{{ compute_services | union(compute_services_noarch) }}"
   when: RECOVERY_ENV
   tags:
     - recovery

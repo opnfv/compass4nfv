@@ -65,14 +65,15 @@
   shell: >
     python /opt/setup_networks/check_network.py \
            "{{ inventory_hostname }}" \
-           "{{ ip_settings }}"
+           "{{ ip_settings | to_json }}"
   tags:
     - network_check
   retries: 3
   delay: 2
 
 - name: add to boot scripts
-  service: name=net_init enabled=yes
+  systemd: name=net_init enabled=yes state=started
+  shell: update-rc.d net_init defaults
 
 - meta: flush_handlers
 
