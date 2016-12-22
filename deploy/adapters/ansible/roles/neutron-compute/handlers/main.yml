@@ -9,7 +9,7 @@
 ---
 - name: restart neutron compute service
   service: name={{ item }} state=restarted enabled=yes
-  with_items: services | union(services_noarch)
+  with_items: "{{ services | union(services_noarch) }}"
 
 - name: restart nova-compute services
   service: name=nova-compute state=restarted enabled=yes

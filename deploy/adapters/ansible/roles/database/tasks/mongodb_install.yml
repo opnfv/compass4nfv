@@ -9,11 +9,11 @@
 ---
 - name: install mongodb packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: mongodb_packages | union(packages_noarch)
+  with_items: "{{ mongodb_packages | union(packages_noarch) }}"
 
 - name: install pymongod packages
   pip: name={{ item }} state=present extra_args='--pre'
-  with_items: pip_packages
+  with_items: "{{ pip_packages }}"
 
 - name: copy ceilometer configs
   template: src=mongodb.conf dest=/opt/os_templates backup=yes
