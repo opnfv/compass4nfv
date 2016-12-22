@@ -12,24 +12,27 @@
   tags: secgroup
 
 - name: copy configs
-  template: src={{ item.src}} dest=/opt/os_templates
-  with_items: "{{ configs_templates }}"
+  template: src={{ item }} dest=/opt/os_templates
+  with_items:
+    - nova.j2
+    - neutron.j2
   tags: secgroup
 
 - name: update controller configs
-  shell: '[ -f {{ item.1 }} ] && crudini --merge {{ item.1 }} < /opt/os_templates/{{ item.0.src }} || /bin/true'
+  shell: "[ -f '{{ item.1 }}' ] && crudini --merge '{{ item.1 }}' < /opt/os_templates/{{ item.0.src }} || /bin/true"
   tags: secgroup
   with_subelements:
-    - configs_templates
+    - "{{ configs_templates }}"
     - dest
   notify: restart controller relation service
   when: inventory_hostname in "{{ groups['controller'] }}"
 
 - name: update compute configs
-  shell: '[ -f {{ item.1 }} ] && crudini --merge {{ item.1 }} < /opt/os_templates/{{ item.0.src }} || /bin/true'
+  shell: "[ -f '{{ item.1 }}' ] && crudini --merge '{{ item.1 }}' < /opt/os_templates/{{ item.0.src }} || /bin/true"
   tags: secgroup
   with_subelements:
-    - configs_templates
+    - "{{ configs_templates }}"
     - dest
   notify: restart compute relation service
   when: inventory_hostname in "{{ groups['compute'] }}"
+

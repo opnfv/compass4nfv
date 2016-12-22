@@ -41,7 +41,7 @@
                --delete \
                /etc/keystone/fernet-keys \
                root@{{ hostvars[ item ].ansible_eth0.ipv4.address }}:/etc/keystone/
-  with_items: groups['controller'][1:]
+  with_items: "{{ groups['controller'][1:] }}"
   notify:
     - restart keystone services
 
@@ -74,7 +74,7 @@
                --delete \
                /etc/keystone/credential-keys \
                root@{{ hostvars[ item ].ansible_eth0.ipv4.address }}:/etc/keystone/
-  with_items: groups['controller'][1:]
+  with_items: "{{ groups['controller'][1:] }}"
   notify:
     - restart keystone services
 
