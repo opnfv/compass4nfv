@@ -34,7 +34,7 @@
 
     - authorized_key:
         user: root
-        key:  "{{ lookup('file', 'item') }}"
+        key:  "{{ lookup('file', item) }}"
       with_fileglob:
         - /tmp/ssh-keys-*
   max_fail_percentage: 0
@@ -43,21 +43,18 @@
 
 - hosts: all
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - setup-network
 
 - hosts: ha
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - ha
 
 - hosts: controller
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - memcached
@@ -78,14 +75,12 @@
 
 - hosts: all
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - storage
 
 - hosts: compute
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - nova-compute
@@ -95,28 +90,24 @@
 
 #- hosts: all
 #  remote_user: root
-#  accelerate: true
-#  max_fail_percentage: 0
+##  max_fail_percentage: 0
 #  roles:
 #    - moon
 
 - hosts: all
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - secgroup
 
 - hosts: ceph_adm
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles: []
   #  - ceph-deploy
 
 - hosts: ceph
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - ceph-purge
@@ -124,28 +115,24 @@
 
 - hosts: ceph_mon
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - ceph-mon
 
 - hosts: ceph_osd
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - ceph-osd
 
 - hosts: ceph
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - ceph-openstack
 
 - hosts: all
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - monitor
@@ -153,7 +140,6 @@
 
 - hosts: all
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   tasks:
     - name: set bash to nova
@@ -190,7 +176,7 @@
 
     - authorized_key:
         user: nova
-        key:  "{{ lookup('file', 'item') }}"
+        key:  "{{ lookup('file', item) }}"
       with_fileglob:
         - /tmp/ssh-keys-*
 
@@ -200,14 +186,12 @@
 
 - hosts: all
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - odl_cluster
 
 - hosts: all
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - onos_cluster
@@ -221,7 +205,6 @@
 
 - hosts: all
   remote_user: root
-  accelerate: true
   serial: 1
   max_fail_percentage: 0
   roles:
@@ -229,35 +212,30 @@
 
 - hosts: all
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - odl_cluster_post
 
 - hosts: controller
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - ext-network
 
 - hosts: controller
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - boot-recovery
 
 - hosts: controller
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - controller-recovery
 
 - hosts: compute
   remote_user: root
-  accelerate: true
   max_fail_percentage: 0
   roles:
     - compute-recovery
