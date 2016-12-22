@@ -15,7 +15,7 @@
 
 - name: load loop.yml
   include: loop.yml
-  when: status.stat.exists == False or status.stat.isblk == False 
+  when: status.stat.exists == False or status.stat.isblk == False
   tags:
     - storage
 
@@ -50,7 +50,7 @@
 
 
 - name: enable service
-  service: name=storage enabled=yes
+  shell: update-rc.d storage defaults
   tags:
     - storage
 
