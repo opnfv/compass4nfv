@@ -1,0 +1,8 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: qi liang <liangqi1@huawei.com>
+Code-Review+2: Justin chi <chigang@huawei.com>
+Submitted-by: Justin chi <chigang@huawei.com>
+Submitted-at: Thu, 22 Dec 2016 06:08:24 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/26283
+Project: compass4nfv
+Branch: refs/heads/master
