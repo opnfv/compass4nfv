@@ -41,7 +41,7 @@
 
 - name: install packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
-  with_items: packages | union(packages_noarch)
+  with_items: "{{ packages | union(packages_noarch) }}"
 
 - name: make config template dir exist
   file: path=/opt/os_templates state=directory mode=0755
@@ -57,7 +57,7 @@
 
 - name: install pip packages
   pip: name={{ item }} state=present extra_args='--pre'
-  with_items: pip_packages
+  with_items: "{{ pip_packages }}"
 
 - name: install keyczar for accelerate
   pip: name=python-keyczar state=present extra_args='--pre'
@@ -82,11 +82,11 @@
 
 - name: restart services
   service: name={{ item }} state=restarted enabled=yes
-  with_items: services| union(services_noarch)
+  with_items: "{{ services| union(services_noarch) }}"
 
 - name: write services to monitor list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: services| union(services_noarch)
+  with_items: "{{ services| union(services_noarch) }}"
 
 - name: kill daemon for accelerate
   shell: lsof -ni :5099|grep LISTEN|awk '{print $2}'|xargs kill -9
