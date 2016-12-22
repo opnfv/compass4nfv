@@ -9,11 +9,11 @@
 ---
 - name: restart ceilometer service
   service: name={{ item }} state=restarted enabled=yes
-  with_items: ceilometer_services
+  with_items: "{{ ceilometer_services }}"
 
 - name: restart glance_cinder service
   service: name={{ item }} state=restarted enabled=yes
-  with_items: glance_cinder_services
+  with_items: "{{ glance_cinder_services }}"
 
 - name: reload apache server
   service: name=apache2 state=reloaded

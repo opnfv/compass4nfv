@@ -11,7 +11,7 @@
 
 - name: install aodh packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: packages | union(packages_noarch)
+  with_items: "{{ packages | union(packages_noarch) }}"
 
 - name: update aodh conf
   template: src={{ item }} dest=/etc/aodh/aodh.conf backup=yes
@@ -22,7 +22,7 @@
 
 - name: write services to monitor list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: services | union(services_noarch)
+  with_items: "{{ services | union(services_noarch) }}"
 
 - name: remove default sqlite db
   shell: rm /var/lib/aodh/aodh.sqlite || touch aodh.sqllite.db.removed

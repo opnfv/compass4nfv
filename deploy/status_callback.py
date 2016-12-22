@@ -17,70 +17,76 @@ class CallbackModule(object):
     """
     logs playbook results, per host, in /var/log/ansible/hosts
     """
+    CALLBACK_VERSION = 2.0
+    CALLBACK_TYPE = 'notification'
+    CALLBACK_NAME = 'compass'
 
-    def on_any(self, *args, **kwargs):
+    def v2_on_any(self, *args, **kwargs):
         pass
 
-    def runner_on_failed(self, host, res, ignore_errors=False):
+    def v2_runner_on_failed(self, host, res, ignore_errors=False):
         task_error(host, res)
 
-    def runner_on_ok(self, host, res):
+    def v2_runner_on_ok(self, host, res):
         pass
 
-    def runner_on_skipped(self, host, item=None):
+    def v2_runner_on_skipped(self, host, item=None):
         pass
 
-    def runner_on_unreachable(self, host, res):
+    def v2_runner_on_unreachable(self, host, res):
         pass
 
-    def runner_on_no_hosts(self):
+    def v2_runner_on_no_hosts(self):
         pass
 
-    def runner_on_async_poll(self, host, res, jid, clock):
+    def v2_runner_on_async_poll(self, host, res, jid, clock):
         pass
 
-    def runner_on_async_ok(self, host, res, jid):
+    def v2_runner_on_async_ok(self, host, res, jid):
         pass
 
-    def runner_on_async_failed(self, host, res, jid):
+    def v2_runner_on_async_failed(self, host, res, jid):
         task_error(host, res)
 
-    def playbook_on_start(self):
+    def v2_playbook_on_start(self):
         pass
 
-    def playbook_on_notify(self, host, handler):
+    def v2_playbook_on_notify(self, host, handler):
         pass
 
-    def playbook_on_no_hosts_matched(self):
+    def v2_playbook_on_no_hosts_matched(self):
         pass
 
-    def playbook_on_no_hosts_remaining(self):
+    def v2_playbook_on_no_hosts_remaining(self):
         pass
 
-    def playbook_on_task_start(self, name, is_conditional):
+    def v2_playbook_on_task_start(self, name, is_conditional):
         pass
 
-    def playbook_on_vars_prompt(self, varname, private=True, prompt=None,
+    def v2_playbook_on_vars_prompt(self, varname, private=True, prompt=None,
                                 encrypt=None, confirm=False, salt_size=None, salt=None, default=None):   # noqa
         pass
 
-    def playbook_on_setup(self):
+    def v2_playbook_on_setup(self):
         pass
 
-    def playbook_on_import_for_host(self, host, imported_file):
+    def v2_playbook_on_import_for_host(self, host, imported_file):
         pass
 
-    def playbook_on_not_import_for_host(self, host, missing_file):
+    def v2_playbook_on_not_import_for_host(self, host, missing_file):
         pass
 
-    def playbook_on_play_start(self, name):
-        pass
+    def v2_playbook_on_play_start(self, play):
+        self.play = play
+        self.loader = self.play.get_loader()
+        return
 
-    def playbook_on_stats(self, stats):
+    def v2_playbook_on_stats(self, stats):
         logging.info("playbook_on_stats enter")
+        all_vars = self.play.get_variable_manager().get_vars(self.loader)
+        host_vars = all_vars["hostvars"]
         hosts = sorted(stats.processed.keys())
-        host_vars = self.playbook.inventory.get_variables(hosts[0])
-        cluster_name = host_vars['cluster_name']
+        cluster_name = host_vars[hosts[0]]['cluster_name']
         failures = False
         unreachable = False
 
