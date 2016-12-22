@@ -13,7 +13,7 @@
   register: result
   run_once: True
   until: result.rc == 0
-  retries: 5
-  delay: 3
+  retries: 10
+  delay: 5
   notify:
     - restart neutron control services
