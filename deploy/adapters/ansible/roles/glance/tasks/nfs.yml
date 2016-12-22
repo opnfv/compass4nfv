@@ -9,7 +9,7 @@
 ---
 - name: install nfs packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: nfs_packages
+  with_items: "{{ nfs_packages }}"
 
 - name: install nfs
   local_action: yum  name={{ item }} state=present

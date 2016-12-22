@@ -17,6 +17,8 @@ class CallbackModule(object):
     """
     logs playbook results, per host, in /var/log/ansible/hosts
     """
+    CALLBACK_VERSION = 2.0
+    CALLBACK_NEEDS_WHITELIST = True
 
     def on_any(self, *args, **kwargs):
         pass
