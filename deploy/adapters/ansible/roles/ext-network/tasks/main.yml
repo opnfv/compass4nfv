@@ -38,6 +38,7 @@
         --name {{ public_net_info.subnet }} \
         --gateway {{ public_net_info.external_gw }} \
         --allocation-pool \
+        --disable-dhcp \
         start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }} \
         {{ public_net_info.network }} {{ public_net_info.floating_ip_cidr }}
   when: public_net_info.enable == True and inventory_hostname == groups['controller'][0]

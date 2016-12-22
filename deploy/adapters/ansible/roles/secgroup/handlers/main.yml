@@ -10,9 +10,9 @@
 - name: restart controller relation service
   service: name={{ item }} state=restarted enabled=yes
   ignore_errors: True
-  with_items: controller_services
+  with_items: "{{ controller_services }}"
 
 - name: restart compute relation service
   service: name={{ item }} state=restarted enabled=yes
   ignore_errors: True
-  with_items: compute_services
+  with_items: "{{ compute_services }}"
