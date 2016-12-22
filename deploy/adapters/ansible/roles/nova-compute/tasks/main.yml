@@ -18,7 +18,7 @@
 
 - name: install nova-compute related packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: packages | union(packages_noarch)
+  with_items: "{{ packages | union(packages_noarch) }}"
 
 - name: restart virtlogd
   service: name=virtlogd state=started enabled=yes
@@ -44,7 +44,7 @@
 
 - name: generate neutron control service list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: services | union(services_noarch)
+  with_items: "{{ services | union(services_noarch) }}"
 #'
 - name: remove nova sqlite db
   shell: rm /var/lib/nova/nova.sqlite || touch nova.sqlite.removed

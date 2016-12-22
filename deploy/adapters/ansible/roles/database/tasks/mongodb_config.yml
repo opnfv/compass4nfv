@@ -36,9 +36,20 @@
 
 - debug: msg='{{ servers.stdout |int }}'
 
+- name: Add admin user
+  mongodb_user:
+    login_host: "{{ internal_vip.ip }}"
+    database: admin
+    name: root
+    password: root
+    roles: 'root'
+    state: present
+
 - name: create mongodb user and db
   mongodb_user:
     login_host: "{{ internal_vip.ip }}"
+    login_user: root
+    login_password: root
     database: ceilometer
     name: ceilometer
     password: "{{ CEILOMETER_DBPASS }}"
@@ -48,6 +59,8 @@
 - name: grant user privilege
   mongodb_user:
     login_host: "{{ internal_vip.ip }}"
+    login_user: root
+    login_password: root
     database: ceilometer
     name: ceilometer
     password: "{{ CEILOMETER_DBPASS }}"

@@ -13,7 +13,7 @@
   register: part_size
 
 - name: create image file if not exitst
-  script: create_img.sh \"{{ part_size.stdout }}\"
+  script: create_img.sh "{{ part_size.stdout }}"
 
 - name: do a losetup on storage volumes
   script: losetup.sh

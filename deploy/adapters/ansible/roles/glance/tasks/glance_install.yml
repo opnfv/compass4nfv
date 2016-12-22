@@ -9,11 +9,11 @@
 ---
 - name: install glance packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest"
-  with_items: packages | union(packages_noarch)
+  with_items: "{{ packages | union(packages_noarch) }}"
 
 - name: generate glance service list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: services | union(services_noarch)
+  with_items: "{{ services | union(services_noarch) }}"
 
 - name: update glance conf
   template: src={{ item }} dest=/etc/glance/{{ item }}
