@@ -37,6 +37,7 @@
     neutron subnet-create \
         --name {{ public_net_info.subnet }} \
         --gateway {{ public_net_info.external_gw }} \
+        --disable-dhcp \
         --allocation-pool \
         start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }} \
         {{ public_net_info.network }} {{ public_net_info.floating_ip_cidr }}
