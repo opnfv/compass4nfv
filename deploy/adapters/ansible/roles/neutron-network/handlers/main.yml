@@ -10,8 +10,8 @@
 - name: restart neutron network relation service
   service: name={{ item }} state=restarted enabled=yes
   with_flattened:
-    - services_noarch
-    - services
+    - "{{ services_noarch }}"
+    - "{{ services }}"
 
 - name: restart openvswitch agent service
   service: name=neutron-openvswitch-agent state=restarted enabled=yes

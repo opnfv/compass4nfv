@@ -49,7 +49,8 @@
     - { regexp: "^\\s*config.storageManager.ip", line: "config.storageManager.ip = '{{ contrail_keystone_address }}';" }
     - { regexp: "^\\s*config.cnfg.server_ip", line: "config.cnfg.server_ip = '{{ contrail_haproxy_address }}';" }
     - { regexp: "^\\s*config.analytics.server_ip", line: "config.analytics.server_ip = '{{ contrail_haproxy_address }}';" }
-    - { regexp: "^\\s*config.cassandra.server_ips", line: "config.cassandra.server_ips = [{{ cassandra_addrs }}];" }
+# TODO: when I update ansibel version to 2.2, this playbook can't pass the test. ERROR log: "'cassandra_addrs' is undefined".
+#    - { regexp: "^\\s*config.cassandra.server_ips", line: "config.cassandra.server_ips = [{{ cassandra_addrs }}];" }
 
 - name: "modify webui userauth js"
   lineinfile:

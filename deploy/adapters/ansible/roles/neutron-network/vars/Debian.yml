@@ -21,5 +21,9 @@ services:
 
 openvswitch_agent: neutron-plugin-openvswitch-agent
 
+firewall_packages:
+
+vpn_packages:
+
 xorp_packages:
   - xorp
