@@ -93,14 +93,6 @@ os_services:
     internalurl: "http://{{ internal_vip.ip }}:8000/v1"
     adminurl: "http://{{ internal_vip.ip }}:8000/v1"
 
-  - name: congress
-    type: policy
-    region: RegionOne
-    description: "OpenStack Policy Service"
-    publicurl: "http://{{ public_vip.ip }}:1789"
-    internalurl: "http://{{ internal_vip.ip }}:1789"
-    adminurl: "http://{{ internal_vip.ip }}:1789"
-
 #  - name: swift
 #    type: object-store
 #    region: RegionOne
@@ -173,13 +165,6 @@ os_users:
     tenant: service
     tenant_description: "Service Tenant"
 
-  - user: congress
-    password: "{{ CONGRESS_PASS }}"
-    email: congress@admin.com
-    role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
-
   - user: demo
     password: "{{ DEMO_PASS }}"
     email: heat@demo.com
@@ -193,3 +178,4 @@ os_users:
 #    role: admin
 #    tenant: service
 #    tenant_description: "Service Tenant"
+

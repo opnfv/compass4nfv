@@ -19,7 +19,7 @@
 
 - name: stop controller services
   service: name={{ item }} state=stopped enabled=yes
-  with_items: controller_services | union(controller_services_noarch)
+  with_items: "{{ controller_services | union(controller_services_noarch) }}"
   when: RECOVERY_ENV
   tags:
     - recovery-stop-service
