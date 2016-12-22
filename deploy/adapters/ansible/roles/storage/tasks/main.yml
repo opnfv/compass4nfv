@@ -50,7 +50,7 @@
 
 
 - name: enable service
-  service: name=storage enabled=yes
+  systemd: name=storage status=started enabled=yes
   tags:
     - storage
 

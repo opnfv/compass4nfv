@@ -31,7 +31,7 @@
 
 - name: write services to monitor list
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
-  with_items: ceilometer_services
+  with_items: "{{ ceilometer_services }}"
 
 - meta: flush_handlers
 
