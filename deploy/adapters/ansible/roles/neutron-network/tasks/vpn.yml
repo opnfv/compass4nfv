@@ -18,7 +18,7 @@
 
 - name: install vpn packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: vpn_packages
+  with_items: "{{ vpn_packages }}"
 
 - name: enable auto start
   file:
