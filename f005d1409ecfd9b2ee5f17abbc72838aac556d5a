@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_3c2aef2c",
+        "filename": "deploy/adapters/ansible/roles/ha/templates/haproxy.cfg",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-23T01:13:05Z",
+      "side": 1,
+      "message": "delete congress support ?",
+      "range": {
+        "startLine": 191,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 12
+      },
+      "revId": "f005d1409ecfd9b2ee5f17abbc72838aac556d5a",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
