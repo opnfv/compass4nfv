@@ -22,6 +22,23 @@
       "revId": "f005d1409ecfd9b2ee5f17abbc72838aac556d5a",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_fc1b071a",
+        "filename": "deploy/adapters/ansible/roles/setup-network/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 423
+      },
+      "writtenOn": "2016-12-23T01:21:57Z",
+      "side": 1,
+      "message": "pls check if we can use systemd module\nhttp://docs.ansible.com/ansible/systemd_module.html",
+      "revId": "f005d1409ecfd9b2ee5f17abbc72838aac556d5a",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
