@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_2d0dd737",
+        "filename": "deploy/adapters/ansible/roles/storage/tasks/main.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-12-26T09:49:21Z",
+      "side": 1,
+      "message": "delete the space",
+      "range": {
+        "startLine": 18,
+        "startChar": 65,
+        "endLine": 18,
+        "endChar": 66
+      },
+      "revId": "2eb16494ac89aedfc52ae5cee2ea91101aba18b7",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_cd13f35a",
+        "filename": "deploy/adapters/ansible/roles/storage/tasks/main.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2016-12-26T09:49:21Z",
+      "side": 1,
+      "message": "it shoud be \"storage\" service",
+      "range": {
+        "startLine": 53,
+        "startChar": 21,
+        "endLine": 53,
+        "endChar": 29
+      },
+      "revId": "2eb16494ac89aedfc52ae5cee2ea91101aba18b7",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
