@@ -1,3 +1,4 @@
+---
 TYPE: virtual
 FLAVOR: cluster
 
@@ -5,3 +6,4 @@ hosts:
   - name: host6
     roles:
       - compute
+      - ceph-osd

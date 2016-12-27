@@ -32,7 +32,7 @@
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
-    backup: yes
+    backup: "yes"
     mode: 0644
   with_items: "{{ mysql_config }}"
 
@@ -52,7 +52,13 @@
   when: ansible_os_family == "Debian"
 
 - name: set owner
-  file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory mode=0755
+  file:
+    path: /var/lib/mysql
+    owner: mysql
+    group: mysql
+    recurse: "yes"
+    state: directory
+    mode: 0755
 
 - name: get logfile stat
   stat: path='{{ mysql_data_dir }}/ib_logfile0'
@@ -67,4 +73,3 @@
   when: |
     logfile_stat.stat.exists
     and logfile_stat.stat.size != 1073741824
-

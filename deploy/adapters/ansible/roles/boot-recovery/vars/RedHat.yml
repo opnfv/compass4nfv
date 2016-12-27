@@ -12,4 +12,3 @@ controller_services:
     - neutron-openvswitch-agent
     - openstack-aodh-expirer
     - mysql
-

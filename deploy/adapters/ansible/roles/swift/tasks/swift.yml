@@ -34,7 +34,7 @@
 - name: restart tasks on compute
   shell: swift-init all start
   when: inventory_hostname in groups['compute']
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: restart tasks on controller
   service: name={{ item }} state=restarted enabled=yes
@@ -68,7 +68,7 @@
     - swift-container-updater
     - swift-object-replicator
   when: inventory_hostname in groups['compute']
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: restart swift task
   shell: >
@@ -76,4 +76,4 @@
     sleep 10;
     for i in `cat /opt/swift-service`; do service $i restart; done;
   when: inventory_hostname in groups['compute']
-  ignore_errors: True
+  ignore_errors: "True"

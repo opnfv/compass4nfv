@@ -1,66 +1,66 @@
 ---
 - hosts: database
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - database
 
 - hosts: messaging
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - mq
 
 - hosts: identity
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - keystone
 
 - hosts: compute-controller
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - nova-controller
 
 - hosts: network-server
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - neutron-controller
 
 - hosts: storage-controller
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - cinder-controller
 
 - hosts: image
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - glance
 
 - hosts: dashboard
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - dashboard
 
 - hosts: network-worker
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - neutron-network
 
 - hosts: storage-volume
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - cinder-volume
 
 - hosts: compute-worker
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - nova-compute
@@ -68,6 +68,6 @@
 
 - hosts: odl
   remote_user: root
-  sudo: True
+  sudo: "True"
   roles:
     - odl
