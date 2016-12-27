@@ -60,22 +60,6 @@ os_services:
     internalurl: "http://{{ internal_vip.ip }}:8042"
     adminurl: "http://{{ internal_vip.ip }}:8042"
 
-#  - name: cinder
-#    type: volume
-#    region: RegionOne
-#    description: "OpenStack Block Storage"
-#    publicurl: "http://{{ public_vip.ip }}:8776/v1/%(tenant_id)s"
-#    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
-#    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
-#
-#  - name: cinderv2
-#    type: volumev2
-#    region: RegionOne
-#    description: "OpenStack Block Storage v2"
-#    publicurl: "http://{{ public_vip.ip }}:8776/v2/%(tenant_id)s"
-#    internalurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
-#    adminurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
-
   - name: heat
     type: orchestration
     region: RegionOne
@@ -91,6 +75,22 @@ os_services:
     publicurl: "http://{{ public_vip.ip }}:8000/v1"
     internalurl: "http://{{ internal_vip.ip }}:8000/v1"
     adminurl: "http://{{ internal_vip.ip }}:8000/v1"
+
+#  - name: cinder
+#    type: volume
+#    region: RegionOne
+#    description: "OpenStack Block Storage"
+#    publicurl: "http://{{ public_vip.ip }}:8776/v1/%(tenant_id)s"
+#    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
+#    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
+
+#  - name: cinderv2
+#    type: volumev2
+#    region: RegionOne
+#    description: "OpenStack Block Storage v2"
+#    publicurl: "http://{{ public_vip.ip }}:8776/v2/%(tenant_id)s"
+#    internalurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
+#    adminurl: "http://{{ internal_vip.ip }}:8776/v2/%(tenant_id)s"
 
 #  - name: swift
 #    type: object-store
@@ -163,10 +163,3 @@ os_users:
     role: heat_stack_user
     tenant: demo
     tenant_description: "Demo Tenant"
-
-#  - user: swift
-#    password: "{{ CINDER_PASS }}"
-#    email: swift@admin.com
-#    role: admin
-#    tenant: service
-#    tenant_description: "Service Tenant"

@@ -13,22 +13,21 @@
   register: http_server
 
 - name: download oracle-jdk8 package file
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_pkg_name }}"  dest=/opt/{{ jdk8_pkg_name }}
-
-#"
+  get_url:
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_pkg_name }}"
+    dest: /opt/{{ jdk8_pkg_name }}
 
 - name: download oracle-jdk8 script file
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_script_name }}"  dest=/opt/
-
-#"
+  get_url:
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_script_name }}"
+    dest: /opt/
 
 - name: download odl package
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/odl/{{ odl_pkg_url }}"  dest=/opt/{{ odl_pkg_name }}
-
-# "
+  get_url:
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/odl/{{ odl_pkg_url }}"
+    dest: /opt/{{ odl_pkg_name }}
 
 - name: download odl pip package
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/pip/{{ networking_odl_pkg_name }}"  dest=/opt/{{ networking_odl_pkg_name }}
-
-#"
-
+  get_url:
+    url: "http://{{ http_server.stdout_lines[0] }}/pip/{{ networking_odl_pkg_name }}"
+    dest: /opt/{{ networking_odl_pkg_name }}

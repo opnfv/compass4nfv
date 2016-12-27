@@ -1,3 +1,4 @@
+---
 ##############################################################################
 # Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
@@ -21,7 +22,10 @@
     - ceph_deploy
 
 - name: purge ceph
-  shell: "ceph-deploy purge {{ inventory_hostname }}; ceph-deploy purgedata {{ inventory_hostname }}; ceph-deploy forgetkeys"
+  shell: |
+    ceph-deploy purge {{ inventory_hostname }};
+    ceph-deploy purgedata {{ inventory_hostname }};
+    ceph-deploy forgetkeys
   tags:
     - ceph_purge
     - ceph_deploy
@@ -31,5 +35,3 @@
   tags:
     - ceph_purge
     - ceph_deploy
-
-

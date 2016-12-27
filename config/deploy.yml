@@ -1,3 +1,4 @@
+---
 global_settins:
   name: example_deployment
   installer: compass

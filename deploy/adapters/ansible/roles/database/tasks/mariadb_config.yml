@@ -8,7 +8,10 @@
 ##############################################################################
 ---
 - name: create all needed db
-  mysql_db: login_unix_socket=/var/run/mysqld/mysqld.sock name={{ item.db }}  state=present
+  mysql_db:
+    login_unix_socket=/var/run/mysqld/mysqld.sock
+    name={{ item.db }}
+    state=present
   with_items: "{{ credentials }}"
   tags:
     - test_db
@@ -63,7 +66,8 @@
   service:
     name: mysql
     state: restarted
-  when: inventory_hostname == haproxy_hosts.keys()[0] and haproxy_hosts|length > 1
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+        and haproxy_hosts|length > 1
 
 - name: wait for cluster ready
   command: mysql -e"show status like 'wsrep%'"
@@ -79,7 +83,6 @@
   service:
     name: mysql
     state: restarted
-    enabled: yes
+    enabled: "yes"
   when:
     - inventory_hostname != haproxy_hosts.keys()[0]
-

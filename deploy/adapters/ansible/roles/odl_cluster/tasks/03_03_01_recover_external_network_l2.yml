@@ -13,12 +13,13 @@
   when: item["type"] == "ovs"
 
 - name: add ovs uplink
-  openvswitch_port: bridge={{ item["name"] }} port={{ item["interface"] }} state=present
+  openvswitch_port: bridge={{ item["name"] }} port={{ item["interface"] }}
+                    state=present
   with_items: "{{ network_cfg['provider_net_mappings'] }}"
   when: item["type"] == "ovs"
 
 - name: copy recovery script
-  copy:  src={{ item }} dest=/opt/setup_networks
+  copy: src={{ item }} dest=/opt/setup_networks
   with_items:
     - recover_network.py
 
