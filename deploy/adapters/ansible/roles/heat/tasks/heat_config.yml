@@ -13,4 +13,3 @@
     - restart heat service
 
 - meta: flush_handlers
-

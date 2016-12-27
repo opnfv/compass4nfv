@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 
-- name: turn off neutron-server neutron-plugins-openvswitch-agent Daemon on control node
+- name: turn off neutron server and agent Daemon on control node
   shell: >
     sed -i '/{{ service_ovs_agent_name }}/d' /opt/service ;
     sed -i '/neutron-server/d' /opt/service;

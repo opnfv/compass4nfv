@@ -12,7 +12,7 @@ services:
   - openstack-heat-api-cfn
   - openstack-heat-engine
 
-packages:  
+packages:
   - openstack-heat-api
   - openstack-heat-api-cfn
   - openstack-heat-engine

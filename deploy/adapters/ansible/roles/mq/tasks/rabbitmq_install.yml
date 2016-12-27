@@ -31,7 +31,7 @@
   service:
     name: rabbitmq-server
     state: stopped
-    enabled: yes
+    enabled: "yes"
 
 - name: replace cookie
   copy:
