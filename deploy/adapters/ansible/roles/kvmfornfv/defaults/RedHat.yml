@@ -14,5 +14,3 @@ packages:
   - gettext
   - qemu-kvm
   - grub2
-
-

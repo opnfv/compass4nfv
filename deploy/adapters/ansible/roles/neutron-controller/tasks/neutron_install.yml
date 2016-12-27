@@ -40,7 +40,13 @@
   template: src=templates/neutron.conf dest=/etc/neutron/neutron.conf backup=yes
 
 - name: update ml2 plugin conf
-  template: src=templates/ml2_conf.ini dest=/etc/neutron/plugins/ml2/ml2_conf.ini backup=yes
+  template:
+    src: templates/ml2_conf.ini
+    dest: /etc/neutron/plugins/ml2/ml2_conf.ini
+    backup: "yes"
 
 - name: ln plugin.ini
-  file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
+  file:
+    src: /etc/neutron/plugins/ml2/ml2_conf.ini
+    dest: /etc/neutron/plugin.ini
+    state: link

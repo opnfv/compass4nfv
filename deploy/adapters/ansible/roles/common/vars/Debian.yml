@@ -16,7 +16,6 @@ packages:
   - python-iniparse
   - python-lxml
   - python-crypto
-  #- python-d* #TODO, need remove
 
 pip_packages:
   - crudini
@@ -27,5 +26,3 @@ pip_conf: pip.conf
 
 services:
   - ntp
-
-

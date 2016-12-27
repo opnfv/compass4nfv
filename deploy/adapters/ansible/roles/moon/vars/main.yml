@@ -67,7 +67,7 @@ os_services:
 #    publicurl: "http://{{ public_vip.ip }}:8776/v1/%(tenant_id)s"
 #    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
 #    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
-#
+
 #  - name: cinderv2
 #    type: volumev2
 #    region: RegionOne
@@ -163,10 +163,3 @@ os_users:
     role: heat_stack_user
     tenant: demo
     tenant_description: "Demo Tenant"
-
-#  - user: swift
-#    password: "{{ CINDER_PASS }}"
-#    email: swift@admin.com
-#    role: admin
-#    tenant: service
-#    tenant_description: "Service Tenant"

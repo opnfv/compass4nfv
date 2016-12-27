@@ -12,4 +12,4 @@
   shell: crudini --set /etc/nova/nova.conf DEFAULT force_config_drive true
 
 - name: restart all nova service
-  shell: for i in `cat /opt/service | grep nova` ; do service $i restart; done 
+  shell: for i in `cat /opt/service | grep nova` ; do service $i restart; done

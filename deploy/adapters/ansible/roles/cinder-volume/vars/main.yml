@@ -11,4 +11,3 @@ packages_noarch:
   - lvm2
 
 services_noarch: []
-

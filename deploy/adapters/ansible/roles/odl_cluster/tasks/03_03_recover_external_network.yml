@@ -19,4 +19,4 @@
 - name: restart keepalived to recover external IP
   shell: service keepalived restart
   when: inventory_hostname in groups['odl']
-  ignore_errors: True
+  ignore_errors: "True"

@@ -9,9 +9,11 @@
 ---
 
 - name: neutron-db-manage upgrade
-  shell: neutron-db-manage --config-file=/etc/neutron/neutron.conf --config-file=/etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
+  shell: |
+    neutron-db-manage --config-file=/etc/neutron/neutron.conf \
+        --config-file=/etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
   register: result
-  run_once: True
+  run_once: "True"
   until: result.rc == 0
   retries: 10
   delay: 5

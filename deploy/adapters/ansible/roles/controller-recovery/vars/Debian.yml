@@ -38,4 +38,3 @@ controller_services:
     - aodh-evaluator
     - aodh-listener
     - cron
-

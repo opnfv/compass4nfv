@@ -11,4 +11,5 @@
 
 - name: Install Tacker on Controller
   include: tacker_controller.yml
-  when: inventory_hostname in groups['controller'] and ansible_os_family == "Debian"
+  when: inventory_hostname in groups['controller']
+        and ansible_os_family == "Debian"

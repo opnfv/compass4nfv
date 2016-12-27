@@ -186,11 +186,3 @@ os_users:
     role: heat_stack_user
     tenant: demo
     tenant_description: "Demo Tenant"
-
-#  - user: swift
-#    password: "{{ CINDER_PASS }}"
-#    email: swift@admin.com
-#    role: admin
-#    tenant: service
-#    tenant_description: "Service Tenant"
-
