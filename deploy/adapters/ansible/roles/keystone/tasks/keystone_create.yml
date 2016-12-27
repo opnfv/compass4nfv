@@ -11,17 +11,20 @@
   shell:
     . /opt/admin-openrc.sh;
     openstack endpoint set \
-         --interface public \
-         --url {{ item.publicurl }} \
-         $(openstack endpoint list | grep keystone | grep public | awk '{print $2}');
+        --interface public \
+        --url {{ item.publicurl }} \
+        $(openstack endpoint list | grep keystone | grep public \
+        | awk '{print $2}');
     openstack endpoint set \
-         --interface internal \
-         --url {{ item.internalurl }} \
-         $(openstack endpoint list | grep keystone | grep internal | awk '{print $2}');
+        --interface internal \
+        --url {{ item.internalurl }} \
+        $(openstack endpoint list | grep keystone | grep internal \
+        | awk '{print $2}');
     openstack endpoint set \
-         --interface admin \
-         --url {{ item.adminurl }} \
-         $(openstack endpoint list | grep keystone | grep admin | awk '{print $2}');
+        --interface admin \
+        --url {{ item.adminurl }} \
+        $(openstack endpoint list | grep keystone | grep admin \
+        | awk '{print $2}');
   with_items: "{{ os_services[0:1] }}"
   register: result
   until: result.rc == 0
@@ -123,4 +126,3 @@
   until: result.rc == 0
   retries: 10
   delay: 5
-

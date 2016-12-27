@@ -30,10 +30,6 @@ case $DEPLOY_SCENARIO in
         echo "os-onos-sfc-ha scenario supports mitaka only"
         exit 1
         ;;
-    os-ocl-nofeature-ha)
-        echo "os-ocl-nofeature-ha scenario supports liberty only"
-        exit 1
-        ;;
 esac
 
 if [[ $ROOT_BUILD_CAUSE == MANUALTRIGGER ]]; then

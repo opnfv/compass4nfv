@@ -14,14 +14,14 @@
     src: "{{ item }}"
     dest: /opt/os_templates
   with_items:
-   - ceilometer.conf.j2
-   - nova.conf.j2
+    - ceilometer.conf.j2
+    - nova.conf.j2
 
 - name: update ceilometer configs
   shell: crudini --merge {{ item.dest }} < /opt/os_templates/{{ item.src }}
   with_items:
-   - src: nova.conf.j2
-     dest: /etc/nova/nova.conf
+    - src: nova.conf.j2
+      dest: /etc/nova/nova.conf
   notify: restart nova service
 
 - name: delete config
@@ -34,4 +34,3 @@
   with_items: "{{ ceilometer_services }}"
 
 - meta: flush_handlers
-

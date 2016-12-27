@@ -7,17 +7,21 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-
 - name: create osd lv and mount it on /var/local/osd
   script: create_osd.sh
 
 - name: fetch osd keyring from ceph_adm
-  fetch: src="/var/lib/ceph/bootstrap-osd/ceph.keyring" dest="/tmp/ceph.osd.keyring" flat=yes
+  fetch:
+    src: "/var/lib/ceph/bootstrap-osd/ceph.keyring"
+    dest: "/tmp/ceph.osd.keyring"
+    flat: "yes"
   delegate_to: "{{ public_vip.ip }}"
   when: compute_expansion
 
 - name: copy osd keyring
-  copy: src="/tmp/ceph.osd.keyring" dest="/var/lib/ceph/bootstrap-osd/ceph.keyring"
+  copy:
+    src: "/tmp/ceph.osd.keyring"
+    dest: "/var/lib/ceph/bootstrap-osd/ceph.keyring"
 
 - name: prepare osd disk
   shell: ceph-disk prepare --fs-type xfs /var/local/osd
@@ -33,10 +37,21 @@
   service: name=ceph enabled=yes
 
 - name: rebuild osd after reboot
-  lineinfile: dest=/etc/init/ceph-osd-all-starter.conf insertafter="^task" line="pre-start script\n  set -e\n  /opt/setup_storage/losetup.sh\n  sleep 3\n  mount /dev/storage-volumes/ceph0 /var/local/osd\nend script"
+  blockinfile:
+    dest: /etc/init/ceph-osd-all-starter.conf
+    insertafter: "^task"
+    block: |
+      pre-start script
+        set -e
+        /opt/setup_storage/losetup.sh
+        sleep 3
+        mount /dev/storage-volumes/ceph0 /var/local/osd
+      end script
   when: ansible_os_family == "Debian"
 
 - name: rebuild osd after reboot for centos
-  lineinfile: dest=/etc/init.d/ceph insertafter="^### END INIT INFO" line="\nsleep 1\nmount /dev/storage-volumes/ceph0 /var/local/osd"
+  lineinfile:
+    dest: /etc/init.d/ceph
+    insertafter: "^### END INIT INFO"
+    line: "\nsleep 1\nmount /dev/storage-volumes/ceph0 /var/local/osd"
   when: ansible_os_family == "RedHat"
-

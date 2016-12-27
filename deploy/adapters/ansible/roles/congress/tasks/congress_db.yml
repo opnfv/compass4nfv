@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 - name: create congress db
-  mysql_db: 
+  mysql_db:
     login_unix_socket: /var/run/mysqld/mysqld.sock
     name: "{{ item.db }}"
     state: present
@@ -25,4 +25,3 @@
   with_nested:
     - "{{ credentials }}"
     - ['%', 'localhost']
-

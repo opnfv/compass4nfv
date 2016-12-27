@@ -12,4 +12,3 @@ compute_services:
     - neutron-openvswitch-agent
     - openstack-cinder-volume
     - openstack-ceilometer-compute
-

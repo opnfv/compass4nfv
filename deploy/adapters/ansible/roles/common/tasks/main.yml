@@ -26,18 +26,20 @@
 
 - name: update compass-core name and ip to hosts files
   shell: |
-    echo "# compass" >> /etc/hosts
-    echo {{ COMPASS_SERVER.stdout_lines[0] }} {{ name.stdout_lines[0] }} >> /etc/hosts
+    echo "# compass" >> /etc/hosts;
+    echo {{ COMPASS_SERVER.stdout_lines[0] }} {{ name.stdout_lines[0] }} \
+        >> /etc/hosts;
 
 - name: install python-crypto
   yum: name=python-crypto state=present
   register: python_crypto_result
-  ignore_errors: yes
+  ignore_errors: "yes"
   when: ansible_os_family == "RedHat"
 
-- name: remove python crypt egg file to work-around https://bugs.centos.org/view.php?id=9896&nbn=2
+- name: remove python crypt egg file to work-around
   shell: rm -rf /usr/lib64/python2.7/site-packages/pycrypto-2.6.1-py2.7.egg-info
-  when: ansible_os_family == "RedHat" and python_crypto_result.msg == "Error unpacking rpm package python2-crypto-2.6.1-9.el7.x86_64\n"
+  when: ansible_os_family == "RedHat"
+        and python_crypto_result.msg | match("Error unpack.*crypto-2.6.1-9.*")
 
 - name: install packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
@@ -69,11 +71,11 @@
 
 - name: use ntpdate once for initial sync time
   shell: ntpdate {{ ntp_server }}
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: sync sys clock to hard clock
   shell: hwclock --systohc
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: create fireball keys dir
   file: path=~/.fireball.keys state=directory mode=0700

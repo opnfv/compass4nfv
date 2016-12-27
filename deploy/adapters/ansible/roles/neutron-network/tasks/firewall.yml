@@ -27,4 +27,5 @@
   when: ansible_os_family == "Debian"
 
 - name: update firewall related conf
-  shell: crudini --set --list /etc/neutron/neutron.conf DEFAULT service_plugins firewall
+  shell: |
+    crudini --set --list /etc/neutron/neutron.conf DEFAULT service_plugins firewall

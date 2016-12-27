@@ -54,14 +54,17 @@
 
 - name: fix openstack neutron plugin config file
   shell: |
-    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' /usr/lib/systemd/system/neutron-openvswitch-agent.service
+    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' \
+        /usr/lib/systemd/system/neutron-openvswitch-agent.service;
     systemctl daemon-reload
   when: ansible_os_family == 'RedHat'
 
 - name: fix openstack neutron plugin config file ubuntu
   shell: |
-    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' /etc/init/neutron-openvswitch-agent.conf
-    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' /etc/init.d/neutron-openvswitch-agent
+    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' \
+        /etc/init/neutron-openvswitch-agent.con;
+    sed -i 's,plugins/ml2/openvswitch_agent.ini,plugin.ini,g' \
+        /etc/init.d/neutron-openvswitch-agent;
   when: ansible_os_family == "Debian"
 
 - name: config l3 agent
@@ -86,7 +89,10 @@
             backup=yes
 
 - name: ln plugin.ini
-  file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
+  file:
+    src: /etc/neutron/plugins/ml2/ml2_conf.ini
+    dest: /etc/neutron/plugin.ini
+    state: link
 
 - name: config neutron
   template: src=templates/neutron.conf

@@ -36,11 +36,12 @@
     - restart keystone services
 
 - name: Distribute the fernet key repository
-  shell: rsync -e 'ssh -o StrictHostKeyChecking=no' \
-               -avz \
-               --delete \
-               /etc/keystone/fernet-keys \
-               root@{{ hostvars[ item ].ansible_eth0.ipv4.address }}:/etc/keystone/
+  shell: |
+    rsync -e 'ssh -o StrictHostKeyChecking=no' \
+        -avz \
+        --delete \
+        /etc/keystone/fernet-keys \
+        root@{{ hostvars[ item ].ansible_eth0.ipv4.address }}:/etc/keystone/
   with_items: "{{ groups['controller'][1:] }}"
   notify:
     - restart keystone services
@@ -69,11 +70,12 @@
     - restart keystone services
 
 - name: Distribute the credential key repository
-  shell: rsync -e 'ssh -o StrictHostKeyChecking=no' \
-               -avz \
-               --delete \
-               /etc/keystone/credential-keys \
-               root@{{ hostvars[ item ].ansible_eth0.ipv4.address }}:/etc/keystone/
+  shell: |
+    rsync -e 'ssh -o StrictHostKeyChecking=no' \
+        -avz \
+       --delete \
+       /etc/keystone/credential-keys \
+       root@{{ hostvars[ item ].ansible_eth0.ipv4.address }}:/etc/keystone/
   with_items: "{{ groups['controller'][1:] }}"
   notify:
     - restart keystone services
@@ -93,4 +95,3 @@
 
 - name: wait for keystone ready
   wait_for: port=35357 delay=15 timeout=60 host={{ internal_ip }}
-

@@ -14,4 +14,3 @@ api_services:
   - openstack-heat-api
   - openstack-heat-api-cfn
   - openstack-cinder-api
-

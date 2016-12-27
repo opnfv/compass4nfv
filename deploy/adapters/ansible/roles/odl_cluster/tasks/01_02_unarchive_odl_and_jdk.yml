@@ -15,4 +15,6 @@
   command: su -s /bin/sh -c "/opt/install_jdk8/install_jdk8.sh"
 
 - name: extract odl package
-  command: su -s /bin/sh -c "tar xzf /opt/{{ odl_pkg_name }} -C {{ odl_home }} --strip-components 1 --no-overwrite-dir -k --skip-old-files" odl
+  command: |
+    su -s /bin/sh -c "tar xzf /opt/{{ odl_pkg_name }} -C {{ odl_home }} \
+        --strip-components 1 --no-overwrite-dir -k --skip-old-files" odl
