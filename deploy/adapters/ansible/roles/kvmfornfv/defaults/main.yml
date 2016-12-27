@@ -13,4 +13,3 @@ kernel_path: "{{ path }}/kernel"
 qemu_path: "{{ path }}/qemu"
 qemu_build_dir: "{{ qemu_path }}/build"
 package: kvmfornfv.tar.gz
-

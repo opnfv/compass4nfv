@@ -18,11 +18,13 @@
   with_items: "{{ services | union(services_noarch) }}"
 
 - name: create heat user domain
-  shell: >
+  shell: |
     . /opt/admin-openrc.sh;
     openstack domain create --description "Stack projects and users" heat;
-    openstack user create --domain heat --password {{ HEAT_PASS }} heat_domain_admin;
-    openstack role add --domain heat --user-domain heat --user heat_domain_admin admin;
+    openstack user create --domain heat --password {{ HEAT_PASS }} \
+        heat_domain_admin;
+    openstack role add --domain heat --user-domain heat \
+        --user heat_domain_admin admin;
     openstack role create heat_stack_owner;
     openstack role add --project demo --user demo heat_stack_owner;
   when: inventory_hostname == groups['controller'][0]
@@ -34,4 +36,3 @@
   notify:
     - restart heat service
     - remove heat-sqlite-db
-

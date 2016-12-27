@@ -1,3 +1,4 @@
+---
 openvswitch:
   tenant_network_type: vxlan
   network_vlan_ranges:

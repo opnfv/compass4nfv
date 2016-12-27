@@ -30,5 +30,3 @@
 
 - name: update proxy-server conf
   template: src=proxy-server.conf dest=/etc/swift/proxy-server.conf backup=yes
-
-

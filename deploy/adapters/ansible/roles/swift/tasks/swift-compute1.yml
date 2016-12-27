@@ -7,7 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-
 - name: disable auto start
   copy:
     content: "#!/bin/sh\nexit 101"
@@ -39,8 +38,10 @@
 
 - name: edit /etc/fstab
   shell: >
-    echo "/var/swift1 /srv/node/swift1/ xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab;
-    echo "/var/swift2 /srv/node/swift2/ xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab;
+    echo "/var/swift1 /srv/node/swift1/ xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" \
+        >> /etc/fstab;
+    echo "/var/swift2 /srv/node/swift2/ xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" \
+        >> /etc/fstab;
     mount /srv/node/swift1;
     mount /srv/node/swift2;
 
@@ -63,18 +64,3 @@
     mkdir -p /var/cache/swift;
     chown -R root:swift /var/cache/swift;
     chmod -R 775 /var/cache/swift;
-
-#- name: copy swift lib
-#  copy: src=swift-lib.tar.gz dest=/tmp/swift-lib.tar.gz
-#
-#- name: upload swift lib
-#  unarchive: src=swift-lib.tar.gz dest=/tmp/
-#
-#- name: copy swift lib
-#  shell: command: su -s /bin/sh -c "cp /tmp/swift-lib/* /usr/lib/"
-#
-#- name: untar swift lib
-#  shell: >
-#    tar zxf /tmp/swift-lib.tar.gz;
-#    cp /tmp/swift-lib/* /usr/lib/;
-

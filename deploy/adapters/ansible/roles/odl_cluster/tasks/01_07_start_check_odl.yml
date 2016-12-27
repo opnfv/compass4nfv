@@ -26,4 +26,6 @@
   when: ansible_os_family == "RedHat"
 
 - name: check if opendaylight running
-  shell: netstat -lpen --tcp | grep java |  grep 6653; while [ $? -ne 0 ]; do sleep 10; netstat -lpen --tcp | grep java |  grep 6653; done
+  shell: |
+    netstat -lpen --tcp | grep java |  grep 6653;
+    while [ $? -ne 0 ]; do sleep 10; netstat -lpen --tcp | grep java grep 6653; done
