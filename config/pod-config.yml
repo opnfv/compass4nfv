@@ -1,9 +1,10 @@
-
+---
 nodes:
   - name: host1
     tags: control
     arch: "x86_64"
-    mac_address: '11:22:33:44:55' # PXE install nic MAC
+    # PXE install nic MAC
+    mac_address: '11:22:33:44:55'
 
     # for virtual deployment
     cpus: 2
@@ -20,7 +21,8 @@ nodes:
   - name: host2
     tags: control
     arch: "x86_64"
-    mac_address: '11:22:33:44:56' # PXE install nic MAC
+    # PXE install nic MAC
+    mac_address: '11:22:33:44:56'
 
     # for virtual deployment
     cpus: 2
@@ -37,7 +39,8 @@ nodes:
   - name: host3
     tags: control
     arch: "x86_64"
-    mac_address: '11:22:33:44:57' # PXE install nic MAC
+    # PXE install nic MAC
+    mac_address: '11:22:33:44:57'
 
     # for virtual deployment
     cpus: 2
@@ -54,7 +57,8 @@ nodes:
   - name: host4
     tags: compute
     arch: "x86_64"
-    mac_address: '11:22:33:44:57' # PXE install nic MAC
+    # PXE install nic MAC
+    mac_address: '11:22:33:44:57'
 
     # for virtual deployment
     cpus: 2
@@ -71,7 +75,8 @@ nodes:
   - name: host5
     tags: compute
     arch: "x86_64"
-    mac_address: '11:22:33:44:58' # PXE install nic MAC
+    # PXE install nic MAC
+    mac_address: '11:22:33:44:58'
 
     # for virtual deployment
     cpus: 2

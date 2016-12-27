@@ -12,7 +12,9 @@
   register: http_server
 
 - name: download kvmfornfv package file
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/kvmfornfv/{{ package }}"  dest=/tmp/{{ package }}
+  get_url:
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/kvmfornfv/{{ package }}"
+    dest: /tmp/{{ package }}
 
 - name: extract kvmfornfv files
   command: su -s /bin/sh -c "tar xzf /tmp/{{ package }} -C /"
@@ -24,4 +26,3 @@
 - name: Update grub on Ubuntu
   shell: grub-mkconfig -o /boot/grub/grub.conf
   when: ansible_os_family == 'Debian'
-

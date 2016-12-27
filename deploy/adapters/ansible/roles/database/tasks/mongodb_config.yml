@@ -19,7 +19,9 @@
   shell: mongo compass /opt/replica.js
 
 - name: wait replica servers are ready
-  shell: mongo compass --eval 'printjson(rs.status())'|grep -E 'PRIMARY|SECONDARY'|wc -l
+  shell: |
+    mongo compass --eval 'printjson(rs.status())'| \
+        grep -E 'PRIMARY|SECONDARY'| wc -l
   register: servers
   until: servers.stdout|int == {{ haproxy_hosts|length }}
   retries: 60

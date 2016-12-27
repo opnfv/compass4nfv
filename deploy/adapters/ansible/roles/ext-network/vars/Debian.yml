@@ -15,4 +15,3 @@ api_services:
   - heat-api-cfn
   - aodh-api
   - cinder-api
-

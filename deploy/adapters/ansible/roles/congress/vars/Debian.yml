@@ -12,7 +12,7 @@ packages:
   - python-congressclient
   - python-cloudfoundryclient
 
-service: 
+service:
   - congress
 
 credentials:

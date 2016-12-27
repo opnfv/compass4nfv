@@ -13,10 +13,12 @@
 - name: killall mysqld processes
   shell: sudo killall -9 mysqld
   when: RECOVERY_ENV
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: get cluster status
-  shell: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"'|awk '{print $2}'
+  shell: |
+    mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"' \
+        | awk '{print $2}'
   register: cluster_status
   when:
     - inventory_hostname == haproxy_hosts.keys()[0]
@@ -28,7 +30,9 @@
     and not cluster_status.stdout | search("OPERATIONAL")
 
 - name: wait for cluster ready
-  shell: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"'|awk '{print $2}'  
+  shell: |
+    mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"' \
+        | awk '{print $2}'
   register: cluster_status
   until: cluster_status|success
   failed_when: not cluster_status.stdout | search("OPERATIONAL")
@@ -39,7 +43,9 @@
     and not cluster_status.stdout | search("OPERATIONAL")
 
 - name: if I in the cluster nodes
-  shell: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_incoming_addresses"'|awk '{print $2}'
+  shell: |
+    mysql --silent --skip-column-names \
+        -e 'SHOW STATUS LIKE "wsrep_incoming_addresses"' | awk '{print $2}'
   register: cluster_nodes
   changed_when: false
 
@@ -47,7 +53,7 @@
   service:
     name: mysql
     state: restarted
-    enabled: yes
+    enabled: "yes"
   when: |
     inventory_hostname != haproxy_hosts.keys()[0]
     and not cluster_nodes.stdout | search( "{{ internal_ip }}")
@@ -61,7 +67,5 @@
     name: mysql
     state: restarted
   when: |
-    inventory_hostname == haproxy_hosts.keys()[0] 
+    inventory_hostname == haproxy_hosts.keys()[0]
     and haproxy_hosts|length > 1
-
-
