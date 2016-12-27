@@ -11,4 +11,3 @@ packages_noarch: []
 
 services_noarch:
   - neutron-server
-

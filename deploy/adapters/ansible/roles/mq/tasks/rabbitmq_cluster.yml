@@ -9,7 +9,8 @@
 ---
 - name: check if i in the node list
   shell: |
-    rabbitmqctl -q cluster_status | grep '\[{nodes,'|grep {{ inventory_hostname }}
+    rabbitmqctl -q cluster_status | grep '\[{nodes,' \
+        | grep {{ inventory_hostname }}
   changed_when: is_member.rc != 0
   failed_when: false
   register: is_member

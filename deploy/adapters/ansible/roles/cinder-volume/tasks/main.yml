@@ -31,9 +31,8 @@
   with_items: "{{ services | union(services_noarch) }}"
 
 - name: upload cinder-volume configuration
-  template: src=cinder.conf dest=/etc/cinder/cinder.conf
-            backup=yes
+  template: src=cinder.conf dest=/etc/cinder/cinder.conf backup=yes
   notify:
-     - restart cinder-volume services
+    - restart cinder-volume services
 
 - meta: flush_handlers

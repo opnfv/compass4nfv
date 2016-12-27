@@ -14,7 +14,3 @@
   service: name={{ item }} state=restarted enabled=yes
   with_items:
     - nova-compute
-
-#- name: restart swift task
-#  shell: swift-init all start
-#  ignore_errors: True

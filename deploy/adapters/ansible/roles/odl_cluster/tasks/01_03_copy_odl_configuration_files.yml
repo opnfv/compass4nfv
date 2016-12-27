@@ -49,5 +49,3 @@
   template:
     src: jetty.xml
     dest: "{{ odl_home }}/etc/jetty.xml"
-
-

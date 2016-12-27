@@ -30,8 +30,8 @@
 - name: create congress service work dir
   file: path=/var/lib/congress state=directory
 
-- name: link the congress service 
-  file: 
+- name: link the congress service
+  file:
     src: /lib/systemd/system/congress.service
     dest: /etc/systemd/system/multi-user.target.wants/congress.service
     state: link

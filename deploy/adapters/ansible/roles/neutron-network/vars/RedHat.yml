@@ -26,4 +26,3 @@ openvswitch_agent: neutron-openvswitch-agent
 
 xorp_packages:
   - openssl098e
-  #- xorp

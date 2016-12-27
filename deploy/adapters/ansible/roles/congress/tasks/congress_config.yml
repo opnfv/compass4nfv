@@ -8,7 +8,9 @@
 ##############################################################################
 ---
 - name: congress db sync
-  shell: /usr/local/bin/congress-db-manage --config-file /etc/congress/congress.conf upgrade head
+  shell: |
+    /usr/local/bin/congress-db-manage \
+        --config-file /etc/congress/congress.conf upgrade head
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: start congress service
