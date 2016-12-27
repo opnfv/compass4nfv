@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 #- hosts: tsn
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 
 - name: "enable supervisor vrouter"

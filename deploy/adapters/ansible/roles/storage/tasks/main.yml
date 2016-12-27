@@ -15,13 +15,13 @@
 
 - name: load loop.yml
   include: loop.yml
-  when: status.stat.exists == False or status.stat.isblk == False
+  when: status.stat.exists == "False" or status.stat.isblk == "False"
   tags:
     - storage
 
 - name: load real.yml
   include: real.yml
-  when: status.stat.exists == True and status.stat.isblk == True
+  when: status.stat.exists == "True" and status.stat.isblk == "True"
   tags:
     - storage
 
@@ -43,7 +43,10 @@
     - storage
 
 - name: set autostart file for centos
-  copy: src=storage.service dest=/usr/lib/systemd/system/storage.service mode=0755
+  copy:
+    src: storage.service
+    dest: /usr/lib/systemd/system/storage.service
+    mode: 0755
   when: ansible_os_family == "RedHat"
   tags:
     - storage

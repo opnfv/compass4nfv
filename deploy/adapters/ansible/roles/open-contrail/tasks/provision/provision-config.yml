@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 #- hosts: config
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 - name: "enable supervisor config"
   file:
@@ -194,7 +194,7 @@
 #    state: "directory"
 #    owner: "neutron"
 #    group: "neutron"
-#    recurse: yes
+#    recurse: "yes"
 
 - name: "set values to neutron config"
   ini_file:
@@ -285,7 +285,7 @@
 #    OS_USERNAME: "{{ contrail_admin_user }}"
 #    OS_PASSWORD: "{{ contrail_admin_password }}"
 #    OS_TENANT_NAME: "admin"
-#  run_once: yes
+#  run_once: "yes"
 #  when: keystone_provision 
 #
 #
@@ -297,7 +297,7 @@
 #    OS_USERNAME: "{{ contrail_admin_user }}"
 #    OS_PASSWORD: "{{ contrail_admin_password }}"
 #    OS_TENANT_NAME: "admin"
-#  run_once: yes
+#  run_once: "yes"
 #  when: keystone_provision 
 #
 #- name: "add neutron user"
@@ -310,7 +310,7 @@
 #    login_user: "{{ contrail_admin_user }}"
 #    login_password: "{{ contrail_admin_password }}"
 #    login_tenant_name: "admin"
-#  run_once: yes
+#  run_once: "yes"
 #  when: keystone_provision 
 #
 #- name: "apply role to user"
@@ -322,7 +322,7 @@
 #    login_user: "{{ contrail_admin_user }}"
 #    login_password: "{{ contrail_admin_password }}"
 #    login_tenant_name: "admin"
-#  run_once: yes
+#  run_once: "yes"
 #  when: keystone_provision 
 
 

@@ -16,7 +16,7 @@
 
 - name: kill dnsmasq
   command: killall dnsmasq
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: restart neutron-dhcp-agent
   service: name=neutron-dhcp-agent state=restarted enabled=yes
@@ -26,4 +26,4 @@
 
 - name: restart xorp
   service: name=xorp state=restarted enabled=yes sleep=10
-  ignore_errors: True
+  ignore_errors: "True"

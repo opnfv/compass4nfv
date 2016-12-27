@@ -8,42 +8,42 @@
 ##############################################################################
 ---
 #- hosts: database
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 
 
 - name: "enable supervisor database"
-#  sudo: True
+#  sudo: "True"
   file:
     path: "/etc/init/supervisor-database.override"
     state: "absent"
 
 
 - name: "-node-common"
-#  sudo: True
+#  sudo: "True"
   include: -node-common.yml
 
 
 - name: "update hosts"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/hosts"
 #    regexp: "^{{ contrail_address }}\t{{ ansible_hostname }}( .*)?$"
 #    line: "{{ contrail_address }}\t{{ ansible_hostname }}\\1"
     regexp: "^{{ contrail_address }}\t{{ inventory_hostname }}( .*)?$"
     line: "{{ contrail_address }}\t{{ inventory_hostname }}\\1"
-    backrefs: yes
+    backrefs: "yes"
 
 
 - name: "make directory for contrail analytics"
-#  sudo: True
+#  sudo: "True"
   file:
     path: "/var/lib/cassandra/data/ContrailAnalytics"
     state: "directory"
 
 
 - name: "modify cassandra conf"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
@@ -58,7 +58,7 @@
 
 
 - name: "set first database host seed"
-#  sudo: True
+#  sudo: "True"
   set_fact:
 #    dbseeds: "{{ hostvars[item.1][ contrail_address ] }}"
      dbseeds: "{{ ip_settings[item.1]['br-prv']['ip'] }}"
@@ -70,7 +70,7 @@
 
 
 - name: "set second database host seed"
-#  sudo: True
+#  sudo: "True"
   set_fact:
 #    dbseeds: "{{ dbseeds }},{{ hostvars[item.1]['contrail_address'] }}"
     dbseeds: "{{ dbseeds }},{{ ip_settings[item.1]['br-prv']['ip'] }}"
@@ -79,7 +79,7 @@
 
 
 - name: "modify seeds list in cassandra conf"
-#  sudo: True
+#  sudo: "True"
   replace:
     dest: "/etc/cassandra/cassandra.yaml"
     regexp: "- seeds:.*$"
@@ -87,7 +87,7 @@
 
 
 - name: "modify cassandra env"
-#  sudo: True
+#  sudo: "True"
   replace:
     dest: "/etc/cassandra/cassandra-env.sh"
     regexp: "{{ item.regexp }}"
@@ -105,7 +105,7 @@
 
 
 - name: "modify zookeeper conf"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/zookeeper/conf/zoo.cfg"
     line: "{{ item }}"
@@ -115,16 +115,16 @@
 
 
 - name: "modify zookeeper log4j properties"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/zookeeper/conf/log4j.properties"
     regexp: "(log4j.appender.ROLLINGFILE.MaxBackupIndex=.*)$"
     line: "\\1"
-    backrefs: yes
+    backrefs: "yes"
 
 
 - name: "add server addresses to zookeeper config"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/zookeeper/conf/zoo.cfg"
     regexp: "server.{{ item.0 + 1 }}="
@@ -134,7 +134,7 @@
 
 
 - name: "set zookeeper unique id"
-#  sudo: True
+#  sudo: "True"
   template:
     src: "../../templates/provision/zookeeper-unique-id.j2"
     dest: "/var/lib/zookeeper/myid"
@@ -143,14 +143,14 @@
 
 
 - name: "remove kafka ini file"
-#  sudo: True
+#  sudo: "True"
   file:
     path: "/etc/contrail/supervisord_database_files/kafka.ini"
     state: "absent"
 
 
 - name: "set first zookeeper host address"
-#  sudo: True
+#  sudo: "True"
   set_fact:
 #    zkaddrs: "{{ hostvars[item.1]['contrail_address'] }}:2181"
     zkaddrs: "{{ ip_settings[item.1]['br-prv']['ip'] }}:2181"
@@ -159,7 +159,7 @@
 
 
 - name: "set second or more zookeeper host addresses"
-#  sudo: True
+#  sudo: "True"
   set_fact:
 #    zkaddrs: "{{ zkaddrs }},{{ hostvars[item.1]['contrail_address'] }}:2181"
     zkaddrs: "{{ zkaddrs }},{{ ip_settings[item.1]['br-prv']['ip'] }}:2181"
@@ -168,7 +168,7 @@
 
 
 - name: "modify zookeeper host addresses in kafka properties"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/usr/share/kafka/config/server.properties"
     regexp: "zookeeper.connect="
@@ -176,7 +176,7 @@
 
 
 - name: "modify kafka properties"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/usr/share/kafka/config/server.properties"
     regexp: "default.replication.factor="
@@ -184,7 +184,7 @@
 
 
 - name: "fix up contrail database nodemgr config"
-#  sudo: True
+#  sudo: "True"
   ini_file:
     dest: "/etc/contrail/contrail-database-nodemgr.conf"
     section: "{{ item.section }}"
@@ -196,14 +196,14 @@
 
 
 - name: "restart zookeeper"
-#  sudo: True
+#  sudo: "True"
   service:
     name: "zookeeper"
     state: "restarted"
 
 
 - name: "restart supervisor database"
-#  sudo: True
+#  sudo: "True"
   service:
     name: "supervisor-database"
     state: "restarted"

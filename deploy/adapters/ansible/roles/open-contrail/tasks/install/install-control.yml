@@ -8,24 +8,24 @@
 ##############################################################################
 ---
 #- hosts: control
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 - name: "temporary disable supervisor control"
-#  sudo: True
+#  sudo: "True"
   template:
 #        src: "templates/override.j2"
     src: "../../templates/install/override.j2"
     dest: "/etc/init/supervisor-control.override"
 
 - name: "temporary disable supervisor dns"
-#  sudo: True
+#  sudo: "True"
   template:
 #        src: "templates/override.j2"
     src: "../../templates/install/override.j2"
     dest: "/etc/init/supervisor-dns.override"
 
 - name: "install contrail openstack control package"
-#  sudo: True
+#  sudo: "True"
 #      apt:
 #        name: "contrail-openstack-control"
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"

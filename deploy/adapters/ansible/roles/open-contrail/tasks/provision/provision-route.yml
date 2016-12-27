@@ -8,17 +8,17 @@
 ##############################################################################
 ---
 #- hosts: all
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 - name: "delete existing route file"
-#  sudo: True
+#  sudo: "True"
   file:
     path: "/etc/network/if-up.d/routes"
     state: absent
   when: contrail_route
 
 - name: "create route file"
-#  sudo: True
+#  sudo: "True"
   file:
     path: "/etc/network/if-up.d/routes"
     owner: "root"
@@ -28,7 +28,7 @@
 
 
 - name: "add template"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/network/if-up.d/routes"
     line: "{{ item }}"
@@ -39,7 +39,7 @@
 
   
 - name: "add static route"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/network/if-up.d/routes"
     line: "ip route add {{ item.ip }} via {{ item.gw }} dev {{ item.device }}"

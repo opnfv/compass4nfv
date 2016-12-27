@@ -11,7 +11,9 @@ odl_username: admin
 odl_password: admin
 odl_api_port: 8181
 
-#odl_pkg_url: https://nexus.opendaylight.org/content/groups/public/org/opendaylight/integration/distribution-karaf/0.3.0-Lithium/distribution-karaf-0.3.0-Lithium.tar.gz
+# odl_pkg_url: https://nexus.opendaylight.org/content/groups/public/org/
+# opendaylight/integration/distribution-karaf/0.3.0-Lithium/
+# distribution-karaf-0.3.0-Lithium.tar.gz
 odl_pkg_url: karaf.tar.gz
 odl_pkg_name: karaf.tar.gz
 odl_home: "/opt/opendaylight-0.3.0/"
@@ -28,4 +30,3 @@ common_packages_noarch: []
 
 odl_pip:
   - networking_odl
-

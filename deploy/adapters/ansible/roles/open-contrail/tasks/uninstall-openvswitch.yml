@@ -24,7 +24,7 @@
 
 - name: remove ovs kernel module
   shell: rmmod vport_vxlan; rmmod openvswitch;
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: copy recovery script
   copy:  src={{ item }} dest=/opt/setup_networks

@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 #- hosts: compute
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 - name: "enable supervisor vrouter"
   file:
@@ -20,7 +20,7 @@
 - name: "check cgroup device acl in qemu conf"
   shell: "grep -q '^\\s*cgroup_device_acl' /etc/libvirt/qemu.conf"
   register: deviceacl
-  ignore_errors: yes
+  ignore_errors: "yes"
   changed_when: no
 
 - name: "create cgroup device acl for qemu conf"

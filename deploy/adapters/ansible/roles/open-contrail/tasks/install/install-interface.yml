@@ -8,14 +8,14 @@
 ##############################################################################
 ---
 #- hosts: all
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 #- name: get last ip address
 #  shell: expr substr `cat /etc/hostname` 5 1 
 #  register: lastip
 
 #- name: "configure interface"
-##  sudo: True
+##  sudo: "True"
 #  lineinfile:
 #    dest: "/etc/network/interfaces"
 #    line: "{{ item }}"
@@ -26,9 +26,9 @@
 #    - "\tnetmask {{ contrail_vhost_netmask }}"
 
 - name: "set interface address"
-#  sudo: True
+#  sudo: "True"
   shell: "ifconfig {{ contrail_vhost_device }} {{ contrail_vhost_address }} netmask {{ contrail_vhost_netmask }}"
 
 - name: "up interface"
-#  sudo: True
+#  sudo: "True"
   shell: "ifconfig {{ contrail_vhost_device }} up"

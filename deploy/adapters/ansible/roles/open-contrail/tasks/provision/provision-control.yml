@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 #- hosts: control
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 - name: "enable supervisor control"
   file:

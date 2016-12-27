@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 #- hosts: config
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 - name: turn off rabbitmq server on control node
   shell: sed -i '/rabbitmq-server/d' /opt/service ;
@@ -56,7 +56,7 @@
 #    module: "template"
 #    src: "templates/rabbitmq-cookie.j2"
 #    dest: "/tmp/tmp-rabbitmq-cookie"
-#  run_once: yes
+#  run_once: "yes"
 #
 #- name: "update cookie uuid"
 #  copy:
@@ -71,7 +71,7 @@
 #    module: "file"
 #    dest: "/tmp/tmp-rabbitmq-cookie"
 #    state: "absent"
-#  run_once: yes
+#  run_once: "yes"
 
 - name: "start rabbitmq server"
   service:

@@ -8,18 +8,18 @@
 ##############################################################################
 ---
 #- hosts: webui
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 
 - name: "temporary disable supervisor webui"
-#  sudo: True
+#  sudo: "True"
   template:
 #        src: "templates/override.j2"
     src: "../../templates/install/override.j2"
     dest: "/etc/init/supervisor-webui.override"
 
 - name: "install contrail openstack webui package"
-#  sudo: True
+#  sudo: "True"
 #      apt:
 #        name: "contrail-openstack-webui"
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"

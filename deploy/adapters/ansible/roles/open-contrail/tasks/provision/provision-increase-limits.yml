@@ -8,24 +8,24 @@
 ##############################################################################
 ---
 #- hosts: [database, config, control, collector]
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 - name: "delete line"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/limits.conf"
     regexp: "^root\\s*soft\\s*nproc\\s*.*"
     state: "absent"
 
 - name: "check EOF"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/security/limits.conf"
     regexp: "^# End of file"
     line: "# End of file"
 
 - name: "add lines"
-#  sudo: True
+#  sudo: "True"
   lineinfile:
     dest: "/etc/security/limits.conf"
     regexp: "{{ item.regexp }}"
@@ -40,19 +40,19 @@
     - { regexp: "^\\*\\s*soft\\s*nproc\\s*.*", line: "* soft nproc 65535" }
 
 - name: change value of sysctl fs.file-max
-#  sudo: True
+#  sudo: "True"
   sysctl:
     name: "fs.file-max"
     value: "65535"
 
 - name: "find supervisord conf files"
-#  sudo: True
+#  sudo: "True"
   shell: "find /etc/contrail -name supervisor*.conf -type f"
   register: supervisordconfs
   changed_when: no
 
 - name: "modify supervisord conf"
-#  sudo: True
+#  sudo: "True"
   replace:
     dest: "{{ item }}"
     regexp: "^minfds=\\d*"

@@ -8,7 +8,7 @@
   shell: 'ps ax | grep -v grep | grep beam'
   register: beam_process
   changed_when: no
-  ignore_errors: yes
+  ignore_errors: "yes"
 
 - name: 'kill beam processes'
   shell: 'pkill -9 beam'
@@ -18,7 +18,7 @@
   shell: 'ps ax | grep -v grep | grep epmd'
   register: epmd_process
   changed_when: no
-  ignore_errors: yes
+  ignore_errors: "yes"
 
 - name: 'kill epmd processes'
   shell: 'pkill -9 epmd'

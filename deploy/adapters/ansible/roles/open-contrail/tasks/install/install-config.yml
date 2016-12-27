@@ -8,17 +8,17 @@
 ##############################################################################
 ---
 #- hosts: config
-#  sudo: yes
+#  sudo: "yes"
 #  tasks:
 - name: "temporary disable supervisor config"
-#  sudo: True
+#  sudo: "True"
   template:
 #        src: "templates/override.j2"
     src: "../../templates/install/override.j2"
     dest: "/etc/init/supervisor-config.override"
 
 - name: "temporary disable neutron server"
-#  sudo: True
+#  sudo: "True"
   template:
 #        src: "templates/override.j2"
     src: "../../templates/install/override.j2"
@@ -44,7 +44,7 @@
 ###############################################
 
 - name: "install contrail openstack config package"
-#  sudo: True
+#  sudo: "True"
 #      apt:
 #        name: "contrail-openstack-config"
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present force=yes"

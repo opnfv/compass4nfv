@@ -13,7 +13,7 @@
     state: "directory"
     owner: "nova"
     group: "nova"
-    recurse: yes
+    recurse: "yes"
 
 - name: "delete values from nova config"
   ini_file:
