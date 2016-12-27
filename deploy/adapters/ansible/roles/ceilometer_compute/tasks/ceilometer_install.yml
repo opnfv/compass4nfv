@@ -30,6 +30,5 @@
   template:
     src: ceilometer.conf.j2
     dest: /etc/ceilometer/ceilometer.conf
-    backup: yes
+    backup: "yes"
   notify: restart ceilometer service
-

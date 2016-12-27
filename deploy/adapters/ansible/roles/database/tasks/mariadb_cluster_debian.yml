@@ -8,7 +8,9 @@
 ##############################################################################
 ---
 - name: get cluster status
-  shell: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"'|awk '{print $2}'
+  shell: |
+    mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"' \
+        | awk '{print $2}'
   register: cluster_status
   when:
     - inventory_hostname == haproxy_hosts.keys()[0]
@@ -22,7 +24,9 @@
     and not cluster_status.stdout | search("OPERATIONAL")
 
 - name: wait for cluster ready
-  shell: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"'|awk '{print $2}'
+  shell: |
+    mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_evs_state"' \
+        | awk '{print $2}'
   register: cluster_status
   until: cluster_status|success
   failed_when: not cluster_status.stdout | search("OPERATIONAL")
@@ -33,7 +37,9 @@
     and not cluster_status.stdout | search("OPERATIONAL")
 
 - name: if I in the cluster nodes
-  shell: mysql --silent --skip-column-names -e 'SHOW STATUS LIKE "wsrep_incoming_addresses"'|awk '{print $2}'
+  shell: |
+    mysql --silent --skip-column-names \
+        -e 'SHOW STATUS LIKE "wsrep_incoming_addresses"' | awk '{print $2}'
   register: cluster_nodes
   changed_when: false
 
@@ -42,7 +48,7 @@
   when: |
     inventory_hostname != haproxy_hosts.keys()[0]
     and not cluster_nodes.stdout | search( "{{ internal_ip }}" )
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: delay 60 seconds
   shell: sleep 60
@@ -55,15 +61,13 @@
 
 - name: chmod directory
   shell: >
-    chmod 755 -R /var/lib/mysql/ ; 
-    chmod 755 -R /var/log/mysql/ ;
-    chmod 755 -R /etc/mysql/conf.d/; 
+    chmod 755 -R /var/lib/mysql/;
+    chmod 755 -R /var/log/mysql/;
+    chmod 755 -R /etc/mysql/conf.d/;
 
 - name: restart first nodes
   shell: service mysql restart
   when: |
-    (inventory_hostname == haproxy_hosts.keys()[0] 
+    (inventory_hostname == haproxy_hosts.keys()[0]
     and haproxy_hosts|length > 1
     and not cluster_nodes.stdout | search( '{{ internal_ip }}' ))
-  
-

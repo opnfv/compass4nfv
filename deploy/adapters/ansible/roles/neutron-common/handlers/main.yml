@@ -8,4 +8,5 @@
 ##############################################################################
 ---
 - name: restart neutron-plugin-openvswitch-agent
-  service: name={{ neutron_plugin_openvswitch_agent_services }} state=restarted enabled=yes
+  service: name={{ neutron_plugin_openvswitch_agent_services }}
+           state=restarted enabled=yes

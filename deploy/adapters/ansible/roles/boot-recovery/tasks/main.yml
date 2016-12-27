@@ -23,4 +23,3 @@
   when: RECOVERY_ENV
   tags:
     - recovery-stop-service
-

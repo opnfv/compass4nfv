@@ -43,7 +43,10 @@
     - storage
 
 - name: set autostart file for centos
-  copy: src=storage.service dest=/usr/lib/systemd/system/storage.service mode=0755
+  copy:
+    src: storage.service
+    dest: /usr/lib/systemd/system/storage.service
+    mode: 0755
   when: ansible_os_family == "RedHat"
   tags:
     - storage
