@@ -1,3 +1,4 @@
+---
 
 TYPE: baremetal
 FLAVOR: cluster
@@ -65,4 +66,3 @@ hosts:
     roles:
       - compute
       - ceph-osd
-

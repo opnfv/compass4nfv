@@ -27,14 +27,19 @@
           group: root
 
     - name: generate ssh keys
-      shell: if [ ! -f ~/.ssh/id_rsa.pub ]; then ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""; else echo "already gen ssh key!"; fi;
+      shell: if [ ! -f ~/.ssh/id_rsa.pub ]; \
+             then ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""; \
+             else echo "already gen ssh key!"; fi;
 
     - name: fetch ssh keys
-      fetch: src=/root/.ssh/id_rsa.pub dest=/tmp/ssh-keys-{{ ansible_hostname }} flat=yes
+      fetch:
+        src: /root/.ssh/id_rsa.pub
+        dest: /tmp/ssh-keys-{{ ansible_hostname }}
+        flat: "yes"
 
     - authorized_key:
         user: root
-        key:  "{{ lookup('file', item) }}"
+        key: "{{ lookup('file', item) }}"
       with_fileglob:
         - /tmp/ssh-keys-*
   max_fail_percentage: 0
@@ -88,10 +93,10 @@
     - cinder-volume
     - ceilometer_compute
 
-#- hosts: all
-#  remote_user: root
-##  max_fail_percentage: 0
-#  roles:
+- hosts: all
+  remote_user: root
+  max_fail_percentage: 0
+  roles: []
 #    - moon
 
 - hosts: all
@@ -104,7 +109,7 @@
   remote_user: root
   max_fail_percentage: 0
   roles: []
-  #  - ceph-deploy
+#    - ceph-deploy
 
 - hosts: ceph
   remote_user: root
@@ -144,8 +149,8 @@
   tasks:
     - name: set bash to nova
       user:
-         name: nova
-         shell: /bin/bash
+        name: nova
+        shell: /bin/bash
 
     - name: make sure ssh dir exist
       file:
@@ -176,13 +181,12 @@
 
     - authorized_key:
         user: nova
-        key:  "{{ lookup('file', item) }}"
+        key: "{{ lookup('file', item) }}"
       with_fileglob:
         - /tmp/ssh-keys-*
 
     - name: chown ssh file
       shell: chown -R nova:nova /var/lib/nova/.ssh;
-
 
 - hosts: all
   remote_user: root
@@ -195,13 +199,6 @@
   max_fail_percentage: 0
   roles:
     - onos_cluster
-
-- hosts: all
-  remote_user: root
-  sudo: True
-  max_fail_percentage: 0
-  roles:
-    - open-contrail
 
 - hosts: all
   remote_user: root
@@ -239,4 +236,3 @@
   max_fail_percentage: 0
   roles:
     - compute-recovery
-

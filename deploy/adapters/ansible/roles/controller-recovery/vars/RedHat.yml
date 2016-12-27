@@ -37,4 +37,3 @@ controller_services:
     - openstack-aodh-evaluator
     - openstack-aodh-listener
     - cron
-

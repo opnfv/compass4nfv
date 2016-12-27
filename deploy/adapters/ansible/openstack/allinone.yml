@@ -1,6 +1,6 @@
 ---
 - hosts: controller
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - kvmfornfv
@@ -14,19 +14,19 @@
     - glance
 
 - hosts: network
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - neutron-network
 
 - hosts: storage
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - cinder-volume
 
 - hosts: compute
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - nova-compute

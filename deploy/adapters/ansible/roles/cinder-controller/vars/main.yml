@@ -11,4 +11,3 @@ packages_noarch:
   - python-cinderclient
 
 services_noarch: []
-

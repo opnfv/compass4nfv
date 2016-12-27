@@ -19,7 +19,9 @@
   tags: secgroup
 
 - name: update controller configs
-  shell: "[ -f '{{ item.1 }}' ] && crudini --merge '{{ item.1 }}' < /opt/os_templates/{{ item.0.src }} || /bin/true"
+  shell: |
+    "[ -f '{{ item.1 }}' ] && crudini --merge '{{ item.1 }}' \
+        < /opt/os_templates/{{ item.0.src }} || /bin/true"
   tags: secgroup
   with_subelements:
     - "{{ configs_templates }}"
@@ -28,11 +30,12 @@
   when: inventory_hostname in "{{ groups['controller'] }}"
 
 - name: update compute configs
-  shell: "[ -f '{{ item.1 }}' ] && crudini --merge '{{ item.1 }}' < /opt/os_templates/{{ item.0.src }} || /bin/true"
+  shell: |
+    "[ -f '{{ item.1 }}' ] && crudini --merge '{{ item.1 }}' \
+        < /opt/os_templates/{{ item.0.src }} || /bin/true"
   tags: secgroup
   with_subelements:
     - "{{ configs_templates }}"
     - dest
   notify: restart compute relation service
   when: inventory_hostname in "{{ groups['compute'] }}"
-

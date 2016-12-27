@@ -1,4 +1,4 @@
-
+---
 TYPE: baremetal
 FLAVOR: cluster
 POWER_TOOL: ipmitool
@@ -10,7 +10,7 @@ hosts:
   - name: host1
     mac: 'E0:97:96:10:67:83'
     interfaces:
-       - eth1: 'E0:97:96:10:67:8B'
+      - eth1: 'E0:97:96:10:67:8B'
     ipmiIp: 192.168.5.173
     ipmiPass: Huawei12#$
     roles:
@@ -63,5 +63,3 @@ hosts:
     roles:
       - compute
       - ceph-osd
-
-

@@ -1,3 +1,4 @@
+---
 ##############################################################################
 # Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
@@ -14,6 +15,25 @@ jdk8_script_name: install_jdk8.tar
 onos_driver: networking-onos.tar
 onos_sfc_driver: networking-sfc.tar
 repository: repository.tar
-onos_boot_features: config,standard,region,package,kar,ssh,management,webconsole,onos-api,onos-core,onos-incubator,onos-cli,onos-rest,onos-gui,onos-openflow-base, onos-openflow, onos-ovsdatabase, onos-ovsdb-base, onos-drivers-ovsdb, onos-ovsdb-provider-host, onos-app-vtn-onosfw
-
-
+onos_boot_features:
+  - config
+  - standard
+  - region
+  - package
+  - kar
+  - ssh
+  - management
+  - webconsole
+  - onos-api
+  - onos-core
+  - onos-incubator
+  - onos-cli
+  - onos-rest
+  - onos-gui
+  - onos-openflow-base
+  - onos-openflow
+  - onos-ovsdatabase
+  - onos-ovsdb-base
+  - onos-drivers-ovsdb
+  - onos-ovsdb-provider-host
+  - onos-app-vtn-onosfw

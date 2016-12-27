@@ -173,13 +173,6 @@ os_users:
     tenant: service
     tenant_description: "Service Tenant"
 
-#  - user: congress
-#    password: "{{ CONGRESS_PASS }}"
-#    email: congress@admin.com
-#    role: admin
-#    tenant: service
-#    tenant_description: "Service Tenant"
-
   - user: demo
     password: "{{ DEMO_PASS }}"
     email: heat@demo.com
@@ -187,10 +180,9 @@ os_users:
     tenant: demo
     tenant_description: "Demo Tenant"
 
-#  - user: swift
-#    password: "{{ CINDER_PASS }}"
-#    email: swift@admin.com
-#    role: admin
-#    tenant: service
-#    tenant_description: "Service Tenant"
-
+# - user: congress
+#   password: "{{ CONGRESS_PASS }}"
+#   email: congress@admin.com
+#   role: admin
+#   tenant: service
+#   tenant_description: "Service Tenant"
