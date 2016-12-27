@@ -16,4 +16,3 @@
     umount /var/lib/glance/images
     sed -i '/\/var\/lib\/glance\/images/d' /etc/fstab
   when: mount_info.stdout.find('images') != -1
-

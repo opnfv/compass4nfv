@@ -12,19 +12,19 @@
   register: http_server
 
 - name: creat tacker_home, tacker_client_home, tacker_horizon_home
-  shell: >
-    mkdir -p /opt/tacker
-    mkdir -p /opt/tacker_client
-    mkdir -p /opt/tacker_horizon
+  shell: |
+    mkdir -p /opt/tacker;
+    mkdir -p /opt/tacker_client;
+    mkdir -p /opt/tacker_horizon;
 
 - name: download tacker package
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_pkg_name }}"  dest=/opt/{{ tacker_pkg_name }}
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_pkg_name }}" dest=/opt/{{ tacker_pkg_name }}
 
 - name: download tacker_client package
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_client_pkg_name }}"  dest=/opt/{{ tacker_client_pkg_name }}
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_client_pkg_name }}" dest=/opt/{{ tacker_client_pkg_name }}
 
 - name: download tacker_horizon package
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_horizon_pkg_name }}"  dest=/opt/{{ tacker_horizon_pkg_name }}
+  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_horizon_pkg_name }}" dest=/opt/{{ tacker_horizon_pkg_name }}
 
 - name: extract tacker package
   command: su -s /bin/sh -c "tar xzf /opt/{{ tacker_pkg_name }} -C {{ tacker_home }} --strip-components 1 --no-overwrite-dir -k --skip-old-files"
@@ -65,9 +65,10 @@
     state: "restarted"
 
 - name: drop and recreate tacker database
-  shell: mysql -e "drop database if exists tacker;";
-         mysql -e "create database tacker character set utf8;";
-         mysql -e "grant all on tacker.* to 'tacker'@'%' identified by 'TACKER_DBPASS';";
+  shell: |
+    mysql -e "drop database if exists tacker;";
+    mysql -e "create database tacker character set utf8;";
+    mysql -e "grant all on tacker.* to 'tacker'@'%' identified by 'TACKER_DBPASS';";
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: get the openstack user info
@@ -83,29 +84,45 @@
   register: endpoint_info
 
 - name: delete the existed tacker endpoint
-  shell: . /opt/admin-openrc.sh; openstack endpoint delete $(openstack endpoint list | grep tacker | awk '{print $2}')
-  when: endpoint_info.stdout.find('tacker') != -1 and inventory_hostname == haproxy_hosts.keys()[0]
+  shell: |
+    . /opt/admin-openrc.sh;
+    openstack endpoint delete \
+        $(openstack endpoint list | grep tacker | awk '{print $2}')
+  when: endpoint_info.stdout.find('tacker') != -1
+        and inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: delete the existed tacker service
-  shell: . /opt/admin-openrc.sh; openstack service delete tacker
-  when: service_info.stdout.find('tacker') != -1 and inventory_hostname == haproxy_hosts.keys()[0]
+  shell: |
+    . /opt/admin-openrc.sh;
+    openstack service delete tacker;
+  when: service_info.stdout.find('tacker') != -1
+        and inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: delete the existed tacker user
-  shell: . /opt/admin-openrc.sh; openstack user delete tacker
-  when: user_info.stdout.find('tacker') != -1 and inventory_hostname == haproxy_hosts.keys()[0]
+  shell: |
+    . /opt/admin-openrc.sh;
+    openstack user delete tacker;
+  when: user_info.stdout.find('tacker') != -1
+        and inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: create tacker user with admin privileges
-  shell: . /opt/admin-openrc.sh; openstack user create --password console tacker; openstack role add --project service --user tacker admin;
+  shell: |
+    . /opt/admin-openrc.sh;
+    openstack user create --password console tacker;
+    openstack role add --project service --user tacker admin;
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: creat tacker service
-  shell: >
-    . /opt/admin-openrc.sh; openstack service create --name tacker --description "Tacker Project" nfv-orchestration
+  shell: |
+    . /opt/admin-openrc.sh;
+    openstack service create --name tacker \
+        --description "Tacker Project" nfv-orchestration
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: provide an endpoint to tacker service
-  shell: >
-    . /opt/admin-openrc.sh; openstack endpoint create --region RegionOne \
+  shell: |
+    . /opt/admin-openrc.sh; \
+    openstack endpoint create --region RegionOne \
         --publicurl 'http://{{ public_vip.ip }}:8888/' \
         --adminurl 'http://{{ internal_vip.ip }}:8888/' \
         --internalurl 'http://{{ internal_vip.ip }}:8888/' tacker
@@ -115,18 +132,16 @@
   pip: name=Babel state=present version=2.3.4
 
 - name: install pip packages
-  shell: >
+  shell: |
     pip install tosca-parser heat-translator oslosphinx;
 
 - name: install tacker
-  shell: >
+  shell: |
     . /opt/admin-openrc.sh; cd {{ tacker_home }}; python setup.py install
 
 - name: create 'tacker' directory in '/var/cache', set ownership and permissions
-  shell: >
+  shell: |
     mkdir -p /var/cache/tacker
-#   sudo chown <LOGIN_USER>:root /var/cache/tacker
-#    chmod 700 /var/cache/tacker
 
 - name: create 'tacker' directory in '/var/log'
   shell: mkdir -p /var/log/tacker
@@ -136,30 +151,40 @@
   with_items: "{{ tacker_configs_templates }}"
 
 - name: edit tacker configuration file
-  shell: crudini --merge /usr/local/etc/tacker/tacker.conf < /opt/os_templates/tacker.j2
+  shell: |
+    crudini --merge /usr/local/etc/tacker/tacker.conf \
+        < /opt/os_templates/tacker.j2
 
 - name: populate tacker database
-  shell: >
-    . /opt/admin-openrc.sh; /usr/local/bin/tacker-db-manage --config-file /usr/local/etc/tacker/tacker.conf upgrade head
+  shell: |
+    . /opt/admin-openrc.sh; \
+    /usr/local/bin/tacker-db-manage \
+        --config-file /usr/local/etc/tacker/tacker.conf upgrade head
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: install tacker client
-  shell: >
-    . /opt/admin-openrc.sh; cd {{ tacker_client_home }}; python setup.py install
+  shell: |
+    . /opt/admin-openrc.sh; cd {{ tacker_client_home }};
+    python setup.py install
 
 - name: install tacker horizon
-  shell: >
-    . /opt/admin-openrc.sh; cd {{ tacker_horizon_home }}; python setup.py install
+  shell: |
+    . /opt/admin-openrc.sh; cd {{ tacker_horizon_home }};
+    python setup.py install
 
 - name: enable tacker horizon in dashboard
-  shell: >
-    cp {{ tacker_horizon_home }}/openstack_dashboard_extensions/* /usr/share/openstack-dashboard/openstack_dashboard/enabled/
+  shell: |
+    cp {{ tacker_horizon_home }}/openstack_dashboard_extensions/* \
+        /usr/share/openstack-dashboard/openstack_dashboard/enabled/
 
 - name: restart apache server
   shell: service apache2 restart
 
 - name: launch tacker-server
-  shell: >
-    . /opt/admin-openrc.sh; python /usr/local/bin/tacker-server --config-file /usr/local/etc/tacker/tacker.conf --log-file /var/log/tacker/tacker.log
+  shell: |
+    . /opt/admin-openrc.sh; \
+    python /usr/local/bin/tacker-server \
+        --config-file /usr/local/etc/tacker/tacker.conf |
+        --log-file /var/log/tacker/tacker.log
   async: 9999999999999
   poll: 0

@@ -1,4 +1,4 @@
-
+---
 TYPE: baremetal
 FLAVOR: cluster
 POWER_TOOL: ipmitool
@@ -71,4 +71,3 @@ hosts:
     roles:
       - compute
       - ceph-osd
-

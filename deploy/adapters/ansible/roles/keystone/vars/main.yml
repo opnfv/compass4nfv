@@ -193,4 +193,3 @@ os_users:
 #    role: admin
 #    tenant: service
 #    tenant_description: "Service Tenant"
-

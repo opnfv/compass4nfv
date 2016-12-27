@@ -67,7 +67,7 @@ os_services:
 #    publicurl: "http://{{ public_vip.ip }}:8776/v1/%(tenant_id)s"
 #    internalurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
 #    adminurl: "http://{{ internal_vip.ip }}:8776/v1/%(tenant_id)s"
-#
+
 #  - name: cinderv2
 #    type: volumev2
 #    region: RegionOne

@@ -1,6 +1,6 @@
 ---
 - hosts: controller
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - database
@@ -13,19 +13,19 @@
     - glance
 
 - hosts: network
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - neutron-network
 
 - hosts: storage
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - cinder-volume
 
 - hosts: compute
-  sudo: True
+  sudo: "True"
   roles:
     - common
     - nova-compute
@@ -33,6 +33,6 @@
 
 - hosts: odl
   remote_user: root
-  sudo: True
+  sudo: "True"
   roles:
     - odl

@@ -24,8 +24,8 @@
 
 - name: kill dnsmasq
   command: killall dnsmasq
-  ignore_errors: True
+  ignore_errors: "True"
 
 - name: restart xorp
   service: name=xorp state=restarted enabled=yes sleep=10
-  ignore_errors: True
+  ignore_errors: "True"

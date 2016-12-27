@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 # install all packages
-- name: install keystone packages
+- name: install unzip packages
   shell: apt-get install -y python-pip unzip
 
 # download master.zip
@@ -17,17 +17,22 @@
   register: http_server
 
 - name: download keystone-moon packages
-  get_url: url="http://{{ http_server.stdout_lines[0] }}/packages/moon/master.zip"  dest=/tmp/master.zip mode=0444
+  get_url:
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/moon/master.zip"
+    dest: /tmp/master.zip
+    mode: 0444
 
 - name: extract keystone-moon packages
   unarchive: src=/tmp/master.zip dest=/tmp copy=no
 
 # install all dependencies
 - name: copy scripts
-  copy:  src=get_deb_depends.py dest=/tmp/get_deb_depends.py
+  copy: src=get_deb_depends.py dest=/tmp/get_deb_depends.py
 
 - name: install keystone-moon dependencies
-  shell: "apt-get install `python /tmp/get_deb_depends.py /tmp/moon-bin-master/*.deb`"
+  shell: |
+    apt-get install \
+        $(python /tmp/get_deb_depends.py /tmp/moon-bin-master/*.deb)
   when: ansible_os_family == "Debian"
 
 - name: delete configuration file
@@ -37,18 +42,18 @@
 
 # install keystone moon
 - name: copy scripts
-  copy:  src=deb.conf dest=/tmp/deb.conf
+  copy: src=deb.conf dest=/tmp/deb.conf
 
 - name: install keystone moon
   shell: >
     export DEBIAN_FRONTEND="noninteractive";
     sudo -E dpkg -i /tmp/moon-bin-master/*moon*.deb;
 
-#- name: install keystone moon
-#  shell: >
-#    export DEBIAN_FRONTEND="noninteractive";
-#    sudo -E debconf-set-selections python-keystone < /tmp/deb.conf;
-#    sudo -E dpkg -i /tmp/moon-bin-master/*moon*.deb;
+# - name: install keystone moon
+#   shell: >
+#     export DEBIAN_FRONTEND="noninteractive";
+#     sudo -E debconf-set-selections python-keystone < /tmp/deb.conf;
+#     sudo -E dpkg -i /tmp/moon-bin-master/*moon*.deb;
 
 - name: stop keystone task
   shell: >
@@ -63,20 +68,20 @@
     path: /var/lib/keystone/keystone.db
     state: absent
 
-#- name: update keystone conf
-#  template: src=keystone.conf dest=/etc/keystone/keystone.conf backup=yes
+# - name: update keystone conf
+#   template: src=keystone.conf dest=/etc/keystone/keystone.conf backup=yes
 
 
-#- name: assure listen port exist
-#  lineinfile:
-#    dest: '{{ apache_config_dir }}/ports.conf'
-#    regexp: '{{ item.regexp }}'
-#    line: '{{ item.line}}'
-#  with_items:
-#    - regexp: "^Listen {{ internal_ip }}:5000"
-#      line: "Listen {{ internal_ip }}:5000"
-#    - regexp: "^Listen {{ internal_ip }}:35357"
-#      line: "Listen {{ internal_ip }}:35357"
+# - name: assure listen port exist
+#   lineinfile:
+#     dest: '{{ apache_config_dir }}/ports.conf'
+#     regexp: '{{ item.regexp }}'
+#     line: '{{ item.line}}'
+#   with_items:
+#     - regexp: "^Listen {{ internal_ip }}:5000"
+#       line: "Listen {{ internal_ip }}:5000"
+#     - regexp: "^Listen {{ internal_ip }}:35357"
+#       line: "Listen {{ internal_ip }}:35357"
 
 - name: update apache2 configs
   template:
@@ -91,24 +96,28 @@
     state: "link"
   when: ansible_os_family == 'Debian'
 
-#- name: keystone source files
-#  template: src={{ item }} dest=/opt/{{ item }}
-#  with_items:
-#    - admin-openrc.sh
-#    - demo-openrc.sh
+# - name: keystone source files
+#   template: src={{ item }} dest=/opt/{{ item }}
+#   with_items:
+#     - admin-openrc.sh
+#     - demo-openrc.sh
 
 # keystone paste ini
 - name: keystone paste ini 1
-  shell: sudo cp /etc/keystone/keystone-paste.ini /etc/keystone/keystone-paste.ini.bak;
+  shell: >
+    sudo cp /etc/keystone/keystone-paste.ini \
+        /etc/keystone/keystone-paste.ini.bak;
 
 - name: keystone paste ini 2
-  shell: sudo sed "3i[pipeline:moon_pipeline]\npipeline = sizelimit url_normalize request_id build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension moon_service\n\n[app:moon_service]\nuse = egg:keystone#moon_service\n" /etc/keystone/keystone-paste.ini > /tmp/keystone-paste.ini;
+  shell: >
+    sudo sed "3i[pipeline:moon_pipeline]\npipeline = sizelimit url_normalize request_id build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension moon_service\n\n[app:moon_service]\nuse = egg:keystone#moon_service\n" /etc/keystone/keystone-paste.ini > /tmp/keystone-paste.ini;
 
 - name: keystone paste ini 3
   shell: sudo cp /tmp/keystone-paste.ini /etc/keystone/keystone-paste.ini;
 
 - name: keystone paste ini 4
-  shell: sudo sed "s/use = egg:Paste#urlmap/use = egg:Paste#urlmap\n\/moon = moon_pipeline/" /etc/keystone/keystone-paste.ini > /tmp/keystone-paste.ini;
+  shell: >
+    sudo sed "s/use = egg:Paste#urlmap/use = egg:Paste#urlmap\n\/moon = moon_pipeline/" /etc/keystone/keystone-paste.ini > /tmp/keystone-paste.ini;
 
 - name: keystone paste ini 5
   shell: sudo cp /tmp/keystone-paste.ini /etc/keystone/keystone-paste.ini;
@@ -139,21 +148,14 @@
     sudo /usr/bin/keystone-manage db_sync --extension moon;
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
-
-#############################################
 - name: wait for keystone ready
   wait_for: port=35357 delay=3 timeout=10 host={{ internal_ip }}
 
-#- name: cron job to purge expired tokens hourly
-#  cron:
-#    name: 'purge expired tokens'
-#    special_time: hourly
-#    job: '/usr/bin/keystone-manage token_flush > /var/log/keystone/keystone-tokenflush.log 2>&1'
-
-#############################################
 # moon workaround
 - name: copy scripts
-  copy:  src=controllers.py dest=/usr/lib/python2.7/dist-packages/keystone/contrib/moon/controllers.py
+  copy:
+    src: controllers.py
+    dest: /usr/lib/python2.7/dist-packages/keystone/contrib/moon/controllers.py
 
 # apache2 restart
 - name: restart apache2
@@ -164,61 +166,55 @@
 - name: install moon client
   shell: sudo pip install /tmp/moon-bin-master/python-moonclient-0.1.tar.gz
 
-###################################################
+# - name: add tenants
+#   keystone_user:
+#     token: "{{ ADMIN_TOKEN }}"
+#     endpoint: "http://{{ internal_ip }}:35357/v2.0"
+#     tenant: "{{ item.tenant }}"
+#     tenant_description: "{{ item.tenant_description }}"
+#   with_items: "{{ os_users }}"
+#   when: inventory_hostname == groups['controller'][0]
 
+# - name: add users
+#   keystone_user:
+#     token: "{{ ADMIN_TOKEN }}"
+#     endpoint: "http://{{ internal_ip }}:35357/v2.0"
+#     user: "{{ item.user }}"
+#     tenant: "{{ item.tenant }}"
+#     password: "{{ item.password }}"
+#     email: "{{ item.email }}"
+#   with_items: "{{ os_users }}"
+#   when: inventory_hostname == groups['controller'][0]
 
-#- name: add tenants
-#  keystone_user:
-#    token: "{{ ADMIN_TOKEN }}"
-#    endpoint: "http://{{ internal_ip }}:35357/v2.0"
-#    tenant: "{{ item.tenant }}"
-#    tenant_description: "{{ item.tenant_description }}"
-#  with_items: "{{ os_users }}"
-#  when: inventory_hostname == groups['controller'][0]
-#
-#- name: add users
-#  keystone_user:
-#    token: "{{ ADMIN_TOKEN }}"
-#    endpoint: "http://{{ internal_ip }}:35357/v2.0"
-#    user: "{{ item.user }}"
-#    tenant: "{{ item.tenant }}"
-#    password: "{{ item.password }}"
-#    email: "{{ item.email }}"
-#  with_items: "{{ os_users }}"
-#  when: inventory_hostname == groups['controller'][0]
-#
-#- name: grant roles
-#  keystone_user:
-#    token: "{{ ADMIN_TOKEN }}"
-#    endpoint: "http://{{ internal_ip }}:35357/v2.0"
-#    user: "{{ item.user }}"
-#    role: "{{ item.role }}"
-#    tenant: "{{ item.tenant }}"
-#  with_items: "{{ os_users }}"
-#  when: inventory_hostname == groups['controller'][0]
-#
-#- name: add endpoints
-#  keystone_service:
-#    token: "{{ ADMIN_TOKEN }}"
-#    endpoint: "http://{{ internal_ip }}:35357/v2.0"
-#    name: "{{ item.name }}"
-#    type: "{{ item.type }}"
-#    region: "{{ item.region}}"
-#    description: "{{ item.description }}"
-#    publicurl: "{{ item.publicurl }}"
-#    internalurl: "{{ item.internalurl }}"
-#    adminurl: "{{ item.adminurl }}"
-#  with_items: "{{ os_services }}"
-#  when: inventory_hostname == groups['controller'][0]
+# - name: grant roles
+#   keystone_user:
+#     token: "{{ ADMIN_TOKEN }}"
+#     endpoint: "http://{{ internal_ip }}:35357/v2.0"
+#     user: "{{ item.user }}"
+#     role: "{{ item.role }}"
+#     tenant: "{{ item.tenant }}"
+#   with_items: "{{ os_users }}"
+#   when: inventory_hostname == groups['controller'][0]
 
-
-###################################################
+# - name: add endpoints
+#   keystone_service:
+#     token: "{{ ADMIN_TOKEN }}"
+#     endpoint: "http://{{ internal_ip }}:35357/v2.0"
+#     name: "{{ item.name }}"
+#     type: "{{ item.type }}"
+#     region: "{{ item.region}}"
+#     description: "{{ item.description }}"
+#     publicurl: "{{ item.publicurl }}"
+#     internalurl: "{{ item.internalurl }}"
+#     adminurl: "{{ item.adminurl }}"
+#   with_items: "{{ os_services }}"
+#   when: inventory_hostname == groups['controller'][0]
 
 - name: update api-paste.ini
   template: src=api-paste.ini dest=/etc/nova/api-paste.ini backup=yes
 
-#- name: update proxy-server conf
-#  template: src=proxy-server.conf dest=/etc/swift/proxy-server.conf backup=yes
+# - name: update proxy-server conf
+#   template: src=proxy-server.conf dest=/etc/swift/proxy-server.conf backup=yes
 
 # restart nova
 - name: restart nova
@@ -230,9 +226,9 @@
     - nova-consoleauth
     - nova-scheduler
 
-# restart swift
-#- name: restart swift
-#  service: name={{ item }} state=restarted enabled=yes
-#  with_items:
-#    - swift-proxy
-#    - memcached
+#  restart swift
+# - name: restart swift
+#   service: name={{ item }} state=restarted enabled=yes
+#   with_items:
+#     - swift-proxy
+#     - memcached
