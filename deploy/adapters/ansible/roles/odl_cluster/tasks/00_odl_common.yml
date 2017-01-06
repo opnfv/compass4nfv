@@ -10,4 +10,4 @@
 
 - name: install controller  packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
-  with_items: common_packages | union(common_packages_noarch)
+  with_items: "{{ common_packages | union(common_packages_noarch) }}"

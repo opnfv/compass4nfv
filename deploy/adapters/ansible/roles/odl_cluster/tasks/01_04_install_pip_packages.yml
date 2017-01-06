@@ -13,9 +13,9 @@
     cd /opt
     tar xf /opt/{{ networking_odl_pkg_name }}
     rm -rf /opt/{{ networking_odl_pkg_name }}
-    sed -i 's/^neutron-lib.*/neutron-lib/' networking-odl-2.0.0/requirements.txt
-    tar zcf /opt/{{ networking_odl_pkg_name }} networking-odl-2.0.0
-    rm -rf networking-odl-2.0.0
+    sed -i 's/^neutron-lib.*/neutron-lib/' networking-odl-3.2.0/requirements.txt
+    tar zcf /opt/{{ networking_odl_pkg_name }} networking-odl-3.2.0
+    rm -rf networking-odl-3.2.0
     cd -
 
 - name: odl pip package install
