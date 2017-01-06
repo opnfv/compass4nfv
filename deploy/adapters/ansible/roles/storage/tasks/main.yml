@@ -51,9 +51,17 @@
   tags:
     - storage
 
-
-- name: enable service
+- name: add to boot scripts
   shell: update-rc.d storage defaults
+  when: ansible_os_family == "Debian"
+  tags:
+    - storage
+
+- name: add to boot scripts
+  shell: |
+    chkconfig --add storage;
+    chkconfig --level 2345 storage on;
+  when: ansible_os_family == 'RedHat'
   tags:
     - storage
 

@@ -9,7 +9,6 @@
 ---
 packages_noarch:
   - python-keystoneclient
-  - python3-keystoneclient
 
 services_noarch: []
 os_services:

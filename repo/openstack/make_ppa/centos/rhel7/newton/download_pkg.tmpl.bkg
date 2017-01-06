@@ -1,20 +1,13 @@
 #!/bin/bash
 set -x
 
-#set OPV="liberty"
+#set OPV="newton"
 
-yum remove systemd -y
-# add 163 repo
-#rm -f /etc/yum.repos.d/CentOS-*.repo
 yum repolist
 yum clean all
 
 yum install yum-plugin-priorities -y
-yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm -y
-yum install http://rdo.fedorapeople.org/openstack-$OPV/rdo-release-${OPV}.rpm -y
-
-# modify centos7 repo for workaround
-sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
+yum install -y centos-release-openstack-${OPV}
 
 # add mongodb repo
 cat <<EOF >/etc/yum.repos.d/mongodb.repo
@@ -25,15 +18,11 @@ gpgcheck=0
 enabled=1
 EOF
 
-# add galeracluster repo
-cat <<EOF >/etc/yum.repos.d/MariaDB.repo
-[mariadb]
-name =MariaDB
-baseurl = http://yum.mariadb.org/5.5/centos7-amd64
-gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-gpgcheck=1
+cat <<EOF >>/etc/yum.conf
+exclude=mongodb-org,mongodb-org-server
 EOF
 
+# add galeracluster repo
 cat <<EOF >/etc/yum.repos.d/syslog.repo
 [rsyslog_v7]
 name=rsyslog
@@ -44,39 +33,15 @@ gpgkey=http://rpms.adiscon.com/RPM-GPG-KEY-Adiscon
 protect=1
 EOF
 
-cat <<EOF >/etc/yum.repos.d/ceph.repo
-[ceph]
-name=Ceph packages for x86_64
-baseurl=http://ceph.com/rpm-hammer/rhel7/x86_64
-enabled=1
-priority=2
-gpgcheck=1
-type=rpm-md
-gpgkey=https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc
-
-[ceph-noarch]
-name=Ceph noarch packages
-baseurl=http://ceph.com/rpm-hammer/rhel7/noarch
-enabled=1
-priority=2
-gpgcheck=1
-type=rpm-md
-gpgkey=https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc
-EOF
-
-cat <<EOF >>/etc/yum.conf
-exclude=mongodb-org,mongodb-org-server
-EOF
-
 yum update -y
 yum install createrepo tar -y
 
-yum -y install --downloadonly MariaDB-Galera-server
+yum -y install --downloadonly mariadb-server-galera
 #download packages
 #set packages = $getVar('default_packages', [])
 yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 #set packages = $getVar('packages', [])
-#silent packages.pop(packages.index('MariaDB-Galera-server'))
+#silent packages.pop(packages.index('mariadb-server-galera'))
 yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
 
 #make repo
@@ -96,3 +61,4 @@ mkdir /centos7-$OPV-ppa/noarch/Packages
 cp -r /centos7-$OPV-ppa/Packages/ceph* /centos7-$OPV-ppa/noarch/Packages/
 cp -r /centos7-$OPV-ppa/repodata/ /centos7-$OPV-ppa/noarch/
 tar -zcvf /centos7-$OPV-ppa.tar.gz /centos7-$OPV-ppa
+
