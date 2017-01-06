@@ -16,3 +16,6 @@ services:
   - openvswitch
   - neutron-openvswitch-agent
   - libvirtd
+
+nova_compute_service:
+  - openstack-nova-compute

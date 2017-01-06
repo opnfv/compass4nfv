@@ -16,7 +16,6 @@ maridb_packages:
   - MariaDB-Galera-server
   - MariaDB-client
   - galera
-  - MySQL-python
 
 mongodb_packages:
   - mongo-10gen-server

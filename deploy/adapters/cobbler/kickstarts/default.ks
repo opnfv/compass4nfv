@@ -87,20 +87,20 @@ $SNIPPET('kickstart_pre_anamon')
 %packages --nobase
 @core
 iproute
-ntp
+# ntp
 openssh-clients
-wget
-yum-plugin-priorities
+# wget
+# yum-plugin-priorities
 json-c
 libestr
 rsyslog
 parted
-vim
-lsof
-strace
-#if $os_version == "rhel7"
-net-tools
-#end if
+# vim
+# lsof
+# strace
+# if $os_version == "rhel7"
+# net-tools
+# end if
 #if $getVar('tool', '') != ''
     #set $kickstart_software = "kickstart_software_%s" % $tool
 $SNIPPET($kickstart_software)
@@ -118,7 +118,7 @@ chkconfig ip6tables off
 
 $SNIPPET('kickstart_yum')
 $SNIPPET('kickstart_ssh')
-$SNIPPET('kickstart_ntp')
+# $SNIPPET('kickstart_ntp')
 $SNIPPET('kickstart_limits.conf')
 $SNIPPET('kickstart_sysctl.conf')
 $SNIPPET('kickstart_rsyslog.conf')
