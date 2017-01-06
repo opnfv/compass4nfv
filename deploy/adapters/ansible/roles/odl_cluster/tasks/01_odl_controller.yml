@@ -33,10 +33,6 @@
   include: 05_set_opendaylight_cluster.yml
   when: groups['odl']|length > 1
 
-- name: install moon
-  include: moon-odl.yml
-  when: moon == "Enable"
-
 - name: start and check odl
   include: 01_07_start_check_odl.yml
 

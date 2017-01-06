@@ -29,5 +29,5 @@
 
 - name: download odl pip package
   get_url:
-    url: "http://{{ http_server.stdout_lines[0] }}/pip/{{ networking_odl_pkg_name }}"
+    url: "http://{{ http_server.stdout_lines[0] }}/pip-openstack/{{ networking_odl_pkg_name }}"
     dest: /opt/{{ networking_odl_pkg_name }}
