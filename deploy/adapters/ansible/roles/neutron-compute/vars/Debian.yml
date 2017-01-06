@@ -17,3 +17,6 @@ packages:
 
 services:
   - neutron-openvswitch-agent
+
+nova_compute_service:
+  - nova-compute

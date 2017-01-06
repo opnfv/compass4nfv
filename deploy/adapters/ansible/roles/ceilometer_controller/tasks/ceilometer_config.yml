@@ -9,24 +9,34 @@
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- name: assure listen port exist
+  lineinfile:
+    dest: '{{ apache_config_dir }}/ports.conf'
+    regexp: "^Listen {{ internal_ip }}:8777"
+    line: "Listen {{ internal_ip }}:8777"
+  notify: restart apache server
+
 - name: update apache2 configs
   template:
     src: wsgi-ceilometer.conf.j2
-    dest: /etc/apache2/sites-available/ceilometer.conf
+    dest: '{{ apache_config_dir }}/sites-available/ceilometer.conf'
+  when: ansible_os_family == 'Debian'
+  notify: reload apache server
+
+- name: update apache2 configs
+  template:
+    src: wsgi-ceilometer.conf.j2
+    dest: '{{ apache_config_dir }}/ceilometer.conf'
+  when: ansible_os_family == 'RedHat'
   notify: reload apache server
 
 - name: enable ceilometer server
   file:
-    src: /etc/apache2/sites-available/ceilometer.conf
-    dest: /etc/apache2/sites-enabled/ceilometer.conf
+    src: "{{ apache_config_dir }}/sites-available/ceilometer.conf"
+    dest: "{{ apache_config_dir }}/sites-enabled/ceilometer.conf"
     state: "link"
   when: ansible_os_family == 'Debian'
   notify: reload apache server
-
-- name: assure listen port exist
-  shell: echo "Listen {{ internal_ip }}:8777" >> /etc/apache2/ports.conf
-  notify:
-    - restart apache server
 
 - name: copy glance & cinder configs
   template:

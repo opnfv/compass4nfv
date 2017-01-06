@@ -385,6 +385,11 @@ function make_osppa()
     make_repo --os-ver xenial --package-tag newton \
               --ansible-dir $COMPASS_PATH/deploy/adapters/ansible \
               --default-package "openssh-server"
+
+    make_repo --os-ver rhel7 --package-tag newton \
+              --ansible-dir $COMPASS_PATH/deploy/adapters/ansible \
+              --default-package "rsyslog-7.6.7-1.el7 strace net-tools wget vim openssh-server \
+                                 dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
 }
 
 function make_compass_repo()
