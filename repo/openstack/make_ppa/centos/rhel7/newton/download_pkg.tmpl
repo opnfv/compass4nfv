@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-#set OPV="mitaka"
+#set OPV="newton"
 
 yum remove systemd -y
 # add 163 repo
@@ -77,3 +77,4 @@ mkdir /centos7-$OPV-ppa/noarch/Packages
 cp -r /centos7-$OPV-ppa/Packages/ceph* /centos7-$OPV-ppa/noarch/Packages/
 cp -r /centos7-$OPV-ppa/repodata/ /centos7-$OPV-ppa/noarch/
 tar -zcvf /centos7-$OPV-ppa.tar.gz /centos7-$OPV-ppa
+
