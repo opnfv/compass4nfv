@@ -24,6 +24,10 @@
   shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
   register: COMPASS_SERVER
 
+- name: add yum repository for openstack
+  template: src=openstack_ppa_repo.repo.j2 dest=/etc/yum.repos.d/openstack_ppa_repo.repo
+  when: ansible_os_family == "RedHat"
+
 - name: update compass-core name and ip to hosts files
   shell: |
     echo "# compass" >> /etc/hosts;
