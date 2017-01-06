@@ -10,7 +10,6 @@
 packages:
   - ceph-radosgw
   - fcgi
-  - ceph-deploy
   - ceph
 
 services: []

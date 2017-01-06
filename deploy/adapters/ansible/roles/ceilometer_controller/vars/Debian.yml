@@ -12,6 +12,7 @@ ceilometer_packages:
   - ceilometer-collector
   - ceilometer-agent-central
   - ceilometer-agent-notification
+  - ceilometer-agent-compute
   - python-ceilometerclient
 
 ceilometer_services:
@@ -24,3 +25,10 @@ glance_cinder_services:
   - glance-api
   - cinder-api
   - cinder-scheduler
+
+services:
+  - apache2
+
+apache_config_dir: /etc/apache2
+http_service_name: apache2
+WSGIScriptAlias_path: /usr/lib/python2.7/dist-packages/ceilometer/api/app.wsgi

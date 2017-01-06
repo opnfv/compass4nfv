@@ -88,7 +88,7 @@ function download_packages()
      for i in $CENTOS_BASE $LOADERS $CIRROS $APP_PACKAGE \
               $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $COMPASS_PKG \
               $PIP_REPO $PIP_OPENSTACK_REPO $ANSIBLE_MODULE \
-              $UBUNTU_ISO $CENTOS_ISO $XENIAL_NEWTON_PPA; do
+              $UBUNTU_ISO $CENTOS_ISO $XENIAL_NEWTON_PPA $CENTOS7_NEWTON_PPA; do
 
          if [[ ! $i ]]; then
              continue
@@ -128,8 +128,8 @@ function copy_file()
         cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
     fi
 
-    if [[ $REDHAT7_ISO ]]; then
-        cp $CACHE_DIR/`basename $REDHAT7_ISO` $new/repos/cobbler/redhat/iso/ -rf
+    if [[  $CENTOS7_NEWTON_PPA ]]; then
+        cp $CACHE_DIR/`basename $CENTOS7_NEWTON_PPA` $new/repos/cobbler/centos/ppa/ -rf
     fi
 
     cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1

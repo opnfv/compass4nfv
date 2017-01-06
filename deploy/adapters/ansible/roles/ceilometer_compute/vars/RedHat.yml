@@ -15,3 +15,6 @@ ceilometer_packages:
 ceilometer_services:
   - openstack-ceilometer-compute
   - openstack-nova-compute
+
+nova_services:
+  - openstack-nova-compute
