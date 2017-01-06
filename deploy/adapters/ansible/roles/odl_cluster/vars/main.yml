@@ -14,9 +14,9 @@ odl_api_port: 8181
 # odl_pkg_url: https://nexus.opendaylight.org/content/groups/public/org/
 # opendaylight/integration/distribution-karaf/0.3.0-Lithium/
 # distribution-karaf-0.3.0-Lithium.tar.gz
-odl_pkg_url: karaf.tar.gz
-odl_pkg_name: karaf.tar.gz
-odl_home: "/opt/opendaylight-0.3.0/"
+odl_pkg_url: distribution-karaf-0.5.0-Boron.tar.gz
+odl_pkg_name: distribution-karaf-0.5.0-Boron.tar.gz
+odl_home: "/opt/opendaylight-0.5.0/"
 odl_base_features:
   - config
   - standard
@@ -45,7 +45,6 @@ odl_extra_features:
 
 odl_features: "{{ odl_base_features + odl_extra_features }}"
 
-odl_aaa_moon: odl-aaa-moon.tar.gz
 
 jdk8_pkg_name: jdk-8u51-linux-x64.tar.gz
 jdk8_script_name: install_jdk8.tar
