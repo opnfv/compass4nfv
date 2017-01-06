@@ -76,7 +76,7 @@ cat << EOF > /etc/init.d/set_state
 #
 #end raw
 
-wget -O /tmp/os_state --post-data='{"ready": true}' --header=Content-Type:application/json "http://$srv/api/hosts/${hostname}/state_internal"
+curl -H "Content-Type: application/json" -X POST -d '{"ready": true}' "http://$srv/api/hosts/${hostname}/state_internal"
 chkconfig set_state off
 mv /etc/init.d/set_state /tmp/set_state
 EOF

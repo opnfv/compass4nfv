@@ -50,8 +50,3 @@
   shell: rm /var/lib/nova/nova.sqlite || touch nova.sqlite.removed
 
 - meta: flush_handlers
-
-- name: restart nova-compute and libvirt-bin
-  shell: >
-    service nova-compute restart;
-    service libvirt-bin restart;

@@ -74,5 +74,12 @@
 
 - name: add to boot scripts
   shell: update-rc.d net_init defaults
+  when: ansible_os_family == "Debian"
+
+- name: add to boot scripts
+  shell: |
+    chkconfig --add net_init;
+    chkconfig --level 2345 net_init on;
+  when: ansible_os_family == 'RedHat'
 
 - meta: flush_handlers
