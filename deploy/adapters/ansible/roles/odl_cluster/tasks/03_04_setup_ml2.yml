@@ -10,12 +10,10 @@
 
 - name: configure opendaylight -> ml2
   shell: >
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 \
-        mechanism_drivers opendaylight;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 \
-        tenant_network_types vxlan;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs \
-        enable_tunneling "True";
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling "True";
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security;
 
 - name: copy ml2 configuration script
   template:
