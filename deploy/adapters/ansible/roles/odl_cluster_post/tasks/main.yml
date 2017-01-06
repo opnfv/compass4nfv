@@ -6,3 +6,15 @@
 - name: add service daemon
   shell: echo opendaylight >> /opt/service ;
   when: inventory_hostname in groups['odl']
+
+- name: stop neutron l3 agent
+  service: name=neutron-l3-agent state=stop enabled=no
+  when: odl_l3_agent == "Enable" and inventory_hostname in groups['odl']
+
+- name: remove neutron l3 agent
+  shell: >
+    sed -i '/neutron-l3-agent/d' /opt/service;
+    mv /lib/systemd/system/neutron-l3-agent.service /home;
+    mv /etc/init/neutron-l3-agent.conf /home;
+    mv /etc/init.d/neutron-l3-agent /home;
+  when: odl_l3_agent == "Enable" and inventory_hostname in groups['odl']
