@@ -59,6 +59,13 @@ function save_network_info()
         sudo ip addr add $ip_info dev br-external
         sudo ip route add $route_info dev br-external
     fi
+
+    # Configure OS_MGMT_NIC when openstack external network and mgmt network use different nics
+    if [[ x"$OS_MGMT_NIC" != "x" ]]; then
+        sudo ovs-vsctl --may-exist add-port br-external $OS_MGMT_NIC
+        sudo ip link set $OS_MGMT_NIC up
+        sudo ip addr flush $OS_MGMT_NIC
+    fi
 }
 
 function setup_bridge_external()
