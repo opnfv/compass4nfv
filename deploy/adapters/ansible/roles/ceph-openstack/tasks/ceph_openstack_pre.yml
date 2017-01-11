@@ -61,14 +61,15 @@
     - vms
   when: inventory_hostname in groups['ceph_adm']
 
+# yamllint disable rule:line-length
 - name: create ceph users for openstack
   shell: |
     ceph auth get-or-create client.cinder mon 'allow r' osd \
-        'allow class-read object_prefix rbd_children, allow rwx pool=volumes, \
-        allow rwx pool=vms, allow rx pool=images';
+        'allow class-read object_prefix rbd_children, allow rwx pool=volumes, allow rwx pool=vms, allow rx pool=images';
     ceph auth get-or-create client.glance mon 'allow r' osd \
         'allow class-read object_prefix rbd_children, allow rwx pool=images';
   when: inventory_hostname in groups['ceph_adm']
+# yamllint enable rule:line-length
 
 - name: send glance key to controller nodes
   shell: |
