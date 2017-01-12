@@ -14,7 +14,7 @@ provider_net_mappings:
 sys_intf_mappings:
   - name: mgmt
     interface: eth3
-    vlan_tag: 854
+    vlan_tag: 805
     type: vlan
     role:
       - controller
