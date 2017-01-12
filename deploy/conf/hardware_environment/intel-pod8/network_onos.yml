@@ -5,7 +5,7 @@ bond_mappings: []
 provider_net_mappings:
   - name: br-prv
     network: physnet
-    interface: eth2
+    interface: eth1
     type: ovs
     role:
       - controller
@@ -14,7 +14,7 @@ provider_net_mappings:
 sys_intf_mappings:
   - name: mgmt
     interface: eth3
-    vlan_tag: 854
+    vlan_tag: 805
     type: vlan
     role:
       - controller
