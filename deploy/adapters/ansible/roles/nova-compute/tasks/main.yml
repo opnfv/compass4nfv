@@ -31,7 +31,7 @@
   when: ansible_os_family == "Debian"
 
 - name: get number of cpu support virtualization
-  shell: egrep -c '(vmx|svm)' /proc/cpuinfo
+  shell: egrep -c '(vmx|svm)' /proc/cpuinfo || echo 0
   register: kvm_cpu_num
 
 - name: update nova-compute conf
