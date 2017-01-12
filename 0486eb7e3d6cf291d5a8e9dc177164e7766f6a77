@@ -22,6 +22,30 @@
       "revId": "0486eb7e3d6cf291d5a8e9dc177164e7766f6a77",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_03ea1e75",
+        "filename": "deploy/conf/hardware_environment/intel-pod8/network_onos.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 306
+      },
+      "writtenOn": "2017-01-12T09:20:59Z",
+      "side": 1,
+      "message": "yes, you are right, should be eth1",
+      "parentUuid": "5ac10518_a3454ab4",
+      "range": {
+        "startLine": 8,
+        "startChar": 15,
+        "endLine": 8,
+        "endChar": 19
+      },
+      "revId": "0486eb7e3d6cf291d5a8e9dc177164e7766f6a77",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
