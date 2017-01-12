@@ -29,7 +29,7 @@
         --provider:network_type {{ public_net_info.type }} \
         --provider:physical_network {{ public_net_info.provider_network }} \
         --router:external "True"
-  when: public_net_info.enable == True
+  when: public_net_info.enable == "True"
         and inventory_hostname == groups['controller'][0]
 
 - name: create external subnet
@@ -42,5 +42,5 @@
         --allocation-pool \
         start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }} \
         {{ public_net_info.network }} {{ public_net_info.floating_ip_cidr }}
-  when: public_net_info.enable == True
+  when: public_net_info.enable == "True"
         and inventory_hostname == groups['controller'][0]
