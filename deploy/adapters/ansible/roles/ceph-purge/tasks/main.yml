@@ -20,6 +20,7 @@
   tags:
     - ceph_purge
     - ceph_deploy
+  when: ansible_os_family == "Debian"
 
 - name: purge ceph
   shell: |
@@ -29,6 +30,7 @@
   tags:
     - ceph_purge
     - ceph_deploy
+  when: ansible_os_family == "Debian"
 
 - name: remove monmap
   file: path="/tmp/monmap" state="absent"

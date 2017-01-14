@@ -30,6 +30,13 @@
   shell: chown -R ceph:ceph /var/local/osd
   when: ansible_os_family == "Debian"
 
+- name: copy ceph-crush-location to osd host
+  copy:
+    src: ceph-crush-location.in
+    dest: /usr/bin/ceph-crush-location
+    mode: 0755
+  when: ansible_os_family == "RedHat"
+
 - name: activate osd node
   shell: ceph-disk activate /var/local/osd
 
