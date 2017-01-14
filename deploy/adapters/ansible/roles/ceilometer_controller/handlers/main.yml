@@ -16,7 +16,9 @@
   with_items: "{{ glance_cinder_services }}"
 
 - name: reload apache server
-  service: name=apache2 state=reloaded
+  service: name={{ item }} state=reloaded
+  with_items: "{{ services }}"
 
 - name: restart apache server
-  service: name=apache2 state=restarted enabled=yes
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: "{{ services }}"

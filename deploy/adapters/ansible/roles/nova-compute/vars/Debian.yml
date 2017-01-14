@@ -13,3 +13,4 @@ packages:
 
 services:
   - nova-compute
+  - libvirt-bin
