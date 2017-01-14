@@ -223,6 +223,12 @@
   remote_user: root
   max_fail_percentage: 0
   roles:
+    - openstack-post
+
+- hosts: controller
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
     - boot-recovery
 
 - hosts: controller
