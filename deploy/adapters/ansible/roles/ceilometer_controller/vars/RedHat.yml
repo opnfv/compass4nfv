@@ -18,7 +18,6 @@ ceilometer_packages:
 ceilometer_services:
   - openstack-ceilometer-central
   - openstack-ceilometer-notification
-  - openstack-ceilometer-api
   - openstack-ceilometer-collector
 
 glance_cinder_services:
@@ -32,4 +31,4 @@ services:
 
 apache_config_dir: /etc/httpd/conf.d
 http_service_name: httpd
-WSGIScriptAlias_path: /usr/lib/python2.7/site-packages/ceilometer/api/app.wsgi
+WSGIScriptAlias_file: /usr/lib/python2.7/site-packages/ceilometer/api/app.wsgi

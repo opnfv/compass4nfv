@@ -6,7 +6,7 @@
 <VirtualHost {{ internal_ip }}:8777>
     WSGIDaemonProcess ceilometer-api processes=4 threads={{ work_threads }} user=ceilometer group=ceilometer display-name=%{GROUP}
     WSGIProcessGroup ceilometer-api
-    WSGIScriptAlias / {{ WSGIScriptAlias_path }}
+    WSGIScriptAlias / /var/www/cgi-bin/ceilometer/app
     WSGIApplicationGroup %{GLOBAL}
     ErrorLog /var/log/{{ http_service_name }}/ceilometer_error.log
     CustomLog /var/log/{{ http_service_name }}/ceilometer_access.log combined
