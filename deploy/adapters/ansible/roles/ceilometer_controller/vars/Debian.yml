@@ -31,4 +31,4 @@ services:
 
 apache_config_dir: /etc/apache2
 http_service_name: apache2
-WSGIScriptAlias_path: /usr/lib/python2.7/dist-packages/ceilometer/api/app.wsgi
+WSGIScriptAlias_file: /usr/lib/python2.7/dist-packages/ceilometer/api/app.wsgi

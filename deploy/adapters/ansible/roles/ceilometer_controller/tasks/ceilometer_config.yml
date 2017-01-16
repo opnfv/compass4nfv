@@ -16,18 +16,21 @@
     line: "Listen {{ internal_ip }}:8777"
   notify: restart apache server
 
+- name: create WSGIScriptAlias Path
+  file:
+    path: /var/www/cgi-bin/ceilometer
+    state: directory
+    mode: 0755
+
+- name: copy WSGIScriptAlias file
+  shell: |
+    cp {{WSGIScriptAlias_file}} /var/www/cgi-bin/ceilometer/app;
+
 - name: update apache2 configs
   template:
     src: wsgi-ceilometer.conf.j2
     dest: '{{ apache_config_dir }}/sites-available/ceilometer.conf'
   when: ansible_os_family == 'Debian'
-  notify: reload apache server
-
-- name: update apache2 configs
-  template:
-    src: wsgi-ceilometer.conf.j2
-    dest: '{{ apache_config_dir }}/ceilometer.conf'
-  when: ansible_os_family == 'RedHat'
   notify: reload apache server
 
 - name: enable ceilometer server
@@ -36,6 +39,13 @@
     dest: "{{ apache_config_dir }}/sites-enabled/ceilometer.conf"
     state: "link"
   when: ansible_os_family == 'Debian'
+  notify: reload apache server
+
+- name: update apache2 configs
+  template:
+    src: wsgi-ceilometer.conf.j2
+    dest: '{{ apache_config_dir }}/ceilometer.conf'
+  when: ansible_os_family == 'RedHat'
   notify: reload apache server
 
 - name: copy glance & cinder configs
