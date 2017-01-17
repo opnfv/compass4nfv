@@ -141,3 +141,6 @@ echo "+-----------------+----------+--------------------------------+"
 echo "NOTE: openrc file is in the controller nodes"
 echo ""
 
+if [[ ${DHA##*/} =~ "openo" ]]; then
+    python ${COMPASS_DIR}/deploy/opera_adapter.py $DHA $NETWORK
+fi

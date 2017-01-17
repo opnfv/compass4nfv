@@ -1,0 +1,43 @@
+---
+TYPE: virtual
+FLAVOR: cluster
+
+hosts:
+  - name: host1
+    roles:
+      - controller
+      - ha
+      - ceph-adm
+      - ceph-mon
+
+  - name: host2
+    roles:
+      - controller
+      - ha
+      - ceph-mon
+
+  - name: host3
+    roles:
+      - controller
+      - ha
+      - ceph-mon
+
+  - name: host4
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host5
+    roles:
+      - compute
+      - ceph-osd
+
+openo:
+  cpu: 4
+  memory: 64
+  disk: 100
+  net: external
+  ip: 192.168.57.50
+  gw: 192.168.57.250
+  mask: 255.255.255.0
+  iso_url: http://205.177.226.237:9999/CentOS-7-x86_64-Minimal-1511.iso
