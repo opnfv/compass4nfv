@@ -7,122 +7,114 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: set keystone endpoint
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack endpoint set \
-        --interface public \
-        --url {{ item.publicurl }} \
-        $(openstack endpoint list | grep keystone | grep public \
-        | awk '{print $2}');
-    openstack endpoint set \
-        --interface internal \
-        --url {{ item.internalurl }} \
-        $(openstack endpoint list | grep keystone | grep internal \
-        | awk '{print $2}');
-    openstack endpoint set \
-        --interface admin \
-        --url {{ item.adminurl }} \
-        $(openstack endpoint list | grep keystone | grep admin \
-        | awk '{print $2}');
+- name: set admin url for keystone endpoint
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: admin
+    region: "{{ item.region}}"
+    url: "{{ item.adminurl }}"
   with_items: "{{ os_services[0:1] }}"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
+
+- name: set internal url for keystone endpointl
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: internal
+    region: "{{ item.region}}"
+    url: "{{ item.internalurl }}"
+  with_items: "{{ os_services[0:1] }}"
+
+- name: set public url for keystone endpoint
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: public
+    region: "{{ item.region}}"
+    url: "{{ item.publicurl }}"
+  with_items: "{{ os_services[0:1] }}"
 
 - name: add service
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack service create \
-        --name "{{ item.name }}"
-        --description "{{ item.description }}" \
-        {{ item.type }}
-  with_items: "{{ os_services[1:] }}"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
+  os_keystone_service:
+    cloud: opnfv
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    service_type: "{{ item.type }}"
+  with_items: "{{ os_services }}"
 
 - name: add project
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack project create --description "Service Project" service;
-    openstack project create --domain default --description "Demo Project" demo;
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
-
-- name: set admin user
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack user set \
-        --email "{{ item.email }}" \
-        --project "{{ item.tenant }}" \
-        --description "{{ item.tenant_description }}" \
-        --password "{{ item.password }}" \
-        {{ item.user }}
+  os_project:
+    cloud: opnfv
+    domain_id: default
+    name: "{{ item.tenant }}"
+    description: "{{ item.tenant_description }}"
   with_items: "{{ os_users }}"
-  when: item["user"] == "admin"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
 
 - name: add user
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack user create \
-        --email "{{ item.email }}" \
-        --project "{{ item.tenant }}" \
-        --description "{{ item.tenant_description }}" \
-        --password "{{ item.password }}" \
-        {{ item.user }}
-  with_items: "{{ os_users[1:] }}"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
+  os_user:
+    cloud: opnfv
+    domain: default
+    name: "{{ item.user }}"
+    password: "{{ item.password }}"
+    default_project: "{{ item.tenant }}"
+    email: "{{ item.email }}"
+  with_items: "{{ os_users }}"
 
 - name: add roles
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack role create {{ item.role }}
+  os_keystone_role:
+    cloud: opnfv
+    name: "{{ item.role }}"
   with_items: "{{ os_users }}"
-  when: item["user"] == "demo"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
 
 - name: grant roles
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack role add \
-        --project "{{ item.tenant }}" \
-        --user "{{ item.user }}" \
-        {{ item.role }}
+  os_user_role:
+    cloud: opnfv
+    user: "{{ item.user }}"
+    role: "{{ item.role }}"
+    project: "{{ item.tenant }}"
   with_items: "{{ os_users }}"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
 
-- name: add endpoints
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack endpoint create \
-        --region {{ item.region }} \
-        {{ item.name }} public {{ item.publicurl }};
-    openstack endpoint create \
-        --region {{ item.region }} \
-        {{ item.name }} internal {{ item.internalurl }};
-    openstack endpoint create \
-        --region {{ item.region }} \
-        {{ item.name }} admin {{ item.adminurl }};
+- name: create admin url for service's endpoint
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: admin
+    region: "{{ item.region}}"
+    url: "{{ item.adminurl }}"
   with_items: "{{ os_services[1:] }}"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
+
+- name: create internal url for service's endpoint
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: internal
+    region: "{{ item.region}}"
+    url: "{{ item.internalurl }}"
+  with_items: "{{ os_services[1:] }}"
+
+- name: create public url for service'e endpoint
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: public
+    region: "{{ item.region}}"
+    url: "{{ item.publicurl }}"
+  with_items: "{{ os_services[1:] }}"

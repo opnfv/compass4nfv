@@ -88,11 +88,20 @@
   notify:
     - restart keystone services
 
+- name: create path for os-client-config
+  file:
+    path: /etc/openstack
+    state: directory
+    mode: 0755
+
+- name: copy os-client-config
+  template:
+    src: clouds.yml.j2
+    dest: /etc/openstack/clouds.yml
+
 - name: keystone source files
   template: src={{ item }} dest=/opt/{{ item }}
   with_items:
     - admin-openrc.sh
     - admin-openrc-v2.sh
     - demo-openrc.sh
-
-- meta: flush_handlers
