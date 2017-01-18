@@ -67,10 +67,12 @@
     python /opt/setup_networks/check_network.py \
            "{{ inventory_hostname }}" \
            "{{ ip_settings | to_json }}"
-  tags:
-    - network_check
+  register: result
+  until: result.stderr.find('unreachable')==-1
   retries: 3
   delay: 2
+  tags:
+    - network_check
 
 - name: add to boot scripts
   shell: update-rc.d net_init defaults
