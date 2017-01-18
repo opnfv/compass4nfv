@@ -417,37 +417,31 @@ function make_feature_repo()
     mkdir -p $COMPASS_PATH/work/repo/packages
     mkdir -p $COMPASS_PATH/work/repo/temp
 
-    echo "$OPNFV_VERSION"
+    if [[ -d $COMPASS_PATH/work/repo/temp/make_pkg ]]; then
+        rm -rf $COMPASS_PATH/work/repo/temp/make_pkg
+    fi
 
-    for i in $OPNFV_VERSION; do
-        mkdir -p $COMPASS_PATH/work/repo/packages/$i
-        mkdir -p $COMPASS_PATH/work/repo/temp/$i
-        if [[ -d $COMPASS_PATH/work/repo/temp/make_pkg ]]; then
-            rm -rf $COMPASS_PATH/work/repo/temp/make_pkg
-        fi
-        mkdir -p $COMPASS_PATH/work/repo/temp/make_pkg
+    mkdir -p $COMPASS_PATH/work/repo/temp/make_pkg
 
-        if [[ ! -d $COMPASS_PATH/repo/features/$i ]]; then
-            echo "No $i in compass feature directory."
-            return
-        fi
+    cp -rf $COMPASS_PATH/repo/features/scripts/* $COMPASS_PATH/work/repo/temp/make_pkg
 
-        cp -rf $COMPASS_PATH/repo/features/$i/* $COMPASS_PATH/work/repo/temp/make_pkg
+    sed -i "s/REPLACE_ODL_PKG/$ODL_PKG/g" $COMPASS_PATH/work/repo/temp/make_pkg/download_odl.sh
+    sed -i "s/REPLACE_JAVA_PKG/$JAVA_PKG/g" $COMPASS_PATH/work/repo/temp/make_pkg/download_java.sh
 
-        feature_dockerfile=Dockerfile
-        feature_docker_tag=trusty/feature
+    feature_dockerfile=Dockerfile
+    feature_docker_tag=trusty/feature
 
-        if [[ ! -f $COMPASS_PATH/repo/features/$feature_dockerfile ]]; then
-            echo "No Dockerfile in compass feature directory."
-            return
-        fi
+    if [[ ! -f $COMPASS_PATH/repo/features/$feature_dockerfile ]]; then
+        echo "No Dockerfile in compass feature directory."
+        return
+    fi
 
-        cp -f $COMPASS_PATH/repo/features/$feature_dockerfile $COMPASS_PATH/work/repo/temp/
+    cp -f $COMPASS_PATH/repo/features/$feature_dockerfile $COMPASS_PATH/work/repo/temp/
 
 cat <<EOF >${COMPASS_PATH}/work/repo/temp/cp_pkg.sh
 #!/bin/bash
 set -ex
-cp /*.tar.gz /feature -f
+cp /pkg/* /feature -rf
 EOF
 
 cat <<EOF >${COMPASS_PATH}/work/repo/temp/feature_run.sh
@@ -458,20 +452,14 @@ for z in \$_script; do
     . /run_script/\$z
 done
 EOF
-        sudo docker build --no-cache=true -t ${feature_docker_tag} -f ${COMPASS_PATH}/work/repo/temp/${feature_dockerfile} ${COMPASS_PATH}/work/repo/temp
-        sudo docker run -t -v ${COMPASS_PATH}/work/repo/packages:/feature ${feature_docker_tag}
+    sudo docker build --no-cache=true -t ${feature_docker_tag} -f ${COMPASS_PATH}/work/repo/temp/${feature_dockerfile} ${COMPASS_PATH}/work/repo/temp
+    sudo docker run -t -v ${COMPASS_PATH}/work/repo/packages:/feature ${feature_docker_tag}
 
-        image_id=$(sudo docker images|grep ${feature_docker_tag}|awk '{print $3}')
+    image_id=$(sudo docker images|grep ${feature_docker_tag}|awk '{print $3}')
 
-        sudo docker rmi -f ${image_id}
-
-        mv ${COMPASS_PATH}/work/repo/packages/*.tar.gz $COMPASS_PATH/work/repo/packages/$i
-
-    done
+    sudo docker rmi -f ${image_id}
 
     cd ${COMPASS_PATH}/work/repo/
     tar -zcvf ${COMPASS_PATH}/work/repo/packages.tar.gz packages/
     cd -
 }
-
-
