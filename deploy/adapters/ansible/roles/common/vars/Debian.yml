@@ -21,6 +21,8 @@ pip_packages:
   - crudini
   - python-keyczar
   - yang2tosca
+  - shade
+  - os-client-config
 
 pip_conf: pip.conf
 
