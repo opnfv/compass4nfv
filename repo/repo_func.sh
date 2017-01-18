@@ -183,106 +183,43 @@ function make_repo()
     sudo docker rmi -f ${image_id}
 }
 
-function _try_fetch_dependency()
-{
-    local dir_name=''
-    if [ -f $1 ];then
-        case $1 in
-            *.tar.bz2)
-                tar xjf $1
-                dir_name="$(basename $1 .tar.bz2)"
-                ;;
-            *.tar.gz)
-                tar xzf $1
-                dir_name="$(basename $1 .tar.gz)"
-                ;;
-            *.bz2)
-                bunzip2 $1
-                dir_name="$(basename $1 .bz2)"
-                ;;
-            *.rar)
-                unrar e $1
-                dir_name="$(basename $1 .rar)"
-                ;;
-            *.gz)
-                gunzip $1
-                dir_name="$(basename $1 .gz)"
-                ;;
-            *.tar)
-                tar xf $1
-                dir_name="$(basename $1 .tar)"
-                ;;
-            *.tbz2)
-                tar xjf $1
-                dir_name="$(basename $1 .tbz2)"
-                ;;
-            *.tgz)
-                tar xzf $1
-                dir_name="$(basename $1 .tgz)"
-                ;;
-            *.zip)
-                gunzip $1
-                dir_name="$(basename $1 .zip)"
-                ;;
-            *)
-                echo "'$1' cannot be extract()"
-                return
-                ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-        return
-    fi
-
-    if [ ! -f ${dir_name}/requirements.txt ]; then
-        echo "${dir_name}/requirements.txt does not exist"
-        return
-    fi
-
-    pip install --download=$2 -r ${dir_name}/requirements.txt
-
-    rm -rf $dir_name
-}
-
-function try_fetch_dependency()
-{
-    cd $3
-    _try_fetch_dependency $1/$2 $1
-    cd -
-}
-
 function make_pip_repo()
 {
-    source $COMPASS_PATH/repo/repo.conf
-    local pip_path=$COMPASS_PATH/work/repo/pip
-    local pip_tmp_path=$COMPASS_PATH/work/repo/pip_tmp
+    local work_repo=$COMPASS_PATH/work/repo
+    local pip_path=$work_repo/pip
+    local pip_tmp=$work_repo/pip_tmp
+    local pip_openstack=$work_repo/pip-openstack
 
-    for i in $SPECIAL_PIP_PACKAGE; do
-        curl --connect-timeout 10 -o $pip_path/`basename $i` $i
-    done
+    if [[ -d $pip_tmp ]]; then
+        rm -rf $pip_tmp
+    fi
 
-    mkdir -p $pip_tmp_path
+    if [[ -d $pip_path ]]; then
+        rm -rf $pip_path
+    fi
 
-    for i in $PIP_PACKAGE; do
-        curl --connect-timeout 10 -o $pip_path/$(basename $i) $i
-        try_fetch_dependency $pip_path $(basename $i) $pip_tmp_path
-    done
+    if [[ -d $pip_openstack ]]; then
+        rm -rf $pip_openstack
+    fi
 
-    rm -rf $pip_tmp_path
+    mkdir -p $pip_path $pip_tmp $pip_openstack
+
+    # download python packages for compass-core
+    pip install --no-cache-dir -d $pip_path -r $REPO_PATH/pip/core-requirement.txt
+    pip install --no-cache-dir -d $pip_path pip --no-use-wheel
 
     _make_pip
 
-    cd $COMPASS_PATH/work/repo
+    tar -zxvf $pip_tmp/pip-openstack.tar.gz -C $work_repo
 
-    rm -rf openstack_pip
+    # download extra python packages for deployment
+    pip install --no-cache-dir -d $pip_openstack -r $REPO_PATH/pip/extra-requirement-wheel.txt
+    pip install --no-cache-dir -d $pip_openstack -r $REPO_PATH/pip/extra-requirement-tar.txt --no-use-wheel
 
-    rm -rf pip-openstack; mkdir -p pip-openstack
-
-    tar -zxvf openstack_pip.tar.gz; cp -f openstack_pip/* pip-openstack/
-
-    cp -f pip/* pip-openstack/
-
-    tar -zcvf pip-openstack.tar.gz ./pip-openstack; cd -
+    cd $work_repo
+    tar -zcvf pip.tar.gz pip/
+    tar -zcvf pip-openstack.tar.gz pip-openstack/
+    cd -
 
 }
 
@@ -336,42 +273,52 @@ EOF
 
 function _make_pip()
 {
-    if [[ ! -f ${COMPASS_PATH}/repo/openstack/pip/Dockerfile ]]; then
+    local pip_tmp=${COMPASS_PATH}/work/repo/pip_tmp
+
+    if [[ ! -f ${COMPASS_PATH}/repo/pip/Dockerfile ]]; then
         echo "No Dockerfile for making pip repo!"
         return
     fi
 
-    if [[ -d ${COMPASS_PATH}/repo/openstack_pip ]]; then
-        rm -rf ${COMPASS_PATH}/work/repo/openstack_pip
-    fi
+    cp -f ${COMPASS_PATH}/repo/pip/Dockerfile $pip_tmp
+    cp -f ${COMPASS_PATH}/repo/pip/code_url.conf $pip_tmp
 
-    mkdir -p ${COMPASS_PATH}/work/repo/openstack_pip
-
-    cp -f ${COMPASS_PATH}/repo/openstack/pip/Dockerfile ${COMPASS_PATH}/work/repo/openstack_pip/
-    cp -f ${COMPASS_PATH}/repo/openstack/pip/code_url.conf ${COMPASS_PATH}/work/repo/openstack_pip/
-
-cat <<EOF >${COMPASS_PATH}/work/repo/openstack_pip/cp_pip.sh
+cat <<EOF >$pip_tmp/cp_pip.sh
 #!/bin/bash
 set -ex
 cp /*.tar.gz /env -f
 EOF
 
-cat <<EOF >${COMPASS_PATH}/work/repo/openstack_pip/make_pip.sh
+cat <<EOF >$pip_tmp/make_pip.sh
 #!/bin/bash
 set -ex
 source code_url.conf
 for i in \$GIT_URL; do
     mkdir -p /home/tmp
     git clone \$i -b \$BRANCH /home/tmp
-    pip install -r /home/tmp/requirements.txt -d openstack_pip/
+    pip install -r /home/tmp/requirements.txt -d pip-openstack/
+    rm -rf /home/tmp
+done
+EOF
+
+cat <<EOF >$pip_tmp/make_pip_wheel.sh
+#!/bin/bash
+set -ex
+pip install pip --upgrade
+source code_url.conf
+for i in \$PIP_GIT_URL; do
+    mkdir -p /home/tmp
+    repo=\${i##*/}
+    git clone \$i -b \$BRANCH /home/tmp/\${repo%.*}
+    pip wheel --wheel-dir /pip-openstack/ /home/tmp/\${repo%.*}
     rm -rf /home/tmp
 done
 EOF
 
     pip_docker_tag="pip/env"
 
-    sudo docker build --no-cache=true -t ${pip_docker_tag} -f ${COMPASS_PATH}/work/repo/openstack_pip/Dockerfile ${COMPASS_PATH}/work/repo/openstack_pip
-    sudo docker run -t -v ${COMPASS_PATH}/work/repo:/env ${pip_docker_tag}
+    sudo docker build --no-cache=true -t ${pip_docker_tag} -f $pip_tmp/Dockerfile $pip_tmp
+    sudo docker run -t -v $pip_tmp:/env ${pip_docker_tag}
 
     image_id=$(sudo docker images|grep ${pip_docker_tag}|awk '{print $3}')
 
@@ -417,37 +364,31 @@ function make_feature_repo()
     mkdir -p $COMPASS_PATH/work/repo/packages
     mkdir -p $COMPASS_PATH/work/repo/temp
 
-    echo "$OPNFV_VERSION"
+    if [[ -d $COMPASS_PATH/work/repo/temp/make_pkg ]]; then
+        rm -rf $COMPASS_PATH/work/repo/temp/make_pkg
+    fi
 
-    for i in $OPNFV_VERSION; do
-        mkdir -p $COMPASS_PATH/work/repo/packages/$i
-        mkdir -p $COMPASS_PATH/work/repo/temp/$i
-        if [[ -d $COMPASS_PATH/work/repo/temp/make_pkg ]]; then
-            rm -rf $COMPASS_PATH/work/repo/temp/make_pkg
-        fi
-        mkdir -p $COMPASS_PATH/work/repo/temp/make_pkg
+    mkdir -p $COMPASS_PATH/work/repo/temp/make_pkg
 
-        if [[ ! -d $COMPASS_PATH/repo/features/$i ]]; then
-            echo "No $i in compass feature directory."
-            return
-        fi
+    cp -rf $COMPASS_PATH/repo/features/scripts/* $COMPASS_PATH/work/repo/temp/make_pkg
 
-        cp -rf $COMPASS_PATH/repo/features/$i/* $COMPASS_PATH/work/repo/temp/make_pkg
+    sed -i "s#REPLACE_ODL_PKG#$ODL_PKG#g" $COMPASS_PATH/work/repo/temp/make_pkg/download_odl.sh
+    sed -i "s#REPLACE_JAVA_PKG#$JAVA_PKG#g" $COMPASS_PATH/work/repo/temp/make_pkg/download_java.sh
 
-        feature_dockerfile=Dockerfile
-        feature_docker_tag=trusty/feature
+    feature_dockerfile=Dockerfile
+    feature_docker_tag=trusty/feature
 
-        if [[ ! -f $COMPASS_PATH/repo/features/$feature_dockerfile ]]; then
-            echo "No Dockerfile in compass feature directory."
-            return
-        fi
+    if [[ ! -f $COMPASS_PATH/repo/features/$feature_dockerfile ]]; then
+        echo "No Dockerfile in compass feature directory."
+        return
+    fi
 
-        cp -f $COMPASS_PATH/repo/features/$feature_dockerfile $COMPASS_PATH/work/repo/temp/
+    cp -f $COMPASS_PATH/repo/features/$feature_dockerfile $COMPASS_PATH/work/repo/temp/
 
 cat <<EOF >${COMPASS_PATH}/work/repo/temp/cp_pkg.sh
 #!/bin/bash
 set -ex
-cp /*.tar.gz /feature -f
+cp /pkg/* /feature -rf
 EOF
 
 cat <<EOF >${COMPASS_PATH}/work/repo/temp/feature_run.sh
@@ -458,20 +399,14 @@ for z in \$_script; do
     . /run_script/\$z
 done
 EOF
-        sudo docker build --no-cache=true -t ${feature_docker_tag} -f ${COMPASS_PATH}/work/repo/temp/${feature_dockerfile} ${COMPASS_PATH}/work/repo/temp
-        sudo docker run -t -v ${COMPASS_PATH}/work/repo/packages:/feature ${feature_docker_tag}
+    sudo docker build --no-cache=true -t ${feature_docker_tag} -f ${COMPASS_PATH}/work/repo/temp/${feature_dockerfile} ${COMPASS_PATH}/work/repo/temp
+    sudo docker run -t -v ${COMPASS_PATH}/work/repo/packages:/feature ${feature_docker_tag}
 
-        image_id=$(sudo docker images|grep ${feature_docker_tag}|awk '{print $3}')
+    image_id=$(sudo docker images|grep ${feature_docker_tag}|awk '{print $3}')
 
-        sudo docker rmi -f ${image_id}
-
-        mv ${COMPASS_PATH}/work/repo/packages/*.tar.gz $COMPASS_PATH/work/repo/packages/$i
-
-    done
+    sudo docker rmi -f ${image_id}
 
     cd ${COMPASS_PATH}/work/repo/
     tar -zcvf ${COMPASS_PATH}/work/repo/packages.tar.gz packages/
     cd -
 }
-
-

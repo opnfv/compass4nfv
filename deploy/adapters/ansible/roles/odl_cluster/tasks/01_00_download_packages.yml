@@ -14,12 +14,12 @@
 
 - name: download oracle-jdk8 package file
   get_url:
-    url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_pkg_name }}"
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/java/{{ jdk8_pkg_name }}"
     dest: /opt/{{ jdk8_pkg_name }}
 
 - name: download oracle-jdk8 script file
   get_url:
-    url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ jdk8_script_name }}"
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/java/{{ jdk8_script_name }}"
     dest: /opt/
 
 - name: download odl package

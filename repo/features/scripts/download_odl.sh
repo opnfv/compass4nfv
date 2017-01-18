@@ -11,8 +11,7 @@ set -ex
 
 TIMEOUT=10
 
-PACKAGE_URL=http://205.177.226.237:9999
-
-curl --connect-timeout $TIMEOUT -o /odl.tar.gz $PACKAGE_URL/odl.tar.gz
-
-
+for i in REPLACE_ODL_PKG; do
+    mkdir -p /pkg/odl
+    curl --connect-timeout $TIMEOUT -o /pkg/odl/${i##*/} $i
+done
