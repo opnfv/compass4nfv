@@ -69,6 +69,8 @@
            "{{ ip_settings | to_json }}"
   tags:
     - network_check
+  register: result
+  until: result.stderr.find('unreachable')==-1
   retries: 3
   delay: 2
 
