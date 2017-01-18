@@ -20,11 +20,11 @@
     - keystone_config
     - keystone
 
+- meta: flush_handlers
+
 - include: keystone_create.yml
   when: inventory_hostname == groups['controller'][0]
   tags:
     - config
     - keystone_create
     - keystone
-
-- meta: flush_handlers
