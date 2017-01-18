@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_1cdfd80e",
+        "filename": "deploy/adapters/ansible/roles/setup-network/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2017-01-18T04:45:58Z",
+      "side": 1,
+      "message": "it will be better to put the tags in the end of this task.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 19
+      },
+      "revId": "99addc2e7530e71be892656b4e0f6823707c2702",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
