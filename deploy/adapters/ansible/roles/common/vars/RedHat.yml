@@ -24,6 +24,8 @@ packages:
 pip_packages:
   - crudini
   - python-keyczar
+  - shade
+  - os-client-config
 
 pip_conf: pip.conf
 

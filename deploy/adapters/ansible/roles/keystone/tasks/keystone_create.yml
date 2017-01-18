@@ -32,82 +32,44 @@
   delay: 5
 
 - name: add service
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack service create \
-        --name "{{ item.name }}"
-        --description "{{ item.description }}" \
-        {{ item.type }}
-  with_items: "{{ os_services[1:] }}"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
+  os_keystone_service:
+    cloud: opnfv
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    service_type: "{{ item.type }}"
+  with_items: "{{ os_services }}"
 
 - name: add project
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack project create --description "Service Project" service;
-    openstack project create --domain default --description "Demo Project" demo;
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
-
-- name: set admin user
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack user set \
-        --email "{{ item.email }}" \
-        --project "{{ item.tenant }}" \
-        --description "{{ item.tenant_description }}" \
-        --password "{{ item.password }}" \
-        {{ item.user }}
+  os_project:
+    cloud: opnfv
+    domain_id: default
+    name: "{{ item.tenant }}"
+    description: "{{ item.tenant_description }}"
   with_items: "{{ os_users }}"
-  when: item["user"] == "admin"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
 
 - name: add user
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack user create \
-        --email "{{ item.email }}" \
-        --project "{{ item.tenant }}" \
-        --description "{{ item.tenant_description }}" \
-        --password "{{ item.password }}" \
-        {{ item.user }}
-  with_items: "{{ os_users[1:] }}"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
+  os_user:
+    cloud: opnfv
+    domain: default
+    name: "{{ item.user }}"
+    password: "{{ item.password }}"
+    default_project: "{{ item.tenant }}"
+    email: "{{ item.email }}"
+  with_items: "{{ os_users }}"
 
 - name: add roles
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack role create {{ item.role }}
+  os_keystone_role:
+    cloud: opnfv
+    name: "{{ item.role }}"
   with_items: "{{ os_users }}"
-  when: item["user"] == "demo"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
 
 - name: grant roles
-  shell:
-    . /opt/admin-openrc.sh;
-    openstack role add \
-        --project "{{ item.tenant }}" \
-        --user "{{ item.user }}" \
-        {{ item.role }}
+  os_user_role:
+    cloud: opnfv
+    user: "{{ item.user }}"
+    role: "{{ item.role }}"
+    project: "{{ item.tenant }}"
   with_items: "{{ os_users }}"
-  register: result
-  until: result.rc == 0
-  retries: 10
-  delay: 5
 
 - name: add endpoints
   shell:
