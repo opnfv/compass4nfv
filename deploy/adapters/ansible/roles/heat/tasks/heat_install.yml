@@ -17,16 +17,34 @@
   lineinfile: dest=/opt/service create=yes line='{{ item }}'
   with_items: "{{ services | union(services_noarch) }}"
 
-- name: create heat user domain
-  shell: |
-    . /opt/admin-openrc.sh;
-    openstack domain create --description "Stack projects and users" heat;
-    openstack user create --domain heat --password {{ HEAT_PASS }} \
-        heat_domain_admin;
-    openstack role add --domain heat --user-domain heat \
-        --user heat_domain_admin admin;
-    openstack role create heat_stack_owner;
-    openstack role add --project demo --user demo heat_stack_owner;
+- name: create heat domain
+  os_keystone_domain:
+    cloud: opnfv
+    name: heat
+    state: present
+    description: "Stack projects and users"
+  when: inventory_hostname == groups['controller'][0]
+
+- name: create heat user
+  os_user:
+    cloud: opnfv
+    domain: heat
+    name: heat_domain_user
+    password: "{{ HEAT_PASS }}"
+  when: inventory_hostname == groups['controller'][0]
+
+- name: create heat role
+  os_keystone_role:
+    cloud: opnfv
+    name: heat_stack_owner
+  when: inventory_hostname == groups['controller'][0]
+
+- name: grant heat role
+  os_user_role:
+    cloud: opnfv
+    user: demo
+    project: demo
+    role: heat_stack_owner
   when: inventory_hostname == groups['controller'][0]
 
 - name: update heat conf
