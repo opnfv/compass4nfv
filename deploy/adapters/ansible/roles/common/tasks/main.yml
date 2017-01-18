@@ -65,6 +65,17 @@
   pip: name={{ item }} state=present extra_args='--pre'
   with_items: "{{ pip_packages }}"
 
+- name: create path for os-client-config
+  file:
+    path: /root/.config/openstack
+    state: directory
+    mode: 0755
+
+- name: copy os-client-config
+  template:
+    src: cloud.yml.j2
+    dest: /root/.config/openstack/cloud.yml
+
 - name: install keyczar for accelerate
   pip: name=python-keyczar state=present extra_args='--pre'
   delegate_to: 127.0.0.1
