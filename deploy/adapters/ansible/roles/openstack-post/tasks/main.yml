@@ -7,20 +7,14 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-
 - name: create openstack flavors
-  shell: |
-    . /opt/admin-openrc.sh;
-    openstack flavor show m1.nano || openstack flavor create \
-        --id 0 --vcpus 1 --ram 64 --disk 1 m1.nano
-    openstack flavor show m1.tiny || openstack flavor create \
-        --id 1 --vcpus 1 --ram 512 --disk 1 m1.tiny
-    openstack flavor show m1.small || openstack flavor create \
-        --id 2 --vcpus 1 --ram 2048 --disk 20 m1.small
-    openstack flavor show m1.medium || openstack flavor create \
-        --id 3 --vcpus 2 --ram 4096 --disk 40 m1.medium
-    openstack flavor show m1.large || openstack flavor create \
-        --id 4 --vcpus 4 --ram 8192 --disk 80 m1.large
-    openstack flavor show m1.xlarge || openstack flavor create \
-        --id 5 --vcpus 8 --ram 16384 --disk 160 m1.xlarge
+  os_nova_flavor:
+    cloud: opnfv
+    state: present
+    flavorid: "{{ item.id }}"
+    name: "{{ item.name }}"
+    vcpus: "{{ item.vcpus }}"
+    ram: "{{ item.ram }}"
+    disk: "{{ item.disk }}"
+  with_items: "{{ flavors }}"
   when: inventory_hostname == groups['controller'][0]
