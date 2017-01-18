@@ -1,0 +1,12 @@
+---
+clouds:
+  opnfv:
+    auth:
+      username: 'admin'
+      password: {{ ADMIN_PASS }}
+      project_name: 'admin'
+      auth_url: 'http://{{ internal_vip.ip }}35357/v3'
+      project_domain_name: default
+      user_domain_name: default
+    identity_api_version: 3
+    region_name: RegionOne

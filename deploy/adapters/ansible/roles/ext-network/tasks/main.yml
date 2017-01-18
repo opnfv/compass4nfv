@@ -22,25 +22,43 @@
   wait_for: port=9696 delay=10 timeout=60 host={{ internal_ip }}
 
 - name: create external net
-  shell:
-    . /opt/admin-openrc.sh;
-    neutron net-create \
-        {{ public_net_info.network }} \
-        --provider:network_type {{ public_net_info.type }} \
-        --provider:physical_network {{ public_net_info.provider_network }} \
-        --router:external "True"
+  os_network:
+    cloud: opnfv
+    name: "{{ public_net_info.network }}"
+    provider_network_type: "{{ public_net_info.type }}"
+    provider_physical_network: "{{ public_net_info.provider_network }}"
+    shared: false
+    external: "yes"
+    state: present
+  run_once: true
   when: public_net_info.enable == "True"
-        and inventory_hostname == groups['controller'][0]
+        and public_net_info.type == "flat"
+
+- name: create external net
+  os_network:
+    cloud: opnfv
+    name: "{{ public_net_info.network }}"
+    provider_network_type: "{{ public_net_info.type }}"
+    provider_physical_network: "{{ public_net_info.provider_network }}"
+    provider_segmentation_id: "{{ public_net_info.segment_id }}"
+    shared: false
+    external: "yes"
+    state: present
+  run_once: true
+  when: public_net_info.enable == "True"
+        and public_net_info.type != "flat"
 
 - name: create external subnet
-  shell:
-    . /opt/admin-openrc.sh;
-    neutron subnet-create \
-        --name {{ public_net_info.subnet }} \
-        --gateway {{ public_net_info.external_gw }} \
-        --disable-dhcp \
-        --allocation-pool \
-        start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }} \
-        {{ public_net_info.network }} {{ public_net_info.floating_ip_cidr }}
+  os_subnet:
+    cloud: opnfv
+    name: "{{ public_net_info.subnet }}"
+    network_name: "{{ public_net_info.network }}"
+    cidr: "{{ public_net_info.floating_ip_cidr }}"
+    enable_dhcp: "{{ public_net_info.enable_dhcp }}"
+    no_gateway_ip: "{{ public_net_info.no_gateway }}"
+    gateway_ip: "{{ public_net_info.external_gw }}"
+    allocation_pool_start: "{{ public_net_info.floating_ip_start }}"
+    allocation_pool_end: "{{ public_net_info.floating_ip_end }}"
+    state: present
+  run_once: true
   when: public_net_info.enable == "True"
-        and inventory_hostname == groups['controller'][0]
