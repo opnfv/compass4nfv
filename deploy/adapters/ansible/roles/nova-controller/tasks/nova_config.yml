@@ -14,7 +14,7 @@
     - restart nova service
 
 - name: nova db sync
-  nova_manage: action=dbsync
+  shell: su -s /bin/sh -c "nova-manage db sync" nova
   notify:
     - restart nova service
 

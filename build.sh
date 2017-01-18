@@ -87,7 +87,7 @@ function download_packages()
 {
      for i in $CENTOS_BASE $LOADERS $CIRROS $APP_PACKAGE \
               $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $COMPASS_PKG \
-              $PIP_REPO $PIP_OPENSTACK_REPO $ANSIBLE_MODULE \
+              $PIP_REPO $PIP_OPENSTACK_REPO \
               $UBUNTU_ISO $CENTOS_ISO $XENIAL_NEWTON_PPA $CENTOS7_NEWTON_PPA; do
 
          if [[ ! $i ]]; then
@@ -134,7 +134,6 @@ function copy_file()
 
     cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1
     cp $CACHE_DIR/`basename $APP_PACKAGE` $new/app_packages/ -rf || exit 1
-    cp $CACHE_DIR/`basename $ANSIBLE_MODULE | sed 's/.git//g'`  $new/ansible/ -rf || exit 1
 
     if [[ $CIRROS ]]; then
         cp $CACHE_DIR/`basename $CIRROS` $new/guestimg/ -rf || exit 1

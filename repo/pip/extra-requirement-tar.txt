@@ -2,3 +2,4 @@
 # download format tar.gz
 
 networking-odl==3.2.0
+shade==1.14.1
