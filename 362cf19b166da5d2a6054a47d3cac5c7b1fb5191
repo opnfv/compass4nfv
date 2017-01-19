@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "5ac10518_ba100302",
+        "filename": "deploy/conf/vm_environment/opera/network.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-01-19T06:30:34Z",
+      "side": 1,
+      "message": "open-o: \n  open-o_ip_cidr: \"192.168.57.0/24\"\n  open-o_ip_gw: \"192.168.57.xxx\"\n  open-o_ip_start: \"192.168.57.xxx\"\n  open-o_ip_end: \"192.168.57.xxx\"\n\nis used to instead of detailed open-o network",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "362cf19b166da5d2a6054a47d3cac5c7b1fb5191",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ac10518_9a6e6795",
         "filename": "deploy/conf/vm_environment/opera/os-nosdn-openo-ha.yml",
         "patchSetId": 2
