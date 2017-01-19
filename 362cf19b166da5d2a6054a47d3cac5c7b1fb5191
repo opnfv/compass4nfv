@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_9a92e79d",
+        "filename": "deploy/conf/vm_environment/opera/network.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-01-19T06:16:38Z",
+      "side": 1,
+      "message": "it is better to add copyright license information in each new file.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 3
+      },
+      "revId": "362cf19b166da5d2a6054a47d3cac5c7b1fb5191",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_9a6e6795",
+        "filename": "deploy/conf/vm_environment/opera/os-nosdn-openo-ha.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-01-19T06:16:38Z",
+      "side": 1,
+      "message": "it is inappropriate to have all open-o detailed configuration in this files. Cloud you follow genesis common configuration https://git.opnfv.org/genesisreq/tree/common/config/deploy/example.yaml ?\n\njust like:\ndeploy_options:\n  open-o: true\n    - network_config: open-o_network.yml\n    - resource_config: open-o_resource_network.yml\n\nopen-o_network.yml and open-o_resource_network.yml should be downloaded from open-o git repo and can be reused by other installers.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 71
+      },
+      "revId": "362cf19b166da5d2a6054a47d3cac5c7b1fb5191",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_3a6df398",
+        "filename": "deploy/conf/vm_environment/os-nosdn-openo-ha.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-01-19T06:16:38Z",
+      "side": 1,
+      "message": "why different with ../opera/os-nosdn-openo-ha.yml?",
+      "revId": "362cf19b166da5d2a6054a47d3cac5c7b1fb5191",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_5a68ff86",
+        "filename": "deploy/opera_adapter.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-01-19T06:16:38Z",
+      "side": 1,
+      "message": "Can these configuration be obtained from opera instead of generating them?",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 57
+      },
+      "revId": "362cf19b166da5d2a6054a47d3cac5c7b1fb5191",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
