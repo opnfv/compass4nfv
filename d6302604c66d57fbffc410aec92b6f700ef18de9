@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_dd5b892c",
+        "filename": "repo/repo.conf",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-01-19T08:48:18Z",
+      "side": 1,
+      "message": "please try to use requirements.txt to instead of these. and there should be several different requirements for OpenStack and Compass.",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 129
+      },
+      "revId": "d6302604c66d57fbffc410aec92b6f700ef18de9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
