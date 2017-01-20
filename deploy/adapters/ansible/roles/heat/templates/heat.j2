@@ -12,6 +12,14 @@ log_dir = /var/log/heat
 stack_domain_admin = heat_domain_admin
 stack_domain_admin_password = {{ HEAT_PASS }}
 stack_user_domain_name = heat
+{% if ansible_processor_vcpus > 30 %}
+num_engine_workers = 30
+{% endif %}
+
+[heat_api]
+{% if ansible_processor_vcpus > 30 %}
+workers = 30
+{% endif %}
 
 [database]
 connection = mysql://heat:{{ HEAT_DBPASS }}@{{ db_host }}/heat
