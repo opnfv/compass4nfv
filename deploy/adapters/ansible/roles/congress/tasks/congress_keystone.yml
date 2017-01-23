@@ -1,0 +1,70 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+###############################################################################
+---
+- name: add service
+  os_keystone_service:
+    cloud: opnfv
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    service_type: "{{ item.type }}"
+  with_items: "{{ congress_service }}"
+
+- name: add user
+  os_user:
+    cloud: opnfv
+    domain: default
+    name: "{{ item.user }}"
+    password: "{{ item.password }}"
+    default_project: "{{ item.tenant }}"
+    email: "{{ item.email }}"
+  with_items: "{{ congress_user }}"
+
+- name: grant roles
+  os_user_role:
+    cloud: opnfv
+    user: "{{ item.user }}"
+    role: "{{ item.role }}"
+    project: "{{ item.tenant }}"
+  with_items: "{{ congress_user }}"
+
+- name: create admin url for service's endpoint
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: admin
+    region: "{{ item.region}}"
+    url: "{{ item.adminurl }}"
+  with_items: "{{ congress_service }}"
+
+- name: create internal url for service's endpoint
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: internal
+    region: "{{ item.region}}"
+    url: "{{ item.internalurl }}"
+  with_items: "{{ congress_service }}"
+
+- name: create public url for service'e endpoint
+  keystone_endpoint:
+    cloud: opnfv
+    endpoint_type: admin
+    name: "{{ item.name }}"
+    service_type: "{{ item.type }}"
+    state: present
+    interface: public
+    region: "{{ item.region}}"
+    url: "{{ item.publicurl }}"
+  with_items: "{{ congress_service }}"

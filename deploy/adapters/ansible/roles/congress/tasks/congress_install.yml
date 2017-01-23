@@ -7,11 +7,9 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
-
 - name: install congress packages
   pip: name={{ item }} state=present
-  with_items: "{{ packages }}"
+  with_items: "{{ pip_packages | union(packages_noarch) }}"
 
 - name: create congress etc directory
   file: path=/etc/congress state=directory
@@ -23,9 +21,13 @@
     - congress.conf
     - api-paste.ini
     - policy.json
+  notify:
+    - restart congress services
 
 - name: create congress service
-  copy: src=congress.service dest=/lib/systemd/system/
+  template: src=congress.service dest=/lib/systemd/system/
+  notify:
+    - restart congress services
 
 - name: create congress service work dir
   file: path=/var/lib/congress state=directory
