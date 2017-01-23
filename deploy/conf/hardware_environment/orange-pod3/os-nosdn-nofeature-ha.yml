@@ -16,7 +16,6 @@ hosts:
     roles:
       - controller
       - ha
-      - onos
       - ceph-adm
       - ceph-mon
 
@@ -29,7 +28,7 @@ hosts:
     roles:
       - controller
       - ha
-      - onos
+      - ceph-osd
       - ceph-mon
 
   - name: cheesecakeR630
@@ -41,8 +40,7 @@ hosts:
     roles:
       - controller
       - ha
-      - onos
-      - ceph-mon
+      - ceph-osd
 
   - name: eclairR730
     mac: 'EC:F4:BB:CB:62:AC'
