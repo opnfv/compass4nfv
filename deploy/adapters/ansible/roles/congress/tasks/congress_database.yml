@@ -1,4 +1,4 @@
-##############################################################################
+#############################################################################
 # Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
@@ -12,7 +12,7 @@
     login_unix_socket: /var/run/mysqld/mysqld.sock
     name: "{{ item.db }}"
     state: present
-  with_items: "{{ credentials }}"
+  with_items: "{{ congress_database }}"
 
 - name: create congress db user
   mysql_user:
@@ -23,5 +23,12 @@
     host: "{{ item[1] }}"
     state: present
   with_nested:
-    - "{{ credentials }}"
+    - "{{ congress_database }}"
     - ['%', 'localhost']
+
+- name: congress db sync
+  shell: |
+    /usr/local/bin/congress-db-manage \
+        --config-file /etc/congress/congress.conf upgrade head
+  notify:
+    - restart congress services

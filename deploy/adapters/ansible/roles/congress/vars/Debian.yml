@@ -12,10 +12,5 @@ packages:
   - python-congressclient
   - python-cloudfoundryclient
 
-service:
+services:
   - congress
-
-credentials:
-  - user: congress
-    db: congress
-    password: "{{ CONGRESS_DBPASS }}"
