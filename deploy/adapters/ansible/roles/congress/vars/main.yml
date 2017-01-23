@@ -10,3 +10,25 @@
 packages_noarch: []
 
 services_noarch: []
+
+congress_service:
+  - name: congress
+    type: policy
+    region: RegionOne
+    description: "OpenStack Policy Service"
+    publicurl: "http://{{ public_vip.ip }}:1789"
+    internalurl: "http://{{ internal_vip.ip }}:1789"
+    adminurl: "http://{{ internal_vip.ip }}:1789"
+
+congress_user:
+  - user: congress
+    password: "{{ CONGRESS_PASS }}"
+    email: congress@admin.com
+    role: admin
+    tenant: service
+    tenant_description: "Service Tenant"
+
+congress_database:
+  - user: congress
+    db: congress
+    password: "{{ CONGRESS_DBPASS }}"
