@@ -1,0 +1,63 @@
+---
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiUser: orange
+ipmiVer: '2.0'
+
+hosts:
+  - name: charlotteR630
+    mac: '14:18:77:34:89:E2' #PXE slot 0/3  vlan14
+    interfaces:
+      - eth1: 'A0:36:9F:4E:87:1A' #slot 1/2 TRUNK
+    ipmiIp: 172.31.2.116
+    ipmiPass: orange2014*
+    roles:
+      - controller
+      - ha
+      - ceph-adm
+      - ceph-mon
+
+  - name: cookieR630
+    mac: '14:18:77:34:A2:AC' # PXE slot 0/3 vlan14
+    interfaces:
+      - eth1: 'A0:36:9F:4E:8B:AE' # slot 1/2 trunk
+    ipmiIp: 172.31.2.117
+    ipmiPass: orange2014*
+    roles:
+      - controller
+      - ha
+      - ceph-osd
+      - ceph-mon
+
+  - name: cheesecakeR630
+    mac: '14:18:77:34:8E:40'  #PXE slot 0/3 vlan14
+    interfaces:
+      - eth1: 'A0:36:9F:4E:8E:DA' # slot 1/2 trunk
+    ipmiIp: 172.31.2.119
+    ipmiPass: orange2014*
+    roles:
+      - controller
+      - ha
+      - ceph-osd
+
+  - name: eclairR730
+    mac: 'EC:F4:BB:CB:62:AC' #PXE slot 0/3 vlan14
+    interfaces:
+      - eth1: 'EC:F4:BB:CB:62:AA'  #slot 0/2 trunk
+    ipmiIp: 172.31.2.123
+    ipmiPass:  orange2014*
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: chouR730
+    mac: 'EC:F4:BB:CB:5F:64' #PXE slot 0/3 vlan14
+    interfaces:
+      - eth1: 'EC:F4:BB:CB:5F:62'  #slot 0/2 trunk
+    ipmiIp: 172.31.2.120
+    ipmiPass: orange2014*
+    roles:
+      - compute
+      - ceph-osd
