@@ -7,11 +7,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: congress db sync
-  shell: |
-    /usr/local/bin/congress-db-manage \
-        --config-file /etc/congress/congress.conf upgrade head
-  when: inventory_hostname == haproxy_hosts.keys()[0]
+pip_packages:
+  - congress
+  - python-congressclient
+  - python-cloudfoundryclient
 
-- name: start congress service
-  shell: systemctl start congress.service
+services:
+  - congress

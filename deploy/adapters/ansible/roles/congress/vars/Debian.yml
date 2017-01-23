@@ -7,15 +7,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-packages:
+pip_packages:
   - congress
   - python-congressclient
   - python-cloudfoundryclient
 
-service:
+services:
   - congress
-
-credentials:
-  - user: congress
-    db: congress
-    password: "{{ CONGRESS_DBPASS }}"
