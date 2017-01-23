@@ -7,10 +7,33 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include: congress_install.yml
+- include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - install
+    - start
 
-- include: congress_db.yml
+- include: congress_install.yml
+  tags:
+    - install
+
+- include: congress_keystone.yml
   when:
     - inventory_hostname == haproxy_hosts.keys()[0]
+  tags:
+    - keystone
 
-- include: congress_config.yml
+- include: congress_database.yml
+  when:
+    - inventory_hostname == haproxy_hosts.keys()[0]
+  tags:
+    - database
+
+- include: congress_start.yml
+  tags:
+    - start
+
+- meta: flush_handlers
+  tags:
+    - install
+    - keystone
+    - database
