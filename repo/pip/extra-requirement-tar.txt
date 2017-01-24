@@ -1,0 +1,4 @@
+# extra python packages used in deployment
+# download format tar.gz
+
+networking-odl==3.2.0
