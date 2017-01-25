@@ -32,6 +32,24 @@
         enable_isolated_metadata "True";
   when: odl_l3_agent == "Enable"
 
+- name: force metadata for l3 configuration
+  shell: |
+    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
+        force_metadata "True";
+  when: odl_l3_agent == "Enable"
+
+- name: stop neutron l3 agent
+  service: name=neutron-l3-agent state=stopped enabled=no
+  when: odl_l3_agent == "Enable" and inventory_hostname in groups['odl']
+
+- name: remove neutron l3 agent
+  shell: >
+    sed -i '/neutron-l3-agent/d' /opt/service;
+    rm -rf /lib/systemd/system/neutron-l3-agent.service;
+    rm -rf /etc/init/neutron-l3-agent.conf;
+    rm -rf /etc/init.d/neutron-l3-agent;
+  when: odl_l3_agent == "Enable" and inventory_hostname in groups['odl']
+
 - name: drop and recreate neutron database
   shell: |
     mysql -e "drop database if exists neutron;";

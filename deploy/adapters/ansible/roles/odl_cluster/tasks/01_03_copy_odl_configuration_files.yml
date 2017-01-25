@@ -40,6 +40,15 @@
     mode: 0775
   when: ansible_os_family == "RedHat"
 
+- name: copy acl configuration script
+  template:
+    src: acl_conf.sh
+    dest: "/opt/acl_conf.sh"
+    mode: 0777
+
+- name: execute acl configuration script
+  command: su -s /bin/sh -c "/opt/acl_conf.sh;"
+
 - name: create tomcat config
   template:
     src: tomcat-server.xml
