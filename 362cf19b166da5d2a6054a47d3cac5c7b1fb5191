@@ -108,6 +108,30 @@
       "revId": "362cf19b166da5d2a6054a47d3cac5c7b1fb5191",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_fa89ab26",
+        "filename": "deploy/opera_adapter.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5455
+      },
+      "writtenOn": "2017-01-25T12:49:00Z",
+      "side": 1,
+      "message": "Currently, opera is pure shell. I will change opera\u0027s config part into yaml and modify this code",
+      "parentUuid": "5ac10518_5a68ff86",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 57
+      },
+      "revId": "362cf19b166da5d2a6054a47d3cac5c7b1fb5191",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
