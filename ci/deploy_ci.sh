@@ -14,10 +14,6 @@ CI_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 
 # FIXME: Some scenarios need to update.
 case $DEPLOY_SCENARIO in
-    os-odl_l3-nofeture-ha)
-        echo "os-odl_l3-nofeature-ha scenario supports mitaka only"
-        exit 1
-        ;;
     os-odl_l2-moon-ha)
         echo "os-odl_l2-moon-ha scenario supports xenial mitaka only"
         exit 1
