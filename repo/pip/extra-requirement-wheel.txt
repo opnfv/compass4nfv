@@ -9,4 +9,4 @@ yang2tosca==0.13
 python-keyczar==0.715
 crudini==0.7
 pexpect==3.3
-shade==1.14.1
+shade==1.15.0
