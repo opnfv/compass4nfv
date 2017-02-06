@@ -8,6 +8,8 @@
 ##############################################################################
 ---
 - include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - horizon_theme
 
 - name: disable auto start
   copy:
@@ -25,13 +27,6 @@
     path=/usr/sbin/policy-rc.d
     state=absent
   when: ansible_os_family == "Debian"
-
-- name: remove ubuntu theme
-  action:
-    "{{ ansible_pkg_mgr }} name=openstack-dashboard-ubuntu-theme state=absent"
-  when: ansible_os_family == 'Debian' and not enable_ubuntu_theme
-  notify:
-    - restart dashboard services
 
 - name: remove default apache2 config
   file:
@@ -78,6 +73,8 @@
   when: ansible_os_family == 'Debian'
   notify:
     - restart dashboard services
+  tags:
+    - horizon_theme
 
 - name: precompile horizon css
   shell: |

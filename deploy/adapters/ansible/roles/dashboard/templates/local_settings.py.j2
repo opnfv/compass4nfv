@@ -97,6 +97,13 @@ DROPDOWN_MAX_ITEMS = 30
 
 TIME_ZONE = "UTC"
 
+{% if enable_ubuntu_theme == False %}
+AVAILABLE_THEMES = [
+    ('default', 'Default', 'themes/default'),
+    ('material', 'Material', 'themes/material'),
+]
+{% endif %}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
