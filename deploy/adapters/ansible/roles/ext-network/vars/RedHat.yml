@@ -10,7 +10,6 @@
 api_services:
   - openstack-nova-api
   - openstack-glance-api
-  - openstack-ceilometer-api
   - openstack-heat-api
   - openstack-heat-api-cfn
   - openstack-cinder-api

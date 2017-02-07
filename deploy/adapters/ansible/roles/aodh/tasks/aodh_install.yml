@@ -21,8 +21,52 @@
     - restart aodh services
 
 - name: write services to monitor list
-  lineinfile: dest=/opt/service create=yes line='{{ item }}'
+  lineinfile: dest=/opt/service create=yes line={{ item }}
   with_items: "{{ services | union(services_noarch) }}"
 
 - name: remove default sqlite db
   shell: rm /var/lib/aodh/aodh.sqlite || touch aodh.sqllite.db.removed
+
+- name: disable aodh-api service
+  service: name={{ item }} state=stopped enabled=no
+  with_items: "{{ api_service }}"
+
+- name: add listen port
+  lineinfile:
+    dest: '{{ apache_config_dir }}/ports.conf'
+    regexp: "^Listen {{ internal_ip }}:8042"
+    line: "Listen {{ internal_ip }}:8042"
+  notify: aodh restart apache
+
+- name: create WSGIScriptAlias Path
+  file:
+    path: /var/www/cgi-bin/aodh
+    state: directory
+    mode: 0755
+  when: ansible_os_family == 'Debian'
+
+- name: copy WSGIScriptAlias file
+  shell: |
+    cp {{WSGIScriptAlias_file}} /var/www/cgi-bin/aodh/app;
+
+- name: update apache2 configs
+  template:
+    src: wsgi-aodh.conf.j2
+    dest: '{{ apache_config_dir }}/sites-available/aodh.conf'
+  when: ansible_os_family == 'Debian'
+  notify: aodh reload apache
+
+- name: enable aodh server
+  file:
+    src: "{{ apache_config_dir }}/sites-available/aodh.conf"
+    dest: "{{ apache_config_dir }}/sites-enabled/aodh.conf"
+    state: "link"
+  when: ansible_os_family == 'Debian'
+  notify: aodh reload apache
+
+- name: update apache2 configs
+  template:
+    src: wsgi-aodh.conf.j2
+    dest: '{{ apache_config_dir }}/aodh.conf'
+  when: ansible_os_family == 'RedHat'
+  notify: aodh reload apache

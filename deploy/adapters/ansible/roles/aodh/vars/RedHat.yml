@@ -16,7 +16,12 @@ packages:
   - python-aodhclient
 
 services:
-  - openstack-aodh-api
   - openstack-aodh-notifier
   - openstack-aodh-evaluator
   - openstack-aodh-listener
+
+api_service: openstack-aodh-api
+
+apache_config_dir: /etc/httpd/conf.d
+http_service_name: httpd
+WSGIScriptAlias_file: /usr/lib/python2.7/site-packages/aodh/api/app.wsgi
