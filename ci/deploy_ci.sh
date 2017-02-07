@@ -12,74 +12,25 @@
 
 CI_DIR=$(cd $(dirname ${BASH_SOURCE:-$0});pwd)
 
-if [[ $ROOT_BUILD_CAUSE == MANUALTRIGGER ]]; then
-    # For manual ci trigger build, directly use the value pass from CI
-    if [[ $COMPASS_OPENSTACK_VERSION == newton ]]; then
+case $DEPLOY_SCENARIO in
+    os-odl_l2-moon-ha)
         export COMPASS_OS_VERSION=xenial
-        export COMPASS_OPENSTACK_VERSION=newton_xenial
-    else
-        case $DEPLOY_SCENARIO in
-        os-odl_l2-moon-ha)
-            # os-odl_l2-moon-ha scenario supports xenial mitaka only
-            export COMPASS_OS_VERSION=xenial
-            export COMPASS_OPENSTACK_VERSION=mitaka_xenial
-            ;;
-        os-ocl-nofeature-ha)
-            # os-ocl-nofeature-ha scenario supports liberty only
-            export COMPASS_OS_VERSION=trusty
-            export COMPASS_OPENSTACK_VERSION=liberty
-            ;;
-        *)
-            # setup for testing mitaka by default
-            export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-trusty}
-            export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-mitaka}
-            ;;
-        esac
-    fi
-
-else
-    # For daily build or verify build, adjust COMPASS_OS_VERSION and OPENSTACK_VERSION
-    # value according to COMPASS_OS_VERSION and DEPLOY_SCENARIO pass from CI
-
-    if [[ $COMPASS_OS_VERSION == centos7 ]]; then
-        case $DEPLOY_SCENARIO in
-        os-odl_l2-moon-ha)
-            # os-odl_l2-moon-ha scenario supports xenial mitaka only
-            export COMPASS_OS_VERSION=xenial
-            export COMPASS_OPENSTACK_VERSION=mitaka_xenial
-            ;;
-        os-ocl-nofeature-ha)
-            # os-ocl-nofeature-ha scenario supports liberty only
-            export COMPASS_OS_VERSION=centos7
-            export COMPASS_OPENSTACK_VERSION=liberty
-            ;;
-        *)
-            # setup for testing mitaka by default
+        export COMPASS_OPENSTACK_VERSION=mitaka_xenial 
+        ;;  
+    os-ocl-nofeature-ha)
+        export COMPASS_OS_VERSION=trusty
+        export COMPASS_OPENSTACK_VERSION=liberty
+        ;;  
+    *)
+        if [[ $COMPASS_OS_VERSION == centos7 ]]; then
             export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-centos7}
             export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-mitaka}
-            ;;
-        esac
-
-    else
-        case $DEPLOY_SCENARIO in
-        os-odl_l2-moon-ha)
-            # os-odl_l2-moon-ha scenario supports xenial mitaka only
-            export COMPASS_OS_VERSION=xenial
-            export COMPASS_OPENSTACK_VERSION=mitaka_xenial
-            ;;
-        os-ocl-nofeature-ha)
-            # os-ocl-nofeature-ha scenario supports liberty only
-            export COMPASS_OS_VERSION=trusty
-            export COMPASS_OPENSTACK_VERSION=liberty
-            ;;
-        *)
-            # setup for testing mitaka by default
+        else
             export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-trusty}
             export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-mitaka}
-            ;;
-        esac
-    fi
-fi
+        fi
+        ;;  
+esac
 
 # these variables used by compass
 export OS_VERSION=$COMPASS_OS_VERSION
