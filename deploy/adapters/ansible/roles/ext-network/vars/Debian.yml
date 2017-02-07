@@ -10,8 +10,6 @@
 api_services:
   - nova-api
   - glance-api
-  - ceilometer-api
   - heat-api
   - heat-api-cfn
-  - aodh-api
   - cinder-api

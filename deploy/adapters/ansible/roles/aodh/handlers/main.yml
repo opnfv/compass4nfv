@@ -10,3 +10,11 @@
 - name: restart aodh services
   service: name={{ item }} state=restarted enabled=yes
   with_items: "{{ services | union(services_noarch) }}"
+
+- name: aodh reload apache
+  service: name={{ item }} state=reloaded
+  with_items: "{{ http_service_name }}"
+
+- name: aodh restart apache
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: "{{ http_service_name }}"
