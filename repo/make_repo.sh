@@ -22,6 +22,9 @@ function param_process()
             openstack)
                 export MAKE_OPENSTACK="true"
                 ;;
+            k8s)
+                export MAKE_KUBERNETES="true"
+                ;;
             pip)
                 export MAKE_PIP="true"
                 ;;
@@ -60,6 +63,7 @@ function usage()
     echo 'Usage: ./repo/make_repo.sh [option]'
     echo 'All the valid options are:
     openstack     Make OpenStack PPA.
+    k8s           Make Kubernetes PPA.
     pip           Make pip package.
     feature       Make feature project package, such as SDN, Moon, KVM, etc.
     jumphost      Make jumphost preparasion package.
@@ -74,6 +78,10 @@ function main()
 
     if [[ $MAKE_OPENSTACK == "true" ]]; then
         make_osppa
+    fi
+
+    if [[ $MAKE_KUBERNETES == "true" ]]; then
+        make_k8sppa
     fi
 
     if [[ $MAKE_PIP == "true" ]]; then

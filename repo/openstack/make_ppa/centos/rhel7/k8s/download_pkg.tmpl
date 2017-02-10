@@ -1,0 +1,53 @@
+#!/bin/bash
+set -x
+
+#set OPV="k8s"
+
+yum remove systemd -y
+yum repolist
+yum clean all
+
+yum install yum-plugin-priorities -y
+
+cat <<"EOEF" > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=http://yum.kubernetes.io/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+       https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOEF
+
+# modify centos7 repo for workaround
+# sed -i 's/epel-Derived from Red Hat Enterprise Linux 7.1 (Source)/epel-7/g' /etc/yum.repos.d/rdo-release.repo
+
+yum update -y
+yum install createrepo tar -y
+rpm --import 'https://download.ceph.com/keys/release.asc'
+
+#download packages
+#set packages = $getVar('default_packages', [])
+yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
+#set packages = $getVar('packages', [])
+yum -y install --skip-broken --downloadonly #echo ' '.join(packages)
+
+#make repo
+mkdir -p /centos7-$OPV-ppa/{Packages,repodata}
+
+find /var/cache/yum/ -name "*.rpm" | xargs -i cp {} /centos7-$OPV-ppa/Packages/
+
+rm /centos7-$OPV-ppa/Packages/selinux-policy* -f
+rm /centos7-$OPV-ppa/Packages/systemd* -f
+
+mv /epel-release-7-5.noarch.rpm /centos7-$OPV-ppa/Packages/
+cp /comps.xml /centos7-$OPV-ppa/
+cp /ceph_key_release.asc /centos7-$OPV-ppa/
+createrepo -g comps.xml /centos7-$OPV-ppa
+mkdir /centos7-$OPV-ppa/noarch
+mkdir /centos7-$OPV-ppa/noarch/Packages
+cp -r /centos7-$OPV-ppa/Packages/ceph* /centos7-$OPV-ppa/noarch/Packages/
+cp -r /centos7-$OPV-ppa/repodata/ /centos7-$OPV-ppa/noarch/
+tar -zcvf /centos7-$OPV-ppa.tar.gz /centos7-$OPV-ppa
+

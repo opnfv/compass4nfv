@@ -339,6 +339,13 @@ function make_osppa()
                                  dracut-config-rescue-033-241.el7_1.5 dracut-network-033-241.el7_1.5"
 }
 
+# Make all the kubernetes ppas
+function make_k8sppa()
+{
+    make_repo --os-ver rhel7 --package-tag k8s \
+              --ansible-dir $COMPASS_PATH/deploy/adapters/ansible_k8s \
+              --default-package "docker kubelet kubeadm kubectl kubernetes-cni ebtables"
+}
 function make_compass_repo()
 {
     make_repo --os-ver rhel7 --package-tag compass \
