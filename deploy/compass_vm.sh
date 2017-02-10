@@ -39,6 +39,7 @@ function set_compass_machine() {
 function install_compass() {
     local inventory_file=$compass_vm_dir/inventory.file
     sed -i "s/mgmt_next_ip:.*/mgmt_next_ip: ${COMPASS_SERVER}/g" $WORK_DIR/installer/compass-install/install/group_vars/all
+    sed -i "s/timezone:.*/timezone: ${TIMEZONE}/g" $WORK_DIR/installer/compass-install/install/group_vars/all
     echo "compass_nodocker ansible_ssh_host=$MGMT_IP ansible_ssh_port=22" > $inventory_file
     PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ANSIBLE_HOST_KEY_CHECKING=false ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s' ansible-playbook -e pipeline=true --private-key=$rsa_file --user=root --connection=ssh --inventory-file=$inventory_file $WORK_DIR/installer/compass-install/install/$1
     exit_status=$?
