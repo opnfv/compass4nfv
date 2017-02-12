@@ -23,14 +23,23 @@
     name: heat
     state: present
     description: "Stack projects and users"
+  register: heat_domain
   when: inventory_hostname == groups['controller'][0]
 
 - name: create heat user
   os_user:
     cloud: opnfv
     domain: heat
-    name: heat_domain_user
+    name: heat_domain_admin
     password: "{{ HEAT_PASS }}"
+  when: inventory_hostname == groups['controller'][0]
+
+- name: grant heat admin role
+  shell: |
+    . /opt/admin-openrc.sh
+    openstack role assignment list | grep "{{ heat_domain.id }}" \
+        || openstack role add --domain heat --user-domain heat \
+        --user heat_domain_admin admin;
   when: inventory_hostname == groups['controller'][0]
 
 - name: create heat role
@@ -39,12 +48,18 @@
     name: heat_stack_owner
   when: inventory_hostname == groups['controller'][0]
 
-- name: grant heat role
+- name: grant heat demo role
   os_user_role:
     cloud: opnfv
     user: demo
     project: demo
     role: heat_stack_owner
+  when: inventory_hostname == groups['controller'][0]
+
+- name: create member role
+  os_keystone_role:
+    cloud: opnfv
+    name: _member_
   when: inventory_hostname == groups['controller'][0]
 
 - name: update heat conf
