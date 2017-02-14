@@ -93,6 +93,8 @@ host_index:
   $item["hostname"]: $index
 #end for
 
+keystone_api: $getVar('keystone_api', 'v3')
+
 ERLANG_TOKEN: YOWSJSJIGGAUFZTIBRAD
 #set credentials = $getVar('service_credentials', {})
 #set console_credentials = $getVar('console_credentials', {})
