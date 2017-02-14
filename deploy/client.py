@@ -216,6 +216,9 @@ opts = [
     cfg.StrOpt('enable_fwaas',
                help='enable firewall as service',
                default='true'),
+    cfg.StrOpt('keystone_api',
+               help='keystone service api version',
+               default='v3'),
     cfg.StrOpt('network_cfg',
                help='netowrk config file',
                default=''),
@@ -748,6 +751,7 @@ class CompassClient(object):
         if CONF.cluster_vip:
             package_config["ha_proxy"]["vip"] = CONF.cluster_vip
 
+        package_config['keystone_api'] = CONF.keystone_api
         package_config['enable_secgroup'] = (CONF.enable_secgroup == "true")
         package_config['enable_fwaas'] = (CONF.enable_fwaas == "true")
         package_config['enable_vpnaas'] = (CONF.enable_vpnaas == "true")

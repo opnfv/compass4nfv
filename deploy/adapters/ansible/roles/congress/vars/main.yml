@@ -25,8 +25,8 @@ congress_user:
     password: "{{ CONGRESS_PASS }}"
     email: congress@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
 congress_database:
   - user: congress
