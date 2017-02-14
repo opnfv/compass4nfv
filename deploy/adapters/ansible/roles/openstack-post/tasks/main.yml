@@ -9,7 +9,7 @@
 ---
 - name: create openstack flavors
   os_nova_flavor:
-    cloud: opnfv
+    cloud: "{{ keystone_api }}"
     state: present
     flavorid: "{{ item.id }}"
     name: "{{ item.name }}"

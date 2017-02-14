@@ -16,9 +16,9 @@ os_services:
     type: identity
     region: RegionOne
     description: "OpenStack Identity"
-    publicurl: "http://{{ public_vip.ip }}:5000/v3"
-    internalurl: "http://{{ internal_vip.ip }}:5000/v3"
-    adminurl: "http://{{ internal_vip.ip }}:35357/v3"
+    publicurl: "http://{{ public_vip.ip }}:5000/{{ keystone_api }}"
+    internalurl: "http://{{ internal_vip.ip }}:5000/{{ keystone_api }}"
+    adminurl: "http://{{ internal_vip.ip }}:35357/{{ keystone_api }}"
 
   - name: glance
     type: image
@@ -113,75 +113,75 @@ os_users:
     password: "{{ ADMIN_PASS }}"
     email: admin@admin.com
     role: admin
-    tenant: admin
-    tenant_description: "Admin Tenant"
+    project: admin
+    project_description: "Admin Project"
 
   - user: glance
     password: "{{ GLANCE_PASS }}"
     email: glance@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
   - user: nova
     password: "{{ NOVA_PASS }}"
     email: nova@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
   - user: keystone
     password: "{{ KEYSTONE_PASS }}"
     email: keystone@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
   - user: neutron
     password: "{{ NEUTRON_PASS }}"
     email: neutron@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
   - user: ceilometer
     password: "{{ CEILOMETER_PASS }}"
     email: ceilometer@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
   - user: cinder
     password: "{{ CINDER_PASS }}"
     email: cinder@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
   - user: aodh
     password: "{{ AODH_PASS }}"
     email: aodh@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
   - user: heat
     password: "{{ HEAT_PASS }}"
     email: heat@admin.com
     role: admin
-    tenant: service
-    tenant_description: "Service Tenant"
+    project: service
+    project_description: "Service Project"
 
   - user: demo
     password: "{{ DEMO_PASS }}"
     email: heat@demo.com
     role: heat_stack_user
-    tenant: demo
-    tenant_description: "Demo Tenant"
+    project: demo
+    project_description: "Demo Project"
 
 # - user: congress
 #   password: "{{ CONGRESS_PASS }}"
 #   email: congress@admin.com
 #   role: admin
-#   tenant: service
-#   tenant_description: "Service Tenant"
+#   project: service
+#   project_description: "Service Project"

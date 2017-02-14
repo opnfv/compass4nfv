@@ -1,6 +1,6 @@
 ---
 clouds:
-  opnfv:
+  admin-v3:
     auth:
       username: 'admin'
       password: {{ ADMIN_PASS }}
@@ -9,4 +9,11 @@ clouds:
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
+    region_name: RegionOne
+  admin-v2:
+    auth:
+      username: 'admin'
+      password: {{ ADMIN_PASS }}
+      project_name: 'admin'
+      auth_url: 'http://{{ internal_vip.ip }}:35357/v2.0'
     region_name: RegionOne
