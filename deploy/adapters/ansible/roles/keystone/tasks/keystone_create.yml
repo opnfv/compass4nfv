@@ -55,8 +55,8 @@
   os_project:
     cloud: opnfv
     domain_id: default
-    name: "{{ item.tenant }}"
-    description: "{{ item.tenant_description }}"
+    name: "{{ item.project }}"
+    description: "{{ item.project_description }}"
   with_items: "{{ os_users }}"
 
 - name: add user
@@ -65,7 +65,7 @@
     domain: default
     name: "{{ item.user }}"
     password: "{{ item.password }}"
-    default_project: "{{ item.tenant }}"
+    default_project: "{{ item.project }}"
     email: "{{ item.email }}"
   with_items: "{{ os_users }}"
 
@@ -80,7 +80,7 @@
     cloud: opnfv
     user: "{{ item.user }}"
     role: "{{ item.role }}"
-    project: "{{ item.tenant }}"
+    project: "{{ item.project }}"
   with_items: "{{ os_users }}"
 
 - name: create admin url for service's endpoint

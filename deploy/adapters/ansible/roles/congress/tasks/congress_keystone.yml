@@ -21,7 +21,7 @@
     domain: default
     name: "{{ item.user }}"
     password: "{{ item.password }}"
-    default_project: "{{ item.tenant }}"
+    default_project: "{{ item.project }}"
     email: "{{ item.email }}"
   with_items: "{{ congress_user }}"
 
@@ -30,7 +30,7 @@
     cloud: opnfv
     user: "{{ item.user }}"
     role: "{{ item.role }}"
-    project: "{{ item.tenant }}"
+    project: "{{ item.project }}"
   with_items: "{{ congress_user }}"
 
 - name: create admin url for service's endpoint

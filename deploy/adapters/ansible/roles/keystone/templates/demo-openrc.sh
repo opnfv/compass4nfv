@@ -8,7 +8,6 @@
 ##############################################################################
 export OS_PROJECT_DOMAIN_NAME=default
 export OS_USER_DOMAIN_NAME=default
-export OS_TENANT_NAME=demo
 export OS_PROJECT_NAME=demo
 export OS_USERNAME=demo
 export OS_PASSWORD={{ DEMO_PASS }}

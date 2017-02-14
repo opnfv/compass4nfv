@@ -13,3 +13,4 @@ export OS_AUTH_URL=http://{{ internal_vip.ip }}:35357/v2.0
 export OS_USERNAME=admin
 export OS_VOLUME_API_VERSION=2
 
+
