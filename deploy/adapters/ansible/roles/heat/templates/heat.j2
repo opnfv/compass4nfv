@@ -12,13 +12,13 @@ log_dir = /var/log/heat
 stack_domain_admin = heat_domain_admin
 stack_domain_admin_password = {{ HEAT_PASS }}
 stack_user_domain_name = heat
-{% if ansible_processor_vcpus > 30 %}
-num_engine_workers = 30
+{% if ansible_processor_vcpus > 4 %}
+num_engine_workers = {{ ansible_processor_vcpus // 4 }}
 {% endif %}
 
 [heat_api]
-{% if ansible_processor_vcpus > 30 %}
-workers = 30
+{% if ansible_processor_vcpus > 4 %}
+workers = {{ ansible_processor_vcpus // 4 }}
 {% endif %}
 
 [database]
