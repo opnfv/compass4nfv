@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabed58f_cb51dcd9",
+        "filename": "deploy/adapters/ansible/roles/odl_cluster/tasks/01_04_install_pip_packages.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-02-16T12:35:35Z",
+      "side": 1,
+      "message": "use var",
+      "range": {
+        "startLine": 16,
+        "startChar": 43,
+        "endLine": 16,
+        "endChar": 63
+      },
+      "revId": "88497f4815edaf5cf9e4174412d33df9ef7ef8ce",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
