@@ -15,5 +15,5 @@ service_ovs_name: openvswitch
 service_ovs_agent_name: neutron-openvswitch-agent
 
 service_file:
-  src: opendaylight
-  dst: /etc/init.d/opendaylight
+  src: opendaylight.service
+  dst: /lib/systemd/system/opendaylight.service
