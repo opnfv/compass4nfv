@@ -1,11 +1,11 @@
-##############################################################################
+###############################################################################
 # Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Apache License, Version 2.0
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
-##############################################################################
+###############################################################################
 ---
 
 - name: set veth port
@@ -15,24 +15,31 @@
     ifconfig onos_port2 up;
   ignore_errors: "True"
 
+- name: set veth to ovs
+  shell: >
+    export externamMac=`ifconfig eth1 | grep -Eo '\<[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}'`;
+    ifconfig onos_port2 hw ether $externamMac;
+    ovs-vsctl add-port br-prv onos_port1;
+  ignore_errors: "True"
+
+- name: add onos optical model feature
+  command: |
+    su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-optical-model'";
+  when: inventory_hostname in groups['onos']
+
 - name: add openflow-base feature
   command: |
-    su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow-base'";
+    su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-providers-openflow-base'";
   when: inventory_hostname in groups['onos']
 
 - name: add openflow feature
   command: |
-    su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-openflow'";
-  when: inventory_hostname in groups['onos']
-
-- name: add ovsdatabase feature
-  command: |
-    su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdatabase'";
+    su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-providers-openflow-message'";
   when: inventory_hostname in groups['onos']
 
 - name: add ovsdb-base feature
   command: |
-    su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-ovsdb-base'";
+    su -s /bin/sh -c "/opt/onos/bin/onos 'feature:install onos-providers-ovsdb-base'";
   when: inventory_hostname in groups['onos']
 
 - name: add onos driver ovsdb feature
@@ -43,13 +50,13 @@
 - name: add ovsdb provider host feature
   command: |
     su -s /bin/sh -c \
-        "/opt/onos/bin/onos 'feature:install onos-ovsdb-provider-host'";
+        "/opt/onos/bin/onos 'feature:install onos-providers-ovsdb-host'";
   when: inventory_hostname in groups['onos']
 
 - name: add vtn feature
   command: |
     su -s /bin/sh -c \
-        "/opt/onos/bin/onos 'feature:install onos-app-vtn-onosfw'";
+        "/opt/onos/bin/onos 'feature:install onos-apps-vtn'";
   when: inventory_hostname in groups['onos']
 
 - name: set public eth card start
