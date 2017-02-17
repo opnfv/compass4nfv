@@ -7,7 +7,11 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-onos_pkg_name: onos-1.6.0.tar.gz
+---
+packages_noarch: []
+
+services_noarch: []
+onos_pkg_name: onos-1.8.2.tar.gz
 onos_home: /opt/onos/
 karaf_dist: apache-karaf-3.0.5
 jdk8_pkg_name: jdk-8u51-linux-x64.tar.gz

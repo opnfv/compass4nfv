@@ -17,22 +17,22 @@
     url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_driver }}"
     dest: /opt/
 
-#- name: upload onos sfc driver package
-#  get_url:
-#   url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_sfc_driver }}"
-#   dest: /opt/
+- name: download onos sfc driver package
+  get_url:
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_sfc_driver }}"
+    dest: /opt/
 
 - name: unarchive onos driver package
   command: su -s /bin/sh -c "tar xvf  /opt/networking-onos.tar -C /opt/"
 
-#- name: upload onos sfc driver package
-#  command: su -s /bin/sh -c "tar xvf  /opt/networking-sfc.tar -C /opt/"
+- name: unarchive onos sfc driver package
+  command: su -s /bin/sh -c "tar xvf  /opt/networking-sfc.tar -C /opt/"
 
 - name: install onos driver
   command: su -s /bin/sh -c "/opt/networking-onos/install_driver.sh"
 
-#- name: install onos sfc driver
-#  command: su -s /bin/sh -c "/opt/networking-sfc/install_driver.sh"
+- name: install onos sfc driver
+  command: su -s /bin/sh -c "/opt/networking-sfc/install_driver.sh"
 
 - name: install onos required packages
   action: "{{ ansible_pkg_mgr }}  name={{ item }} state=present"
@@ -58,8 +58,8 @@
   shell: >
     export J2SDKDIR=/usr/lib/jvm/java-8-oracle;
     export J2REDIR=/usr/lib/jvm/java-8-oracle/jre;
-    export PATH=$PATH:/usr/lib/jvm/java-8-oracle/bin;
-    export PATH=$PATH:/usr/lib/jvm/java-8-oracle/db/bin;
+    export PATH=$PATH:/usr/lib/jvm/java-8-oracle/bin
+    export PATH=$PATH:/usr/lib/jvm/java-8-oracle/db/bin
     export PATH=$PATH:/usr/lib/jvm/java-8-oracle/jre/bin;
     export JAVA_HOME=/usr/lib/jvm/java-8-oracle;
     export DERBY_HOME=/usr/lib/jvm/java-8-oracle/db;
@@ -96,7 +96,7 @@
 - name: extract onos package
   command: |
     su -s /bin/sh -c "tar xzf /opt/{{ onos_pkg_name }} -C {{ onos_home }} \
-        --strip-components 1 --no-overwrite-dir -k --skip-old-files" onos
+    --strip-components 1 --no-overwrite-dir -k --skip-old-files" onos
 
 - name: configure onos service
   shell: >
@@ -104,15 +104,14 @@
     echo 'export ONOS_USER=root' >> {{ onos_home }}/options;
     mkdir {{ onos_home }}/var;
     mkdir {{ onos_home }}/config;
-    sed -i '/pre-stop/i\env JAVA_HOME=/usr/lib/jvm/java-8-oracle' \
-        {{ onos_home }}/init/onos.conf;
+    sed -i '/pre-stop/i\env JAVA_HOME=/usr/lib/jvm/java-8-oracle' {{ onos_home }}/init/onos.conf;
     cp -rf {{ onos_home }}/init/onos.conf /etc/init/;
     cp -rf {{ onos_home }}/init/onos.conf /etc/init.d/;
 
 - name: configure onos boot feature
   shell: >
-    sed -i '/^featuresBoot=/c\featuresBoot={{ onos_boot_features }}' \
-        {{ onos_home }}/{{ karaf_dist }}/etc/org.apache.karaf.features.cfg;
+    sed -i '/^featuresBoot=/c\featuresBoot={{ onos_boot_features }}' /
+    {{ onos_home }}/{{ karaf_dist }}/etc/org.apache.karaf.features.cfg;
 
 - name: wait for config time
   shell: "sleep 10"
@@ -127,15 +126,16 @@
   shell: >
     echo "onos">>/opt/service
 
+#########################################################################################
+################################    ONOS connect with OpenStack   #######################
+#########################################################################################
 - name: Configure Neutron1
   shell: >
     crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins \
-        networking_sfc.services.sfc.plugin.SfcPlugin, \
-        networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin, onos_router;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 \
-        mechanism_drivers onos_ml2;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 \
-        tenant_network_types vxlan;
+    networking_sfc.services.sfc.plugin.SfcPlugin, \
+    networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin,onos_router;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers onos_ml2;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers vxlan
 
 - name: Create ML2 Configuration File
@@ -153,10 +153,8 @@
     mysql -e "create database neutron_ml2 character set utf8;";
     mysql -e "grant all on neutron_ml2.* to 'neutron'@'%';";
     su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf \
-        --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" \
-        neutron;
-    su -s /bin/sh -c "neutron-db-manage --subproject networking-sfc \
-        upgrade head" neutron;
+    --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
+    su -s /bin/sh -c "neutron-db-manage --subproject networking-sfc upgrade head" neutron;
 
 - name: Restart neutron-server
   service: name=neutron-server state=restarted
