@@ -1,0 +1,20 @@
+[Unit]
+Description=ONOS
+After=
+
+
+[Service]
+User=root
+Group=root
+Type=simple
+WorkingDirectory=/opt/onos/apache-karaf-3.0.5
+PermissionsStartOnly=true
+ExecStartPre=
+ExecStart=/usr/lib/jvm/java-8-oracle/bin/java -server -Xms128M -Xmx512M -XX:+UnlockDiagnosticVMOptions -XX:+UnsyncloadClass -Dcom.sun.management.jmxremote -Djava.endorsed.dirs=/usr/lib/jvm/java-8-oracle/jre/lib/endorsed:/usr/lib/jvm/java-8-oracle/lib/endorsed:/opt/onos/apache-karaf-3.0.5/lib/endorsed -Djava.ext.dirs=/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/lib/jvm/java-8-oracle/lib/ext:/opt/onos/apache-karaf-3.0.5/lib/ext -Dkaraf.instances=/opt/onos/apache-karaf-3.0.5/instances -Dkaraf.home=/opt/onos/apache-karaf-3.0.5 -Dkaraf.base=/opt/onos/apache-karaf-3.0.5 -Dkaraf.data=/opt/onos/apache-karaf-3.0.5/data -Dkaraf.etc=/opt/onos/apache-karaf-3.0.5/etc -Djava.io.tmpdir=/opt/onos/apache-karaf-3.0.5/data/tmp -Djava.util.logging.config.file=/opt/onos/apache-karaf-3.0.5/etc/java.util.logging.properties -Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=true -classpath /opt/onos/apache-karaf-3.0.5/lib/karaf-jaas-boot.jar:/opt/onos/apache-karaf-3.0.5/lib/karaf-org.osgi.core.jar:/opt/onos/apache-karaf-3.0.5/lib/karaf.jar org.apache.karaf.main.Main
+Restart=on-failure
+LimitNOFILE=65535
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
+
