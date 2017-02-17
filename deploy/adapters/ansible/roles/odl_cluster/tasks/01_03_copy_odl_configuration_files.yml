@@ -50,11 +50,6 @@
   command: su -s /bin/sh -c "/opt/acl_conf.sh;"
 
 - name: create tomcat config
-  template:
-    src: tomcat-server.xml
-    dest: "{{ odl_home }}/configuration/tomcat-server.xml"
-
-- name: create tomcat config
-  template:
-    src: jetty.xml
-    dest: "{{ odl_home }}/etc/jetty.xml"
+  shell: >
+    sed -i 's/port="8282"/port="{{ odl_api_port }}"/'
+    {{ odl_home }}configuration/tomcat-server.xml
