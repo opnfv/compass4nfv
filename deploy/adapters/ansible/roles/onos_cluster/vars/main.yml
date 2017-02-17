@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-onos_pkg_name: onos-1.6.0.tar.gz
+onos_pkg_name: onos-1.8.4.tar.gz
 onos_home: /opt/onos/
 karaf_dist: apache-karaf-3.0.5
 jdk8_pkg_name: jdk-8u51-linux-x64.tar.gz
@@ -15,6 +15,9 @@ jdk8_script_name: install_jdk8.tar
 onos_driver: networking-onos.tar
 onos_sfc_driver: networking-sfc.tar
 repository: repository.tar
+onos_service_file:
+  src: onos.service
+  dst: /lib/systemd/system/onos.service
 onos_boot_features:
   - config
   - standard
