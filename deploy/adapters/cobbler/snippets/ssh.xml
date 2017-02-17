@@ -1,3 +1,11 @@
+<!--
+ Copyright (c) 2015 HUAWEI TECHNOLOGIES CO.,LTD and others.
+
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Apache License, Version 2.0
+ which accompanies this distribution, and is available at
+ http://www.apache.org/licenses/LICENSE-2.0
+-->
 #set ssh_keys = $getVar("push_ssh_keys", "/root/.ssh/id_rsa.pub")
 #if $ssh_keys != ""
     #set user_name = $getVar("username", "root")
