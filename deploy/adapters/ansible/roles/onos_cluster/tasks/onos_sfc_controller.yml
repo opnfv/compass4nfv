@@ -17,20 +17,31 @@
     url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_driver }}"
     dest: /opt/
 
+- name: download onos sfc driver package
+  get_url:
+    url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_sfc_driver }}"
+    dest: /opt/
+
 - name: unarchive onos driver package
   command: su -s /bin/sh -c "tar xvf  /opt/networking-onos.tar -C /opt/"
 
+- name: unarchive onos sfc driver package
+  command: su -s /bin/sh -c "tar xvf  /opt/networking-sfc.tar -C /opt/"
+
 - name: install onos driver
   command: su -s /bin/sh -c "/opt/networking-onos/install_driver.sh"
+
+- name: install onos sfc driver
+  command: su -s /bin/sh -c "/opt/networking-sfc/install_driver.sh"
+
+- name: install onos required packages
+  action: "{{ ansible_pkg_mgr }}  name={{ item }} state=present"
+  with_items: packages
 
 - name: download oracle-jdk8 package file
   get_url:
     url: "http://{{ http_server.stdout_lines[0] }}/packages/java/{{ jdk8_pkg_name }}"
     dest: /opt/{{ jdk8_pkg_name }}
-
-- name: install onos required packages
-  action: "{{ ansible_pkg_mgr }}  name={{ item }} state=present"
-  with_items: "{{ packages }}"
 
 - name: download oracle-jdk8 script file
   get_url:
@@ -85,13 +96,7 @@
 - name: extract onos package
   command: |
     su -s /bin/sh -c "tar xzf /opt/{{ onos_pkg_name }} -C {{ onos_home }} \
-        --strip-components 1 --no-overwrite-dir -k --skip-old-files" onos
-
-- name: copy onos.service
-  copy:
-    src: "{{ onos_service_file.src }}"
-    dest: "{{ onos_service_file.dst }}"
-    mode: 0755
+    --strip-components 1 --no-overwrite-dir -k --skip-old-files" onos
 
 - name: configure onos service
   shell: >
@@ -99,22 +104,17 @@
     echo 'export ONOS_USER=root' >> {{ onos_home }}/options;
     mkdir {{ onos_home }}/var;
     mkdir {{ onos_home }}/config;
+    sed -i '/pre-stop/i\env JAVA_HOME=/usr/lib/jvm/java-8-oracle' {{ onos_home }}/init/onos.conf;
+    cp -rf {{ onos_home }}/init/onos.conf /etc/init/;
+    cp -rf {{ onos_home }}/init/onos.conf /etc/init.d/;
 
-- name: create karaf config
-  template:
-    src: org.apache.karaf.features.cfg
-    dest: "{{ onos_home }}/{{ karaf_dist }}/etc/org.apache.karaf.features.cfg"
-    owner: onos
-    group: onos
-    mode: 0775
+- name: configure onos boot feature
+  shell: >
+    sed -i '/^featuresBoot=/c\featuresBoot={{ onos_boot_features }}' \
+    {{ onos_home }}/{{ karaf_dist }}/etc/org.apache.karaf.features.cfg;
 
 - name: wait for config time
   shell: "sleep 10"
-
-- name: chown onos directory and files
-  shell: >
-    chown -R onos:onos "{{ onos_home }}";
-    chown onos:onos "{{ onos_service_file.dst }}";
 
 - name: start onos service
   service: name=onos state=started enabled=yes
@@ -126,29 +126,17 @@
   shell: >
     echo "onos">>/opt/service
 
+#########################################################################################
+################################    ONOS connect with OpenStack   #######################
+#########################################################################################
 - name: Configure Neutron1
   shell: >
-    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins onos_router;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 \
-        mechanism_drivers onos_ml2;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 \
-        tenant_network_types vxlan;
+    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins \
+    networking_sfc.services.sfc.plugin.SfcPlugin, \
+    networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin,onos_router;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers onos_ml2;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers vxlan
-
-- name: configure metadata
-  shell: |
-    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
-        enable_isolated_metadata "True";
-
-- name: force metadata
-  shell: |
-    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
-        force_metadata "True";
-
-- name: configure vsctl for dhcp agent
-  shell: |
-    crudini --set /etc/neutron/dhcp_agent.ini OVS \
-        ovsdb_interface vsctl;
 
 - name: Create ML2 Configuration File
   template:
@@ -165,10 +153,8 @@
     mysql -e "create database neutron_ml2 character set utf8;";
     mysql -e "grant all on neutron_ml2.* to 'neutron'@'%';";
     su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf \
-        --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" \
-        neutron;
-    # su -s /bin/sh -c "neutron-db-manage --subproject networking-sfc \
-    #    upgrade head" neutron;
+    --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
+    su -s /bin/sh -c "neutron-db-manage --subproject networking-sfc upgrade head" neutron;
 
 - name: Restart neutron-server
   service: name=neutron-server state=restarted
