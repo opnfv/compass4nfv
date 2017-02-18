@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabed58f_9a2b2beb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-02-18T02:14:46Z",
+      "side": 1,
+      "message": "Hi now compass is in Danube release lifecycle, not colorado. And please check the yaml lint log here to correct your code https://build.opnfv.org/ci/job/opnfv-yamllint-verify-master/142/console",
+      "range": {
+        "startLine": 7,
+        "startChar": 18,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "caae99c566dc6a3ccd0ff9548b565912e722dc21",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_9a124bb3",
+        "filename": "repo/features/scripts/download_onos.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-02-18T02:14:46Z",
+      "side": 1,
+      "message": "The CI job failed because there is no onos related packages on the compass http server. Would please provide the packages to me and then I will put them on the http server.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 4
+      },
+      "revId": "caae99c566dc6a3ccd0ff9548b565912e722dc21",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
