@@ -3,6 +3,11 @@
 {% set _ = memcached_servers.append('%s:11211'% host) %}
 {% endfor %}
 {% set memcached_servers = memcached_servers|join(',') %}
+{% if ansible_processor_vcpus > 5 %}
+{%  set api_workers = ansible_processor_vcpus // 5 %}
+{% else %}
+{%  set api_workers = 1 %}
+{% endif %}
 
 [DEFAULT]
 heat_metadata_server_url = http://{{ internal_vip.ip }}:8000
@@ -12,14 +17,10 @@ log_dir = /var/log/heat
 stack_domain_admin = heat_domain_admin
 stack_domain_admin_password = {{ HEAT_PASS }}
 stack_user_domain_name = heat
-{% if ansible_processor_vcpus > 30 %}
-num_engine_workers = 30
-{% endif %}
+num_engine_workers = {{ api_workers}}
 
 [heat_api]
-{% if ansible_processor_vcpus > 30 %}
-workers = 30
-{% endif %}
+workers = {{ api_workers }}
 
 [database]
 connection = mysql://heat:{{ HEAT_DBPASS }}@{{ db_host }}/heat
