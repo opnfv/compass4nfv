@@ -8,17 +8,11 @@
 ##############################################################################
 ---
 
-- name: clear jdk8 package
-  command: su -s /bin/sh -c "rm -rf /opt/install_jdk8"
-
 - name: unarchive onos driver package
-  command: su -s /bin/sh -c "tar xvf /opt/install_jdk8.tar -C /opt/"
+  command: su -s /bin/sh -c "tar xvf  /opt/install_jdk8.tar -C /opt/"
 
 - name: install install_jdk8 package
   command: su -s /bin/sh -c "/opt/install_jdk8/install_jdk8.sh"
-
-- name: clear odl package
-  command: su -s /bin/sh -c "rm -rf {{ odl_home }}/*"
 
 - name: extract odl package
   command: |

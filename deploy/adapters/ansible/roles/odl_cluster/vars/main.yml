@@ -52,6 +52,4 @@ jdk8_script_name: install_jdk8.tar
 common_packages_noarch: []
 
 odl_pip:
-  - networking-odl-3.2.0
-
-networking_odl_pkg_name: networking-odl-3.2.0.tar.gz
+  - networking_odl

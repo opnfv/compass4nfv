@@ -20,15 +20,3 @@
 - name: turn off keepalived on control node
   service: name=keepalived state=stopped
   when: ansible_os_family == "Debian"
-
-- name: stop neutron l3 agent
-  service: name=neutron-l3-agent state=stopped enabled=no
-  when: odl_l3_agent == "Enable" and inventory_hostname in groups['odl']
-
-- name: remove neutron l3 agent
-  shell: >
-    sed -i '/neutron-l3-agent/d' /opt/service;
-    rm -rf /lib/systemd/system/neutron-l3-agent.service;
-    rm -rf /etc/init/neutron-l3-agent.conf;
-    rm -rf /etc/init.d/neutron-l3-agent;
-  when: odl_l3_agent == "Enable" and inventory_hostname in groups['odl']
