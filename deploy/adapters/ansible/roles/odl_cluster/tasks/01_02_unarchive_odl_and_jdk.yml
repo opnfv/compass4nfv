@@ -23,4 +23,4 @@
 - name: extract odl package
   command: |
     su -s /bin/sh -c "tar xzf /opt/{{ odl_pkg_name }} -C {{ odl_home }} \
-        --strip-components 1 --no-overwrite-dir -k --skip-old-files" odl
+        --strip-components 1" odl
