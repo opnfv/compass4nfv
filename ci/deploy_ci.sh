@@ -26,6 +26,12 @@ case $DEPLOY_SCENARIO in
         echo "os-onos-sfc-ha scenario supports mitaka only"
         exit 1
         ;;
+    k8-nosdn-nofeature-ha)
+        if [[ $COMPASS_OS_VERSION == xenial ]]; then
+            echo "k8-nosdn-nofeature-ha scenario supports centos7 only"
+            exit 0
+        fi
+        ;;
 esac
 
 if [[ $ROOT_BUILD_CAUSE == MANUALTRIGGER ]]; then
@@ -50,11 +56,21 @@ fi
 export OS_VERSION=$COMPASS_OS_VERSION
 export OPENSTACK_VERSION=$COMPASS_OPENSTACK_VERSION
 
+if [[ $DEPLOY_SCENARIO == "k8-nosdn-nofeature-ha" ]]; then
+    unset OPENSTACK_VERSION
+    export KUBERNETES_VERSION="v1.5"
+fi
+
 set +x
 echo "#############################################"
 echo 'DEPLOY_SCENARIO='$DEPLOY_SCENARIO
 echo 'OS_VERSION='$OS_VERSION
-echo 'OPENSTACK_VERSION='$OPENSTACK_VERSION
+if [[ "x"$OPENSTACK_VERSION != "x" ]]; then
+    echo 'OPENSTACK_VERSION='$OPENSTACK_VERSION
+fi
+if [[ "x"$KUBERNETES_VERSION != "x" ]]; then
+    echo 'KUBERNETES_VERSION='$KUBERNETES_VERSION
+fi
 echo "#############################################"
 set -x
 
