@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabed58f_8ec19b82",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "hi yifei, you\u0027d better sign your name. it is yours",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 55
+      },
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_4ebba30e",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "I just suggest that \"Ansible is the main packages installation plugin in Compass4NFV adapter of Compass\"",
+      "range": {
+        "startLine": 14,
+        "startChar": 30,
+        "endLine": 14,
+        "endChar": 36
+      },
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_4e52c3de",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "(More",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 45
+      },
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_6e72277e",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "Could you consider give a reference link, just like http://docs.ansible.com/ansible/index.html",
+      "range": {
+        "startLine": 16,
+        "startChar": 26,
+        "endLine": 16,
+        "endChar": 35
+      },
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_4e69638a",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "I suggest we can give more preconditions:\npackages to be installed, deployment scripts etc.",
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_ee37f7ae",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "daemon",
+      "range": {
+        "startLine": 52,
+        "startChar": 29,
+        "endLine": 52,
+        "endChar": 35
+      },
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_ae41ff0c",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "packages",
+      "range": {
+        "startLine": 109,
+        "startChar": 43,
+        "endLine": 109,
+        "endChar": 50
+      },
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_ce46b323",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "execution",
+      "range": {
+        "startLine": 124,
+        "startChar": 5,
+        "endLine": 124,
+        "endChar": 13
+      },
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_8e48bb2e",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-02-28T06:58:46Z",
+      "side": 1,
+      "message": "packages",
+      "range": {
+        "startLine": 125,
+        "startChar": 74,
+        "endLine": 125,
+        "endChar": 81
+      },
+      "revId": "2cf01e232e09131f216fbff06f9d8517643c5b9d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
