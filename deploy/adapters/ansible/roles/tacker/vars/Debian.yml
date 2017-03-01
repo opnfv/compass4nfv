@@ -12,3 +12,8 @@ packages:
   - crudini
 
 services: []
+
+heat_services:
+  - heat-api
+  - heat-api-cfn
+  - heat-engine

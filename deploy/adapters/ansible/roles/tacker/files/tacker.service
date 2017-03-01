@@ -1,0 +1,19 @@
+[Unit]
+Description=OpenStack Tacker Server
+After=
+
+[Service]
+User=root
+Group=root
+Type=simple
+WorkingDirectory=/var/lib/tacker
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/lock/tacker /var/log/tacker /var/lib/tacker
+ExecStartPre=/usr/bin/touch /var/log/tacker/tacker.log
+ExecStart=/usr/local/bin/tacker-server --config-file /usr/local/etc/tacker/tacker.conf
+Restart=on-failure
+LimitNOFILE=65535
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

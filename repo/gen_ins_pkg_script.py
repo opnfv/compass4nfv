@@ -86,7 +86,7 @@ def generate_download_script(root="", arch="", tmpl="", docker_tmpl="", default_
             for filename in filenames:
                 if os.path.isfile(os.path.join(parent, filename)):
                     special_packages_names.append(filename)
-        searchList.update({'spcial_packages': special_packages_names})
+        searchList.update({'special_packages': special_packages_names})
 
     Dockerfile = os.path.basename(docker_tmpl).split('.')[0]
     tmpl = Template(file=docker_tmpl, searchList=searchList)
