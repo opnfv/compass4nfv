@@ -7,46 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: get http server
-  shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
-  register: http_server
-
-- name: creat tacker_home, tacker_client_home, tacker_horizon_home
-  shell: |
-    mkdir -p /opt/tacker;
-    mkdir -p /opt/tacker_client;
-    mkdir -p /opt/tacker_horizon;
-
-- name: download tacker package
-  get_url:
-    url: "http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_pkg_name }}"
-    dest: /opt/{{ tacker_pkg_name }}
-
-- name: download tacker_client package
-  get_url:
-    url: "http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_client_pkg_name }}"
-    dest: /opt/{{ tacker_client_pkg_name }}
-
-- name: download tacker_horizon package
-  get_url:
-    url: "http://{{ http_server.stdout_lines[0] }}/packages/tacker/{{ tacker_horizon_pkg_name }}"
-    dest: /opt/{{ tacker_horizon_pkg_name }}
-
-- name: extract tacker package
-  command: |
-    su -s /bin/sh -c "tar xzf /opt/{{ tacker_pkg_name }} -C {{ tacker_home }} \
-        --strip-components 1 --no-overwrite-dir -k --skip-old-files"
-
-- name: extract tacker_client package
-  command: |
-    su -s /bin/sh -c "tar xzf /opt/{{ tacker_client_pkg_name }} -C {{ tacker_client_home }} \
-        --strip-components 1 --no-overwrite-dir -k --skip-old-files"
-
-- name: extract tacker_horizon package
-  command: |
-    su -s /bin/sh -c "tar xzf /opt/{{ tacker_horizon_pkg_name }} -C {{ tacker_horizon_home }} \
-        --strip-components 1 --no-overwrite-dir -k --skip-old-files"
-
 - name: edit ml2_conf.ini
   shell: |
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security;
@@ -65,7 +25,7 @@
 
 - name: "combination of the haproxy configuration"
   shell: "cat /tmp/haproxy-tacker.cfg >> /etc/haproxy/haproxy.cfg"
-  when: ha_cfg.stdout.find('8888') == -1
+  when: ha_cfg.stdout.find('9890') == -1
 
 - name: "delete temporary configuration file"
   file:
@@ -136,28 +96,38 @@
   shell: |
     . /opt/admin-openrc.sh; \
     openstack endpoint create --region RegionOne \
-        --publicurl 'http://{{ public_vip.ip }}:8888/' \
-        --adminurl 'http://{{ internal_vip.ip }}:8888/' \
-        --internalurl 'http://{{ internal_vip.ip }}:8888/' tacker
+        nfv-orchestration public 'http://{{ public_vip.ip }}:9890/';
+    openstack endpoint create --region RegionOne \
+        nfv-orchestration admin 'http://{{ internal_vip.ip }}:9890/';
+    openstack endpoint create --region RegionOne \
+        nfv-orchestration internal 'http://{{ internal_vip.ip }}:9890/';
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
-- name: install pip package
-  pip: name=Babel state=present version=2.3.4
-
-- name: install pip packages
+- name: install tacker and tacker client
   shell: |
-    pip install tosca-parser heat-translator oslosphinx;
+    pip install tacker python-tackerclient
 
-- name: install tacker
-  shell: |
-    . /opt/admin-openrc.sh; cd {{ tacker_home }}; python setup.py install
-
-- name: create 'tacker' directory in '/var/cache', set ownership and permissions
+- name: create 'tacker' directory in '/var/cache'
   shell: |
     mkdir -p /var/cache/tacker
 
 - name: create 'tacker' directory in '/var/log'
   shell: mkdir -p /var/log/tacker
+
+- name: get the policy file of heat
+  shell: cat /etc/heat/policy.json | grep Flavor
+  register: heat_info
+
+- name: update the policy file of heat
+  lineinfile:
+    dest: /etc/heat/policy.json
+    regexp: '    "resource_types:OS::Nova::Flavor'
+    line: '    "resource_types:OS::Nova::Flavor": "role:admin",'
+  when: heat_info.stdout.find('role') == -1
+
+- name: restart heat services
+  service: name={{ item }} state=restarted enabled=yes
+  with_items: "{{ heat_services }}"
 
 - name: copy tacker configs
   template: src={{ item.src }} dest=/opt/os_templates
@@ -175,29 +145,67 @@
         --config-file /usr/local/etc/tacker/tacker.conf upgrade head
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
-- name: install tacker client
-  shell: |
-    . /opt/admin-openrc.sh; cd {{ tacker_client_home }};
-    python setup.py install
+- name: create tacker service
+  copy: src=tacker.service dest=/lib/systemd/system/
 
-- name: install tacker horizon
-  shell: |
-    . /opt/admin-openrc.sh; cd {{ tacker_horizon_home }};
-    python setup.py install
+- name: create tacker service work dir
+  file: path=/var/lib/tacker state=directory
 
-- name: enable tacker horizon in dashboard
-  shell: |
-    cp {{ tacker_horizon_home }}/openstack_dashboard_extensions/* \
-        /usr/share/openstack-dashboard/openstack_dashboard/enabled/
+- name: link the tacker service
+  file:
+    src: /lib/systemd/system/tacker.service
+    dest: /etc/systemd/system/multi-user.target.wants/tacker.service
+    state: link
 
-- name: restart apache server
-  shell: service apache2 restart
+- name: start tacker service
+  shell: service tacker start
 
-- name: launch tacker-server
+- name: create tackerc file
+  template: src=tackerc.sh dest=/opt/tackerc.sh mode=777
+
+- name: create nfvrc file
+  template: src=nfvrc.sh dest=/opt/nfvrc.sh mode=777
+
+- name: get the nfv_user info
+  shell: . /opt/tackerc.sh; openstack user list
+  register: nfvuser_info
+
+- name: delete the existed nfv user
+  shell: . /opt/tackerc.sh; openstack user delete nfv_user
+  when: nfvuser_info.stdout.find('nfv') != -1 and inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: get the openstack project info
+  shell: . /opt/tackerc.sh; openstack project list
+  register: nfvproject_info
+
+- name: delete the existed nfv project
   shell: |
-    . /opt/admin-openrc.sh; \
-    python /usr/local/bin/tacker-server \
-        --config-file /usr/local/etc/tacker/tacker.conf |
-        --log-file /var/log/tacker/tacker.log
-  async: 9999999999999
-  poll: 0
+    . /opt/tackerc.sh;
+    openstack project delete $(openstack project list | grep nfv | awk '{print $2}')
+  when: nfvproject_info.stdout.find('nfv') != -1 and inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: create an nfv project
+  shell: . /opt/tackerc.sh; openstack project create --description "NFV Project" nfv
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: create nfv user with admin privileges
+  shell: |
+    . /opt/tackerc.sh;
+    openstack user create --password console nfv_user;
+    openstack role add --project nfv --user nfv_user admin;
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: create config.yml
+  template: src=config.yaml dest=/opt/config.yaml
+
+- name: check if tacker running
+  shell: . /opt/tackerc.sh; while (!(tacker ext-list)); do sleep 30; done
+
+- name: register VIM to tacker
+  shell: |
+    . /opt/tackerc.sh;
+    tacker vim-register --config-file /opt/config.yaml --description "Default VIM" VIM0
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+
+- name: restart tacker service
+  shell: service tacker stop; service tacker start

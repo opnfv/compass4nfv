@@ -23,6 +23,10 @@ RUN apt-get install -y git python-pip
 
 RUN apt-get install -y libssl-dev libffi-dev
 
+RUN pip install --upgrade setuptools
+
+RUN pip install --upgrade pip
+
 RUN mkdir -p /home/tmp
 
 RUN mkdir -p /pip-openstack

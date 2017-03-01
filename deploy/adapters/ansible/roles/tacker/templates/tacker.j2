@@ -1,3 +1,12 @@
+{% set memcached_servers = [] %}
+{% set rabbitmq_servers = [] %}
+{% for host in haproxy_hosts.values() %}
+{% set _ = memcached_servers.append('%s:11211'% host) %}
+{% set _ = rabbitmq_servers.append('%s:5672'% host) %}
+{% endfor %}
+{% set memcached_servers = memcached_servers|join(',') %}
+{% set rabbitmq_servers = rabbitmq_servers|join(',') %}
+
 [DEFAULT]
 # Print more verbose output (set logging level to INFO instead of default WARNING level).
 verbose = True
@@ -38,7 +47,7 @@ use_syslog = False
 bind_host = {{ internal_ip }}
 
 # Port the bind the API server to
-bind_port = 8888
+bind_port = 9890
 
 # Path to the extensions.  Note that this can be a colon-separated list of
 # paths.  For example:
@@ -333,6 +342,10 @@ signing_dir = /var/cache/tacker
 #project_domain_id = default
 project_name = service
 #user_domain_id = default
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+memcached_servers = {{ memcached_servers }}
 password = console
 username = tacker
 auth_url = http://{{ internal_vip.ip }}:35357
@@ -398,14 +411,10 @@ connection = mysql://tacker:TACKER_DBPASS@{{ internal_vip.ip }}:3306/tacker?char
 # mgmt_driver = noop,openwrt
 
 # Specify drivers for monitoring
-# monitor_driver = ping, http_ping
+monitor_driver = ping, http_ping
 
-[nfvo_vim]
-# Supported VIM drivers, resource orchestration controllers such as OpenStack, kvm
-#Default VIM driver is OpenStack
-#vim_drivers = openstack
-#Default VIM placement if vim id is not provided
-default_vim = VIM0
+[nfvo]
+vim_drivers = openstack
 
 [vim_keys]
 #openstack = /etc/tacker/vim/fernet_keys

@@ -1,0 +1,8 @@
+---
+
+auth_url: http://{{ public_vip.ip }}:5000/v3
+username: nfv_user
+password: console
+project_name: nfv
+project_domain_name: default
+user_domain_name: default
