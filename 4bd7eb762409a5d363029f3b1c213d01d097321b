@@ -22,6 +22,30 @@
       "revId": "4bd7eb762409a5d363029f3b1c213d01d097321b",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_ba261967",
+        "filename": "deploy/adapters/ansible/roles/onos_cluster/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 6677
+      },
+      "writtenOn": "2017-03-02T05:57:35Z",
+      "side": 1,
+      "message": "comments closed",
+      "parentUuid": "dabed58f_c59a1714",
+      "range": {
+        "startLine": 14,
+        "startChar": 14,
+        "endLine": 14,
+        "endChar": 47
+      },
+      "revId": "4bd7eb762409a5d363029f3b1c213d01d097321b",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
