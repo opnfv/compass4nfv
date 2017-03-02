@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabed58f_11b94b2e",
+        "filename": "deploy/adapters/ansible/roles/tacker/tasks/tacker_controller.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2017-03-02T02:58:03Z",
+      "side": 1,
+      "message": "use keystone_endpoint module please, you can found this module in ansible_modules. or you can refer to keystone_create.yml",
+      "range": {
+        "startLine": 96,
+        "startChar": 2,
+        "endLine": 103,
+        "endChar": 72
+      },
+      "revId": "c87f8580eb1b226a4ff348854453f8083912ddb0",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_31b6cf3e",
+        "filename": "deploy/adapters/ansible/roles/tacker/tasks/tacker_controller.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5453
+      },
+      "writtenOn": "2017-03-02T02:58:03Z",
+      "side": 1,
+      "message": "it will be better to use os_user module, and you had source tackerc.sh, so you can add a tacker cloud in cloud.yaml. you can found it in roles/keystone/templates",
+      "range": {
+        "startLine": 174,
+        "startChar": 2,
+        "endLine": 174,
+        "endChar": 58
+      },
+      "revId": "c87f8580eb1b226a4ff348854453f8083912ddb0",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
