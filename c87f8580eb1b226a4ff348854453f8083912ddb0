@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "dabed58f_311d6fbe",
+        "filename": "deploy/adapters/ansible/roles/tacker/tasks/tacker_controller.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-03-02T08:08:08Z",
+      "side": 1,
+      "message": "Keystone module could fail by chance in congress and tacker. If you are interested, you can try to fix this.",
+      "parentUuid": "dabed58f_11b94b2e",
+      "range": {
+        "startLine": 96,
+        "startChar": 2,
+        "endLine": 103,
+        "endChar": 72
+      },
+      "revId": "c87f8580eb1b226a4ff348854453f8083912ddb0",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dabed58f_31b6cf3e",
         "filename": "deploy/adapters/ansible/roles/tacker/tasks/tacker_controller.yml",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2017-03-02T02:58:03Z",
       "side": 1,
       "message": "it will be better to use os_user module, and you had source tackerc.sh, so you can add a tacker cloud in cloud.yaml. you can found it in roles/keystone/templates",
+      "range": {
+        "startLine": 174,
+        "startChar": 2,
+        "endLine": 174,
+        "endChar": 58
+      },
+      "revId": "c87f8580eb1b226a4ff348854453f8083912ddb0",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_d17973fd",
+        "filename": "deploy/adapters/ansible/roles/tacker/tasks/tacker_controller.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-03-02T08:08:08Z",
+      "side": 1,
+      "message": "I think this is not good for decoupling",
+      "parentUuid": "dabed58f_31b6cf3e",
       "range": {
         "startLine": 174,
         "startChar": 2,
