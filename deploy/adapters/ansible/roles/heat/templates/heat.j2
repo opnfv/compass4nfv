@@ -3,11 +3,6 @@
 {% set _ = memcached_servers.append('%s:11211'% host) %}
 {% endfor %}
 {% set memcached_servers = memcached_servers|join(',') %}
-{% if ansible_processor_vcpus > 5 %}
-{%  set api_workers = ansible_processor_vcpus // 5 %}
-{% else %}
-{%  set api_workers = 1 %}
-{% endif %}
 
 [DEFAULT]
 heat_metadata_server_url = http://{{ internal_vip.ip }}:8000
