@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabed58f_abcb1671",
+        "filename": "deploy/conf/vm_environment/huawei-virtual3/network_openo.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-03-10T08:19:52Z",
+      "side": 1,
+      "message": "External IP address should be different in vPODs",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 24
+      },
+      "revId": "fee9291edd457e7ca8a76f9a51e63fad447e477d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_8bce5282",
+        "filename": "deploy/conf/vm_environment/huawei-virtual3/network_openo.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-03-10T08:19:52Z",
+      "side": 1,
+      "message": "I think external IP address should be different in different vPODs",
+      "range": {
+        "startLine": 82,
+        "startChar": 1,
+        "endLine": 84,
+        "endChar": 21
+      },
+      "revId": "fee9291edd457e7ca8a76f9a51e63fad447e477d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_4bc85a74",
+        "filename": "deploy/conf/vm_environment/huawei-virtual3/network_openo.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-03-10T08:19:52Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 32
+      },
+      "revId": "fee9291edd457e7ca8a76f9a51e63fad447e477d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
