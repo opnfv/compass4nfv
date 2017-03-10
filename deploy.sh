@@ -38,4 +38,7 @@ if [[ -z $DEPLOY_COMPASS && -z $DEPLOY_HOST && -z $REDEPLOY_HOST ]]; then
     export DEPLOY_HOST="true"
 fi
 
-$COMPASS_DIR/deploy/launch.sh $*
+LOG_DIR=$COMPASS_DIR/work/deploy/log
+mkdir -p $LOG_DIR
+
+$COMPASS_DIR/deploy/launch.sh $* 2>&1 | tee $LOG_DIR/compass-deploy.log
