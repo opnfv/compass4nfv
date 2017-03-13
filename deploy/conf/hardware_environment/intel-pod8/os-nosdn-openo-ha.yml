@@ -18,6 +18,8 @@ ipmiVer: '1.0'
 
 deploy_options:
   - orchestrator: open-o
+    version: 1.0.0
+
   - application: clearwater
 
 hosts:
