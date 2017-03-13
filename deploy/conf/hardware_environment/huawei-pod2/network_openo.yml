@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Apache License, Version 2.0
@@ -83,6 +83,11 @@ public_vip:
   netmask: "24"
   interface: external
 
+openo_net:
+  openo_ip: 192.168.11.50
+  openo_docker_gw: 172.11.1.1
+  openo_docker_cidr: 172.11.1.0/24
+
 onos_nic: eth2
 public_net_info:
   enable: "True"
@@ -98,17 +103,3 @@ public_net_info:
   floating_ip_cidr: "192.168.11.0/24"
   floating_ip_start: "192.168.11.30"
   floating_ip_end: "192.168.11.100"
-
-openo_net:
-  openo_vm_ip: "192.168.11.50"
-  openo_vm_mask: "255.255.255.0"
-  openo_external_gw: "192.168.11.1"
-  openo_external_cidr: "192.168.11.0/24"
-
-openo_docker_net:
-  docker_ip_start: "192.168.11.51"
-  docker_ip_end: "192.168.11.90"
-
-juju_net:
-  juju_net_cidr: "12.1.1.0/24"
-  juju_net_gw: "12.1.1.1"
