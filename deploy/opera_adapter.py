@@ -8,8 +8,9 @@
 ##############################################################################
 
 import os
-import yaml
 import sys
+import yaml
+import re
 import subprocess
 import traceback
 import ipaddress
@@ -33,23 +34,18 @@ def dump_file(data, file):
             return None
 
 
-def sync_openo_network_yml(network, net_config):
-    """sync opera/conf/network.yml according to Network file"""
-    for i in net_config["openo_net"].keys():
-        net_config["openo_net"][i] = network["openo_net"][i]
+def sync_openo_config(openo_config, dha, network):
+    """sync opera/conf/open-o.yml according to DHA and Network file"""
+    openo_config['openo_version'] = dha['deploy_options'][0]['version']
+    openo_config['openo_net']['openo_ip'] = network['openo_net']['openo_ip']
 
-    sorted_ips = sorted(net_config["openo_docker_net"].items(),
-                        key=lambda item: item[1])
-    docker_ips = [i[0] for i in sorted_ips]
-    docker_start_ip = unicode(network["openo_docker_net"]["docker_ip_start"],
-                              "utf-8")
-    docker_start_ip = ipaddress.IPv4Address(docker_start_ip)
-    for i in docker_ips:
-        net_config["openo_docker_net"][i] = str(docker_start_ip)
-        docker_start_ip += 1
 
-    for i in net_config["juju_net"].keys():
-        net_config["juju_net"][i] = network["juju_net"][i]
+def sync_admin_openrc(network, admin_openrc_file):
+    ip = re.compile("\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}")
+    with open(admin_openrc_file, 'r+') as fd:
+        data = fd.read()
+        fd.seek(0)
+        fd.write(re.sub(ip, network['public_vip']['ip'], data))
 
 
 if __name__ == "__main__":
@@ -58,6 +54,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     _, dha_file, network_file = sys.argv
+    compass_dir = os.getenv('COMPASS_DIR')
+
+    if not compass_dir:
+        print("env var COMPASS_DIR  doesn't exit")
+        sys.exit(1)
 
     if not os.path.exists(dha_file):
         print("DHA file doesn't exit")
@@ -79,24 +80,28 @@ if __name__ == "__main__":
     if dha["deploy_options"][0]["orchestrator"] != "open-o":
         sys.exit(0)
 
-    compass_dir = os.getenv('COMPASS_DIR')
     work_dir = os.path.join(compass_dir, 'work')
     opera_dir = os.path.join(work_dir, 'opera')
     conf_dir = os.path.join(opera_dir, 'conf')
-    net_config_file = os.path.join(conf_dir, 'network.yml')
+    openo_config_file = os.path.join(conf_dir, 'open-o.yml')
+    admin_openrc_file = os.path.join(conf_dir, 'admin-openrc.sh')
 
     p1 = subprocess.Popen(
         "git clone https://gerrit.opnfv.org/gerrit/opera",
         cwd=work_dir, shell=True)
     p1.communicate()
 
-    if not os.path.exists(net_config_file):
-        print('file opera/conf/network.yml not found')
+    if not os.path.exists(openo_config_file):
+        print('file opera/conf/open-o.yml not found')
+        sys.exit(1)
+    if not os.path.exists(admin_openrc_file):
+        print('file opera/conf/admin-openrc.sh not found')
         sys.exit(1)
 
-    net_config = load_file(net_config_file)
-    sync_openo_network_yml(network, net_config)
-    dump_file(net_config, net_config_file)
+    openo_config = load_file(openo_config_file)
+    sync_openo_config(openo_config, dha, network)
+    dump_file(openo_config, openo_config_file)
+    sync_admin_openrc(network, admin_openrc_file)
 
     p2 = subprocess.Popen("./opera_launch.sh", cwd=opera_dir, shell=True)
     p2.communicate()

@@ -83,6 +83,11 @@ public_vip:
   netmask: "24"
   interface: external
 
+openo_net:
+  openo_ip: 10.8.15.50
+  openo_docker_gw: 172.11.1.1
+  openo_docker_cidr: 172.11.1.0/24
+
 onos_nic: eth4
 public_net_info:
   enable: "True"
@@ -98,17 +103,3 @@ public_net_info:
   floating_ip_cidr: "10.8.15.0/24"
   floating_ip_start: "10.8.15.100"
   floating_ip_end: "10.8.15.200"
-
-openo_net:
-  openo_vm_ip: "10.8.15.50"
-  openo_vm_mask: "255.255.255.0"
-  openo_external_gw: "10.8.15.1"
-  openo_external_cidr: "10.8.15.0/24"
-
-openo_docker_net:
-  docker_ip_start: "10.8.15.51"
-  docker_ip_end: "10.8.15.90"
-
-juju_net:
-  juju_net_cidr: "12.1.1.0/24"
-  juju_net_gw: "12.1.1.1"
