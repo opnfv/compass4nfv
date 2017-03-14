@@ -426,8 +426,11 @@ declare -A used_logical_interfaces
 
 used_logical_interfaces[$iname]=$iname
 
-    #if $iface_type in ("slave","bond_slave","bridge_slave","bonded_bridge_slave")
+    #if $iface_type in ("slave","bridge_slave","bonded_bridge_slave")
         #set $static = 1
+    #end if
+    #if $ip == ""
+        #set $static = ""
     #end if
 echo "DEVICE=$iname" > $devfile
 echo "ONBOOT=yes" >> $devfile
@@ -514,7 +517,7 @@ echo "GATEWAY=$if_gateway" >> $devfile
 echo "NETMASK=$netmask" >> $devfile
         #end if
     #else
-echo "BOOTPROTO=dhcp" >> $devfile
+echo "BOOTPROTO=manual" >> $devfile
         #if $len($name_servers) > 0
 echo "PEERDNS=no" >> $devfile
         #end if
