@@ -9,7 +9,23 @@
 
 ---
 nic_mappings: []
-bond_mappings: []
+
+bond_mappings:
+  - name: bond1
+    host:
+      - host1
+      - host2
+      - host3
+      - host4
+      - host5
+    bond-slaves:
+      - eth1
+      - eth2
+    bond-mode: 802.3ad
+    bond-miimon: 100
+    bond-lacp_rate: fast
+    bond-xmit_hash_policy: layer2
+    mtu: 9000
 
 provider_net_mappings:
   - name: br-prv

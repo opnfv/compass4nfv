@@ -441,15 +441,18 @@ echo "" >> /etc/network/interfaces
 
 used_logical_interface_$iname=$iname
 
-    #if $iface_type in ("slave","bond_slave","bridge_slave","bonded_bridge_slave")
+    #if $iface_type in ("slave","bridge_slave","bonded_bridge_slave")
         #set $static = 1
+    #end if
+    #if $ip == ""
+        #set $static = ""
     #end if
 echo "auto $iname" >> /etc/network/interfaces
 
     #if $static
 echo "iface $iname inet static" >> /etc/network/interfaces
     #else
-echo "iface $iname inet dhcp" >> /etc/network/interfaces
+echo "iface $iname inet manual" >> /etc/network/interfaces
     #end if
 
     #if $iface_type not in ("master","bond","bridge","bonded_bridge_slave")
