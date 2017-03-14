@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab8dda7_4d9bcdc9",
+        "filename": "deploy/adapters/ansible/roles/onos_cluster/tasks/openvswitch.yml",
+        "patchSetId": 24
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-03-14T02:00:42Z",
+      "side": 1,
+      "message": "Network is not correct after deployment. \"onos_port1\" is not configured well. I found you lost the task \"set veth to ovs\" here.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "79c098fb1ef2cc6f4b5e972d249363c5e9d8ac3e",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
