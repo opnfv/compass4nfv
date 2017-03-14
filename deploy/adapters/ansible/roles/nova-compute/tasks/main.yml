@@ -34,6 +34,54 @@
   shell: egrep -c '(vmx|svm)' /proc/cpuinfo || echo 0
   register: kvm_cpu_num
 
+- name: update libvirt-bin conf
+  lineinfile:
+    dest: /etc/default/libvirt-bin
+    regexp: '^libvirtd_opts=.*'
+    insertafter: '^#libvirtd_opts=.*'
+    line: 'libvirtd_opts="-d -l"'
+  when: ansible_os_family == "Debian"
+  notify:
+    - restart nova-compute services
+
+- name: update libvirt-bin.conf
+  lineinfile:
+    dest: /etc/init/libvirt-bin.conf
+    regexp: '^env libvirtd_opts=.*'
+    line: 'env libvirtd_opts="-d -l"'
+  when: ansible_os_family == "Debian"
+  notify:
+    - restart nova-compute services
+
+- name: update libvirtd.conf
+  lineinfile:
+    dest: /etc/libvirt/libvirtd.conf
+    regexp: '{{ item.regexp }}'
+    insertafter: '{{ item.insertafter }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '^listen_tls.*'
+      insertafter: '^#listen_tls.*'
+      line: 'listen_tls = 0'
+    - regexp: '^listen_tcp.*'
+      insertafter: '^#listen_tcp.*'
+      line: 'listen_tcp = 1'
+    - regexp: '^auth_tcp.*'
+      insertafter: '^#auth_tcp.*'
+      line: 'auth_tcp = "none"'
+  notify:
+    - restart nova-compute services
+
+- name: update sysconfig libvirtd
+  lineinfile:
+    dest: /etc/sysconfig/libvirtd
+    regexp: '^LIBVIRTD_ARGS.*'
+    insertafter: '^#LIBVIRTD_ARGS.*'
+    line: 'LIBVIRTD_ARGS="--listen"'
+  when: ansible_os_family == "RedHat"
+  notify:
+    - restart nova-compute services
+
 - name: update nova-compute conf
   template: src={{ item }} dest=/etc/nova/{{ item }}
   with_items:
