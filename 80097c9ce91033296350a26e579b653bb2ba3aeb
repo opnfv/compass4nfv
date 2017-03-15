@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab8dda7_56959ae2",
+        "filename": "deploy/conf/hardware_environment/huawei-pod1/network_openo.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-03-15T07:39:26Z",
+      "side": 1,
+      "message": "Could you give more detailed description for open_ip, openo_docker_gw, why they are different? thanks.",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 34
+      },
+      "revId": "80097c9ce91033296350a26e579b653bb2ba3aeb",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
