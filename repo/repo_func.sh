@@ -372,6 +372,7 @@ function make_feature_repo()
 
     cp -rf $COMPASS_PATH/repo/features/scripts/* $COMPASS_PATH/work/repo/temp/make_pkg
 
+    sed -i "s#REPLACE_ONOS_PKG#$ONOS_PKG#g" $COMPASS_PATH/work/repo/temp/make_pkg/download_onos.sh
     sed -i "s#REPLACE_ODL_PKG#$ODL_PKG#g" $COMPASS_PATH/work/repo/temp/make_pkg/download_odl.sh
     sed -i "s#REPLACE_JAVA_PKG#$JAVA_PKG#g" $COMPASS_PATH/work/repo/temp/make_pkg/download_java.sh
 
