@@ -12,8 +12,12 @@ TYPE: virtual
 FLAVOR: cluster
 
 deploy_options:
-  - orchestrator: open-o
-  - application: clearwater
+  orchestrator:
+    type: open-o
+    version: 1.0.0
+
+  vnf:
+    type:
 
 hosts:
   - name: host1
