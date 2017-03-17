@@ -83,6 +83,11 @@ function download_local()
     fi
 }
 
+function download_packages2()
+{
+    python $COMPASS_PATH/build/parser.py $COMPASS_PATH/build/build.yaml
+}
+
 function download_packages()
 {
      for i in $CENTOS_BASE $LOADERS $CIRROS $APP_PACKAGE \
@@ -166,7 +171,7 @@ function rebuild_ppa()
 
 function make_iso()
 {
-    download_packages
+    download_packages2
     name=`basename $CENTOS_BASE`
     cp  $CACHE_DIR/$name ./ -f
     # mount base iso

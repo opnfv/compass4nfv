@@ -1,0 +1,72 @@
+
+packages:
+  - name: CentOS-7-x86_64-Minimal-1511.iso
+    description: "Compass is running the virtual machine's operating system"
+    get_method: cached
+    file: CentOS-7-x86_64-Minimal-1511.iso
+
+  - name: compass-core
+    description: "compass core git repository"
+    get_method: git
+    url: https://github.com/openstack/compass-core.git
+
+  - name: compass-web
+    description: "compass web git repository"
+    get_method: git
+    url: https://github.com/openstack/compass-web.git
+
+  - name: compass-install
+    description: "compass install git repository"
+    get_method: git
+    url: https://github.com/openstack/compass-install.git
+
+  - name: centos7-compass-core
+    description: "required packags for compass core running"
+    get_method: cached
+    file: centos7-compass-core.tar.gz
+ 
+  - name: pip
+    description: "required pip packags for compass core running"
+    get_method: cached
+    file: pip.tar.gz
+
+  - name: pip-openstack
+    description: "required packags for openstack running"
+    get_method: cached
+    file: pip-openstack.tar.gz
+
+  - name: CentOS-7-x86_64-Minimal-1611.iso
+    description: "Centos ISO of each host for provisioning"
+    get_method: cached
+    file: CentOS-7-x86_64-Minimal-1611.iso
+
+  - name: ubuntu-16.04-server-amd64.iso
+    description: "Ubuntu ISO of each host for provisioning"
+    get_method: cached
+    file: ubuntu-16.04-server-amd64.iso
+
+  - name: xenial-newton-ppa.tar.gz
+    description: "OpenStack Newton deb package"
+    get_method: cached
+    file: xenial-newton-ppa.tar.gz
+
+  - name: centos7-newton-ppa.tar.gz
+    description: "OpenStack Newton rpm package"
+    get_method: cached
+    file: centos7-newton-ppa.tar.gz
+
+  - name: packages.tar.gz
+    description: "SDN package"
+    get_method: cached
+    file: packages.tar.gz
+
+  - name: loaders.tar.gz
+    description: "loaders packages"
+    get_method: cached
+    file: loaders.tar.gz
+
+  - name: cirros-0.3.3-x86_64-disk.img
+    description: "cirros image"
+    get_method: cached
+    file: cirros-0.3.3-x86_64-disk.img
+
