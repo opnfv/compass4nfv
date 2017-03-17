@@ -21,7 +21,7 @@ WORK_PATH=$COMPASS_PATH
 PACKAGES="fuse fuseiso createrepo genisoimage curl"
 
 # PACKAGE_URL will be reset in Jenkins for different branch
-export PACKAGE_URL=${PACKAGE_URL:-http://205.177.226.237:9999}
+export PACKAGE_URL=${PACKAGE_URL:-http://172.16.10.11:9999}
 
 mkdir -p $WORK_DIR
 
@@ -81,6 +81,11 @@ function download_local()
     if [[ $2 != $CACHE_DIR/$1 ]]; then
        cp $2 $CACHE_DIR/ -rf
     fi
+}
+
+function download_packages2()
+{
+    python $COMPASS_PATH/build/parser.py $COMPASS_PATH/build/build.yaml
 }
 
 function download_packages()
@@ -166,7 +171,7 @@ function rebuild_ppa()
 
 function make_iso()
 {
-    download_packages
+    download_packages2
     name=`basename $CENTOS_BASE`
     cp  $CACHE_DIR/$name ./ -f
     # mount base iso
