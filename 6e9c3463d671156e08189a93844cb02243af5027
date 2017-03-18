@@ -1,0 +1,7 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+2: Justin chi <chigang@huawei.com>
+Submitted-by: Justin chi <chigang@huawei.com>
+Submitted-at: Sat, 18 Mar 2017 05:49:49 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/30831
+Project: compass4nfv
+Branch: refs/heads/stable/danube
