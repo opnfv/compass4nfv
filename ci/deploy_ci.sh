@@ -18,10 +18,6 @@ case $DEPLOY_SCENARIO in
         echo "os-odl_l2-moon-ha scenario supports xenial mitaka only"
         exit 1
         ;;
-    os-onos-nofeature-ha)
-        echo "os-onos-nofeature-ha scenario supports mitaka only"
-        exit 1
-        ;;
     os-onos-sfc-ha)
         echo "os-onos-sfc-ha scenario supports mitaka only"
         exit 1
