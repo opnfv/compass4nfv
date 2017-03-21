@@ -142,5 +142,8 @@ echo "NOTE: openrc file is in the controller nodes"
 echo ""
 
 if [[ ${DHA##*/} =~ "openo" ]]; then
-    python ${COMPASS_DIR}/deploy/opera_adapter.py $DHA $NETWORK
+    sudo python ${COMPASS_DIR}/deploy/opera_adapter.py $DHA $NETWORK
+    if [[ $? -ne 0 ]]; then
+        exit 1
+    fi
 fi
