@@ -47,11 +47,24 @@ def sync_openo_config(openo_config, dha, network):
 
 
 def sync_admin_openrc(network, admin_openrc_file):
-    ip = re.compile("\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}")
-    with open(admin_openrc_file, 'r+') as fd:
-        data = fd.read()
-        fd.seek(0)
-        fd.write(re.sub(ip, network['public_vip']['ip'], data))
+    ssh_opts = "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    vip = network['public_vip']['ip']
+    cmd = 'sshpass -p"root" ssh %s root@%s "cat /opt/admin-openrc.sh"' \
+          % (ssh_opts, vip)
+    ssh = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    if ssh.stdout is None:
+        print("fetch openrc fail")
+        sys.exit(1)
+
+    rcdata = ssh.stdout.readlines()
+    with open(admin_openrc_file, 'w') as fd:
+        ip = re.compile("\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}")
+        for i in rcdata:
+            if 'OS_AUTH_URL' in i:
+                i = re.sub(ip, vip, i)
+            fd.write(i)
+
+        fd.write('export OS_REGION_NAME=RegionOne')
 
 
 if __name__ == "__main__":
