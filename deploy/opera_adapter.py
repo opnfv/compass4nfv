@@ -73,17 +73,18 @@ if __name__ == "__main__":
         sys.exit(1)
 
     _, dha_file, network_file = sys.argv
-    compass_dir = os.getenv('COMPASS_DIR')
+
+    compass_dir = os.path.join(sys.path[0], '../')
 
     if not compass_dir:
-        print("env var COMPASS_DIR  doesn't exit")
+        print("env var COMPASS_DIR  doesn't exist")
         sys.exit(1)
 
     if not os.path.exists(dha_file):
-        print("DHA file doesn't exit")
+        print("DHA file doesn't exist")
         sys.exit(1)
     if not os.path.exists(network_file):
-        print("NETWORK file doesn't exit")
+        print("NETWORK file doesn't exist")
         sys.exit(1)
 
     dha = load_file(dha_file)
@@ -119,5 +120,9 @@ if __name__ == "__main__":
     dump_file(openo_config, openo_config_file)
     sync_admin_openrc(network, admin_openrc_file)
 
-    p2 = subprocess.Popen("./opera_launch.sh", cwd=opera_dir, shell=True)
+    p2 = subprocess.Popen("./opera_launch.sh", cwd=opera_dir, shell=True,\
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p2.communicate()
+    if p2.returncode != 0:
+        print('./opera_launch.sh fail')
+        sys.exit(1)
