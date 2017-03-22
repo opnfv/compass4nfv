@@ -144,6 +144,7 @@ echo ""
 if [[ ${DHA##*/} =~ "openo" ]]; then
     sudo python ${COMPASS_DIR}/deploy/opera_adapter.py $DHA $NETWORK
     if [[ $? -ne 0 ]]; then
+        log_error 'opera launch failed'
         exit 1
     fi
 fi
