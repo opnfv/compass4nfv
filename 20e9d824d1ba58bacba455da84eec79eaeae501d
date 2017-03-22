@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab8dda7_7bdd1042",
+        "filename": "deploy/opera_adapter.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-03-22T13:44:40Z",
+      "side": 1,
+      "message": "I think it is hard code here, suggest not to do it",
+      "range": {
+        "startLine": 77,
+        "startChar": 3,
+        "endLine": 77,
+        "endChar": 49
+      },
+      "revId": "20e9d824d1ba58bacba455da84eec79eaeae501d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
