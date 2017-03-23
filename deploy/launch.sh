@@ -148,3 +148,5 @@ if [[ ${DHA##*/} =~ "openo" ]]; then
         exit 1
     fi
 fi
+
+echo 'compass_deploy_success'
