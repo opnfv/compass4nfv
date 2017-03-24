@@ -1,15 +1,8 @@
-##############################################################################
-# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
-#
-# All rights reserved. This program and the accompanying materials
-# are made available under the terms of the Apache License, Version 2.0
-# which accompanies this distribution, and is available at
-# http://www.apache.org/licenses/LICENSE-2.0
-##############################################################################
-
 import yaml
 import netaddr
 import os
+import platform
+import re
 import log as logging
 
 LOG = logging.getLogger("net-init")
@@ -88,6 +81,9 @@ def main(config):
     setup_ips(config["ip_settings"], config["sys_intf_mappings"])
 
 if __name__ == "__main__":
-    os.system("service openvswitch-switch status|| service openvswitch-switch start")  # noqa
+    if re.search('Ubuntu', platform.platform()):
+        os.system("service openvswitch-switch start")
+    else:
+        os.system("service openvswitch start")
     config = yaml.load(open(config_path))
     main(config)
