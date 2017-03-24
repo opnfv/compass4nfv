@@ -3,9 +3,9 @@
 Offline Deploy
 ==============
 
-Compass4nfv uses offline approuch to deploy cluster and support complete offline
+Compass4nfv uses offline approach to deploy cluster and support complete offline
 deployment on a jumphost without access internet. Here is the offline deployment
-instuction:
+instruction:
 
 Preparation for offline deploy
 ------------------------------
