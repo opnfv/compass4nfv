@@ -10,6 +10,8 @@
 import yaml
 import netaddr
 import os
+import platform
+import re
 import log as logging
 
 LOG = logging.getLogger("net-init")
@@ -88,6 +90,11 @@ def main(config):
     setup_ips(config["ip_settings"], config["sys_intf_mappings"])
 
 if __name__ == "__main__":
-    os.system("service openvswitch-switch status|| service openvswitch-switch start")  # noqa
+    if re.search('Ubuntu', platform.platform()):
+        os.system("service openvswitch-switch start")
+    elif re.search('redhat|centos', platform.platform()):
+        os.system("service openvswitch start")
+    else:
+        os.system("echo 'ERROR: no service named openvswitch'")
     config = yaml.load(open(config_path))
     main(config)
