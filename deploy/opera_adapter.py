@@ -119,7 +119,7 @@ if __name__ == "__main__":
     dump_file(openo_config, openo_config_file)
     sync_admin_openrc(network, admin_openrc_file)
 
-    p2 = subprocess.Popen("sudo ./opera_launch.sh", cwd=opera_dir, shell=True)
+    p2 = subprocess.Popen("./opera_launch.sh", cwd=opera_dir, shell=True)
     p2.communicate()
     if p2.returncode != 0:
         print('./opera_launch.sh fail')
