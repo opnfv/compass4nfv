@@ -19,6 +19,8 @@
 - name: install packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
   with_items: "{{ packages | union(packages_noarch) }}"
+  notify:
+    - restart memcahed services
 
 - name: enable auto start
   file:
@@ -31,5 +33,18 @@
   when: ansible_os_family == "Debian"
   notify:
     - restart memcahed services
+
+- name: change memcache listen ip
+  lineinfile:
+      dest=/etc/sysconfig/memcached
+      regexp="^OPTIONS=.*"
+      line="OPTIONS=\"-l 0.0.0.0\""
+  when: ansible_os_family == "RedHat"
+  notify:
+    - restart memcahed services
+
+- name: generate memcached service list
+  lineinfile: dest=/opt/service create=yes line='{{ item }}'
+  with_items: "{{ services | union(services_noarch) }}"
 
 - meta: flush_handlers
