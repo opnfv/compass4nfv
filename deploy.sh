@@ -39,12 +39,6 @@ if [[ -z $DEPLOY_COMPASS && -z $DEPLOY_HOST && -z $REDEPLOY_HOST ]]; then
 fi
 
 LOG_DIR=$COMPASS_DIR/work/deploy/log
-export LOG_DIR
-
 mkdir -p $LOG_DIR
 
 $COMPASS_DIR/deploy/launch.sh $* 2>&1 | tee $LOG_DIR/compass-deploy.log
-
-if [[ $(tail -1 $LOG_DIR/compass-deploy.log) != 'compass deploy success' ]]; then
-    exit 1
-fi

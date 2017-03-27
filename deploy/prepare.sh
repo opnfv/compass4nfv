@@ -74,7 +74,7 @@ function  _prepare_python_env() {
         else
              sudo apt-get update -y
              sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
-             sudo apt-get install -y --force-yes git python-dev python-pip figlet sshpass
+             sudo apt-get install -y --force-yes git python-dev python-pip figlet
              sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
              sudo apt-get install -y --force-yes libffi-dev libssl-dev
 

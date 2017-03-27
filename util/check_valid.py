@@ -135,7 +135,7 @@ if __name__ == "__main__":
     _, dha_file, network_file = sys.argv
 
     if not os.path.exists(dha_file):
-        err_print("DHA file doesn't exist")
+        err_print("DHA file doesn't exit")
         sys.exit(1)
     else:
         dha = load_file(dha_file)
@@ -148,7 +148,7 @@ if __name__ == "__main__":
                 has_invalid = True
 
     if not os.path.exists(network_file):
-        err_print("NETWORK file doesn't exist")
+        err_print("NETWORK file doesn't exit")
         sys.exit(1)
     else:
         network = load_file(network_file)
