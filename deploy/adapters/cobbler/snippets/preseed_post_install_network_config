@@ -50,14 +50,7 @@ echo "physical interfaces: \${physical_interfaces}" >> /tmp/network_log
 # map physical interface to mac address
 mac_names=""
 for physical_interface in \${physical_interfaces}; do
-    set \$(ip link show \${physical_interface})
-#if $osversion == "trusty"
-    mac=\$(echo \$@ | cut -d' ' -f17)
-#elif $osversion == "xenial"
-    mac=\$(echo \$@ | cut -d' ' -f17)
-#else
-    mac=\$(echo \$@ | cut -d' ' -f13)
-#end if
+    mac=\$(ip link show \${physical_interface} | awk 'match(\$0,/link\/ether/) {print \$2}')
     mac_name=\$(echo \${mac} |tr 'a-z' 'A-Z' | tr ':' '_')
     if [ -z "\${mac_name}" ]; then
         mac_names="\${mac_name}"
