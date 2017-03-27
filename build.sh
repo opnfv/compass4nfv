@@ -21,7 +21,7 @@ WORK_PATH=$COMPASS_PATH
 PACKAGES="fuse fuseiso createrepo genisoimage curl"
 
 # PACKAGE_URL will be reset in Jenkins for different branch
-export PACKAGE_URL=${PACKAGE_URL:-http://205.177.226.237:9999}
+export PACKAGE_URL=${PACKAGE_URL:-http://205.177.226.237:9999/master}
 
 mkdir -p $WORK_DIR
 
@@ -74,6 +74,12 @@ function download_url()
     fi
 
     curl --connect-timeout 10 -o $CACHE_DIR/$1 $2
+    local_md5=`md5sum $CACHE_DIR/$1 | cut -d ' ' -f 1`
+    repo_md5=`cat $CACHE_DIR/$1.md5 | cut -d ' ' -f 1`
+    if [[ $local_md5 != $repo_md5 ]]; then
+        echo "ERROR, the md5sum don't match"
+        exit 1
+    fi
 }
 
 function download_local()
