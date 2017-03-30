@@ -12,11 +12,10 @@ The below file is the inventory template of deployment nodes:
 
     "./deploy/conf/hardware_environment/huawei-pod1/network.yml"
 
-You can edit the network.yml which you had edited before the first deployment.
+You need to edit the network.yml which you had edited the first deployment.
 
 NOTE:
-External subnet's ip_range should be changed as the first 6 IPs are already taken
-by the first deployment.
+External subnet's ip_range should exclude the IPs those have already been used.
 
 Edit DHA File
 -------------

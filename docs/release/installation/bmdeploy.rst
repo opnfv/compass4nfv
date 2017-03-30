@@ -79,7 +79,7 @@ E.g. Openstack only deployment roles setting
           - compute
 
 NOTE:
-THE 'ha' role MUST BE SELECT WITH CONTROLLERS, EVEN THERE IS ONLY ONE CONTROLLER NODE.
+THE 'ha' role MUST BE SELECTED WITH CONTROLLERS, EVEN THERE IS ONLY ONE CONTROLLER NODE.
 
 E.g. Openstack and ceph deployment roles setting
 
