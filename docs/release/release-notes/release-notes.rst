@@ -31,7 +31,7 @@ Release Data
 | **Release designation**              | Danube.1.0                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | March 27 2017                        |
+| **Release date**                     | March 31 2017                        |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | OPNFV Danube release                 |
@@ -88,9 +88,16 @@ Feature additions
 | **JIRA REFERENCE**                   | **SLOGAN**                              |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
-|                                      |                                         |
+| COMPASS-504                          | Open-O deployment with Compass          |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
+| COMPASS-362                          | OpenDaylight Boron Support              |
+|                                      |                                         |
++--------------------------------------+-----------------------------------------+
+| COMPASS-491                          | Support OpenStack Newton                |
+|                                      |                                         |
++--------------------------------------+-----------------------------------------+
+
 
 
 Bug corrections
@@ -124,27 +131,16 @@ System Limitations
 Known issues
 ------------
 
-+---------------+----------------------------------------------+
-| **Scenario**  | **Issue**                                    |
-+---------------+----------------------------------------------+
-|               |                                              |
-+---------------+----------------------------------------------+
-|               |                                              |
-+---------------+----------------------------------------------+
-
-**JIRA TICKETS:**
-
-+--------------------------------------+--------------------------------------+
-| **JIRA REFERENCE**                   | **SLOGAN**                           |
-|                                      |                                      |
-+--------------------------------------+--------------------------------------+
-| JIRA:                                |                                      |
-+--------------------------------------+--------------------------------------+
-| JIRA:                                |                                      |
-+--------------------------------------+--------------------------------------+
-
-Workarounds
------------
++----------------------+-------------------------------+-----------------------+
+|   **Scenario**       | **Issue**                     |  **Workarounds**      |
++----------------------+-------------------------------+-----------------------+
+| os-odl-l3-no-feature | Occasionally failed to assign | Rebuild the instance  |
+|                      | floating IP to an instance    | and reassign floating |
+|                      |                               | IP                    |
++----------------------+-------------------------------+-----------------------+
+| os-odl-l2-no-feature | Occasionally failed to login  | Failed in testcase,   |
+|                      | instance via ssh              | normal in usage       |
++----------------------+-------------------------------+-----------------------+
 
 
 Test Result
@@ -152,4 +148,5 @@ Test Result
 The Danube release with the Compass4nfv deployment toolchain has undergone QA test
 runs with the following results:
 
+Functest: http://testresults.opnfv.org/reporting/functest/release/danube/index-status-compass.html
 
