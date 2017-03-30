@@ -41,7 +41,7 @@ http://artifacts.opnfv.org/compass4nfv.html
 NOTE: Search the keyword "compass4nfv/Danube" to locate the ISO image.
 
 E.g.
-compass4nfv/Danube/opnfv-2016-09-18_08-15-13.iso
+compass4nfv/danube/opnfv-2017-03-29_08-55-09.iso
 
 The name of iso image includes the time of iso building, you can get the daily
 ISO according the building time.
