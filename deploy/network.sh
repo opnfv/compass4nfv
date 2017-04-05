@@ -47,6 +47,7 @@ function save_network_info()
     ip_info=`ip addr show $external_nic|grep -Eo '[^ ]+ brd [^ ]+ '`
     if [ $br_exist -eq 0 ]; then
         if [ "$external_nic" != "br-external" ]; then
+            sudo ip link set br-external up
             sudo ovs-vsctl --may-exist add-port br-external $external_nic
             sudo ip addr flush $external_nic
             sudo ip addr add $ip_info dev br-external
@@ -54,6 +55,7 @@ function save_network_info()
         fi
     else
         sudo ovs-vsctl add-br br-external
+        sudo ip link set br-external up
         sudo ovs-vsctl add-port br-external $external_nic
         sudo ip addr flush $external_nic
         sudo ip addr add $ip_info dev br-external
