@@ -10,12 +10,16 @@
 packages:
   - ubuntu-cloud-keyring
   - python-dev
+  - dkms
   - openvswitch-switch
-  - openvswitch-switch-dpdk
+  - openvswitch-common
   - python-memcache
   - python-iniparse
   - python-lxml
   - python-crypto
+
+ovs_package:
+  - openvswitch-datapath-dkms
 
 pip_packages:
   - crudini
