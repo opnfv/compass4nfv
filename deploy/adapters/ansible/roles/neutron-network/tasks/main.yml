@@ -38,6 +38,10 @@
     mode: 0755
   when: ansible_os_family == "Debian"
 
+- name: install ovs-datapath-dkms
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
+  with_items: "{{ ovs_package }}"
+
 - name: install neutron network related packages
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items: "{{ packages | union(packages_noarch) }}"
