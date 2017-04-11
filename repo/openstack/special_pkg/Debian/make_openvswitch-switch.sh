@@ -21,7 +21,7 @@ apt-get install -y build-essential fakeroot debhelper \
 pushd .
 mkdir -p /home/package_yang/
 cd /home/package_yang
-wget http://205.177.226.237:9999/onosfw/package_ovs_debian.tar.gz
+wget http://artifacts.opnfv.org/compass4nfv/master/onosfw/package_ovs_debian.tar.gz
 tar -zxvf package_ovs_debian.tar.gz
 #wget http://openvswitch.org/releases/openvswitch-2.3.1.tar.gz
 #tar -zxvf openvswitch-2.3.1.tar.gz
