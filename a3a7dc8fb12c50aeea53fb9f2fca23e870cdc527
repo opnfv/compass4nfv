@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab8dda7_ce352ef8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-04-12T03:03:51Z",
+      "side": 1,
+      "message": "please add JIRA in commit info\nhttps://jira.opnfv.org/browse/COMPASS-544",
+      "revId": "a3a7dc8fb12c50aeea53fb9f2fca23e870cdc527",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_6e3c42e3",
+        "filename": "build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-04-12T03:03:51Z",
+      "side": 1,
+      "message": "I check in artifact, it should be \nhttp://artifacts.opnfv.org/compass4nfv/package/master",
+      "range": {
+        "startLine": 24,
+        "startChar": 41,
+        "endLine": 24,
+        "endChar": 79
+      },
+      "revId": "a3a7dc8fb12c50aeea53fb9f2fca23e870cdc527",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_8e3f36d6",
+        "filename": "docs/release/installation/offline-deploy.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-04-12T03:03:51Z",
+      "side": 1,
+      "message": "it is invalid link. maybe should be in package directory.",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 78
+      },
+      "revId": "a3a7dc8fb12c50aeea53fb9f2fca23e870cdc527",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_2e264acf",
+        "filename": "repo/openstack/make_ppa/ubuntu/xenial/newton/download_pkg.tmpl",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-04-12T03:03:51Z",
+      "side": 1,
+      "message": "some with above",
+      "range": {
+        "startLine": 68,
+        "startChar": 5,
+        "endLine": 68,
+        "endChar": 87
+      },
+      "revId": "a3a7dc8fb12c50aeea53fb9f2fca23e870cdc527",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_4e213eb3",
+        "filename": "repo/openstack/special_pkg/Debian/make_openvswitch-switch.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-04-12T03:03:51Z",
+      "side": 1,
+      "message": "some with above",
+      "range": {
+        "startLine": 24,
+        "startChar": 5,
+        "endLine": 24,
+        "endChar": 52
+      },
+      "revId": "a3a7dc8fb12c50aeea53fb9f2fca23e870cdc527",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_ee2fd29f",
+        "filename": "repo/repo.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-04-12T03:03:51Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 15,
+        "startChar": 34,
+        "endLine": 15,
+        "endChar": 79
+      },
+      "revId": "a3a7dc8fb12c50aeea53fb9f2fca23e870cdc527",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
