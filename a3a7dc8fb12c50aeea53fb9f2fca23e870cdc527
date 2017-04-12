@@ -65,6 +65,30 @@
     },
     {
       "key": {
+        "uuid": "9ab8dda7_ee06f21f",
+        "filename": "docs/release/installation/offline-deploy.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-04-12T03:10:25Z",
+      "side": 1,
+      "message": "Will fix soon. There was no package directory before. It is newly modified by Tianwei.",
+      "parentUuid": "9ab8dda7_8e3f36d6",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 78
+      },
+      "revId": "a3a7dc8fb12c50aeea53fb9f2fca23e870cdc527",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9ab8dda7_2e264acf",
         "filename": "repo/openstack/make_ppa/ubuntu/xenial/newton/download_pkg.tmpl",
         "patchSetId": 1
