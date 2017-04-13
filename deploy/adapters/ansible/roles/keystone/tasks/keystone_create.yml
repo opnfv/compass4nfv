@@ -9,39 +9,42 @@
 ---
 - name: set admin url for keystone endpoint
   keystone_endpoint:
-    cloud: opnfv
+    cloud: regionone
     endpoint_type: admin
     name: "{{ item.name }}"
     service_type: "{{ item.type }}"
     state: present
     interface: admin
-    region: "{{ item.region}}"
-    url: "{{ item.adminurl }}"
+    region: "{{ item.region }}"
+    url: "{{ item.publicurl }}"
   with_items: "{{ os_services[0:1] }}"
+  when: public_vip.ip == region_keystone_auth_url
 
 - name: set internal url for keystone endpointl
   keystone_endpoint:
-    cloud: opnfv
+    cloud: regionone
     endpoint_type: admin
     name: "{{ item.name }}"
     service_type: "{{ item.type }}"
     state: present
     interface: internal
-    region: "{{ item.region}}"
+    region: "{{ item.region }}"
     url: "{{ item.internalurl }}"
   with_items: "{{ os_services[0:1] }}"
+  when: public_vip.ip == region_keystone_auth_url
 
 - name: set public url for keystone endpoint
   keystone_endpoint:
-    cloud: opnfv
+    cloud: regionone
     endpoint_type: admin
     name: "{{ item.name }}"
     service_type: "{{ item.type }}"
     state: present
     interface: public
-    region: "{{ item.region}}"
+    region: "{{ item.region }}"
     url: "{{ item.publicurl }}"
   with_items: "{{ os_services[0:1] }}"
+  when: public_vip.ip == region_keystone_auth_url
 
 - name: add service
   os_keystone_service:
@@ -85,36 +88,36 @@
 
 - name: create admin url for service's endpoint
   keystone_endpoint:
-    cloud: opnfv
+    cloud: regionone
     endpoint_type: admin
     name: "{{ item.name }}"
     service_type: "{{ item.type }}"
     state: present
     interface: admin
-    region: "{{ item.region}}"
+    region: "{{ item.region }}"
     url: "{{ item.adminurl }}"
   with_items: "{{ os_services[1:] }}"
 
 - name: create internal url for service's endpoint
   keystone_endpoint:
-    cloud: opnfv
+    cloud: regionone
     endpoint_type: admin
     name: "{{ item.name }}"
     service_type: "{{ item.type }}"
     state: present
     interface: internal
-    region: "{{ item.region}}"
+    region: "{{ item.region }}"
     url: "{{ item.internalurl }}"
   with_items: "{{ os_services[1:] }}"
 
 - name: create public url for service'e endpoint
   keystone_endpoint:
-    cloud: opnfv
+    cloud: regionone
     endpoint_type: admin
     name: "{{ item.name }}"
     service_type: "{{ item.type }}"
     state: present
     interface: public
-    region: "{{ item.region}}"
+    region: "{{ item.region }}"
     url: "{{ item.publicurl }}"
   with_items: "{{ os_services[1:] }}"

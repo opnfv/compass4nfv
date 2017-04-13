@@ -14,7 +14,7 @@ services_noarch: []
 congress_service:
   - name: congress
     type: policy
-    region: RegionOne
+    region: "{{ region_name }}"
     description: "OpenStack Policy Service"
     publicurl: "http://{{ public_vip.ip }}:1789"
     internalurl: "http://{{ internal_vip.ip }}:1789"

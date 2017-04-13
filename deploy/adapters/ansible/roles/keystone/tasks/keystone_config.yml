@@ -87,7 +87,7 @@
       --bootstrap-admin-url http://{{ internal_ip }}:35357/v3/ \
       --bootstrap-internal-url http://{{ internal_ip }}:35357/v3/ \
       --bootstrap-public-url http://{{ internal_ip }}:5000/v3/
-      --bootstrap-region-id RegionOne \
+      --bootstrap-region-id {{ region_name }} \
   notify:
     - restart keystone services
 

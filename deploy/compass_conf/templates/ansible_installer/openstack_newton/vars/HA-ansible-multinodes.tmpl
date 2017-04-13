@@ -26,6 +26,8 @@
 #set controllers = $getVar('controller', [])
 #set computers = $getVar('compute', [])
 
+region_name: $getVar('region_name', '')
+region_keystone_auth_url: $getVar('region_keystone_auth_url', '')
 enable_secgroup: $getVar('enable_secgroup', True)
 enable_fwaas: $getVar('enable_fwaas', True)
 enable_vpnaas: $getVar('enable_vpnaas', True)

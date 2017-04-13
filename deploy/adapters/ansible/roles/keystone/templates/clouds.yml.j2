@@ -9,4 +9,15 @@ clouds:
       project_domain_name: default
       user_domain_name: default
     identity_api_version: 3
+    region_name: {{ region_name }}
+  regionone:
+    auth:
+      username: 'admin'
+      password: {{ ADMIN_PASS }}
+      project_name: 'admin'
+      auth_url: 'http://{{ region_keystone_auth_url }}:35357/v3'
+      project_domain_name: default
+      user_domain_name: default
+    identity_api_version: 3
     region_name: RegionOne
+

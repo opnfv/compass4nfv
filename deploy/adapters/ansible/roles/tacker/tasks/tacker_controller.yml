@@ -95,11 +95,11 @@
 - name: provide an endpoint to tacker service
   shell: |
     . /opt/admin-openrc.sh; \
-    openstack endpoint create --region RegionOne \
+    openstack endpoint create --region {{ region_name }} \
         nfv-orchestration public 'http://{{ public_vip.ip }}:9890/';
-    openstack endpoint create --region RegionOne \
+    openstack endpoint create --region {{ region_name }} \
         nfv-orchestration admin 'http://{{ internal_vip.ip }}:9890/';
-    openstack endpoint create --region RegionOne \
+    openstack endpoint create --region {{ region_name }} \
         nfv-orchestration internal 'http://{{ internal_vip.ip }}:9890/';
   when: inventory_hostname == haproxy_hosts.keys()[0]
 

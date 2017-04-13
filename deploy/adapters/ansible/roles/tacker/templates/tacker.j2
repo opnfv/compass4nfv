@@ -344,7 +344,7 @@ project_name = service
 #user_domain_id = default
 project_domain_name = default
 user_domain_name = default
-region_name = RegionOne
+region_name = {{ region_name }}
 memcached_servers = {{ memcached_servers }}
 password = console
 username = tacker
@@ -420,7 +420,7 @@ vim_drivers = openstack
 #openstack = /etc/tacker/vim/fernet_keys
 [tacker_nova]
 # parameters for novaclient to talk to nova
-region_name = RegionOne
+region_name = {{ region_name }}
 #project_domain_id = default
 project_name = service
 #user_domain_id = default

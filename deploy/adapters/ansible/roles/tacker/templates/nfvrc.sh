@@ -9,6 +9,6 @@ export OS_AUTH_URL=http://{{ internal_vip.ip }}:35357/v3
 export OS_PROJECT_DOMAIN_NAME=default
 export OS_USER_DOMAIN_NAME=default
 export OS_AUTH_STRATEGY=keystone
-export OS_REGION_NAME=RegionOne
+export OS_REGION_NAME={{ region_name }}
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
