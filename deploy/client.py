@@ -249,6 +249,12 @@ opts = [
     cfg.StrOpt('onos_sfc',
                help='onos_sfc enable flag',
                default='Disable'),
+    cfg.StrOpt('region_name',
+               help='region name',
+               default='RegionOne'),
+    cfg.StrOpt('region_keystone_auth_url',
+               help='the public authority url',
+               default=''),
 ]
 CONF.register_cli_opts(opts)
 
@@ -757,6 +763,8 @@ class CompassClient(object):
             'moon'] = "Enable" if CONF.moon == "Enable" else "Disable"
         package_config[
             'onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
+        package_config['region_name'] = CONF.region_name
+        package_config['region_keystone_auth_url'] = CONF.region_keystone_auth_url
 
         status, resp = self.client.update_cluster_config(
             cluster_id, package_config=package_config)

@@ -180,7 +180,8 @@ def main():
 
         endpoints = [x for x in cloud.list_endpoints()
                      if (x.service_id == service.id and
-                         x.interface == interface)]
+                         x.interface == interface and
+                         x.region == region)]
 
         count = len(endpoints)
         if count > 1:
