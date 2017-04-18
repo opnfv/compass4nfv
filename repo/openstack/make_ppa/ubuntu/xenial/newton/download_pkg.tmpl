@@ -65,7 +65,7 @@ rm -rf /var/cache/apt/python-pyasn1_0.1.7-1ubuntu2_all.deb
 
 # Ubuntu16.04.1 LTS only have gcc-5-base_5.4.0-6ubuntu1~16.04.1, nova-novncproxy need
 # gcc-5-base_5.4.0-6ubuntu1~16.04.2, but the docker could not download gcc-5-base package.
-wget http://205.177.226.237:9999/nova-novncproxy_xenial_newton.tar.gz
+wget http://artifacts.opnfv.org/compass4nfv/package/master/nova-novncproxy_xenial_newton.tar.gz
 tar -zxvf nova-novncproxy_xenial_newton.tar.gz --strip-components 1 -C /var/cache/apt/
 
 mkdir deb
