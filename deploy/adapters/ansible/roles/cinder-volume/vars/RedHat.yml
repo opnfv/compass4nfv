@@ -17,3 +17,4 @@ packages:
 services:
   - openstack-cinder-volume
   - lvm2-lvmetad
+  - target
