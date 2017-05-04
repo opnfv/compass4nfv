@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab8dda7_05cc6abb",
+        "filename": "docs/release/installation/expansion.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-05-04T06:14:44Z",
+      "side": 1,
+      "message": "I suggest the directory should be \"expansion-sample\", same with hardware_cluster_expansion.yml.",
+      "range": {
+        "startLine": 166,
+        "startChar": 53,
+        "endLine": 166,
+        "endChar": 65
+      },
+      "revId": "7d116380f7b5ee2289354630f1f47935d97685da",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_65d52642",
+        "filename": "docs/release/installation/expansion.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-05-04T06:14:44Z",
+      "side": 1,
+      "message": "network.yml or network-expansion.yml ?",
+      "range": {
+        "startLine": 166,
+        "startChar": 66,
+        "endLine": 166,
+        "endChar": 77
+      },
+      "revId": "7d116380f7b5ee2289354630f1f47935d97685da",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
