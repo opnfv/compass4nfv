@@ -103,11 +103,11 @@
     - cinder-volume
     - ceilometer_compute
 
-- hosts: all
+- hosts: moon
   remote_user: root
   max_fail_percentage: 0
-  roles: []
-#    - moon
+  roles:
+    - moon
 
 - hosts: all
   remote_user: root
