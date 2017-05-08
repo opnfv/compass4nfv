@@ -48,3 +48,4 @@ $COMPASS_DIR/deploy/launch.sh $* 2>&1 | tee $LOG_DIR/compass-deploy.log
 if [[ $(tail -1 $LOG_DIR/compass-deploy.log) != 'compass deploy success' ]]; then
     exit 1
 fi
+
