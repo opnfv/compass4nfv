@@ -1,0 +1,8 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: Aric Gardner <agardner@linuxfoundation.org>
+Code-Review+2: Justin chi <chigang@huawei.com>
+Submitted-by: Justin chi <chigang@huawei.com>
+Submitted-at: Mon, 08 May 2017 11:49:10 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/34047
+Project: compass4nfv
+Branch: refs/heads/master
