@@ -30,7 +30,6 @@ enable_secgroup: $getVar('enable_secgroup', True)
 enable_fwaas: $getVar('enable_fwaas', True)
 enable_vpnaas: $getVar('enable_vpnaas', True)
 odl_l3_agent: $getVar('odl_l3_agent', 'Disable')
-moon: $getVar('moon', 'Disable')
 ha_network: $getVar('ha_network', 'Disable')
 onos_nic: $getVar('onos_nic', 'eth2')
 onos_sfc: $getVar('onos_sfc', 'Disable')
@@ -214,3 +213,10 @@ odl_base_features: ['config', 'standard', 'region', 'package', 'kar', 'ssh', 'ma
 odl_extra_features: ['odl-l2switch-switch', 'odl-ovsdb-plugin', 'odl-ovsdb-openstack', 'odl-ovsdb-northbound','odl-dlux-core', 'odl-restconf-all', 'odl-mdsal-clustering', 'odl-openflowplugin-flow-services', 'odl-netconf-connector', 'odl-netconf-connector-ssh', 'jolokia-osgi']
 odl_features: "{{ odl_base_features + odl_extra_features }}"
 odl_api_port: 8080
+
+#set moon_cfg = $getVar('moon_cfg', {})
+moon_master: $moon_cfg.master.flag
+moon_slave: $moon_cfg.slave.flag
+moon_slave_name: $moon_cfg.slave.name
+moon_master_ip: $moon_cfg.slave.master_ip
+
