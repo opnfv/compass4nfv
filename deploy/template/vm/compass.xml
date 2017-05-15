@@ -13,11 +13,7 @@
     <apic/>
     <pae/>
   </features>
-  <cpu mode='host-model'>
-    <model fallback='allow'/>
-    <feature policy='optional' name='vmx'/>
-    <feature policy='optional' name='svm'/>
-  </cpu>
+  <cpu mode='host-passthrough'/>
   <clock offset='utc'/>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
