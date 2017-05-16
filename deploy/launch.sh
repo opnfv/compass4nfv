@@ -67,6 +67,10 @@ if [[ "$EXPANSION" == "false" ]]; then
             exit 1
         fi
 
+        if ! set_compass_machine; then
+            log_error "set_compass_machine fail"
+        fi
+
         if ! launch_compass;then
             log_error "launch_compass failed"
             exit 1
@@ -82,17 +86,6 @@ else
     fi
 
     log_info "deploy host macs: $machines"
-fi
-
-
-if [[ -z "$REDEPLOY_HOST" || "$REDEPLOY_HOST" == "false" ]]; then
-    if ! set_compass_machine; then
-        log_error "set_compass_machine fail"
-    fi
-
-    # FIXME: refactor compass adapter and conf code, instead of doing
-    # hack conf injection.
-    inject_compass_conf
 fi
 
 if [[ "$DEPLOY_HOST" == "true" || $REDEPLOY_HOST == "true" ]]; then

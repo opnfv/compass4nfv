@@ -12,4 +12,3 @@ packages:
 
 services:
   - cinder-volume
-  - tgt

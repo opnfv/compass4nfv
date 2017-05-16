@@ -56,30 +56,24 @@
         /etc/cinder/cinder.conf;
     sed -i 's/^\(rbd_secret_uuid\).*/\1 = {{ ceph_uuid }}/g' \
         /etc/cinder/cinder.conf;
-    crudini --set /etc/cinder/cinder.conf DEFAULT enabled_backends \
-        ceph;
-    crudini --del /etc/cinder/cinder.conf lvm
-    crudini --set /etc/cinder/cinder.conf ceph volume_driver \
-        cinder.volume.drivers.rbd.RBDDriver;
-    crudini --set /etc/cinder/cinder.conf ceph volume_backend_name \
-        ceph;
-    crudini --set /etc/cinder/cinder.conf ceph rbd_pool volumes;
-    crudini --set /etc/cinder/cinder.conf ceph rbd_ceph_conf \
-        /etc/ceph/ceph.conf;
-    crudini --set /etc/cinder/cinder.conf ceph rbd_flatten_volume_from_snapshot \
-        false;
-    crudini --set /etc/cinder/cinder.conf ceph rbd_max_clone_depth \
-        5;
-    crudini --set /etc/cinder/cinder.conf ceph rbd_store_chunk_size \
-        4;
-    crudini --set /etc/cinder/cinder.conf ceph rados_connect_timeout \
-        -1;
-    crudini --set /etc/cinder/cinder.conf ceph glance_api_version \
-        2;
-    crudini --set /etc/cinder/cinder.conf ceph rbd_user \
-        cinder;
-    crudini --set /etc/cinder/cinder.conf ceph rbd_secret_uuid \
-        {{ ceph_uuid }};
+    sed -i '/^\[DEFAULT/a rbd_pool = volumes' \
+        /etc/cinder/cinder.conf;
+    sed -i '/^\[DEFAULT/a rbd_ceph_conf = /etc/ceph/ceph.conf' \
+        /etc/cinder/cinder.conf;
+    sed -i '/^\[DEFAULT/a rbd_flatten_volume_from_snapshot = false' \
+        /etc/cinder/cinder.conf;
+    sed -i '/^\[DEFAULT/a rbd_max_clone_depth = 5' \
+        /etc/cinder/cinder.conf;
+    sed -i '/^\[DEFAULT/a rbd_store_chunk_size = 4' \
+        /etc/cinder/cinder.conf;
+    sed -i '/^\[DEFAULT/a rados_connect_timeout = -1' \
+        /etc/cinder/cinder.conf;
+    sed -i '/^\[DEFAULT/a glance_api_version = 2' \
+        /etc/cinder/cinder.conf;
+    sed -i '/^\[DEFAULT/a rbd_user = cinder' \
+        /etc/cinder/cinder.conf;
+    sed -i '/^\[DEFAULT/a rbd_secret_uuid = {{ ceph_uuid }}' \
+        /etc/cinder/cinder.conf;
   when: inventory_hostname in groups['compute']
   tags:
     - ceph_conf_cinder

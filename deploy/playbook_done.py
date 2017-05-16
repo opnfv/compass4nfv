@@ -24,14 +24,14 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(current_dir + '/..')
 
 
-import switch_virtualenv  # noqa
+#import switch_virtualenv  # noqa
 from compass.apiclient.restful import Client  # noqa: E402
 from compass.utils import flags  # noqa: E402
 
 
 flags.add('compass_server',
           help='compass server url',
-          default='http://127.0.0.1/api')
+          default='http://compass-deck/api')
 flags.add('compass_user_email',
           help='compass user email',
           default='admin@huawei.com')
