@@ -54,4 +54,7 @@ echo 'OPENSTACK_VERSION='$OPENSTACK_VERSION
 echo "#############################################"
 set -x
 
+# clean up
+export TAR_URL=${TAR_URL:-$ISO_URL}
+sudo docker rm -f $(docker ps -aq)
 $CI_DIR/../deploy.sh
