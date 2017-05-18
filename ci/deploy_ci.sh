@@ -53,5 +53,5 @@ echo 'OS_VERSION='$OS_VERSION
 echo 'OPENSTACK_VERSION='$OPENSTACK_VERSION
 echo "#############################################"
 set -x
-
+export TAR_URL=${TAR_URL:-$ISO_URL}
 $CI_DIR/../deploy.sh
