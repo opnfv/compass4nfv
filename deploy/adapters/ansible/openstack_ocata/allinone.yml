@@ -1,0 +1,42 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+---
+- hosts: controller
+  sudo: "True"
+  roles:
+    - common
+    - kvmfornfv
+    - database
+    - mq
+    - keystone
+    - nova-controller
+    - neutron-controller
+    - dashboard
+    - cinder-controller
+    - glance
+
+- hosts: network
+  sudo: "True"
+  roles:
+    - common
+    - neutron-network
+
+- hosts: storage
+  sudo: "True"
+  roles:
+    - common
+    - cinder-volume
+
+- hosts: compute
+  sudo: "True"
+  roles:
+    - common
+    - nova-compute
+    - neutron-compute

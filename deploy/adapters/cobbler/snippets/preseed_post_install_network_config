@@ -50,7 +50,14 @@ echo "physical interfaces: \${physical_interfaces}" >> /tmp/network_log
 # map physical interface to mac address
 mac_names=""
 for physical_interface in \${physical_interfaces}; do
-    mac=\$(ip link show \${physical_interface} | awk 'match(\$0,/link\/ether/) {print \$2}')
+    set \$(ip link show \${physical_interface})
+#if $osversion == "trusty"
+    mac=\$(echo \$@ | cut -d' ' -f17)
+#elif $osversion == "xenial"
+    mac=\$(echo \$@ | cut -d' ' -f17)
+#else
+    mac=\$(echo \$@ | cut -d' ' -f13)
+#end if
     mac_name=\$(echo \${mac} |tr 'a-z' 'A-Z' | tr ':' '_')
     if [ -z "\${mac_name}" ]; then
         mac_names="\${mac_name}"
@@ -434,18 +441,15 @@ echo "" >> /etc/network/interfaces
 
 used_logical_interface_$iname=$iname
 
-    #if $iface_type in ("slave","bridge_slave","bonded_bridge_slave")
+    #if $iface_type in ("slave","bond_slave","bridge_slave","bonded_bridge_slave")
         #set $static = 1
-    #end if
-    #if $ip == ""
-        #set $static = ""
     #end if
 echo "auto $iname" >> /etc/network/interfaces
 
     #if $static
 echo "iface $iname inet static" >> /etc/network/interfaces
     #else
-echo "iface $iname inet manual" >> /etc/network/interfaces
+echo "iface $iname inet dhcp" >> /etc/network/interfaces
     #end if
 
     #if $iface_type not in ("master","bond","bridge","bonded_bridge_slave")
