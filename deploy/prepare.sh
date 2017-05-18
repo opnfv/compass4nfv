@@ -14,51 +14,55 @@ function print_logo()
     set +x; sleep 2; set -x
 }
 
-function download_iso()
+function install_docker()
 {
-    iso_name=`basename $ISO_URL`
-    rm -f $WORK_DIR/cache/"$iso_name.md5"
-    curl --connect-timeout 10 -o $WORK_DIR/cache/"$iso_name.md5" $ISO_URL.md5
-    if [[ -f $WORK_DIR/cache/$iso_name ]]; then
-        local_md5=`md5sum $WORK_DIR/cache/$iso_name | cut -d ' ' -f 1`
-        repo_md5=`cat $WORK_DIR/cache/$iso_name.md5 | cut -d ' ' -f 1`
-        if [[ "$local_md5" == "$repo_md5" ]]; then
-            return
-        fi
-    fi
+    sudo apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual
+    sudo apt-get install -y apt-transport-https ca-certificates curl \
+                 software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo apt-key fingerprint 0EBFCD88
+    sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+    sudo apt-get update
+    sudo apt-get install -y docker-ce
 
-    curl --connect-timeout 10 -o $WORK_DIR/cache/$iso_name $ISO_URL
+    sudo service docker start
+    sudo service docker restart
+}
+
+function extract_tar()
+{
+    tar_name=`basename $TAR_URL`
+    rm -f $WORK_DIR/cache/$tar_name
+    curl --connect-timeout 10 -o $WORK_DIR/cache/$tar_name $TAR_URL
+    tar -zxf $WORK_DIR/cache/$tar_name -C $WORK_DIR/installer
 }
 
 function prepare_env() {
-    sed -i -e 's/^#user =.*/user = "root"/g' /etc/libvirt/qemu.conf
-    sed -i -e 's/^#group =.*/group = "root"/g' /etc/libvirt/qemu.conf
+    sudo sed -i -e 's/^#user =.*/user = "root"/g' /etc/libvirt/qemu.conf
+    sudo sed -i -e 's/^#group =.*/group = "root"/g' /etc/libvirt/qemu.conf
     sudo service libvirt-bin restart
     if sudo service openvswitch-switch status|grep stop; then
         sudo service openvswitch-switch start
     fi
 
     # prepare work dir
-    rm -rf $WORK_DIR/{installer,vm,network,iso}
+    sudo rm -rf $WORK_DIR/{installer,vm,network,iso,docker}
     mkdir -p $WORK_DIR/installer
     mkdir -p $WORK_DIR/vm
     mkdir -p $WORK_DIR/network
     mkdir -p $WORK_DIR/iso
     mkdir -p $WORK_DIR/cache
+    mkdir -p $WORK_DIR/docker
 
-    download_iso
-
-    cp $WORK_DIR/cache/`basename $ISO_URL` $WORK_DIR/iso/centos.iso -f
-
-    # copy compass
-    mkdir -p $WORK_DIR/mnt
-    sudo mount -o loop $WORK_DIR/iso/centos.iso $WORK_DIR/mnt
-    cp -rf $WORK_DIR/mnt/compass/compass-core $WORK_DIR/installer/
-    cp -rf $WORK_DIR/mnt/compass/compass-install $WORK_DIR/installer/
-    sudo umount $WORK_DIR/mnt
-    rm -rf $WORK_DIR/mnt
+    extract_tar
 
     chmod 755 $WORK_DIR -R
+
+    if [[ ! -d /etc/libvirt/hooks ]]; then
+        sudo mkdir -p /etc/libvirt/hooks
+    fi
 
     sudo cp ${COMPASS_DIR}/deploy/qemu_hook.sh /etc/libvirt/hooks/qemu
 }
@@ -72,12 +76,22 @@ function  _prepare_python_env() {
         if [[ ! -z "$JHPKG_URL" ]]; then
              _pre_env_setup
         else
-             sudo apt-get update -y
-             sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
-             sudo apt-get install -y --force-yes git python-dev python-pip figlet sshpass
-             sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
-             sudo apt-get install -y --force-yes libffi-dev libssl-dev
-
+            if [[ ! -f /etc/redhat-release ]]; then
+                sudo apt-get update -y
+                sudo apt-get install -y --force-yes mkisofs bc curl ipmitool openvswitch-switch
+                sudo apt-get install -y --force-yes git python-dev python-pip figlet sshpass
+                sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
+                sudo apt-get install -y --force-yes libffi-dev libssl-dev
+            else
+                sudo yum install -y centos-release-openstack-ocata
+                sudo yum install -y epel-release
+                sudo yum install openvswitch -y --nogpgcheck
+                sudo yum install -y git python-devel python-pip figlet sshpass mkisofs bc curl ipmitool
+                sudo yum install -y libxslt-devel libxml2-devel libvirt-devel libmysqld-devel
+                sudo yum install -y qemu-kvm qemu-img virt-manager libvirt libvirt-python libvirt-client virt-install virt-viewer
+                sudo yum install -y libffi libffi-devel openssl-devel
+                sudo yum groupinstall -y 'Development Tools'
+            fi
         fi
    fi
 
@@ -97,6 +111,7 @@ function  _prepare_python_env() {
         pip install --upgrade netaddr
         pip install --upgrade oslo.config
         pip install --upgrade ansible
+        sudo pip install --upgrade docker-compose
    fi
 }
 
@@ -148,11 +163,21 @@ EOF
          build-essential qemu-utils qemu-kvm libvirt-bin \
          virtinst libmysqld-dev \
          libssl-dev libffi-dev python-cffi
+
+     sudo docker version >/dev/null 2>&1
+     if [[ $? -ne 0 ]]; then
+         install_docker
+     fi
+
      pid=$(ps -ef | grep SimpleHTTPServer | grep 9998 | awk '{print $2}')
      echo $pid
      kill -9 $pid
 
-     sudo cp ${COMPASS_DIR}/deploy/qemu_hook.sh /etc/libvirt/hooks/qemu
+     if [[ ! -d /etc/libvirt/hooks ]]; then
+         sudo mkdir -p /etc/libvirt/hooks
+     fi
+
+     sudo cp -f ${COMPASS_DIR}/deploy/qemu_hook.sh /etc/libvirt/hooks/qemu
 
      rm -rf /etc/apt/sources.list
      if [[ -f /etc/apt/sources.list.bak ]]; then
