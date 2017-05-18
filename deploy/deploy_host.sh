@@ -13,20 +13,16 @@ function rename_nics(){
     python $COMPASS_DIR/deploy/rename_nics.py $DHA $rsa_file $MGMT_IP $OS_VERSION
 }
 
-function add_bonding(){
-    python $COMPASS_DIR/deploy/bonding.py $NETWORK $rsa_file $MGMT_IP
-}
-
 function deploy_host(){
     export AYNC_TIMEOUT=20
-    ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks
-    scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/status_callback.py
-    scp $ssh_args -r ${COMPASS_DIR}/deploy/playbook_done.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/playbook_done.py
-    ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/ansible-modules
-    scp $ssh_args -r ${COMPASS_DIR}/deploy/adapters/ansible/ansible_modules/* root@${MGMT_IP}:/opt/ansible-modules
+#    ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/compass/bin/ansible_callbacks
+#    scp $ssh_args -r ${COMPASS_DIR}/deploy/status_callback.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/status_callback.py
+#    scp $ssh_args -r ${COMPASS_DIR}/deploy/playbook_done.py root@${MGMT_IP}:/opt/compass/bin/ansible_callbacks/playbook_done.py
+#    ssh $ssh_args root@${MGMT_IP} mkdir -p /opt/ansible-modules
+#    scp $ssh_args -r ${COMPASS_DIR}/deploy/adapters/ansible/ansible_modules/* root@${MGMT_IP}:/opt/ansible-modules
 
     # avoid nodes reboot to fast, cobbler can not give response
-    (sleep $AYNC_TIMEOUT; add_bonding; rename_nics; reboot_hosts) &
+    (sleep $AYNC_TIMEOUT; rename_nics; reboot_hosts) &
     if [[ "$REDEPLOY_HOST" == true ]]; then
         deploy_flag="redeploy"
     else
