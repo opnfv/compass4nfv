@@ -1,0 +1,13 @@
+---
+packages:
+- bridge-utils
+- debootstrap
+- ifenslave
+- ifenslave-2.6
+- lsof
+- lvm2
+- ntp
+- ntpdate
+- sudo
+- vlan
+- tcpdump
