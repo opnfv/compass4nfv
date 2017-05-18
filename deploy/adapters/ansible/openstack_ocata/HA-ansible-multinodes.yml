@@ -1,0 +1,142 @@
+---
+- hosts: all
+  remote_user: root
+  pre_tasks:
+    - name: make sure ssh dir exist
+      file:
+        path: '{{ item.path }}'
+        owner: '{{ item.owner }}'
+        group: '{{ item.group }}'
+        state: directory
+        mode: 0755
+      with_items:
+        - path: /root/.ssh
+          owner: root
+          group: root
+
+    - name: write ssh config
+      copy:
+        content: "UserKnownHostsFile /dev/null\nStrictHostKeyChecking no"
+        dest: '{{ item.dest }}'
+        owner: '{{ item.owner }}'
+        group: '{{ item.group }}'
+        mode: 0600
+      with_items:
+        - dest: /root/.ssh/config
+          owner: root
+          group: root
+
+    - name: generate ssh keys
+      shell: if [ ! -f ~/.ssh/id_rsa.pub ]; \
+             then ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""; \
+             else echo "already gen ssh key!"; fi;
+
+    - name: fetch ssh keys
+      fetch:
+        src: /root/.ssh/id_rsa.pub
+        dest: /tmp/ssh-keys-{{ ansible_hostname }}
+        flat: "yes"
+
+    - authorized_key:
+        user: root
+        key: "{{ lookup('file', item) }}"
+      with_fileglob:
+        - /tmp/ssh-keys-*
+        - /root/.ssh/id_rsa.pub
+    - name: change sources list
+      template:
+        src: sources.list
+        dest: /etc/apt/sources.list
+    - name: rm apt.conf
+      file:
+        path: /etc/apt/apt.conf
+        state: absent
+
+    - name: install package
+      shell: "apt-get update; \
+              apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 \
+              lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan -y"
+
+    - name: restart ntp service
+      shell: "service ntp restart"
+
+    - name: add the appropriate kernel modules
+      shell: "echo 'bonding'>> /etc/modules; \
+              echo '8021q' >> /etc/modules"
+
+- hosts: controller 
+  remote_user: root
+  tasks:
+    - name: configure controller network
+      template:
+        src: controller.j2
+        dest: /etc/network/interfaces
+      notify:
+        - restart network service
+  handlers:
+    - name: restart network service
+      shell: "/sbin/ifconfig eth0 0 &&/sbin/ifdown -a && /sbin/ifup --ignore-errors -a"
+
+
+- hosts: compute
+  remote_user: root
+  tasks:
+    - name: configure compute network
+      template:
+        src: compute.j2
+        dest: /etc/network/interfaces
+      notify:
+        - restart network service
+
+    - name: install package
+      shell: "apt-get install nfs-kernel-server -y"
+
+    - name: make nfs dircetory
+      file: "dest=/images mode=0777 state=directory"
+
+    - name: configure service
+      shell: "echo 'nfs        2049/tcp' >>  /etc/services; \
+              echo 'nfs        2049/udp' >>  /etc/services"
+
+    - name: configure NFS
+      template:
+        src: exports
+        dest: /etc/exports
+      notify:
+        - restart nfs service
+
+  handlers:
+    - name: restart nfs service
+      service: name=nfs-kernel-server state=restarted
+
+    - name: restart network service
+      shell: "/sbin/ifconfig eth0 0 &&/sbin/ifdown -a && /sbin/ifup  --ignore-errors  -a"
+
+- hosts: localhost
+  remote_user: root
+  pre_tasks:
+    - name: create osa log directory
+      file:
+        path: /var/log/osa/
+        state: directory
+
+    - name: copy openstack_user_config
+      template:
+        src: openstack_user_config.yml
+        dest: /etc/openstack_deploy/openstack_user_config.yml
+
+    - name: copy user_variables
+      template:
+        src: user_variables.yml
+        dest: /etc/openstack_deploy/user_variables.yml
+
+    - name: copy ansible.cfg 
+      template:
+        src: ansible.cfg
+        dest: /opt/openstack-ansible/playbooks/
+
+  roles:
+    - setup-host
+    - setup-infrastructure
+    - setup-openstack
+

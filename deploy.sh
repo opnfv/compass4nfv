@@ -13,8 +13,8 @@
 #export OS_VERSION=xenial/centos7
 
 # Set ISO image corresponding to your code
-# export ISO_URL=file:///home/compass/compass4nfv.iso
-#export ISO_URL=
+# export TAR_URL=file:///home/compass/compass4nfv.iso
+#export TAR_URL=
 
 # Set hardware deploy jumpserver PXE NIC
 # You need to comment out it when virtual deploy.
