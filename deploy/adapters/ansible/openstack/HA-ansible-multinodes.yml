@@ -51,209 +51,101 @@
         key: "{{ lookup('file', item) }}"
       with_fileglob:
         - /tmp/ssh-keys-*
-  max_fail_percentage: 0
-  roles:
-    - common
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - setup-network
-
-- hosts: ha
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - ha
-
-- hosts: controller
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - memcached
-    - apache
-    - database
-    - mq
-    - keystone
-    - nova-controller
-    - neutron-controller
-    - cinder-controller
-    - glance
-    - neutron-common
-    - neutron-network
-    - ceilometer_controller
-    - dashboard
-    - heat
-    - aodh
-    - congress
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - storage
-
-- hosts: compute
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - nova-compute
-    - neutron-compute
-    - cinder-volume
-    - ceilometer_compute
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles: []
-#    - moon
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - secgroup
-
-- hosts: ceph_adm
-  remote_user: root
-  max_fail_percentage: 0
-  roles: []
-#    - ceph-deploy
-
-- hosts: ceph
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - ceph-purge
-    - ceph-config
-
-- hosts: ceph_mon
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - ceph-mon
-
-- hosts: ceph_osd
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - ceph-osd
-
-- hosts: ceph
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - ceph-openstack
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - monitor
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  tasks:
-    - name: set bash to nova
-      user:
-        name: nova
-        shell: /bin/bash
-
-    - name: make sure ssh dir exist
+        - /root/.ssh/id_rsa.pub
+    - name: change sources list
+      template:
+        src: sources.list
+        dest: /etc/apt/sources.list
+    - name: rm apt.conf
       file:
-        path: '{{ item.path }}'
-        owner: '{{ item.owner }}'
-        group: '{{ item.group }}'
-        state: directory
-        mode: 0755
-      with_items:
-        - path: /var/lib/nova/.ssh
-          owner: nova
-          group: nova
+        path: /etc/apt/apt.conf
+        state: absent
 
-    - name: copy ssh keys for nova
-      shell: cp -rf /root/.ssh/id_rsa /var/lib/nova/.ssh;
+    - name: install package
+      shell: "apt-get update; \
+              apt-get install bridge-utils debootstrap ifenslave ifenslave-2.6 \
+              lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan -y"
 
-    - name: write ssh config
-      copy:
-        content: "UserKnownHostsFile /dev/null\nStrictHostKeyChecking no"
-        dest: '{{ item.dest }}'
-        owner: '{{ item.owner }}'
-        group: '{{ item.group }}'
-        mode: 0600
-      with_items:
-        - dest: /var/lib/nova/.ssh/config
-          owner: nova
-          group: nova
+    - name: restart ntp service
+      shell: "service ntp restart"
 
-    - authorized_key:
-        user: nova
-        key: "{{ lookup('file', item) }}"
-      with_fileglob:
-        - /tmp/ssh-keys-*
-
-    - name: chown ssh file
-      shell: chown -R nova:nova /var/lib/nova/.ssh;
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - odl_cluster
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - onos_cluster
-
-- hosts: all
-  remote_user: root
-  serial: 1
-  max_fail_percentage: 0
-  roles:
-    - odl_cluster_neutron
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - odl_cluster_post
+    - name: add the appropriate kernel modules
+      shell: "echo 'bonding'>> /etc/modules; \
+              echo '8021q' >> /etc/modules"
 
 - hosts: controller
   remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - ext-network
+  tasks:
+    - name: configure controller network
+      template:
+        src: controller.j2
+        dest: /etc/network/interfaces
+      notify:
+        - restart network service
+  handlers:
+    - name: restart network service
+      shell: "/sbin/ifconfig eth0 0 &&/sbin/ifdown -a && /sbin/ifup --ignore-errors -a"
 
-- hosts: controller
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-#    - tacker
-
-- hosts: controller
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - openstack-post
-
-- hosts: controller
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - boot-recovery
-
-- hosts: controller
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - controller-recovery
 
 - hosts: compute
   remote_user: root
-  max_fail_percentage: 0
+  tasks:
+    - name: configure compute network
+      template:
+        src: compute.j2
+        dest: /etc/network/interfaces
+      notify:
+        - restart network service
+
+    - name: install package
+      shell: "apt-get install nfs-kernel-server -y"
+
+    - name: make nfs dircetory
+      file: "dest=/images mode=0777 state=directory"
+
+    - name: configure service
+      shell: "echo 'nfs        2049/tcp' >>  /etc/services; \
+              echo 'nfs        2049/udp' >>  /etc/services"
+
+    - name: configure NFS
+      template:
+        src: exports
+        dest: /etc/exports
+      notify:
+        - restart nfs service
+
+  handlers:
+    - name: restart nfs service
+      service: name=nfs-kernel-server state=restarted
+
+    - name: restart network service
+      shell: "/sbin/ifconfig eth0 0 &&/sbin/ifdown -a && /sbin/ifup  --ignore-errors  -a"
+
+- hosts: localhost
+  remote_user: root
+  pre_tasks:
+    - name: create osa log directory
+      file:
+        path: /var/log/osa/
+        state: directory
+
+    - name: copy openstack_user_config
+      template:
+        src: openstack_user_config.yml
+        dest: /etc/openstack_deploy/openstack_user_config.yml
+
+    - name: copy user_variables
+      template:
+        src: user_variables.yml
+        dest: /etc/openstack_deploy/user_variables.yml
+
+    - name: copy ansible.cfg
+      template:
+        src: ansible.cfg
+        dest: /opt/openstack-ansible/playbooks/
+
   roles:
-    - compute-recovery
+    - setup-host
+    - setup-infrastructure
+    - setup-openstack
+

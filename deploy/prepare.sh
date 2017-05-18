@@ -14,20 +14,12 @@ function print_logo()
     set +x; sleep 2; set -x
 }
 
-function download_iso()
+function extract_tar()
 {
-    iso_name=`basename $ISO_URL`
-    rm -f $WORK_DIR/cache/"$iso_name.md5"
-    curl --connect-timeout 10 -o $WORK_DIR/cache/"$iso_name.md5" $ISO_URL.md5
-    if [[ -f $WORK_DIR/cache/$iso_name ]]; then
-        local_md5=`md5sum $WORK_DIR/cache/$iso_name | cut -d ' ' -f 1`
-        repo_md5=`cat $WORK_DIR/cache/$iso_name.md5 | cut -d ' ' -f 1`
-        if [[ "$local_md5" == "$repo_md5" ]]; then
-            return
-        fi
-    fi
-
-    curl --connect-timeout 10 -o $WORK_DIR/cache/$iso_name $ISO_URL
+    tar_name=`basename $TAR_URL`
+    rm -f $WORK_DIR/cache/$tar_name
+    curl --connect-timeout 10 -o $WORK_DIR/cache/$tar_name $TAR_URL
+    tar -zxf $WORK_DIR/cache/$tar_name -C $WORK_DIR/installer
 }
 
 function prepare_env() {
@@ -39,24 +31,15 @@ function prepare_env() {
     fi
 
     # prepare work dir
-    rm -rf $WORK_DIR/{installer,vm,network,iso}
+    sudo rm -rf $WORK_DIR/{installer,vm,network,iso,docker}
     mkdir -p $WORK_DIR/installer
     mkdir -p $WORK_DIR/vm
     mkdir -p $WORK_DIR/network
     mkdir -p $WORK_DIR/iso
     mkdir -p $WORK_DIR/cache
+    mkdir -p $WORK_DIR/docker
 
-    download_iso
-
-    cp $WORK_DIR/cache/`basename $ISO_URL` $WORK_DIR/iso/centos.iso -f
-
-    # copy compass
-    mkdir -p $WORK_DIR/mnt
-    sudo mount -o loop $WORK_DIR/iso/centos.iso $WORK_DIR/mnt
-    cp -rf $WORK_DIR/mnt/compass/compass-core $WORK_DIR/installer/
-    cp -rf $WORK_DIR/mnt/compass/compass-install $WORK_DIR/installer/
-    sudo umount $WORK_DIR/mnt
-    rm -rf $WORK_DIR/mnt
+    extract_tar
 
     chmod 755 $WORK_DIR -R
 
@@ -77,7 +60,6 @@ function  _prepare_python_env() {
              sudo apt-get install -y --force-yes git python-dev python-pip figlet sshpass
              sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
              sudo apt-get install -y --force-yes libffi-dev libssl-dev
-
         fi
    fi
 
@@ -97,6 +79,7 @@ function  _prepare_python_env() {
         pip install --upgrade netaddr
         pip install --upgrade oslo.config
         pip install --upgrade ansible
+        sudo pip install --upgrade docker-compose
    fi
 }
 
