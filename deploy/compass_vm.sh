@@ -27,13 +27,9 @@ function install_compass_core() {
 }
 
 function set_compass_machine() {
-    local config_file=$WORK_DIR/installer/compass-install/install/group_vars/all
-
-    sed -i -e '/test: true/d' -e '/pxe_boot_macs/d' $config_file
-    echo "test: true" >> $config_file
+    local config_file=$WORK_DIR/installer/compass-docker-compose/group_vars/all
+    sed -i '/pxe_boot_macs/d' $config_file
     echo "pxe_boot_macs: [${machines}]" >> $config_file
-
-    install_compass "compass_machine.yml"
 }
 
 function install_compass() {
@@ -128,86 +124,15 @@ function wait_ok() {
 }
 
 function launch_compass() {
-    local old_mnt=$compass_vm_dir/old
-    local new_mnt=$compass_vm_dir/new
-    local old_iso=$WORK_DIR/iso/centos.iso
-    local new_iso=$compass_vm_dir/centos.iso
+    local group_vars=$WORK_DIR/installer/compass-docker-compose/group_vars/all
+    sed -i "s#^\(compass_dir:\).*#\1 $COMPASS_DIR#g" $group_vars
 
-    log_info "launch_compass enter"
-    tear_down_compass
-
-    set -e
-    mkdir -p $compass_vm_dir $old_mnt
-    sudo mount -o loop $old_iso $old_mnt
-    cd $old_mnt;find .|cpio -pd $new_mnt;cd -
-
-    sudo umount $old_mnt
-
-    chmod 755 -R $new_mnt
-
-    cp $COMPASS_DIR/util/isolinux.cfg $new_mnt/isolinux/ -f
-    cp $COMPASS_DIR/util/ks.cfg $new_mnt/isolinux/ -f
-
-    sed -i -e "s/REPLACE_MGMT_IP/$MGMT_IP/g" \
-           -e "s/REPLACE_MGMT_NETMASK/$MGMT_MASK/g" \
-           -e "s/REPLACE_GW/$MGMT_GW/g" \
-           -e "s/REPLACE_INSTALL_IP/$COMPASS_SERVER/g" \
-           -e "s/REPLACE_INSTALL_NETMASK/$INSTALL_MASK/g" \
-           -e "s/REPLACE_COMPASS_EXTERNAL_NETMASK/$COMPASS_EXTERNAL_MASK/g" \
-           -e "s/REPLACE_COMPASS_EXTERNAL_IP/$COMPASS_EXTERNAL_IP/g" \
-           -e "s/REPLACE_COMPASS_EXTERNAL_GW/$COMPASS_EXTERNAL_GW/g" \
-           $new_mnt/isolinux/isolinux.cfg
-
-    if [[ -n $COMPASS_DNS1 ]]; then
-        sed -i -e "s/REPLACE_COMPASS_DNS1/$COMPASS_DNS1/g" $new_mnt/isolinux/isolinux.cfg
-    fi
-
-    if [[ -n $COMPASS_DNS2 ]]; then
-        sed -i -e "s/REPLACE_COMPASS_DNS2/$COMPASS_DNS2/g" $new_mnt/isolinux/isolinux.cfg
-    fi
-
-    ssh-keygen -f $new_mnt/bootstrap/boot.rsa -t rsa -N ''
-    cp $new_mnt/bootstrap/boot.rsa $rsa_file
-
-    rm -rf $new_mnt/.rr_moved $new_mnt/rr_moved
-    sudo mkisofs -quiet -r -J -R -b isolinux/isolinux.bin  -no-emul-boot -boot-load-size 4 -boot-info-table -hide-rr-moved -x "lost+found:" -o $new_iso $new_mnt
-
-    rm -rf $old_mnt $new_mnt
-
-    qemu-img create -f qcow2 $compass_vm_dir/disk.img 100G
-
-    # create vm xml
-    sed -e "s/REPLACE_MEM/$COMPASS_VIRT_MEM/g" \
-        -e "s/REPLACE_CPU/$COMPASS_VIRT_CPUS/g" \
-        -e "s#REPLACE_IMAGE#$compass_vm_dir/disk.img#g" \
-        -e "s#REPLACE_ISO#$compass_vm_dir/centos.iso#g" \
-        -e "s/REPLACE_NET_MGMT/mgmt/g" \
-        -e "s/REPLACE_NET_INSTALL/install/g" \
-        -e "s/REPLACE_NET_EXTERNAL/external/g" \
-        $COMPASS_DIR/deploy/template/vm/compass.xml \
-        > $WORK_DIR/vm/compass/libvirt.xml
-
-    sudo virsh define $compass_vm_dir/libvirt.xml
-    sudo virsh start compass
-
-    exit_status=$?
-    if [ $exit_status != 0 ];then
-        log_error "virsh start compass failed"
+    ansible-playbook $WORK_DIR/installer/compass-docker-compose/bring_up_compass.yml
+    if [[ $? -ne 0 ]]; then
+        log_error "launch compass fail"
         exit 1
     fi
-
-    if ! wait_ok 500;then
-        log_error "install os timeout"
-        exit 1
-    fi
-
-    if ! install_compass_core;then
-        log_error "install compass core failed"
-        exit 1
-    fi
-
-    set +e
-    log_info "launch_compass exit"
+    sudo rm -rf $WORK_DIR/docker/ansible/run/*
 }
 
 function recover_compass() {
@@ -282,8 +207,6 @@ function wait_controller_nodes_ok() {
 }
 
 function get_public_vip () {
-    ssh $ssh_args root@$MGMT_IP "
-        cd /var/ansible/run/$ADAPTER_NAME'-'$CLUSTER_NAME
-        cat group_vars/all | grep -A 3 public_vip: | sed -n '2p' |sed -e 's/  ip: //g'
-    "
+    cat $WORK_DIR/docker/ansible/run/$ADAPTER_NAME'-'$CLUSTER_NAME/group_vars/all \
+    | grep -A 3 public_vip: | sed -n '2p' |sed -e 's/  ip: //g'
 }

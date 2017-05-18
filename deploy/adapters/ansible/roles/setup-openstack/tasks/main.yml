@@ -1,0 +1,27 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: setup openstack
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_ocata-opnfv2/ansible.log; \
+          export ANSIBLE_SCP_IF_SSH=y; \
+          cd /opt/openstack-ansible/playbooks; \
+          openstack-ansible setup-openstack.yml \
+             | tee -a /var/log/osa/openstack.log > /dev/null"
+
+- name: read the ansible log file
+  shell: cat /var/log/osa/openstack.log | tail -n 1000
+  register: setup_openstack_result
+
+- fail:
+    msg: "some task failed when setup host."
+  when: setup_openstack_result.stdout.find('failed=1') != -1
+
+- fail:
+    msg: "some host are unreachable."
+  when: setup_openstack_result.stdout.find('unreachable=1') != -1
