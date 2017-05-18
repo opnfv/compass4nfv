@@ -9,8 +9,11 @@
 ##############################################################################
 set -ex
 #COMPASS_PATH=$(cd "$(dirname "$0")"/..; pwd)
+BUILD_IMAGES=${BUILD_IMAGES:-"false"}
+
 COMPASS_PATH=`cd ${BASH_SOURCE[0]%/*};pwd`
 WORK_DIR=$COMPASS_PATH/work/building
+CACHE_DIR=$WORK_DIR/cache
 
 echo $COMPASS_PATH
 
@@ -18,14 +21,16 @@ echo $COMPASS_PATH
 REPO_PATH=$COMPASS_PATH/repo
 WORK_PATH=$COMPASS_PATH
 
-PACKAGES="fuse fuseiso createrepo genisoimage curl"
+PACKAGES="docker curl"
 
 # PACKAGE_URL will be reset in Jenkins for different branch
-export PACKAGE_URL=${PACKAGE_URL:-http://artifacts.opnfv.org/compass4nfv/package/master}
+export PACKAGE_URL=${PACKAGE_URL:-http://192.168.104.2:9999/download}
 
-mkdir -p $WORK_DIR
+mkdir -p $WORK_DIR $CACHE_DIR
 
-cd $WORK_DIR
+source $COMPASS_PATH/build/build.conf
+#cd $WORK_DIR
+
 function prepare_env()
 {
     set +e
@@ -36,10 +41,6 @@ function prepare_env()
         fi
     done
     set -e
-
-    if [[ ! -d $CACHE_DIR ]]; then
-        mkdir -p $CACHE_DIR
-    fi
 }
 
 function download_git()
@@ -74,12 +75,6 @@ function download_url()
     fi
 
     curl --connect-timeout 10 -o $CACHE_DIR/$1 $2
-    local_md5=`md5sum $CACHE_DIR/$1 | cut -d ' ' -f 1`
-    repo_md5=`cat $CACHE_DIR/$1.md5 | cut -d ' ' -f 1`
-    if [[ $local_md5 != $repo_md5 ]]; then
-        echo "ERROR, the md5sum don't match"
-        exit 1
-    fi
 }
 
 function download_local()
@@ -91,10 +86,9 @@ function download_local()
 
 function download_packages()
 {
-     for i in $CENTOS_BASE $LOADERS $CIRROS $APP_PACKAGE \
-              $COMPASS_CORE $COMPASS_WEB $COMPASS_INSTALL $COMPASS_PKG \
-              $PIP_REPO $PIP_OPENSTACK_REPO \
-              $UBUNTU_ISO $CENTOS_ISO $XENIAL_NEWTON_PPA $CENTOS7_NEWTON_PPA; do
+    for i in $PIP_OPENSTACK_REPO $APP_PACKAGE $COMPASS_MQ \
+             $COMPASS_DECK $COMPASS_TASKS $COMPASS_COBBLER $COMPASS_DB $COMPASS_COMPOSE \
+             $UBUNTU_ISO $CENTOS_ISO $XENIAL_NEWTON_PPA $CENTOS7_NEWTON_PPA; do
 
          if [[ ! $i ]]; then
              continue
@@ -109,60 +103,111 @@ function download_packages()
              download_local $name $i
          fi
      done
+}
 
+function build_docker()
+{
+    for i in $COMPASS_DECK $COMPASS_TASKS $COMPASS_COBBLER $COMPASS_DB; do
+        REPO_NAME=${i##*/}
+        REPO_DIR=${REPO_NAME%.*}
+        DOCKER_TAG="localbuild/$REPO_DIR"
+
+        cd $CACHE_DIR/$REPO_DIR
+        old_dockers=`docker ps -a | grep "build-$REPO_DIR" | awk '{print $1}'`
+        if [ -n "$old_dockers" ]; then
+            docker rm -f $old_dockers
+        fi
+
+        if [[ "$BUILD_IMAGES" == "true" ]]; then
+            old_imgs=`docker images | grep $DOCKER_TAG | awk '{print $3}'`
+            if [ -n "$old_imgs" ]; then
+                docker rmi -f $old_imgs
+            fi
+            docker build --no-cache=true  -f Dockerfile ./ -t $DOCKER_TAG
+        fi
+        cd -
+
+        docker run -itd --name "build-$REPO_DIR" $DOCKER_TAG bash
+    done
+
+    cd $CACHE_DIR
+    docker load -i ${COMPASS_MQ##*/}
+    cd -
 }
 
 function copy_file()
 {
-    new=$1
+    docker cp $COMPASS_PATH/deploy/status_callback.py \
+              build-compass-deck:/root/compass-deck/bin/ansible_callbacks
+    docker cp $COMPASS_PATH/deploy/playbook_done.py \
+              build-compass-deck:/root/compass-deck/bin/ansible_callbacks
 
-    # main process
-    mkdir -p $new/compass $new/bootstrap $new/pip $new/pip-openstack $new/guestimg $new/app_packages $new/ansible
-    mkdir -p $new/repos/cobbler/{ubuntu,centos,redhat}/{iso,ppa}
+    docker exec build-compass-tasks bash -c "mkdir -p /opt/ansible_callbacks"
 
-    rm -rf $new/.rr_moved
+    docker cp $COMPASS_PATH/deploy/status_callback.py \
+              build-compass-tasks:/opt/ansible_callbacks
+    docker cp $COMPASS_PATH/deploy/playbook_done.py \
+              build-compass-tasks:/opt/ansible_callbacks
 
-    if [[ $UBUNTU_ISO ]]; then
-        cp $CACHE_DIR/`basename $UBUNTU_ISO` $new/repos/cobbler/ubuntu/iso/ -rf
-    fi
+    ADAPTERS_DIR=$COMPASS_PATH/deploy/adapters
 
-    if [[  $XENIAL_NEWTON_PPA ]]; then
-        cp $CACHE_DIR/`basename $XENIAL_NEWTON_PPA` $new/repos/cobbler/ubuntu/ppa/ -rf
-    fi
-
-    if [[ $CENTOS_ISO ]]; then
-        cp $CACHE_DIR/`basename $CENTOS_ISO` $new/repos/cobbler/centos/iso/ -rf
-    fi
-
-    if [[  $CENTOS7_NEWTON_PPA ]]; then
-        cp $CACHE_DIR/`basename $CENTOS7_NEWTON_PPA` $new/repos/cobbler/centos/ppa/ -rf
-    fi
-
-    cp $CACHE_DIR/`basename $LOADERS` $new/ -rf || exit 1
-    cp $CACHE_DIR/`basename $APP_PACKAGE` $new/app_packages/ -rf || exit 1
-
-    if [[ $CIRROS ]]; then
-        cp $CACHE_DIR/`basename $CIRROS` $new/guestimg/ -rf || exit 1
-    fi
-
-    for i in $COMPASS_CORE $COMPASS_INSTALL $COMPASS_WEB; do
-        cp $CACHE_DIR/`basename $i | sed 's/.git//g'` $new/compass/ -rf
+    for i in `ls $ADAPTERS_DIR/ansible | grep "openstack_"`; do
+        cp -rf $ADAPTERS_DIR/ansible/openstack/* $ADAPTERS_DIR/ansible/$i
     done
 
-    cp $COMPASS_PATH/deploy/adapters $new/compass/compass-adapters -rf
-    cp $COMPASS_PATH/deploy/compass_conf/* $new/compass/compass-core/conf -rf
+    docker cp $ADAPTERS_DIR/ansible/ build-compass-tasks:/root/
+    docker exec build-compass-tasks bash -c \
+    "cp -rf /root/ansible/ansible_modules /opt"
 
-    tar -zxvf $CACHE_DIR/`basename $PIP_REPO` -C $new/
-    tar -zxvf $CACHE_DIR/`basename $PIP_OPENSTACK_REPO` -C $new/
+    docker cp $ADAPTERS_DIR/cobbler/ build-compass-cobbler:/root/
+    docker exec build-compass-cobbler bash -c \
+    "cp -f /root/cobbler/conf/* /etc/cobbler"
 
-    find $new/compass -name ".git" | xargs rm -rf
+    cd $COMPASS_PATH/deploy/compass_conf
+    copy_conf=`ls -F | grep '/$'`
+    for i in $copy_conf; do
+        docker cp $i build-compass-deck:/etc/compass
+        docker cp $i build-compass-tasks:/etc/compass
+    done
+    cd -
+}
+
+function save_image()
+{
+    docker commit `docker ps | grep build-compass-deck | awk '{print $1}'` \
+    opnfv/compass-deck
+    docker commit `docker ps | grep build-compass-tasks | awk '{print $1}'` \
+    opnfv/compass-tasks
+    docker commit `docker ps | grep build-compass-cobbler | awk '{print $1}'` \
+    opnfv/compass-cobbler
+    docker commit `docker ps | grep build-compass-db | awk '{print $1}'` \
+    opnfv/compass-db
+
+    docker save opnfv/compass-deck -o $CACHE_DIR/compass-deck.tar
+    docker save opnfv/compass-tasks -o $CACHE_DIR/compass-tasks.tar
+    docker save opnfv/compass-cobbler -o $CACHE_DIR/compass-cobbler.tar
+    docker save opnfv/compass-db -o $CACHE_DIR/compass-db.tar
+}
+
+function build_tar()
+{
+    cd $CACHE_DIR
+    mkdir -p compass_dists
+    cp -f `basename $PIP_OPENSTACK_REPO` `basename $APP_PACKAGE` \
+    `basename $UBUNTU_ISO` `basename $CENTOS_ISO` \
+    `basename $XENIAL_NEWTON_PPA` `basename $CENTOS7_NEWTON_PPA` \
+    compass-deck.tar compass-tasks.tar compass-cobbler.tar compass-db.tar \
+    compass-mq.tar compass_dists
+    tar -zcf compass.tar.gz compass-docker-compose compass_dists
+    mv compass.tar.gz ../
+    cd -
 }
 
 function rebuild_ppa()
 {
     name=`basename $COMPASS_PKG`
     rm -rf ${name%%.*} $name
-    cp $CACHE_DIR/$name $WORK_DIR
+    cp $WORK_DIR/$name $WORK_DIR
     cp $COMPASS_PATH/repo/openstack/make_ppa/centos/comps.xml $WORK_DIR
     tar -zxvf $name
     cp ${name%%.*}/*.rpm $1/Packages -f
@@ -174,7 +219,7 @@ function make_iso()
 {
     download_packages
     name=`basename $CENTOS_BASE`
-    cp  $CACHE_DIR/$name ./ -f
+    cp  $WORK_DIR/$name ./ -f
     # mount base iso
     mkdir -p base new
     fuseiso $name base
@@ -209,7 +254,7 @@ function process_param()
         case "$1" in
             -d|--iso-dir) export ISO_DIR=$2; shift 2;;
             -f|--iso-name) export ISO_NAME=$2; shift 2;;
-            -c|--cache-dir) export CACHE_DIR=$2; shift 2;;
+            -c|--cache-dir) export WORK_DIR=$2; shift 2;;
             -s|--openstack_build) export OPENSTACK_BUILD=$2; shift 2;;
             -t|--feature_build) export FEATURE_BUILD=$2; shift 2;;
             -v|--feature_version) export FEATURE_VERSION=$2; shift 2;;
@@ -218,7 +263,7 @@ function process_param()
         esac
     done
 
-    export CACHE_DIR=${CACHE_DIR:-$WORK_DIR/cache}
+    export WORK_DIR=${WORK_DIR:-$WORK_DIR/cache}
     export ISO_DIR=${ISO_DIR:-$WORK_DIR}
     export ISO_NAME=${ISO_NAME:-"compass.iso"}
     export OPENSTACK_BUILD=${OPENSTACK_BUILD:-"stable"}
@@ -269,8 +314,12 @@ function get_repo_pkg()
    # switch to building directory
    cd $WORK_DIR
 }
-process_param $*
-prepare_env
-get_repo_pkg
-make_iso
-copy_iso
+
+
+#process_param $*
+#prepare_env
+#download_packages
+#build_docker
+#copy_file
+#save_image
+build_tar
