@@ -135,7 +135,7 @@ function setup_baremetal_net() {
   if [[ -z $INSTALL_NIC ]]; then
     exit 1
   fi
-  setup_bridge_net install $INSTALL_NIC
+  sudo ifconfig $INSTALL_NIC $INSTALL_GW up
 }
 
 function recover_baremetal_net() {

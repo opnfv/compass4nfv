@@ -25,6 +25,7 @@ import requests
 import json
 import itertools
 import threading
+import subprocess
 from collections import defaultdict
 from restful import Client
 import log as logging
@@ -192,6 +193,12 @@ opts = [
     cfg.IntOpt('action_timeout',
                help='action timeout in seconds',
                default=60),
+    cfg.IntOpt('install_os_timeout',
+               help='OS install timeout in minutes',
+               default=60),
+    cfg.IntOpt('ansible_start_wait',
+               help='wait ansible-playbok start',
+               default=10),
     cfg.IntOpt('deployment_timeout',
                help='deployment timeout in minutes',
                default=60),
@@ -883,7 +890,41 @@ class CompassClient(object):
 
         return status, cluster_state
 
-    def get_installing_progress(self, cluster_id):
+    def get_ansible_print(self):
+        current_time = time.time()
+        install_timeout = current_time + 60 * CONF.install_os_timeout
+        while current_time < install_timeout:
+            ready = True
+            for id in self.host_mapping.values():
+                status, response = self.client.get_host_state(id)
+                if response['state'] != 'SUCCESSFUL':
+                    ready = False
+                break
+
+            current_time = time.time()
+            if not ready:
+                time.sleep(8)
+            else:
+                break
+
+        if current_time >= install_timeout:
+            raise RuntimeError("OS installation timeout")
+        else:
+            LOG.info("OS installation complete")
+
+        # time.sleep(CONF.ansible_start_wait)
+        compass_dir = os.getenv('COMPASS_DIR')
+        os.system(
+            "sudo touch %s/work/deploy/docker/ansible/run/%s-%s/ansible.log"
+            % (compass_dir, CONF.adapter_name, CONF.cluster_name))
+        ansible_print = subprocess.Popen(
+            "sudo tail -f -n 200 \
+            %s/work/deploy/docker/ansible/run/%s-%s/ansible.log"
+            % (compass_dir, CONF.adapter_name, CONF.cluster_name),
+            shell=True)
+        return ansible_print
+
+    def get_installing_progress(self, cluster_id, ansible_print):
         def _get_installing_progress():
             """get intalling progress."""
             deployment_timeout = time.time() + 60 * float(CONF.deployment_timeout)  # noqa
@@ -905,23 +946,21 @@ class CompassClient(object):
                         (cluster_id, status, cluster_state)
                     )
 
-                time.sleep(5)
+                time.sleep(10)
 
             if current_time() >= deployment_timeout:
                 LOG.info("current_time=%s, deployment_timeout=%s"
                          % (current_time(), deployment_timeout))
                 LOG.info("cobbler status:")
-                os.system("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-                                 -i %s root@192.168.200.2 \
-                                 'cobbler status'" % (CONF.rsa_file))
+                os.system("sudo docker exec compass-cobbler bash -c \
+                          'cobbler status'" % (CONF.rsa_file))
                 raise RuntimeError("installation timeout")
 
         try:
             _get_installing_progress()
         finally:
-            # do this twice, make sure process be killed
-            kill_print_proc()
-            kill_print_proc()
+            LOG.info("KILL")
+            ansible_print.kill()
 
     def check_dashboard_links(self, cluster_id):
         dashboard_url = CONF.dashboard_url
@@ -946,17 +985,11 @@ class CompassClient(object):
 
 
 def print_ansible_log():
-    os.system("ssh -o StrictHostKeyChecking=no -o \
-              UserKnownHostsFile=/dev/null -i %s root@192.168.200.2 \
-              'while ! tail -f \
-              /var/ansible/run/%s-%s/ansible.log 2>/dev/null; do :; \
-              sleep 1; done'" %
-              (CONF.rsa_file, CONF.adapter_name, CONF.cluster_name))
+    pass
 
 
 def kill_print_proc():
-    os.system(
-        "ps aux|grep -v grep|grep -E 'ssh.+root@192.168.200.2'|awk '{print $2}'|xargs kill -9")   # noqa
+    pass
 
 
 def deploy():
@@ -981,8 +1014,10 @@ def deploy():
         client.deploy_clusters(cluster_id)
 
         LOG.info("compass OS installtion is begin")
-        threading.Thread(target=print_ansible_log).start()
-        client.get_installing_progress(cluster_id)
+        # ansible_print = print_ansible_log()
+        # threading.Thread(target=print_ansible_log).start()
+        ansible_print = client.get_ansible_print()
+        client.get_installing_progress(cluster_id, ansible_print)
         client.check_dashboard_links(cluster_id)
 
     else:
