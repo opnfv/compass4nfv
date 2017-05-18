@@ -30,38 +30,38 @@
 #for controller in $controllers
     #set controller_ip = $controller.management.ip
     #set controller_hostname = $controller.hostname
-$controller_hostname ansible_ssh_host=$controller_ip ansible_ssh_user=$username ansible_ssh_password=$password
+$controller_hostname ansible_ssh_host=$controller_ip ansible_ssh_user=$username ansible_ssh_pass=$password
 #end for
 
 [compute]
 #for compute in $computes
     #set compute_ip = $compute.management.ip
     #set compute_hostname = $compute.hostname
-$compute_hostname ansible_ssh_host=$compute_ip ansible_ssh_user=$username ansible_ssh_password=$password
+$compute_hostname ansible_ssh_host=$compute_ip ansible_ssh_user=$username ansible_ssh_pass=$password
 #end for
 
 [network]
 #for network in $networks
     #set network_ip = $network.management.ip
     #set network_hostname = $network.hostname
-$network_hostname ansible_ssh_host=$network_ip ansible_ssh_user=$username ansible_ssh_password=$password
+$network_hostname ansible_ssh_host=$network_ip ansible_ssh_user=$username ansible_ssh_pass=$password
 #end for
 
 [storage]
 #for storage in storages
     #set storage_ip = $storage.management.ip
     #set storage_hostname = $storage.hostname
-$storage_hostname ansible_ssh_host=$storage_ip ansible_ssh_user=$username ansible_ssh_password=$password
+$storage_hostname ansible_ssh_host=$storage_ip ansible_ssh_user=$username ansible_ssh_pass=$password
 #end for
 [odl]
 #for odl in odls
     #set odl_ip = $odl.management.ip
     #set odl_hostname = $odl.hostname
-$odl_hostname ansible_ssh_host=$odl_ip ansible_ssh_user=$username ansible_ssh_password=$password
+$odl_hostname ansible_ssh_host=$odl_ip ansible_ssh_user=$username ansible_ssh_pass=$password
 #end for
 [storage]
 #for storage in storages
     #set storage_ip = $storage.management.ip
     #set storage_hostname = $storage.hostname
-$storage_hostname ansible_ssh_host=$storage_ip ansible_ssh_user=$username ansible_ssh_password=$password
+$storage_hostname ansible_ssh_host=$storage_ip ansible_ssh_user=$username ansible_ssh_pass=$password
 #end for
