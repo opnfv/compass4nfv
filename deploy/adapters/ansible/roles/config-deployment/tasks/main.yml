@@ -1,0 +1,33 @@
+##############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: create osa log directory
+  file:
+    path: /var/log/osa/
+    state: directory
+
+- name: copy openstack_user_config
+  template:
+    src: openstack_user_config.yml.j2
+    dest: /etc/openstack_deploy/openstack_user_config.yml
+
+- name: copy user_variables
+  template:
+    src: user_variables.yml
+    dest: /etc/openstack_deploy/user_variables.yml
+
+- name: copy cinder.yml
+  copy:
+    src: cinder.yml
+    dest: /etc/openstack_deploy/env.d/cinder.yml
+
+- name: copy ansible.cfg
+  template:
+    src: ansible.cfg
+    dest: /opt/openstack-ansible/playbooks/
