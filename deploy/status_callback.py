@@ -20,7 +20,7 @@ def task_error(display, host, data):
 #    if isinstance(data, dict):
 #        invocation = data.pop('invocation', {})
 
-    notify_host(display, "localhost", host, "failed")
+    notify_host(display, "compass-deck", host, "failed")
 
 
 class CallbackModule(CallbackBase):
@@ -38,8 +38,9 @@ class CallbackModule(CallbackBase):
     def v2_on_any(self, *args, **kwargs):
         pass
 
-    def v2_runner_on_failed(self, host, res, ignore_errors=False):
-        task_error(self._display, host, res)
+    def v2_runner_on_failed(self, res, ignore_errors=False):
+        # task_error(self._display, host, res)
+        pass
 
     def v2_runner_on_ok(self, host, res):
         pass
@@ -60,7 +61,8 @@ class CallbackModule(CallbackBase):
         pass
 
     def v2_runner_on_async_failed(self, host, res, jid):
-        task_error(self._display, host, res)
+        # task_error(self._display, host, res)
+        pass
 
     def v2_playbook_on_start(self):
         pass
@@ -106,20 +108,21 @@ class CallbackModule(CallbackBase):
 
         for host in hosts:
             summary = stats.summarize(host)
+            # self._display.display("host: %s \nsummary: %s\n" % (host, summary)) # noqa
 
             if summary['failures'] > 0:
                 failures = True
             if summary['unreachable'] > 0:
                 unreachable = True
 
+        clusterhosts = set(hosts) - set(['localhost'])
         if failures or unreachable:
-            for host in hosts:
-                notify_host(self._display, "localhost", host, "error")
+            for host in clusterhosts:
+                notify_host(self._display, "compass-deck", host, "error")
             return
 
-        for host in hosts:
-            clusterhost_name = host + "." + cluster_name
-            notify_host(self._display, "localhost", clusterhost_name, "succ")
+        for host in clusterhosts:
+            notify_host(self._display, "compass-deck", host, "succ")
 
 
 def raise_for_status(resp):
@@ -144,13 +147,13 @@ def auth(conn):
 
 
 def notify_host(display, compass_host, host, status):
+    display.display("hostname: %s" % host)
+    host = host.strip("host")
+    url = "/api/clusterhosts/%s/state" % host
     if status == "succ":
-        body = {"ready": True}
-        url = "/api/clusterhosts/%s/state_internal" % host
+        body = {"state": "SUCCESSFUL"}
     elif status == "error":
         body = {"state": "ERROR"}
-        host = host.strip("host")
-        url = "/api/clusterhosts/%s/state" % host
     else:
         display.error("notify_host: host %s with status %s is not supported"
                       % (host, status))

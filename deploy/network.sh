@@ -75,9 +75,9 @@ function setup_bridge_external()
     sudo virsh net-destroy external
     sudo virsh net-undefine external
 
-    save_network_info
+    #save_network_info
     sed -e "s/REPLACE_NAME/external/g" \
-        -e "s/REPLACE_OVS/br-external/g" \
+        -e "s/REPLACE_OVS/br-external_nat/g" \
     $COMPASS_DIR/deploy/template/network/bridge_ovs.xml \
     > $WORK_DIR/network/external.xml
 
@@ -125,6 +125,7 @@ function recover_nat_net() {
 
 function setup_virtual_net() {
   setup_nat_net install $INSTALL_GW $INSTALL_MASK
+  setup_nat_net external_nat $EXT_NAT_GW $EXT_NAT_MASK $EXT_NAT_IP_START $EXT_NAT_IP_END
 }
 
 function recover_virtual_net() {
@@ -135,7 +136,7 @@ function setup_baremetal_net() {
   if [[ -z $INSTALL_NIC ]]; then
     exit 1
   fi
-  setup_bridge_net install $INSTALL_NIC
+  sudo ifconfig $INSTALL_NIC $INSTALL_GW up
 }
 
 function recover_baremetal_net() {
@@ -151,7 +152,7 @@ function setup_network_boot_scripts() {
     sudo cat << EOF >> /usr/sbin/network_setup
 
 sleep 2
-save_network_info
+#save_network_info
 clear_forward_rejct_rules
 EOF
     sudo chmod 755 /usr/sbin/network_setup
@@ -163,13 +164,12 @@ EOF
 }
 
 function create_nets() {
-    setup_nat_net mgmt $MGMT_GW $MGMT_MASK $MGMT_IP_START $MGMT_IP_END
 
     # create install network
     setup_"$TYPE"_net
 
     # create external network
-    setup_bridge_external
+#    setup_bridge_external
     clear_forward_rejct_rules
 
     setup_network_boot_scripts
