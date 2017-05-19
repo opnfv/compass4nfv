@@ -11,7 +11,6 @@ packages:
   - ubuntu-cloud-keyring
   - python-dev
   - openvswitch-switch
-  - openvswitch-switch-dpdk
   - python-memcache
   - python-iniparse
   - python-lxml
