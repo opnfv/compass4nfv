@@ -9,7 +9,7 @@
 ---
 packages:
   - neutron-plugin-ml2
-  - openvswitch-switch-dpdk
+#  - openvswitch-switch-dpdk
   - openvswitch-switch
   - neutron-l3-agent
   - neutron-dhcp-agent
