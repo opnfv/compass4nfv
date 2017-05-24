@@ -16,6 +16,9 @@ jdk8_script_name: install_jdk8.tar
 onos_driver: networking-onos.tar
 onos_sfc_driver: networking-sfc.tar
 repository: repository.tar
+sfc_plugins: # define sfc plugins
+  src: sfc_plugins.conf
+  dst: /opt/sfc_plugins.conf
 onos_service_file:
   src: onos.service
   dst: /lib/systemd/system/onos.service

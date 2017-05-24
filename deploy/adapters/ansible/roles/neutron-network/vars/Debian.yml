@@ -10,9 +10,13 @@
 packages:
   - neutron-plugin-ml2
   - openvswitch-switch
+  - openvswitch-common
   - neutron-l3-agent
   - neutron-dhcp-agent
   - neutron-plugin-openvswitch-agent
+
+ovs_package:
+  - openvswitch-datapath-dkms
 
 services:
   - openvswitch-switch
