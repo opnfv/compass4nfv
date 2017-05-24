@@ -1,5 +1,5 @@
-##############################################################################
-# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+############################################################################
+# copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Apache License, Version 2.0
@@ -36,7 +36,7 @@
 
 - name: install onos required packages
   action: "{{ ansible_pkg_mgr }}  name={{ item }} state=present"
-  with_items: packages
+  with_items: "{{ packages }}"
 
 - name: download oracle-jdk8 package file
   get_url:
@@ -93,6 +93,12 @@
 - name: extract jar repository
   command: su -s /bin/sh -c "tar xvf  ~/.m2/repository.tar -C ~/.m2/"
 
+- name: copy onos.service
+  copy:
+    src: "{{ onos_service_file.src }}"
+    dest: "{{ onos_service_file.dst }}"
+    mode: 0755
+
 - name: extract onos package
   command: |
     su -s /bin/sh -c "tar xzf /opt/{{ onos_pkg_name }} -C {{ onos_home }} \
@@ -104,17 +110,22 @@
     echo 'export ONOS_USER=root' >> {{ onos_home }}/options;
     mkdir {{ onos_home }}/var;
     mkdir {{ onos_home }}/config;
-    sed -i '/pre-stop/i\env JAVA_HOME=/usr/lib/jvm/java-8-oracle' {{ onos_home }}/init/onos.conf;
-    cp -rf {{ onos_home }}/init/onos.conf /etc/init/;
-    cp -rf {{ onos_home }}/init/onos.conf /etc/init.d/;
 
-- name: configure onos boot feature
-  shell: >
-    sed -i '/^featuresBoot=/c\featuresBoot={{ onos_boot_features }}' \
-    {{ onos_home }}/{{ karaf_dist }}/etc/org.apache.karaf.features.cfg;
+- name: create karaf config
+  template:
+    src: org.apache.karaf.features.cfg
+    dest: "{{ onos_home }}/{{ karaf_dist }}/etc/org.apache.karaf.features.cfg"
+    owner: onos
+    group: onos
+    mode: 0775
 
 - name: wait for config time
   shell: "sleep 10"
+
+- name: chown onos directory and files
+  shell: >
+    chown -R onos:onos "{{ onos_home }}";
+    chown onos:onos "{{ onos_service_file.dst }}";
 
 - name: start onos service
   service: name=onos state=started enabled=yes
@@ -129,14 +140,38 @@
 #########################################################################################
 ################################    ONOS connect with OpenStack   #######################
 #########################################################################################
+- name: copy sfc_plugins.conf
+  copy:
+    src: "{{ sfc_plugins.src }}"
+    dest: "{{ sfc_plugins.dst }}"
+    mode: 0755
+
+- name: Configure SFC driver
+  shell: crudini --merge /etc/neutron/neutron.conf < /opt/sfc_plugins.conf
+
+- name: delete sfc_plugins.conf
+  shell: rm -rf {{ sfc_plugins.dst }}
+
 - name: Configure Neutron1
   shell: >
-    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins \
-    networking_sfc.services.sfc.plugin.SfcPlugin, \
-    networking_sfc.services.flowclassifier.plugin.FlowClassifierPlugin,onos_router;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers onos_ml2;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers vxlan
+
+- name: configure metadata
+  shell: |
+    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
+        enable_isolated_metadata "True";
+
+- name: force metadata
+  shell: |
+    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
+        force_metadata "True";
+
+- name: configure vsctl for dhcp agent
+  shell: |
+    crudini --set /etc/neutron/dhcp_agent.ini OVS \
+        ovsdb_interface vsctl;
 
 - name: Create ML2 Configuration File
   template:
@@ -156,5 +191,9 @@
     --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
     su -s /bin/sh -c "neutron-db-manage --subproject networking-sfc upgrade head" neutron;
 
+- name: Restart neutron-dhcp-agent
+  service: name=neutron-dhcp-agent state=restarted
+
 - name: Restart neutron-server
   service: name=neutron-server state=restarted
+

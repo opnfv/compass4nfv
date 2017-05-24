@@ -40,6 +40,14 @@
   ignore_errors: "yes"
   when: ansible_os_family == "RedHat"
 
+- name: install ovs-datapath-dkms
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
+  with_items: "{{ ovs_package }}"
+
+- name: install packages
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=latest update_cache=yes"
+  with_items: "{{ packages | union(packages_noarch) }}"
+
 - name: remove python crypt egg file to work-around
   shell: rm -rf /usr/lib64/python2.7/site-packages/pycrypto-2.6.1-py2.7.egg-info
   when: ansible_os_family == "RedHat"
