@@ -10,7 +10,10 @@
 packages:
   - ubuntu-cloud-keyring
   - python-dev
+  - dkms
+  - openvswitch-datapath-dkms
   - openvswitch-switch
+  - openvswitch-common
   - python-memcache
   - python-iniparse
   - python-lxml

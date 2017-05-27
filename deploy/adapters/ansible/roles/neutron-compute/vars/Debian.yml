@@ -11,7 +11,10 @@
 packages:
   - neutron-common
   - neutron-plugin-ml2
+  - dkms
+  - openvswitch-datapath-dkms
   - openvswitch-switch
+  - openvswitch-common
   - neutron-plugin-openvswitch-agent
 
 services:
