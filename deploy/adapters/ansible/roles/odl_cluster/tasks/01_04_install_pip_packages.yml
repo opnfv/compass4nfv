@@ -23,3 +23,7 @@
     pip install {{ networking_odl_pkg_name }}
     rm -rf {{ networking_odl_pkg_name }}
     cd -
+
+- name: install networking-sfc
+  pip: name=networking-sfc state=present version=3.0.0
+  when: odl_sfc == "Enable"
