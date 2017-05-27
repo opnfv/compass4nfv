@@ -11,6 +11,17 @@ odl_username: admin
 odl_password: admin
 odl_api_port: 8181
 
+netvirt_table: netvirt-providers-config:netvirt-providers-config
+sfc_table: sfc-of-renderer:sfc-of-renderer-config
+
+conf_netvirt:
+  - url: http://{{ internal_vip.ip }}:{{ odl_api_port }}/restconf/config/{{ netvirt_table }}
+    body: {"netvirt-providers-config":{"table-offset":1}}
+
+conf_sfc:
+  - url: http://{{ internal_vip.ip }}:{{ odl_api_port }}/restconf/config/{{ sfc_table }}
+    body: {"sfc-of-renderer-config":{"sfc-of-table-offset":"150","sfc-of-app-egress-table-offset":"11"}}
+
 # odl_pkg_url: https://nexus.opendaylight.org/content/groups/public/org/
 # opendaylight/integration/distribution-karaf/0.3.0-Lithium/
 # distribution-karaf-0.3.0-Lithium.tar.gz

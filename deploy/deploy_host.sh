@@ -49,7 +49,7 @@ function deploy_host(){
     --cluster_vip="${VIP}" --network_cfg="$NETWORK" --neutron_cfg="$NEUTRON" \
     --enable_secgroup="${ENABLE_SECGROUP}" --enable_fwaas="${ENABLE_FWAAS}" --expansion="${EXPANSION}" \
     --rsa_file="$rsa_file" --enable_vpnaas="${ENABLE_VPNAAS}" --odl_l3_agent="${odl_l3_agent}" \
-    --moon_cfg="${MOON_CFG}" --onos_sfc="${onos_sfc}"
+    --moon_cfg="${MOON_CFG}" --onos_sfc="${onos_sfc}" --odl_sfc="${odl_sfc}"
 
     RET=$?
     sleep $((AYNC_TIMEOUT+5))

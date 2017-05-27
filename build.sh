@@ -21,7 +21,7 @@ WORK_PATH=$COMPASS_PATH
 PACKAGES="fuse fuseiso createrepo genisoimage curl"
 
 # PACKAGE_URL will be reset in Jenkins for different branch
-export PACKAGE_URL=${PACKAGE_URL:-http://artifacts.opnfv.org/compass4nfv/package/master}
+export PACKAGE_URL=${PACKAGE_URL:-http://artifacts.opnfv.org/compass4nfv/package/danube}
 
 mkdir -p $WORK_DIR
 
