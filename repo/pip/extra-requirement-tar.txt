@@ -3,3 +3,4 @@
 
 networking-odl==3.2.0
 pymongo==3.0.3
+networking-sfc==3.0.0

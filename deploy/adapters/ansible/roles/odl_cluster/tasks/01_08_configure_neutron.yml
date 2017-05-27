@@ -38,6 +38,13 @@
         force_metadata "True";
   when: odl_l3_agent == "Enable"
 
+- name: configure sfc
+  shell: |
+    crudini --set /etc/neutron/neutron.conf sfc drivers \
+        odl;
+    crudini --set /etc/neutron/neutron.conf flowclassifier drivers \
+        odl;
+  when: odl_sfc == "Enable"
 
 - name: drop and recreate neutron database
   shell: |
