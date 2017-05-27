@@ -6,11 +6,42 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
+
 ---
-packages:
-  - software-properties-common
-  - crudini
+TYPE: virtual
+FLAVOR: cluster
 
-services: []
+odl_sfc: "Enable"
 
-heat_services: []
+hosts:
+  - name: host1
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-adm
+      - ceph-mon
+
+  - name: host2
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-mon
+
+  - name: host3
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-mon
+
+  - name: host4
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host5
+    roles:
+      - compute
+      - ceph-osd
