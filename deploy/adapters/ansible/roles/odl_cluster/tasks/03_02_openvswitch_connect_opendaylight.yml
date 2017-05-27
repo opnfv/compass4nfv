@@ -21,6 +21,34 @@
   when: inventory_hostname in groups['odl']
   ignore_errors: "True"
 
+- name: table configuration for netvirt
+  uri:
+    url: "{{ item.url }}"
+    method: PUT
+    user: "{{ odl_username }}"
+    password: "{{ odl_password }}"
+    body: "{{ item.body }}"
+    force_basic_auth: "yes"
+    body_format: json
+    status_code: 200, 201
+  with_items: "{{ conf_netvirt }}"
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+        and odl_sfc == "Enable"
+
+- name: table configuration for sfc
+  uri:
+    url: "{{ item.url }}"
+    method: PUT
+    user: "{{ odl_username }}"
+    password: "{{ odl_password }}"
+    body: "{{ item.body }}"
+    force_basic_auth: "yes"
+    body_format: json
+    status_code: 200, 201
+  with_items: "{{ conf_sfc }}"
+  when: inventory_hostname == haproxy_hosts.keys()[0]
+        and odl_sfc == "Enable"
+
 - name: set opendaylight as the manager
   command: |
     su -s /bin/sh -c "ovs-vsctl set-manager ptcp:6639:127.0.0.1 tcp:{{ internal_vip.ip }}:6640;"
