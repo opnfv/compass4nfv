@@ -25,13 +25,13 @@ Release Data
 | **Project**                          | Compass4nfv                          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Repo/tag**                         | Compass4nfv/Danube.1.0               |
+| **Repo/tag**                         | Compass4nfv/Danube.3.0               |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release designation**              | Danube.1.0                           |
+| **Release designation**              | Danube.3.0                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | March 31 2017                        |
+| **Release date**                     | June 8 2017                        |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | OPNFV Danube release                 |
@@ -44,7 +44,7 @@ Deliverables
 Software deliverables
 ~~~~~~~~~~~~~~~~~~~~~
 
- - Compass4nfv/Danube.1.0 ISO, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
+ - Compass4nfv/Danube.3.0 ISO, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
 
 .. _document-label:
 
@@ -97,7 +97,12 @@ Feature additions
 | COMPASS-491                          | Support OpenStack Newton                |
 |                                      |                                         |
 +--------------------------------------+-----------------------------------------+
-
+| COMPASS-483                          | Support both ONOS and ODL SFC           |
+|                                      |                                         |
++--------------------------------------+-----------------------------------------+
+| COMPASS-483                          | Support MOON v4                         |
+|                                      |                                         |
++--------------------------------------+-----------------------------------------+
 
 
 Bug corrections
@@ -109,7 +114,7 @@ Bug corrections
 | **JIRA REFERENCE**                   | **SLOGAN**                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-|                                      |                                      |
+| COMPASS-483                          | Fix memcached doesn't start issue    |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
