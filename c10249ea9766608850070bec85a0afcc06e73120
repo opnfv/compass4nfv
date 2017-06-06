@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_f4f5a6cb",
+        "filename": "build.sh",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-06T02:01:51Z",
+      "side": 1,
+      "message": "suggest add centos support",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 1
+      },
+      "revId": "c10249ea9766608850070bec85a0afcc06e73120",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
