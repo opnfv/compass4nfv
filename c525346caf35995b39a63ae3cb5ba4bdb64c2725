@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab8dda7_3573c516",
+        "filename": "build/build.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-06T02:01:51Z",
+      "side": 1,
+      "message": "delete",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 63
+      },
+      "revId": "c525346caf35995b39a63ae3cb5ba4bdb64c2725",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_157801f1",
+        "filename": "build/build.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-06T02:01:51Z",
+      "side": 1,
+      "message": "delete",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 53
+      },
+      "revId": "c525346caf35995b39a63ae3cb5ba4bdb64c2725",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_d561093a",
+        "filename": "build/build.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-06T02:01:51Z",
+      "side": 1,
+      "message": "delete",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 55
+      },
+      "revId": "c525346caf35995b39a63ae3cb5ba4bdb64c2725",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_f5644d4a",
+        "filename": "build/build.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-06T02:01:51Z",
+      "side": 1,
+      "message": "delete",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 67
+      },
+      "revId": "c525346caf35995b39a63ae3cb5ba4bdb64c2725",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_55dc39e4",
+        "filename": "build/build.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-06T02:01:51Z",
+      "side": 1,
+      "message": "stack360",
+      "range": {
+        "startLine": 35,
+        "startChar": 55,
+        "endLine": 35,
+        "endChar": 61
+      },
+      "revId": "c525346caf35995b39a63ae3cb5ba4bdb64c2725",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab8dda7_f5cbed1b",
+        "filename": "build/build.conf",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-06T02:01:51Z",
+      "side": 1,
+      "message": "docker pull",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 60
+      },
+      "revId": "c525346caf35995b39a63ae3cb5ba4bdb64c2725",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
