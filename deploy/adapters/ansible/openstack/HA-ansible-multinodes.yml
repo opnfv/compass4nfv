@@ -86,7 +86,7 @@
     - dashboard
     - heat
     - aodh
-    - congress
+#    - congress
 
 - hosts: all
   remote_user: root
