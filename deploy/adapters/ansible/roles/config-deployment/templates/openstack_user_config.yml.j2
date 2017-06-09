@@ -1,0 +1,220 @@
+---
+cidr_networks:
+  container: 10.1.0.0/24
+  tunnel: 172.29.240.0/22
+  storage: 172.16.2.0/24
+
+used_ips:
+  - "10.1.0.1,10.1.0.55"
+  - "10.1.0.100,10.1.0.110"
+  - "172.29.240.1,172.29.240.50"
+  - "172.16.2.1,172.16.2.50"
+  - "172.29.248.1,172.29.248.50"
+
+global_overrides:
+  internal_lb_vip_address: 10.1.0.22
+  external_lb_vip_address: {{ public_vip.ip }}
+  tunnel_bridge: "br-vxlan"
+  management_bridge: "br-mgmt"
+  provider_networks:
+    - network:
+        container_bridge: "br-mgmt"
+        container_type: "veth"
+        container_interface: "eth1"
+        ip_from_q: "container"
+        type: "raw"
+        group_binds:
+          - all_containers
+          - hosts
+        is_container_address: true
+        is_ssh_address: true
+    - network:
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth12"
+        host_bind_override: "eth12"
+        type: "flat"
+        net_name: "flat"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth11"
+        type: "vlan"
+        range: "1:1"
+        net_name: "vlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "storage"
+        type: "raw"
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+
+###
+### Infrastructure
+###
+
+# galera, memcache, rabbitmq, utility
+shared-infra_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# repository (apt cache, python packages, etc)
+repo-infra_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# load balancer
+# Ideally the load balancer should not use the Infrastructure hosts.
+# Dedicated hardware is best for improved performance and security.
+haproxy_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# rsyslog server
+#log_hosts:
+ # log1:
+ #  ip: 10.1.0.53
+
+###
+### OpenStack
+###
+
+# keystone
+identity_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# cinder api services
+storage-infra_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# glance
+# The settings here are repeated for each infra host.
+# They could instead be applied as global settings in
+# user_variables, but are left here to illustrate that
+# each container could have different storage targets.
+image_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+    container_vars:
+       limit_container_types: glance
+       glance_nfs_client:
+         - server: "{{ip_settings[groups.compute[0]]['storage']['ip']}}"
+           remote_path: "/images"
+           local_path: "/var/lib/glance/images"
+           type: "nfs"
+           options: "_netdev,auto"
+{% endfor %}
+
+# nova api, conductor, etc services
+compute-infra_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# heat
+orchestration_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# horizon
+dashboard_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# neutron server, agents (L3, etc)
+network_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# ceilometer (telemetry API)
+metering-infra_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# aodh (telemetry alarm service)
+metering-alarm_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# gnocchi (telemetry metrics storage)
+metrics_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# nova hypervisors
+compute_hosts:
+{% for host in groups.compute%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# ceilometer compute agent (telemetry)
+metering-compute_hosts:
+{% for host in groups.compute%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
+# cinder volume hosts (NFS-backed)
+# The settings here are repeated for each infra host.
+# They could instead be applied as global settings in
+# user_variables, but are left here to illustrate that
+# each container could have different storage targets.
+storage_hosts:
+{% for host in groups.compute%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+    container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        lvm:
+          volume_group: cinder-volumes
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+          volume_backend_name: LVM_iSCSI
+          iscsi_ip_address: "{{ip_settings[host]['storage']['ip']}}"
+{% endfor %}
