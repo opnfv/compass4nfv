@@ -24,3 +24,5 @@ export DHA=$CURRENT_DIR/deploy/conf/vm_environment/$SCENARIO
 export NETWORK=$CURRENT_DIR/deploy/conf/vm_environment/network.yml
 
 ./deploy.sh
+
+popd
