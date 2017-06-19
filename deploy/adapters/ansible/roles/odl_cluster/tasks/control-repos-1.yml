@@ -1,0 +1,17 @@
+---
+
+- name: download networking-odl
+  get_url:
+    url: "{{ odl_pip }}"
+    dest: /var/www/repo/os-releases/15.1.4/ubuntu-16.04-x86_64
+
+- name: patch networking-odl to fix a bug
+  shell: |
+    cd /var/www/repo/os-releases/15.1.4/ubuntu-16.04-x86_64/
+    tar -zxf networking-odl-4.0.0.tar.gz # hard code, need to modify
+    rm -rf networking-odl-4.0.0.tar.gz
+    sed -i 's/^Babel.*/Babel!=2.4.0,>=2.3.4/' networking-odl-4.0.0/requirements.txt
+    tar -zcf networking-odl-4.0.0.tar.gz networking-odl-4.0.0/
+    rm -rf networking-odl-4.0.0/
+    pip install networking-odl-4.0.0.tar.gz -d ./
+    cd -
