@@ -1,0 +1,3 @@
+MOON_SERVER_ADDR={{ internal_vip.ip }}
+MOON_SERVER_PORT=5000
+no_proxy="localhost,127.0.0.1"

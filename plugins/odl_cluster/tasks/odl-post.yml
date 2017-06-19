@@ -1,0 +1,32 @@
+---
+
+- name: restart neutron-server
+  service: name=neutron-server state=restarted enabled=yes
+  when: inventory_hostname in groups['neutron_server']
+
+- name: restart neutron-l3-agent server
+  service: name=neutron-l3-agent state=restarted
+  when:
+    - odl_l3_agent == "Disable"
+    - inventory_hostname in groups['neutron_openvswitch_agent']
+    - inventory_hostname not in groups['nova_compute']
+
+- name: restart neutron-dhcp-agent server
+  service: name=neutron-dhcp-agent state=restarted
+  when:
+    - inventory_hostname in groups['neutron_openvswitch_agent']
+    - inventory_hostname not in groups['nova_compute']
+
+- name: restart neutron-metadata-agent server
+  service: name=neutron-metadata-agent state=restarted
+  when:
+    - inventory_hostname in groups['neutron_openvswitch_agent']
+    - inventory_hostname not in groups['nova_compute']
+
+- name: clear karaf data
+  shell: rm -rf {{ odl_home }}/data/*;
+  when: inventory_hostname in groups['network_hosts']
+
+- name: restart opendaylight
+  shell: sleep 60; service opendaylight restart; sleep 60;
+  when: inventory_hostname in groups['network_hosts']
