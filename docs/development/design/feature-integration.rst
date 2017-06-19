@@ -8,13 +8,13 @@ How to integrate a feature into compass4nfv
 This document describes how to integrate a feature (e.g. sdn, moon, kvm, sfc)
 into compass installer. Follow the steps below, you can achieve the goal.
 
-Create a role for the feature
+Basic role for the feature
 -----------------------------
 
 Currently Ansible is the main packages installation plugin in the adapters of
 Compass4nfv, which is used to deploy all the roles listed in the playbooks.
 (More details about ansible and playbook can be achieved according to the
-Reference.) The mostly used playbook in compass4nfv is named
+Reference[1].) The mostly used playbook in compass4nfv is named
 "HA-ansible-multinodes.yml" located in "*your_path_to_compass4nfv*/compass4nfv/deploy/
 adapters/ansible/openstack/".
 
@@ -42,7 +42,11 @@ below presents the tree of "moon".
 
 
 There are five directories in moon, which are files, handlers, tasks, templates and vars.
-Almost every role has such five directories.
+Almost every role has such six directories.
+
+For "defaults", usually a main.yml in this directory is used to store some variables defined
+by developers. The variables can be a package url, deployment related parameters,
+configurations or package name.
 
 For "files", it is used to store the files you want to copy to the hosts without any
 modification. These files can be configuration files, code files and etc. Here in moon's
@@ -50,7 +54,7 @@ files directory, there are two python files and one configuration file. All of t
 files will be copied to controller nodes for some purposes.
 
 For "handlers", it is used to store some operations frequently used in your tasks. For
-example, restart the service daemon.
+example, restarting a service daemon.
 
 For "tasks", it is used to store the task yaml files. You need to add the yaml files including
 the tasks you write to deploy your role on the hosts. Please attention that a *main.yml*
@@ -64,111 +68,58 @@ avoid hard coding.
 
 For "vars", it is used to store the yaml files in which the packages and variables are defined.
 The packages defined here are some generic debian or rpm packages. The script of making repo
-will scan the packages names here and download them into related PPA. For some special
-packages, section "Build packages for the feature" will introduce how to handle with special
-packages. The variables defined here are used in the files in "templates" and "tasks".
+will scan the packages names here and download them into related PPA. The variables defined
+here can be used in the files in "templates", "tasks" and "handlers".
 
-Note: you can get the special packages in the tasks like this:
+The inventory file is put in "/var/ansible/run/openstack_ocata-opnfv2/inventories/"
+on compass-tasks container. You can use any host inventories defined there.
 
-.. code-block:: bash
+For some settings which need to be defined right before deployment can be put in xxx. Then, they
+will be renderred into grup_vars/all in "/var/ansible/run/openstack_ocata-opnfv2/group_vars/all"
+on compass-tasks container.
 
-    - name: get the special packages' http server
-      shell: awk -F'=' '/compass_server/ {print $2}' /etc/compass.conf
-      register: http_server
+Note: for more about the places where variables should be defined, please read Reference[2].
 
-    - name: download odl package
-      get_url:
-        url: "http://{{ http_server.stdout_lines[0] }}/packages/odl/{{ odl_pkg_url }}"
-        dest: /opt/
+Adaption with OpenStack
+-----------------------
 
+If your feature is not coupling with OpenStack, you can skip this.
 
-Build packages for the feature
-------------------------------
+If your feature is coupling with OpenStack, we suggest that write your role by following the
+rules of OpenStack Ansible. And the inventories used in your role should be defined in the
+OAS inventory file which is "/etc/openstack_deploy/openstack_inventory.json" on compass-tasks
+container. We don't suggest you define variables in the group_vars/all of compass, cause this
+is not stable to render them while using openstack-ansible to play your role. 
 
-In the previous section, we have explained how to build the generic packages for your feature.
-In this section, we will talk about how to build the special packages used by your feature.
-
-
-.. figure:: images/repo_features.png
-    :alt: Features building directory in compass4nfv
-    :figclass: align-center
-
-    Fig 3. Features building directory in compass4nfv
-
-
-Fig 3 shows the tree of "*your_path_to_compass4nfv*/compass4nfv/repo/features/". Dockerfile
-is used to start a docker container to run the scripts in scripts directory. These scripts
-will download the special feature related packages into the container. What you need to do is
-to write a shell script to download or build the package you want. And then put the script
-into "*your_path_to_compass4nfv*/compass4nfv/repo/features/scripts/". Attention that, you need
-to make a directory under */pkg*. Take opendaylight as an example:
+Some special scenario, such as ODL. We need to define "odl_l3_agent" right before deployment.
+This will be put into group_vars/all of compass like this: 
 
 .. code-block:: bash
 
-    mkdir -p /pkg/odl
+    odl_l3_agent: Disable
 
-After downloading or building your feature packages, please copy all of your packages into the
-directory you made, e.g. */pkg/odl*.
-
-Note: If you have specail requirements for the container OS or kernel vesion, etc. Please
-contact us.
-
-After all of these, come back to *your_path_to_compass4nfv*/compass4nfv/ directory, and run
-the command below:
+While running your role by using openstack-ansible, the variable "odl_l3_agent" need to be
+transmitted into openstack-ansible. We make it works by defining it in the playbook:
 
 .. code-block:: bash
 
-    ./repo/make_repo.sh feature # To get special packages
+    - name: run opendaylight role
+      hosts: neutron_all | galera_container | network_hosts | repo_container
+      gather_facts: "{{ gather_facts | default(True) }}"
+      max_fail_percentage: 20
+      user: root
+      tasks:
+        openstack-ansible /opt/openstack-ansible/playbooks/setup-odl.yml
+      vars:
+        - odl_l3_agent: "{{ odl_l3_agent }}"
+      tags:
+        - odl
 
-    ./repo/make_repo.sh openstack # To get generic packages
-
-When execution finished, you will get a tar package named *packages.tar.gz* under
-"*your_path_to_compass4nfv*/compass4nfv/work/repo/". Your feature related packages have been
-archived in this tar package. And you will also get the PPA packages which includes the generic
-packages you defined in the role directory. The PPA packages are *xenial-newton-ppa.tar.gz*
-and *centos7-newton-ppa.tar.gz*, also in "*your_path_to_compass4nfv*/compass4nfv/work/repo/".
-
-
-Build compass ISO including the feature
----------------------------------------
-
-Before you deploy a cluster with your feature installed, you need an ISO with feature packages,
-generic packages and role included. This section introduces how to build the ISO you want.
-What you need to do are two simple things:
-
-**Configure the build configuration file**
-
-The build configuration file is located in "*your_path_to_compass4nfv*/compass4nfv/build/".
-There are lines in the file like this:
-
-.. code-block:: bash
-
-    export APP_PACKAGE=${APP_PACKAGE:-$FEATURE_URL/packages.tar.gz}
-
-    export XENIAL_NEWTON_PPA=${XENIAL_NEWTON_PPA:-$PPA_URL/xenial-newton-ppa.tar.gz}
-
-    export CENTOS7_NEWTON_PPA=${CENTOS7_NEWTON_PPA:-$PPA_URL/centos7-newton-ppa.tar.gz}
-
-Just replace the $FEATURE_URL and $PPA_URL to the directory where your *packages.tar.gz*
-located in. For example:
-
-.. code-block:: bash
-
-    export APP_PACKAGE=${APP_PACKAGE:-file:///home/opnfv/compass4nfv/work/repo/packages.tar.gz}
-
-    export XENIAL_NEWTON_PPA=${XENIAL_NEWTON_PPA:-file:///home/opnfv/compass4nfv/work/repo/xenial-newton-ppa.tar.gz}
-
-    export CENTOS7_NEWTON_PPA=${CENTOS7_NEWTON_PPA:-file:///home/opnfv/compass4nfv/work/repo/centos7-newton-ppa.tar.gz}
-
-**Build the ISO**
-
-After the configuration, just run the command below to build the ISO you want for deployment.
-
-.. code-block:: bash
-
-    ./build.sh
+Then this variable will transmitted into OSA.
 
 References
 ----------
 
-`Ansible documentation: http://docs.ansible.com/ansible/index.html>`
+`[1] Ansible documentation: http://docs.ansible.com/ansible/index.html>`
+`[2] http://docs.ansible.com/ansible/playbooks_variables.html`
+
