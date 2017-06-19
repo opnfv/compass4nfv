@@ -1,0 +1,23 @@
+---
+
+- name: install crudini
+  package:
+    name: crudini
+    state: latest
+
+- name: install networking-odl
+  pip:
+    name: networking-odl
+    version: "{{ networking_odl_version }}"
+    virtualenv: /openstack/venvs/neutron-15.1.4 # Todo: hardcode, need to modify
+
+- name: turn off dhcp ha
+  shell: |
+    crudini --set /etc/neutron/neutron.conf DEFAULT dhcp_agents_per_network 1;
+
+- name: turn off l3 ha
+  shell: |
+    crudini --set /etc/neutron/neutron.conf DEFAULT l3_ha False;
+
+- name: turn off neutron-server on control node
+  service: name=neutron-server state=stopped
