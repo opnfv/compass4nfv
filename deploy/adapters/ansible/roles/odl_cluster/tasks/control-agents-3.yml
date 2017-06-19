@@ -1,0 +1,44 @@
+---
+
+- name: configure opendaylight -> ml2
+  shell: >
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight_v2;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling "True";
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings physnet1:br-provider;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers local,flat,vlan,vxlan;
+
+- name: configure bridge_mappings for L3
+  shell: |
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings physnet1:eth12;
+  when: odl_l3_agent == "Enable"
+
+- name: configure opendaylight in ml2
+  shell: |
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl username admin;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl password admin;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl url \
+        http://{{ internal_lb_vip_address }}:8080/controller/nb/v2/neutron;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl port_binding_controller \
+        pseudo-agentdb-binding;
+
+- name: configure odl l3 driver
+  shell: |
+    crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins \
+        odl-router,metering;
+  when: odl_l3_agent == "Enable" and inventory_hostname not in groups['nova_compute']
+
+- name: configure metadata for l3 configuration
+  shell: |
+    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
+        enable_isolated_metadata "True";
+  when:
+    - inventory_hostname not in groups['nova_compute']
+
+- name: force metadata for l3 configuration
+  shell: |
+    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
+        force_metadata "True";
+  when:
+    - inventory_hostname not in groups['nova_compute']
