@@ -1,0 +1,8 @@
+---
+
+- name: drop and recreate neutron database
+  shell: |
+    mysql -e "drop database if exists neutron;";
+    mysql -e "create database neutron character set utf8;";
+    mysql -e "grant all on neutron.* to 'neutron'@'%' identified by \
+        '{{ neutron_container_mysql_password }}';";

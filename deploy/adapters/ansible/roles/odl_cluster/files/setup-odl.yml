@@ -1,0 +1,25 @@
+---
+
+#- name: copy opendaylight role
+#  hosts: localhost
+#  gather_facts: no
+#  max_fail_percentage: 20
+#  user: root
+#  tasks:
+#    - name: copy odl role
+#      copy:
+#        src: /var/ansible/run/openstack_ocata-opnfv2/roles/odl_cluster
+#        dest: /etc/ansible/roles/
+
+- name: run opendaylight role
+  hosts: neutron_all | galera_container | network_hosts | repo_container
+  gather_facts: "{{ gather_facts | default(True) }}"
+  max_fail_percentage: 20
+  user: root
+  roles:
+    - odl_cluster
+  vars:
+    - odl_l3_agent: "Disable"
+  tags:
+    - odl
+
