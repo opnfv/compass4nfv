@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_f837b9ae",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-06-19T23:42:45Z",
+      "side": 1,
+      "message": "five or six? There are only 5 directories in moon, moon doesn\u0027t have \"defaults\" directory.",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 30
+      },
+      "revId": "023801d681d2173380151d78a4b286642282e472",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_d85d1deb",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-06-19T23:42:45Z",
+      "side": 1,
+      "message": "cause or because?",
+      "range": {
+        "startLine": 91,
+        "startChar": 83,
+        "endLine": 91,
+        "endChar": 87
+      },
+      "revId": "023801d681d2173380151d78a4b286642282e472",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
