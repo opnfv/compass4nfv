@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5aaae553_98e4850e",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-06-20T00:42:46Z",
+      "side": 1,
+      "message": "I am sorry. The \"default\" directory is an optional one. I will update later.",
+      "parentUuid": "5aaae553_f837b9ae",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 30
+      },
+      "revId": "023801d681d2173380151d78a4b286642282e472",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5aaae553_d85d1deb",
         "filename": "docs/development/design/feature-integration.rst",
         "patchSetId": 2
