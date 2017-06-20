@@ -59,12 +59,6 @@
     path: /etc/apt/apt.conf
     state: absent
 
-- name: Install apt packages
-  apt:
-    pkg: "{{ item }}"
-    state: "present"
-  with_items: "{{ packages }}"
-
 - name: restart ntp service
   shell: "service ntp restart"
 
