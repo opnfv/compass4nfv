@@ -944,6 +944,9 @@ class CompassClient(object):
             deployment_timeout = time.time() + 60 * float(CONF.deployment_timeout)  # noqa
             current_time = time.time
             while current_time() < deployment_timeout:
+                if not ansible_print.is_alive():
+                    raise RuntimeError("can not get ansible log")
+
                 status, cluster_state = self.get_cluster_state(cluster_id)
                 if not self.is_ok(status):
                     raise RuntimeError("can not get cluster state")
@@ -967,7 +970,7 @@ class CompassClient(object):
                          % (current_time(), deployment_timeout))
                 LOG.info("cobbler status:")
                 os.system("sudo docker exec compass-cobbler bash -c \
-                          'cobbler status'" % (CONF.rsa_file))
+                          'cobbler status'")
                 raise RuntimeError("installation timeout")
 
         try:
