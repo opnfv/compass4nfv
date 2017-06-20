@@ -69,6 +69,30 @@
       "revId": "023801d681d2173380151d78a4b286642282e472",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_58ee0dee",
+        "filename": "docs/development/design/feature-integration.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-06-20T00:43:31Z",
+      "side": 1,
+      "message": "because",
+      "parentUuid": "5aaae553_d85d1deb",
+      "range": {
+        "startLine": 91,
+        "startChar": 83,
+        "endLine": 91,
+        "endChar": 87
+      },
+      "revId": "023801d681d2173380151d78a4b286642282e472",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
