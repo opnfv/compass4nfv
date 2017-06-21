@@ -1,0 +1,7 @@
+DEVICE=br-mgmt
+TYPE=Bridge
+IPADDR={{host_info[inventory_hostname].MGMT_IP}}
+PREFIX=24
+BOOTPROTO=none
+ONBOOT=yes
+DELAY=0
