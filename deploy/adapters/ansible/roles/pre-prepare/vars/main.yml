@@ -1,5 +1,5 @@
 ---
-packages:
+aptpackages:
 - bridge-utils
 - debootstrap
 - ifenslave
@@ -10,4 +10,11 @@ packages:
 - ntpdate
 - sudo
 - vlan
+- tcpdump
+
+yumpackages:
+- bridge-utils
+- iputils
+- lvm2
+- ntp
 - tcpdump
