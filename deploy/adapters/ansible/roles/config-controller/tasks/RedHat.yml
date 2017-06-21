@@ -1,0 +1,75 @@
+##############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+# yamllint disable rule:line-length
+- name: generate vxlan vlan ifcfg-if script
+  template:
+    src: ifcfg-if.vxlan
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["mgmt"]["interface"]}}.{{sys_intf_mappings["mgmt"]["vlan_tag"]}}
+
+- name: generate storage vlan ifcfg-if script
+  template:
+    src: ifcfg-if.storage
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["storage"]["interface"]}}.{{sys_intf_mappings["storage"]["vlan_tag"]}}
+
+- name: add br-vlan to interface script
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ network_cfg["provider_net_mappings"][0]["interface"] }}
+    line: "BRIDGE=br-vlan"
+
+- name: add br-storage to interface script
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["storage"]["interface"]}}.{{sys_intf_mappings["storage"]["vlan_tag"]}}
+    line: "BRIDGE=br-storage"
+
+- name: add br-vxlan to interface script
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["mgmt"]["interface"]}}.{{sys_intf_mappings["mgmt"]["vlan_tag"]}}
+    line: "BRIDGE=br-vxlan"
+# yamllint enable rule:line-length
+
+- name: remove eth0 ip addresss
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: "^IPADDR=*"
+    state: absent
+
+- name: remove eth0 netmask
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: "^NETMASK=*"
+    state: absent
+
+- name: add br-mgmt to eth0 script
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: "BRIDGE=br-mgmt"
+
+- name: generate ifcfg-br-mgmt script
+  template:
+    src: ifcfg-br-mgmt
+    dest: /etc/sysconfig/network-scripts/
+
+- name: generate ifcfg-br-vlan script
+  template:
+    src: ifcfg-br-vlan
+    dest: /etc/sysconfig/network-scripts/
+
+- name: generate ifcfg-br-storag script
+  template:
+    src: ifcfg-br-storage
+    dest: /etc/sysconfig/network-scripts/
+
+- name: generate ifcfg-br-vxlan script
+  template:
+    src: ifcfg-br-vxlan
+    dest: /etc/sysconfig/network-scripts/
+
+- name: restart the network
+  shell: systemctl restart network

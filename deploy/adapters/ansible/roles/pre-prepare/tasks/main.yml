@@ -7,62 +7,8 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: make sure ssh dir exist
-  file:
-    path: '{{ item.path }}'
-    owner: '{{ item.owner }}'
-    group: '{{ item.group }}'
-    state: directory
-    mode: 0755
-  with_items:
-    - path: /root/.ssh
-      owner: root
-      group: root
+- include: "{{ ansible_distribution }}.yml"
+  when: ansible_distribution == 'Ubuntu'
 
-- name: write ssh config
-  copy:
-    content: "UserKnownHostsFile /dev/null\nStrictHostKeyChecking no"
-    dest: '{{ item.dest }}'
-    owner: '{{ item.owner }}'
-    group: '{{ item.group }}'
-    mode: 0600
-  with_items:
-    - dest: /root/.ssh/config
-      owner: root
-      group: root
-
-- name: generate ssh keys
-  shell: if [ ! -f ~/.ssh/id_rsa.pub ]; \
-         then ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""; \
-         else echo "already gen ssh key!"; fi;
-
-- name: fetch ssh keys
-  fetch:
-    src: /root/.ssh/id_rsa.pub
-    dest: /tmp/ssh-keys-{{ ansible_hostname }}
-    flat: "yes"
-
-- authorized_key:
-    user: root
-    key: "{{ lookup('file', item) }}"
-  with_fileglob:
-    - /tmp/ssh-keys-*
-    - /root/.ssh/id_rsa.pub
-
-- name: change sources list
-  template:
-    src: sources.list
-    dest: /etc/apt/sources.list
-
-- name: rm apt.conf
-  file:
-    path: /etc/apt/apt.conf
-    state: absent
-
-- name: restart ntp service
-  shell: "service ntp restart"
-
-- name: add the appropriate kernel modules
-  copy:
-    src: modules
-    dest: /etc/modules
+- include: "{{ ansible_os_family }}.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'

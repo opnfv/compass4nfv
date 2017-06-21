@@ -15,7 +15,20 @@
              | tee -a /var/log/osa/host.log > /dev/null"
 
 - name: read the ansible log file
-  shell: cat /var/log/osa/host.log | tail -n 1000
+  shell: cat /var/log/osa/host.log | tail -n 500 | grep failed=1 |awk '{print $1}'
+  register: failed_container
+
+- name: echo failed_container
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_ocata-opnfv2/ansible.log; \
+          export ANSIBLE_SCP_IF_SSH=y; \
+          cd /opt/openstack-ansible/playbooks; \
+          openstack-ansible setup-hosts.yml --limit {{item}} \
+             | tee -a /var/log/osa/retry-host.log > /dev/null"
+  with_items:
+    - "{{ failed_container.stdout_lines }}"
+
+- name: read the ansible log file
+  shell: cat /var/log/osa/retry-host.log | tail -n 500
   register: setup_host_result
 
 - fail:
