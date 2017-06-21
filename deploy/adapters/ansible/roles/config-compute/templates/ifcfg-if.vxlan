@@ -1,0 +1,4 @@
+DEVICE={{sys_intf_mappings["mgmt"]["interface"]}}.{{sys_intf_mappings["mgmt"]["vlan_tag"]}}
+BOOTPROTO=none
+ONBOOT=yes
+VLAN=yes

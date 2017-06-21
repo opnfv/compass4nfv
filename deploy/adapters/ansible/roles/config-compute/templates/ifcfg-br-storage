@@ -1,0 +1,8 @@
+DEVICE=br-storage
+TYPE=Bridge
+IPADDR={{ ip_settings[inventory_hostname]["storage"]["ip"] }}
+NETMASK=255.255.255.0
+BOOTPROTO=none
+DEFROUTE="no"
+ONBOOT=yes
+DELAY=0
