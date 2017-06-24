@@ -8,12 +8,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 set -ex
-#COMPASS_PATH=$(cd "$(dirname "$0")"/..; pwd)
-BUILD_IMAGES=${BUILD_IMAGES:-"false"}
 
 COMPASS_PATH=`cd ${BASH_SOURCE[0]%/*};pwd`
 WORK_DIR=$COMPASS_PATH/work/building
-CACHE_DIR=$WORK_DIR/cache
+export CACHE_DIR=$WORK_DIR/cache
 
 echo $COMPASS_PATH
 
@@ -83,77 +81,9 @@ function prepare_env()
     set -e
 }
 
-function download_git()
-{
-    file_dir=$CACHE_DIR/${1%.*}
-    if [[ -d $file_dir/.git ]]; then
-        cd $file_dir
-        source=`git remote -v | head -n 1  | awk '{print $2}'`
-        if [[ $2 == $source ]]; then
-            git pull origin master
-            if [[ $? -eq 0 ]]; then
-                cd -
-                return
-            fi
-        fi
-        cd -
-    fi
-    rm -rf $CACHE_DIR/${1%.*}
-    git clone $2 $file_dir
-}
-
-function download_url()
-{
-    rm -f $CACHE_DIR/$1.md5
-    curl --connect-timeout 10 -o $CACHE_DIR/$1.md5 $2.md5 2>/dev/null || true
-    if [[ -f $CACHE_DIR/$1 ]]; then
-        local_md5=`md5sum $CACHE_DIR/$1 | cut -d ' ' -f 1`
-        repo_md5=`cat $CACHE_DIR/$1.md5 | cut -d ' ' -f 1`
-        if [[ $local_md5 == $repo_md5 ]]; then
-            return
-        fi
-    fi
-
-    curl --connect-timeout 10 -o $CACHE_DIR/$1 $2
-}
-
-function download_local()
-{
-    if [[ $2 != $CACHE_DIR/$1 ]]; then
-       cp $2 $CACHE_DIR/ -rf
-    fi
-}
-
-function download_docker_images()
-{
-    for i in $COMPASS_DECK $COMPASS_TASKS $COMPASS_COBBLER \
-             $COMPASS_DB $COMPASS_MQ; do
-        basename=`basename $i`
-        sudo docker pull $i
-        sudo docker save $i -o $CACHE_DIR/${basename%:*}.tar
-    done
-}
-
 function download_packages()
 {
-    for i in $PIP_OPENSTACK_REPO $APP_PACKAGE $COMPASS_COMPOSE \
-             $UBUNTU_ISO $CENTOS_ISO $UBUNTU_PPA $CENTOS_PPA; do
-
-         if [[ ! $i ]]; then
-             continue
-         fi
-         name=`basename $i`
-
-         if [[ ${name##*.} == git ]]; then
-             download_git  $name $i
-         elif [[ "https?" =~ ${i%%:*} || "file://" =~ ${i%%:*} ]]; then
-             download_url  $name $i
-         else
-             download_local $name $i
-         fi
-     done
-
-    download_docker_images
+    python $COMPASS_PATH/build/parser.py $COMPASS_PATH/build/build.yaml
 }
 
 function build_tar()
@@ -161,11 +91,7 @@ function build_tar()
     cd $CACHE_DIR
     sudo rm -rf compass_dists
     mkdir -p compass_dists
-    sudo cp -f `basename $PIP_OPENSTACK_REPO` `basename $APP_PACKAGE` \
-    `basename $UBUNTU_ISO` `basename $CENTOS_ISO` \
-    `basename $UBUNTU_PPA` `basename $CENTOS_PPA` \
-    compass-deck.tar compass-tasks-osa.tar compass-cobbler.tar \
-    compass-db.tar compass-mq.tar compass_dists
+    sudo cp -f *.tar *.iso compass_dists
     sudo tar -zcf compass.tar.gz compass-docker-compose compass_dists
     sudo mv compass.tar.gz $TAR_DIR/$TAR_NAME
     cd -
