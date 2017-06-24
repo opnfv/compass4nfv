@@ -1,0 +1,23 @@
+---
+plugin:
+  name: opendaylight  # plugin_name, also as the switch to enable/disable plugin
+  description: odl plugin description file
+  maintainers:
+    - xueyifei@huawei.com
+  sdn: odl_l2, odl_l3 # can be odl_l2, odl_l3, onos, nosdn. This oen and "feature" will be used to generate DHA files.
+  feature:   # for some features they couple with sdn
+  switch: odl_l3_agent # note: odl is a special one, need some hard code
+  get_role: local # how to get your role, can be "local" and "online"
+  independent_hosts:  # true/false whether this plugin is deployed separately on a node
+  coupling_with_openstack: "True"
+  orchestration:
+    cm: ansible  # only ansible support
+    roles:
+      - role: odl_cluster
+        phrase: post_openstack
+        role_url: # if "get_role == local", this will be skipped, otherwise our scripts will use this url to download your role
+        inventory: # if "coupling_with_openstack == True", only OSA inventories supported here.
+          - neutron_all
+          - galera_container
+          - network_hosts
+          - repo_container
