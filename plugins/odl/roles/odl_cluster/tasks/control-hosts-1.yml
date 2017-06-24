@@ -1,0 +1,108 @@
+---
+
+- name: check sdn_package cache
+  stat:
+    path=/opt/sdn_package.tar.gz
+  register: sdn_cache # Todo: remove hard code and add md5 check
+
+- name: debug
+  debug: msg="{{ sdn_cache }}"
+
+- name: get sdn_package
+  get_url:
+    url: "{{ sdn_package }}"
+    dest: /opt/
+  when: sdn_cache.stat.exists != 'true'
+
+- name: create odl group
+  group: name=odl system=yes state=present
+
+- name: create odl user
+  user:
+    name: odl
+    group: odl
+    home: "{{ odl_home }}"
+    createhome: "yes"
+    system: "yes"
+    shell: "/bin/false"
+
+- name: clear sdn_package
+  command: su -s /bin/sh -c "rm -rf /opt/sdn_package"
+
+- name: clear jdk8 package
+  command: su -s /bin/sh -c "rm -rf /opt/install_jdk8"
+
+- name: unarchive sdn_package
+  command: su -s /bin/sh -c "tar xzf /opt/sdn_package.tar.gz -C /opt/"
+
+- name: copy java package
+  command: su -s /bin/sh -c "cp /opt/sdn_package/java/jdk-8u51-linux-x64.tar.gz /opt/"
+
+- name: unarchive java_install package
+  command: su -s /bin/sh -c "tar xvf /opt/sdn_package/java/install_jdk8.tar -C /opt/"
+
+- name: install java
+  command: su -s /bin/sh -c "/opt/install_jdk8/install_jdk8.sh"
+
+- name: clear odl package
+  command: su -s /bin/sh -c "rm -rf {{ odl_home }}/*"
+
+- name: extract odl package
+  command: |
+    su -s /bin/sh -c "tar xzf /opt/sdn_package/odl/{{ odl_pkg_name }} -C {{ odl_home }} \
+        --strip-components 1" odl
+
+- name: opendaylight system file
+  copy:
+    src: "{{ service_file.src }}"
+    dest: "{{ service_file.dst }}"
+    mode: 0755
+
+- name: set l3 fwd enable in custom.properties
+  template:
+    src: custom.properties
+    dest: "{{ odl_home }}/etc/custom.properties"
+    owner: odl
+    group: odl
+    mode: 0775
+  when: odl_l3_agent == "Enable"
+
+- name: create karaf config
+  template:
+    src: org.apache.karaf.features.cfg.Debian
+    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
+    owner: odl
+    group: odl
+    mode: 0775
+  when: ansible_os_family == "Debian"
+
+- name: create karaf config
+  template:
+    src: org.apache.karaf.features.cfg.Redhat
+    dest: "{{ odl_home }}/etc/org.apache.karaf.features.cfg"
+    owner: odl
+    group: odl
+    mode: 0775
+  when: ansible_os_family == "RedHat"
+
+- name: copy acl configuration script
+  template:
+    src: acl_conf.sh
+    dest: "/opt/acl_conf.sh"
+    mode: 0777
+
+- name: execute acl configuration script
+  command: su -s /bin/sh -c "/opt/acl_conf.sh;" odl
+
+- name: create jetty config
+  shell: >
+    sed -i 's/default="8181"/default="8081"/'
+    {{ odl_home }}etc/jetty.xml
+
+- name: create tomcat config
+  shell: >
+    sed -i 's/port="8282"/port="8081"/'
+    {{ odl_home }}configuration/tomcat-server.xml
+
+- name: remove karaf data directory
+  shell: rm -rf {{ odl_home }}/data/*;

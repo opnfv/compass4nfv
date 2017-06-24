@@ -1,0 +1,19 @@
+---
+plugin:
+  name: odl_l3_agent  # plugin_name, also as the switch to enable/disable plugin
+  description: description file for odl plugin
+  maintainers:
+    - xueyifei@huawei.com
+  isolated_host: false # true/false whether this plugin is deployed separately on a node
+  artifacts:  # artifact of this plugin
+    url:  # opnfv or upsteam artifacts
+  orchestration:
+    cm: ansible  # only ansible support
+    tasks:
+      - role: odl_cluster
+        phrase: post_openstack
+        inventory:
+          - neutron_all
+          - galera_container
+          - network_hosts
+          - repo_container
