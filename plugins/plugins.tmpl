@@ -1,0 +1,24 @@
+
+---
+- plugin:
+    name: template_v1 # plugin_name, also as the switch to enable or disable this plugin
+    description: plugin template
+    owner: name@company.com
+    artifacts:
+      name: xxx
+      url: # opnfv or upsteam artifacts
+    orchestration:
+      cm: ansible  # only ansible support now
+      playbook:
+          repo: ../xxx_ansible/ # directory or url where is the ansible script hosting
+    integration: openstack # openstack, odl, os, none
+    isolated_host: false
+    hosts:   # which host to be deployed, such as controller or compute
+      - controller
+      - compute
+    osa_inventory: #get more osa inventories from ....
+      - xxx1
+      - xxx2
+    execution_order:
+      - pre_role: 
+      - post_role:    
