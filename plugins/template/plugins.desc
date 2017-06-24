@@ -1,0 +1,23 @@
+---
+plugin:
+  name: template_v1  # plugin_name, also as the switch to enable/disable plugin
+  description: plugin introduce and description
+  maintainers:
+    - name@company.com
+  isolated_host:  # true/false whether this plugin is deployed separately on a node
+  artifacts:  # artifact of this plugin
+    url:  # opnfv or upsteam artifacts
+  orchestration:
+    cm: ansible  # only ansible support
+    tasks:
+      - role: add_route
+        phrase: os_ready
+        inventory:
+          - controller
+          - compute
+      - role: add_flavor
+        phrase: openstack_ready
+        inventory:  # osa inventory list
+      - role: sfc
+        phrase: sdn_ready
+        inventory:  # osa inventory list
