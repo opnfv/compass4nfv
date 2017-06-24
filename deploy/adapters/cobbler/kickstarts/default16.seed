@@ -108,7 +108,7 @@ $SNIPPET('preseed_apt_repo_config')
     #set $preseed_software = "preseed_software_%s" % $tool
 $SNIPPET($preseed_software)
 #else
-d-i pkgsel/include string ntp ssh wget
+d-i pkgsel/include string ntp ssh openssh-server wget vim bridge-utils ifenslave vlan
 #end if
 
 # Whether to upgrade packages after debootstrap.

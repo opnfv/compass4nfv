@@ -1,1 +1,1 @@
-d-i pkgsel/include string ntp ssh openssh-server wget vim ifenslave
+d-i pkgsel/include string ntp ssh openssh-server wget vim bridge-utils ifenslave vlan
