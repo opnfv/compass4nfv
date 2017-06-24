@@ -1,0 +1,58 @@
+# This is an example for add a plugin into Compass4nfv
+# It illustrates how feature components can be integrated into Compass4nfv
+# together with scenarios.
+#
+#
+# More details can be found in the development document.
+# ##############################################################
+---
+plugin:
+  # plugin name,it is also as the switch to enable/disable plugin in scenario
+  # files
+  name: ntp
+
+  description: network time protocol
+
+  maintainers:
+    - huangxiangyu5@huawei.com
+
+  # host os type: ubuntu/centos
+  os_version: ubuntu
+
+  # true: this plugin is deployed separately on a new node
+  # false: this plugin is deployed on controller or compute node
+  independent_hosts: false
+
+  # artifact: packege download url for this plugin
+  artifacts:
+    url: http://archive.ubuntu.com/ubuntu/pool/main/n/ntp/ntp_4.2.8p4+dfsg-3ubuntu5.4_amd64.deb
+
+  # global_vars:
+  # define the parameters required by the plugin
+  # and its value will be defined and passed by compass4nfv
+  global_vars:
+    - ntp_server: "0.ubuntu.pool.ntp.org"
+
+  # orchestration
+  # A plugin can have mutiple components, each component may need to be
+  # installed on different inventory or have its own configuration.
+  # due to Compass4nfv currently only supports ansible, so each component
+  # of the installation and configuration script need to be use ansible.
+  # cm : congfiguration management tool : only ansible support
+  # role: each component corresponds to ansible script that locates in the same
+  # directory as plugin.desc.
+  # phrase: pre_openstack -- the component is installed after the OS
+  # provisioning, before the OpenStack deployment.
+  # phrase: post_openstack -- the component is installed before the OpenStack
+  # deployment.
+  # inventory: if the phrase is pre_openstack, inventory can be controller and
+  # compute. if the phrase is post_openstack, inventory can be get from the file
+  # openstack-ansible.inventory
+  orchestration:
+    cm: ansible
+    roles:
+      - role: install ntp
+        phrase: pre_openstack
+        inventory:
+          - controller
+          - compute
