@@ -136,8 +136,8 @@ function download_docker_images()
 
 function download_packages()
 {
-    for i in $PIP_OPENSTACK_REPO $APP_PACKAGE $COMPASS_COMPOSE \
-             $UBUNTU_ISO $CENTOS_ISO $UBUNTU_PPA $CENTOS_PPA; do
+    for i in $COMPASS_COMPOSE \
+             $UBUNTU_ISO $CENTOS_ISO ; do
 
          if [[ ! $i ]]; then
              continue
@@ -161,9 +161,7 @@ function build_tar()
     cd $CACHE_DIR
     sudo rm -rf compass_dists
     mkdir -p compass_dists
-    sudo cp -f `basename $PIP_OPENSTACK_REPO` `basename $APP_PACKAGE` \
-    `basename $UBUNTU_ISO` `basename $CENTOS_ISO` \
-    `basename $UBUNTU_PPA` `basename $CENTOS_PPA` \
+    sudo cp -f `basename $UBUNTU_ISO` `basename $CENTOS_ISO` \
     compass-deck.tar compass-tasks-osa.tar compass-cobbler.tar \
     compass-db.tar compass-mq.tar compass_dists
     sudo tar -zcf compass.tar.gz compass-docker-compose compass_dists
