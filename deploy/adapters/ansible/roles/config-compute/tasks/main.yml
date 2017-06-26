@@ -14,6 +14,8 @@
   notify:
     - restart network service
 
+- meta: flush_handlers
+
 - name: Install apt packages
   apt:
     pkg: "nfs-kernel-server"
@@ -32,5 +34,3 @@
     dest: /etc/exports
   notify:
     - restart nfs service
-
-- meta: flush_handlers
