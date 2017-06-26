@@ -93,6 +93,8 @@ function inject_compass_conf() {
 function refresh_compass_core () {
     sudo docker exec compass-deck bash -c "/opt/compass/bin/manage_db.py createdb"
     sudo docker exec compass-deck bash -c "/root/compass-deck/bin/clean_installers.py"
+    sudo docker exec compass-tasks bash -c \
+    "ps aux | grep -E '[a]nsible-playbook|[o]penstack-ansible' | awk '{print \$2}' | xargs kill -9"
     sudo rm -rf $WORK_DIR/docker/ansible/run/*
 }
 
