@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_4cd3d338",
+        "filename": "deploy/compass_vm.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-26T06:51:35Z",
+      "side": 1,
+      "message": "compass-tasks or compass-tasks-osa?",
+      "range": {
+        "startLine": 96,
+        "startChar": 21,
+        "endLine": 96,
+        "endChar": 34
+      },
+      "revId": "f4d3ab21dc449a01f1e4e17957253a4600973148",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
