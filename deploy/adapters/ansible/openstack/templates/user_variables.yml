@@ -22,7 +22,6 @@
 debug: false
 
 openstack_service_publicuri_proto: http
-haproxy_keepalived_external_vip_cidr: "{{ public_vip.ip }}/32"
 haproxy_keepalived_internal_vip_cidr: "10.1.0.22/32"
 haproxy_keepalived_external_interface: br-vlan
 haproxy_keepalived_internal_interface: br-mgmt
@@ -38,6 +37,7 @@ openstack_host_specific_kernel_modules:
 neutron_plugin_type: ml2.ovs
 
 neutron_ml2_drivers_type: "local,flat,vlan,vxlan"
+
 
 neutron_provider_networks:
   network_flat_networks: "*"
