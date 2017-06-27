@@ -1,0 +1,69 @@
+---
+cidr_networks:
+  container: 10.1.0.0/24
+  tunnel: 172.29.240.0/22
+  storage: 172.16.2.0/24
+
+used_ips:
+  - "10.1.0.1,10.1.0.55"
+  - "10.1.0.100,10.1.0.110"
+  - "172.29.240.1,172.29.240.50"
+  - "172.16.2.1,172.16.2.50"
+  - "172.29.248.1,172.29.248.50"
+
+global_overrides:
+  internal_lb_vip_address: 10.1.0.22
+  tunnel_bridge: "br-vxlan"
+  management_bridge: "br-mgmt"
+  provider_networks:
+    - network:
+        container_bridge: "br-mgmt"
+        container_type: "veth"
+        container_interface: "eth1"
+        ip_from_q: "container"
+        type: "raw"
+        group_binds:
+          - all_containers
+          - hosts
+        is_container_address: true
+        is_ssh_address: true
+    - network:
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+        group_binds:
+          - neutron_openvswitch_agent
+    - network:
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth12"
+        host_bind_override: "eth12"
+        type: "flat"
+        group_binds:
+          - neutron_openvswitch_agent
+    - network:
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth11"
+        type: "vlan"
+        range: "1:1"
+        net_name: "vlan"
+        group_binds:
+{% if "linuxbridge" == NEUTRON_MECHANISM_DRIVERS[0] %}
+          - neutron_linuxbridge_agent
+{% else %}
+          - neutron_openvswitch_agent
+{% endif %}
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "storage"
+        type: "raw"
+        group_binds:
+          - glance_api
+          - cinder_api
