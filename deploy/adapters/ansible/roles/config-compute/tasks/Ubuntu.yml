@@ -7,6 +7,12 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
+- name: remove resolv.conf
+  file: "dest=/etc/resolv.conf state=absent"
+
+- name: make a symbolic link
+  shell: "ln -s /var/run/resolvconf/resolv.conf /etc/resolv.conf"
+
 - name: configure network
   template:
     src: compute.j2
