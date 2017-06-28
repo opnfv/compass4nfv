@@ -69,6 +69,7 @@ iface br-vlan inet static
     # -- Putting this here is primarily for tempest to work.
     address {{host_info[inventory_hostname].VLAN_IP_SECOND}}
     netmask 255.255.252.0
+    dns-nameservers {{ DNS }}
 
 # compute1 Storage bridge
 auto br-storage
