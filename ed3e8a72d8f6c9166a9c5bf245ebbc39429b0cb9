@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_22445b73",
+        "filename": "plugins/template/openstack-ansible.inventory",
+        "patchSetId": 7
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-06-29T08:59:01Z",
+      "side": 1,
+      "message": "I think this is a little confused. E.g. what\u0027s the differences between neutron_all and network_all. If i would like to use neutron servers\u0027 containers, which one should I choose?",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 11
+      },
+      "revId": "ed3e8a72d8f6c9166a9c5bf245ebbc39429b0cb9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_e25de349",
+        "filename": "plugins/template/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-06-29T08:59:01Z",
+      "side": 1,
+      "message": "I still think the name should be along from switches. What if a feature has two switches?",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 17
+      },
+      "revId": "ed3e8a72d8f6c9166a9c5bf245ebbc39429b0cb9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_025b5f55",
+        "filename": "plugins/template/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-06-29T08:59:01Z",
+      "side": 1,
+      "message": "I think \"independent_hosts\" would be more accurate",
+      "range": {
+        "startLine": 21,
+        "startChar": 2,
+        "endLine": 21,
+        "endChar": 10
+      },
+      "revId": "ed3e8a72d8f6c9166a9c5bf245ebbc39429b0cb9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_821d0f76",
+        "filename": "plugins/template/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-06-29T08:59:01Z",
+      "side": 1,
+      "message": "I would prefer to use \"special_vars\" here. Generally, we define some variables in ansible role, e.g. package url, however some variables vary with time going. Then we can define them here and put them into group_vars/all later. If I remember correctly that the variables defined in group_vars/all have top level priority. Thus those ones defined in the roles will be merged by the ones in group_vars/all while deployment.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 8
+      },
+      "revId": "ed3e8a72d8f6c9166a9c5bf245ebbc39429b0cb9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_42171752",
+        "filename": "plugins/template/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-06-29T08:59:01Z",
+      "side": 1,
+      "message": "If the role couples with OpenStack, I suggest only use OSA inventory for it is not stable to render a mixed inventories while using openstack-ansible to play the feature role.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 43
+      },
+      "revId": "ed3e8a72d8f6c9166a9c5bf245ebbc39429b0cb9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
