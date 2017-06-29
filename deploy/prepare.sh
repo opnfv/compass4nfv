@@ -102,16 +102,16 @@ function  _prepare_python_env() {
         virtualenv $WORK_DIR/venv
         source $WORK_DIR/venv/bin/activate
 
-        pip install --upgrade cffi
-        pip install --upgrade MarkupSafe
-        pip install --upgrade pip
-        pip install --upgrade cheetah
-        pip install --upgrade pyyaml
-        pip install --upgrade requests
-        pip install --upgrade netaddr
-        pip install --upgrade oslo.config
-        pip install --upgrade ansible
-        sudo pip install --upgrade docker-compose
+        pip install cffi==1.10.0
+        pip install MarkupSafe==1.0
+        pip install pip==9.0.1
+        pip install cheetah==2.4.4
+        pip install pyyaml==3.12
+        pip install requests==2.18.1
+        pip install netaddr==0.7.19
+        pip install oslo.config==4.6.0
+        pip install ansible==2.3.1.0
+        pip install docker-compose==1.14.0
    fi
 }
 
