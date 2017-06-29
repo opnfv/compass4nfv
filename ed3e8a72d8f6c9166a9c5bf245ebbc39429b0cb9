@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "1aa4ed85_25a54504",
+        "filename": "plugins/template/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-06-29T09:42:35Z",
+      "side": 1,
+      "message": "it is a little complicated if a feature having two switches. and I don\u0027t know how to resolve it.",
+      "parentUuid": "1aa4ed85_e25de349",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 17
+      },
+      "revId": "ed3e8a72d8f6c9166a9c5bf245ebbc39429b0cb9",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1aa4ed85_025b5f55",
         "filename": "plugins/template/plugins.desc",
         "patchSetId": 7
