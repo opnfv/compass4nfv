@@ -1,0 +1,41 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: Create external network
+  hosts: utility_container[0]
+  max_fail_percentage: 20
+  user: root
+  tasks:
+    - name: create external net
+      shell: |
+        . /root/openrc;
+        openstack network create  --share --external \
+        --provider-physical-network {{ public_net_info.provider_network }} \
+        --provider-network-type {{ public_net_info.type }}  {{ public_net_info.network }};
+      when: {{ public_net_info.enable }} == True
+            and "{{ public_net_info.type }}" == "flat"
+
+    - name: create external net
+      shell: |
+        . /root/openrc;
+        openstack network create  --share --external \
+        --network-segment {{ public_net_info.segment_id }} \
+        --provider-network-type {{ public_net_info.type }}  {{ public_net_info.network }};
+      when: {{public_net_info.enable}} == True
+            and "{{ public_net_info.type }}" != "flat"
+
+    - name: create external subnet
+      shell: |
+        . /root/openrc;
+        openstack subnet create --network "{{ public_net_info.network }}" \
+        --allocation-pool \
+        start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }} \
+        --gateway "{{ public_net_info.external_gw }}" \
+        --subnet-range "{{ public_net_info.floating_ip_cidr }}" \
+        "{{ public_net_info.subnet }}"

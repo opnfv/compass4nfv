@@ -26,7 +26,11 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - config-deployment
-    - setup-host
-    - setup-infrastructure
-    - setup-openstack
+    - role: config-deployment
+    - role: setup-host
+    - role: setup-infrastructure
+    - role: setup-openstack
+    - role: setup-openvswitch
+      when:  NEUTRON_MECHANISM_DRIVERS[0] == "openvswitch" or
+             NEUTRON_MECHANISM_DRIVERS[0] == "opendaylight"
+    - role: openstack-post
