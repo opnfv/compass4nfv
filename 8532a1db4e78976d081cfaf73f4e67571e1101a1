@@ -22,6 +22,30 @@
       "revId": "8532a1db4e78976d081cfaf73f4e67571e1101a1",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_7b051ac1",
+        "filename": "deploy/adapters/ansible/roles/config-deployment/templates/create-network.yml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2017-06-30T04:06:16Z",
+      "side": 1,
+      "message": "yes?I  will change",
+      "parentUuid": "1aa4ed85_a575b533",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "8532a1db4e78976d081cfaf73f4e67571e1101a1",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
