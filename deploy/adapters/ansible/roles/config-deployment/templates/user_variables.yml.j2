@@ -29,7 +29,7 @@ haproxy_keepalived_internal_interface: br-mgmt
 
 {% if "openvswitch" == NEUTRON_MECHANISM_DRIVERS[0] or
    "opendaylight" == NEUTRON_MECHANISM_DRIVERS[0]
- %}
+%}
 openstack_host_specific_kernel_modules:
   - name: "openvswitch"
     pattern: "CONFIG_OPENVSWITCH="
