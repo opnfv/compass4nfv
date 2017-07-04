@@ -7,19 +7,12 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # #############################################################################
 ---
-- name: change https to http in haproxy configuratio
-  hosts: network_hosts
-  gather_facts: "{{ gather_facts | default(True) }}"
+- name: Fetch openrc
+  hosts: utility_all[0]
   max_fail_percentage: 20
   user: root
   tasks:
-    - name: change the haproxy configuration
-      shell: "sed -i 's/ssl crt.*//g' /etc/haproxy/haproxy.cfg;
-              sed -i 's/https$/http/g' /etc/haproxy/haproxy.cfg"
-      when: openstack_service_publicuri_proto == "http"
-
-    - name: restart haproxy service
-      service:
-        name: haproxy
-        state: restarted
-      when: openstack_service_publicuri_proto == "http"
+    - fetch:
+        src: /root/openrc
+        dest: /opt/openrc
+        flat: "yes"
