@@ -21,3 +21,20 @@
   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_ocata-opnfv2/ansible.log; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible http.yml > /dev/null"
+
+- name: run ansible yml to fetch openrc
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_ocata-opnfv2/ansible.log; \
+          cd /opt/openstack-ansible/playbooks; \
+          openstack-ansible fetch-openrc.yml > /dev/null"
+
+- name: replace internalURL with publicURL in openrc
+  replace:
+    dest: /opt/openrc
+    regexp: "{{internal_vip}}"
+    replace: "{{ public_vip['ip']}}"
+
+- name: change the endpoint type
+  replace:
+    dest: /opt/openrc
+    regexp: "internalURL"
+    replace: "publicURL"
