@@ -56,3 +56,8 @@
   copy:
     src: http.yml
     dest: /opt/openstack-ansible/playbooks/http.yml
+
+- name: copy fetch-openrc.yml
+  copy:
+    src: fetch-openrc.yml
+    dest: /opt/openstack-ansible/playbooks/fetch-openrc.yml
