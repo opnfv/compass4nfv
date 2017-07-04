@@ -10,7 +10,7 @@
 - hosts: all
   remote_user: root
   roles:
-    - pre-prepare
+    - pre-openstack
 
 - hosts: controller
   remote_user: root
@@ -25,11 +25,9 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - role: config-deployment
+    - role: config-osa
     - role: setup-host
     - role: setup-infrastructure
     - role: setup-openstack
     - role: setup-openvswitch
-      when: NEUTRON_MECHANISM_DRIVERS[0] == "openvswitch" or
-             NEUTRON_MECHANISM_DRIVERS[0] == "opendaylight"
-    - role: openstack-post
+    - role: post-openstack

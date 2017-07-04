@@ -12,3 +12,5 @@
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible setup-ovs.yml \
              | tee -a /var/log/osa/ovs.log > /dev/null"
+  when: NEUTRON_MECHANISM_DRIVERS[0] == "openvswitch" or \
+        NEUTRON_MECHANISM_DRIVERS[0] == "opendaylight"
