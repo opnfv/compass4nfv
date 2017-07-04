@@ -49,11 +49,6 @@
     - /tmp/ssh-keys-*
     - /root/.ssh/id_rsa.pub
 
-- name: change sourcesi(apt) list
-  template:
-    src: sources.list
-    dest: /etc/apt/sources.list
-
 - name: rm apt.conf
   file:
     path: /etc/apt/apt.conf
