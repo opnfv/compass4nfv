@@ -16,10 +16,28 @@
 
 - meta: flush_handlers
 
+- name: check apt source
+  shell: "ping -c 2 {{ LOCAL_REPOSITORY_IP }} > /dev/null"
+  register: checkresult
+  ignore_errors: "true"
+
+- name: change sources list(apt)
+  template:
+    src: sources.list.lab
+    dest: /etc/apt/sources.list
+  when: checkresult.rc == 0
+
+- name: change sources list(apt)
+  template:
+    src: sources.list.official
+    dest: /etc/apt/sources.list
+  when: checkresult.rc != 0
+
 - name: Install apt packages
   apt:
     pkg: "nfs-kernel-server"
     state: "present"
+    update_cache: "yes"
 
 - name: make nfs dircetory
   file: "dest=/images mode=0777 state=directory"

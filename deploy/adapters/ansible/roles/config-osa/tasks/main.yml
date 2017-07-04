@@ -22,6 +22,20 @@
     src: user_variables.yml.j2
     dest: /etc/openstack_deploy/user_variables.yml
 
+- name: check apt source
+  shell: "ping -c 2 {{ LOCAL_REPOSITORY_IP }} > /dev/null"
+  register: checkresult
+  ignore_errors: "true"
+
+- name: add mariadb local repository
+  blockinfile:
+    dest: /etc/openstack_deploy/user_variables.yml
+    block: |
+      galera_client_apt_repo_url: "http://192.168.137.222/mariadb"
+      galera_repo_url: "[ arch=amd64 ] http://192.168.137.222/mariadb"
+      uca_apt_repo_url: "[ arch=amd64 ] http://192.168.137.222/ubuntu-cloud"
+  when: checkresult.rc == 0
+
 - name: copy cinder.yml
   copy:
     src: cinder.yml
@@ -56,3 +70,8 @@
   copy:
     src: http.yml
     dest: /opt/openstack-ansible/playbooks/http.yml
+
+- name: copy fetch-openrc.yml
+  copy:
+    src: fetch-openrc.yml
+    dest: /opt/openstack-ansible/playbooks/fetch-openrc.yml
