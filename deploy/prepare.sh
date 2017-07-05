@@ -111,7 +111,8 @@ function  _prepare_python_env() {
         pip install netaddr==0.7.19
         pip install oslo.config==4.6.0
         pip install ansible==2.3.1.0
-        pip install docker-compose==1.14.0
+        # For sudo use
+        sudo pip install docker-compose==1.14.0
    fi
 }
 
