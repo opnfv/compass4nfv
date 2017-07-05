@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_4f09732b",
+        "filename": "deploy/adapters/ansible/roles/config-deployment/files/fetch-openrc.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-05T02:56:07Z",
+      "side": 1,
+      "message": "it should be in config-osa direcotry, config-deployment has been renamed to config-osa\n\n2017-07-05 02:26:30,981 p\u003d87 u\u003droot |  TASK [config-osa : copy fetch-openrc.yml] **************************************\n2017-07-05 02:26:30,998 p\u003d87 u\u003droot |  fatal: [localhost]: FAILED! \u003d\u003e {\"changed\": false, \"failed\": true, \"msg\": \"Unable to find \u0027fetch-openrc.yml\u0027 in expected paths.\"}",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 19
+      },
+      "revId": "ba365e149c5f493934bb50baef91fe73f9a7d039",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
