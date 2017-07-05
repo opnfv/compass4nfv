@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_e47de6b2",
+        "filename": "deploy/adapters/ansible/roles/config-compute/tasks/Ubuntu.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-05T02:11:52Z",
+      "side": 1,
+      "message": "define a variable instead of IP address",
+      "range": {
+        "startLine": 20,
+        "startChar": 20,
+        "endLine": 20,
+        "endChar": 34
+      },
+      "revId": "81dce9104c00d7690f72432a8aa4b1142c1f5c91",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_844af281",
+        "filename": "deploy/adapters/ansible/roles/config-compute/templates/sources.list.lab",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-05T02:11:52Z",
+      "side": 1,
+      "message": "same with above",
+      "range": {
+        "startLine": 1,
+        "startChar": 26,
+        "endLine": 1,
+        "endChar": 41
+      },
+      "revId": "81dce9104c00d7690f72432a8aa4b1142c1f5c91",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_a44fee91",
+        "filename": "deploy/adapters/ansible/roles/config-controller/tasks/Ubuntu.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-05T02:11:52Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 18,
+        "startChar": 20,
+        "endLine": 18,
+        "endChar": 35
+      },
+      "revId": "81dce9104c00d7690f72432a8aa4b1142c1f5c91",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_4444fa73",
+        "filename": "deploy/adapters/ansible/roles/config-controller/templates/sources.list.lab",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-05T02:11:52Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 1,
+        "startChar": 26,
+        "endLine": 1,
+        "endChar": 41
+      },
+      "revId": "81dce9104c00d7690f72432a8aa4b1142c1f5c91",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_6449f68a",
+        "filename": "deploy/adapters/ansible/roles/post-openstack/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-05T02:11:52Z",
+      "side": 1,
+      "message": "define a variable instead of internal vip",
+      "range": {
+        "startLine": 33,
+        "startChar": 13,
+        "endLine": 33,
+        "endChar": 22
+      },
+      "revId": "81dce9104c00d7690f72432a8aa4b1142c1f5c91",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
