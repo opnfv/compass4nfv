@@ -25,14 +25,11 @@
 - name: unarchive onos driver package
   command: su -s /bin/sh -c "tar xvf  /opt/networking-onos.tar -C /opt/"
 
-- name: unarchive onos sfc driver package
-  command: su -s /bin/sh -c "tar xvf  /opt/networking-sfc.tar -C /opt/"
-
 - name: install onos driver
   command: su -s /bin/sh -c "/opt/networking-onos/install_driver.sh"
 
-- name: install onos sfc driver
-  command: su -s /bin/sh -c "/opt/networking-sfc/install_driver.sh"
+- name: install networking-sfc
+  pip: name=networking-sfc state=present version=3.0.0
 
 - name: install onos required packages
   action: "{{ ansible_pkg_mgr }}  name={{ item }} state=present"
@@ -190,6 +187,7 @@
     su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf \
     --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
     su -s /bin/sh -c "neutron-db-manage --subproject networking-sfc upgrade head" neutron;
+  when: inventory_hostname == haproxy_hosts.keys()[0]
 
 - name: Restart neutron-dhcp-agent
   service: name=neutron-dhcp-agent state=restarted
