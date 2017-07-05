@@ -13,29 +13,29 @@ packages:
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
-    url: huangxiangyu/compass-deck:v0.2
+    url: compass4nfv/compass-deck
 
   - name: compass-tasks-osa
     description: "compass task container for openstack deployment via openstack-ansible"
     get_method: docker
-    url: wtwde/compass-tasks-osa:v0.2
+    url: compass4nfv/compass-tasks-osa
 
   - name: compass-cobbler
     description: "cobbler container for compass"
     get_method: docker
-    url: huangxiangyu/compass-cobbler:v0.1
+    url: compass4nfv/compass-cobbler
 
   - name: compass-db
     description: "datebase container for compass"
     get_method: docker
-    url: huangxiangyu/compass-db:v0.1
+    url: compass4nfv/compass-db
 
   - name: compass-mq
     description: "message queue container for compass"
     get_method: docker
-    url: huangxiangyu/compass-mq:v0.1
+    url: compass4nfv/compass-mq
 
   - name: compass-docker-compose
     description: "containerized compass compose ansible"
     get_method: git
-    url: https://github.com/hexhxy/compass-docker-compose.git
+    url: https://github.com/Compass4NFV/compass-docker-compose.git
