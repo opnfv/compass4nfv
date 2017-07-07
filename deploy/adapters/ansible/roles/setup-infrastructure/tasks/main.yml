@@ -19,8 +19,9 @@
   register: setup_infrastructure_result
 
 - fail:
-    msg: "there are some task failed when setup host."
-  when: setup_infrastructure_result.stdout.find('failed=1') != -1
+    msg: "there are some task failed when setup infrastructure."
+  when: setup_infrastructure_result.stdout.find('failed={{item}}') != -1
+  with_items: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 - fail:
     msg: "some host are unreachable."
