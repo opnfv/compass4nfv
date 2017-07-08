@@ -36,7 +36,7 @@ def rename_nics(dha_info, rsa_file, compass_ip, os_version):
 if __name__ == "__main__":
     assert(len(sys.argv) == 5)
     rename_nics(
-        yaml.load(
+        yaml.safe_load(
             open(
                 sys.argv[1])),
         sys.argv[2],

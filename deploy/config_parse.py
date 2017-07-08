@@ -15,7 +15,7 @@ from Cheetah.Template import Template
 
 def init(file):
     with open(file) as fd:
-        return yaml.load(fd)
+        return yaml.safe_load(fd)
 
 
 def decorator(func):

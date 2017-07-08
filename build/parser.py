@@ -80,7 +80,7 @@ def usage():
 
 def build_parser(build_file_name):
     cache = load_env()
-    cfg = yaml.load(file(build_file_name, 'r'))
+    cfg = yaml.safe_load(file(build_file_name, 'r'))
 
     print "Starting building...."
     for pkg in cfg.get("packages"):

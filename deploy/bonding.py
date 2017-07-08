@@ -34,7 +34,7 @@ def create_bonding(network_info, rsa_file, compass_ip):
 if __name__ == "__main__":
     assert(len(sys.argv) == 4)
     create_bonding(
-        yaml.load(
+        yaml.safe_load(
             open(
                 sys.argv[1])),
         sys.argv[2],

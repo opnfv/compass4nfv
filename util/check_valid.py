@@ -17,7 +17,7 @@ import traceback
 def load_file(file):
     with open(file) as fd:
         try:
-            return yaml.load(fd)
+            return yaml.safe_load(fd)
         except:
             traceback.print_exc()
             return None
