@@ -16,6 +16,8 @@ POWER_TOOL: ipmitool
 ipmiVer: '2.0'
 
 moon: "Enable"
+plugins:
+  - opendaylight: "Enable"
 
 hosts:
   - name: host1

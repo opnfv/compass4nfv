@@ -11,6 +11,9 @@
 TYPE: virtual
 FLAVOR: cluster
 
+plugins:
+  - opendaylight: "Enable"
+
 hosts:
   - name: host1
     roles:

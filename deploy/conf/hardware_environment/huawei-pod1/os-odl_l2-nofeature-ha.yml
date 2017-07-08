@@ -15,6 +15,9 @@ POWER_TOOL: ipmitool
 ipmiUser: root
 ipmiVer: '2.0'
 
+plugins:
+  - opendaylight: "Enable"
+
 hosts:
   - name: host1
     mac: 'F8:4A:BF:55:A2:8D'

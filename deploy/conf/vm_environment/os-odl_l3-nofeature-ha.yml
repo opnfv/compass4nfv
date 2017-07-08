@@ -12,6 +12,8 @@ TYPE: virtual
 FLAVOR: cluster
 
 odl_l3_agent: "Enable"
+plugins:
+  - opendaylight: "Enable"
 
 hosts:
   - name: host1
