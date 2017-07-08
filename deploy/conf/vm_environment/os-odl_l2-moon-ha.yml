@@ -12,6 +12,8 @@ TYPE: virtual
 FLAVOR: cluster
 
 moon: "Enable"
+plugins:
+  - opendaylight: "Enable"
 
 hosts:
   - name: host1

@@ -54,6 +54,12 @@ def export_dha_file(s, dha_file, conf_dir, ofile):
     env.update(s)
     if env.get('hosts', []):
         env.pop('hosts')
+    if env.has_key('plugins'):
+        plugin_list = []
+        for item in env.get('plugins'):
+            plugin_str = ':'.join([item.keys()[0], item.values()[0]])
+            plugin_list.append(plugin_str)
+        env.update({'plugins': ','.join(plugin_list)})
 
     env.update({'TYPE': s.get('TYPE', "virtual")})
     env.update({'FLAVOR': s.get('FLAVOR', "cluster")})

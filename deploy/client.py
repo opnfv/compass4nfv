@@ -256,6 +256,9 @@ opts = [
     cfg.StrOpt('onos_sfc',
                help='onos_sfc enable flag',
                default='Disable'),
+    cfg.StrOpt('plugins',
+               help='plugin dict',
+               default='{}'),
 ]
 CONF.register_cli_opts(opts)
 
@@ -764,6 +767,11 @@ class CompassClient(object):
             'moon'] = "Enable" if CONF.moon == "Enable" else "Disable"
         package_config[
             'onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
+        package_config['plugins'] = []
+        if CONF.plugins:
+            for item in CONF.plugins.split(','):
+                key, value = item.split(':')
+                package_config['plugins'].append({key: value})
 
         status, resp = self.client.update_cluster_config(
             cluster_id, package_config=package_config)
