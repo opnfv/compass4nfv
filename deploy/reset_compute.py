@@ -20,7 +20,7 @@ def exec_cmd(cmd):
 def reset_baremetal(dha_info):
     print "reset_baremetal"
 
-    hosts_info = yaml.load(open(dha_info))
+    hosts_info = yaml.safe_load(open(dha_info))
     # print hosts_info
 
     ipmiUserDf = hosts_info.get('ipmiUser', 'root')
@@ -48,7 +48,7 @@ def reset_baremetal(dha_info):
 def reset_virtual(dha_info):
     print "reset_virtual"
 
-    hosts_info = yaml.load(open(dha_info))
+    hosts_info = yaml.safe_load(open(dha_info))
     print hosts_info
 
     hosts_list = hosts_info.get('hosts', [])

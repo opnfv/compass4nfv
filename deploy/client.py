@@ -740,11 +740,11 @@ class CompassClient(object):
         package_config['network_mapping'] = network_mapping
 
         assert(os.path.exists(CONF.network_cfg))
-        network_cfg = yaml.load(open(CONF.network_cfg))
+        network_cfg = yaml.safe_load(open(CONF.network_cfg))
         package_config["network_cfg"] = network_cfg
 
         assert(os.path.exists(CONF.neutron_cfg))
-        neutron_cfg = yaml.load(open(CONF.neutron_cfg))
+        neutron_cfg = yaml.safe_load(open(CONF.neutron_cfg))
         package_config["neutron_config"] = neutron_cfg
 
         """

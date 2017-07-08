@@ -32,7 +32,7 @@ def get_packages_name_list(file_list, special_packages):
     package_name_list = []
 
     for file in file_list:
-        datas = yaml.load(open(file))
+        datas = yaml.safe_load(open(file))
         if not datas:
             continue
 
