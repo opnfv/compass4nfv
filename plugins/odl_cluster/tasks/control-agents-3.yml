@@ -6,11 +6,11 @@
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling "True";
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings physnet1:br-provider;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings physnet:br-provider;
 
 - name: configure bridge_mappings for L3
   shell: |
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings physnet1:eth12;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings physnet:eth12;
   when: odl_l3_agent == "Enable"
 
 - name: configure opendaylight in ml2
