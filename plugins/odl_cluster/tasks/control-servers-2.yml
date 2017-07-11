@@ -19,9 +19,9 @@
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings physnet:eth12;
   when: odl_l3_agent == "Enable"
 
-- name: configure external bridge name for L2
+- name: turn off l3 ha for odl l2
   shell: |
-    crudini --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-provider;
+    crudini --set /etc/neutron/neutron.conf DEFAULT l3_ha "False";
   when: odl_l3_agent == "Disable"
 
 - name: configure opendaylight in ml2
