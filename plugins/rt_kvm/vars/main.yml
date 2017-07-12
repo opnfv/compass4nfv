@@ -1,0 +1,16 @@
+##############################################################################
+# Copyright (c) 2016-2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+workspace: /tmp/plugin
+
+# yamllint disable rule:line-length
+rt_kvm_url: http://artifacts.opnfv.org/kvmfornfv/kvmfornfv-4bfeded9-kernel-4.4.50_rt62_ubuntu.x86_64.deb
+# yamllint enable rule:line-length
+
+rt_kvm_pkg: kvmfornfv-4bfeded9-kernel-4.4.50_rt62_ubuntu.x86_64.deb
