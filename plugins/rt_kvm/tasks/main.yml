@@ -1,0 +1,32 @@
+##############################################################################
+# Copyright (c) 2016-2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: download rt_kvm kernel package 
+  get_url:
+    url: "{{ rt_kvm_url }}"
+    dest: "{{ workspace }}"
+
+- name: install dependent packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ dependancy }}"
+
+- name: install rt_kvm kernel
+  command: dpkg -i "{{ workspace }}/{{ rt_kvm_pkg }}"
+
+- name: update the grub
+  command: grub-mkconfig -o /boot/grub/grub.cfg
+
+- name: wait a moment
+  command: sleep 5 
+
+- name: reboot the node
+  command: reboot 
