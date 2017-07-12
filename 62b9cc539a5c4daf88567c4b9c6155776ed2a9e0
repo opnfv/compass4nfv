@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_dbbbd770",
+        "filename": "deploy/adapters/ansible/roles/setup-infrastructure/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-12T03:50:05Z",
+      "side": 1,
+      "message": "better to use with_sequence.\nhttp://docs.ansible.com/ansible/playbooks_loops.html#looping-over-integer-sequences\n    # create a series of directories with even numbers for some reason\n    - file:\n        dest: \"/var/stuff/{{ item }}\"\n        state: directory\n      with_sequence: start\u003d4 end\u003d16 stride\u003d2",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 41
+      },
+      "revId": "62b9cc539a5c4daf88567c4b9c6155776ed2a9e0",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
