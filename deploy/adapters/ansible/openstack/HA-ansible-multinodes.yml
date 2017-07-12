@@ -21,6 +21,7 @@
   remote_user: root
   roles:
     - config-compute
+    - storage
 
 - hosts: localhost
   remote_user: root
