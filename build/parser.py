@@ -71,10 +71,26 @@ def get_from_curl(cache, package):
     os.system(cmd)
 
 
+def get_from_safecurl(cache, package):
+    filename = package.get("name")
+    localfile = cache + "/" + filename
+    cmd = "curl --connect-timeout 10 -o " + cache + "/"
+    cmd += filename + " " + package.get("url")
+    os.system(cmd)
+    cmd = "sha256sum " + localfile + "|cut -d ' ' -f 1"
+    shasum = os.popen(cmd).readlines()
+    if (shasum[0][0:-1] != package.get("sha")):
+        print "shasum error %s and %s" % (shasum[0], package.get("sha"))
+        sys.exit(1)
+    else:
+        print "shasum pass!"
+
+
 def usage():
     print "cached : Download from a cached server"
     print "git    : Download from git url"
     print "curl   : Download from a url link by curl"
+    print "safecurl : Download from a url by curl with security check"
     print "docker : Download from docker hub"
 
 
@@ -94,6 +110,8 @@ def build_parser(build_file_name):
             get_from_docker(cache, pkg)
         elif pkg.get("get_method") == "curl":
             get_from_curl(cache, pkg)
+        elif pkg.get("get_method") == "safecurl":
+            get_from_safecurl(cache, pkg)
         else:
             usage
 
