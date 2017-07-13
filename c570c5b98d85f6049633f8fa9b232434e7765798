@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_4625cbc0",
+        "filename": "build/build.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 610
+      },
+      "writtenOn": "2017-07-13T14:05:14Z",
+      "side": 1,
+      "message": "would be good if you could change this to https and use a sha256 sig to verify the security, see \t\nqi liang\u0027s patch for example of how to do this [1], and for a good reason why checkout [2] \n\n[1] https://gerrit.opnfv.org/gerrit/#/c/36711/6\n\n[2] http://blog.linuxmint.com/?p\u003d2994",
+      "range": {
+        "startLine": 11,
+        "startChar": 4,
+        "endLine": 11,
+        "endChar": 75
+      },
+      "revId": "c570c5b98d85f6049633f8fa9b232434e7765798",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
