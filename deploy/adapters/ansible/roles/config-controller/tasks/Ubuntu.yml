@@ -14,6 +14,8 @@
   notify:
     - restart network service
 
+- meta: flush_handlers
+
 - name: check apt source
   shell: "ping -c 2 {{LOCAL_REPOSITORY_IP}} > /dev/null"
   register: checkresult
