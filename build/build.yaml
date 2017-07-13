@@ -7,8 +7,8 @@ packages:
 
   - name: ubuntu-16.04-server-amd64.iso
     description: "Ubuntu ISO of each host for provisioning"
-    get_method: cached
-    url: http://artifacts.opnfv.org/compass4nfv/package/master/ubuntu-16.04-server-amd64.iso
+    get_method: curl
+    url: http://releases.ubuntu.com/16.04.2/ubuntu-16.04.2-server-amd64.iso
 
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
