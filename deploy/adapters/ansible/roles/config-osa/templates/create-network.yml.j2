@@ -15,7 +15,7 @@
     - name: create external net
       shell: |
         . /root/openrc;
-        openstack network create  --share --external \
+        openstack network create --external \
         --provider-physical-network {{ public_net_info.provider_network }} \
         --provider-network-type {{ public_net_info.type }}  {{ public_net_info.network }};
       when: {{ public_net_info.enable }} == True
@@ -24,7 +24,7 @@
     - name: create external net
       shell: |
         . /root/openrc;
-        openstack network create  --share --external \
+        openstack network create --external \
         --network-segment {{ public_net_info.segment_id }} \
         --provider-network-type {{ public_net_info.type }}  {{ public_net_info.network }};
       when: {{public_net_info.enable}} == True
