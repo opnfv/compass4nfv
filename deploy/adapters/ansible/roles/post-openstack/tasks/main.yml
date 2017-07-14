@@ -23,15 +23,16 @@
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible create-flavor.yml > /dev/null"
 
-- name: change https to http
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_ocata-opnfv2/ansible.log; \
-          cd /opt/openstack-ansible/playbooks; \
-          openstack-ansible http.yml > /dev/null"
-
 - name: run ansible yml to fetch openrc
   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_ocata-opnfv2/ansible.log; \
           cd /opt/openstack-ansible/playbooks; \
-          openstack-ansible fetch-openrc.yml > /dev/null"
+          openstack-ansible fetch-files.yml > /dev/null"
+
+- name: replace http with https in openrc
+  replace:
+    dest: /opt/openrc
+    regexp: "http://"
+    replace: "https://"
 
 - name: replace internalURL with publicURL in openrc
   replace:
