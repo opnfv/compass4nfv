@@ -16,3 +16,13 @@
         src: /root/openrc
         dest: /opt/openrc
         flat: "yes"
+
+- name: Fetch haproxy.cert
+  hosts: haproxy_hosts[0]
+  max_fail_percentage: 20
+  user: root
+  tasks:
+    - fetch:
+        src: /etc/ssl/certs/haproxy.cert
+        dest: /opt/os_cacert
+        flat: "yes"

@@ -76,12 +76,7 @@
     src: create-flavor.yml.j2
     dest: /opt/openstack-ansible/playbooks/create-flavor.yml
 
-- name: copy http.yml
+- name: copy fetch-files.yml
   copy:
-    src: http.yml
-    dest: /opt/openstack-ansible/playbooks/http.yml
-
-- name: copy fetch-openrc.yml
-  copy:
-    src: fetch-openrc.yml
-    dest: /opt/openstack-ansible/playbooks/fetch-openrc.yml
+    src: fetch-files.yml
+    dest: /opt/openstack-ansible/playbooks/fetch-files.yml
