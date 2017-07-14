@@ -25,13 +25,13 @@ Release Data
 | **Project**                          | Compass4nfv                          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Repo/tag**                         | Compass4nfv/Danube.3.0               |
+| **Repo/tag**                         | Compass4nfv/Danube.3.1               |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release designation**              | Danube.3.0                           |
+| **Release designation**              | Danube.3.1                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | June 8 2017                        |
+| **Release date**                     | July 14 2017                         |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | OPNFV Danube release                 |
