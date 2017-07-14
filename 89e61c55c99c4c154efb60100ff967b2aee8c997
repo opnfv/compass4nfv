@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_246c479c",
+        "filename": "plugins/rt_kvm/vars/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-14T01:41:00Z",
+      "side": 1,
+      "message": "# yamllint disable rule:line-length",
+      "revId": "89e61c55c99c4c154efb60100ff967b2aee8c997",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1aa4ed85_4469438a",
+        "filename": "plugins/rt_kvm/vars/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-07-14T01:41:00Z",
+      "side": 1,
+      "message": "# yamllint enable rule:line-length",
+      "revId": "89e61c55c99c4c154efb60100ff967b2aee8c997",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
