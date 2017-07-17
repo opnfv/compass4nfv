@@ -17,19 +17,26 @@
     url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_driver }}"
     dest: /opt/
 
-- name: download onos sfc driver package
-  get_url:
-    url: "http://{{ http_server.stdout_lines[0] }}/packages/onos/{{ onos_sfc_driver }}"
-    dest: /opt/
-
 - name: unarchive onos driver package
-  command: su -s /bin/sh -c "tar xvf  /opt/networking-onos.tar -C /opt/"
+  command: su -s /bin/sh -c "tar zxf  /opt/networking-onos.tar.gz -C /opt/"
+
+- name: upgrade stevedore
+  pip: name=stevedore state=latest
 
 - name: install onos driver
   command: su -s /bin/sh -c "/opt/networking-onos/install_driver.sh"
 
 - name: install networking-sfc
   pip: name=networking-sfc state=present version=3.0.0
+
+- name: copy driver_configuration script
+  copy:
+    src: driver.sh
+    dest: "/opt/driver.sh"
+    mode: 0777
+
+- name: Configure sfc driver
+  command: su -s /bin/sh -c "/opt/driver.sh;"
 
 - name: install onos required packages
   action: "{{ ansible_pkg_mgr }}  name={{ item }} state=present"
@@ -181,11 +188,12 @@
 
 - name: Configure Neutron3
   shell: >
-    mysql -e "drop database if exists neutron_ml2;";
-    mysql -e "create database neutron_ml2 character set utf8;";
-    mysql -e "grant all on neutron_ml2.* to 'neutron'@'%';";
+    mysql -e "drop database if exists neutron;";
+    mysql -e "create database neutron character set utf8;";
+    mysql -e "grant all on neutron.* to 'neutron'@'%' identified by \
+        '{{ NEUTRON_DBPASS }}';";
     su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf \
-    --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
+        --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron;
     su -s /bin/sh -c "neutron-db-manage --subproject networking-sfc upgrade head" neutron;
   when: inventory_hostname == haproxy_hosts.keys()[0]
 
