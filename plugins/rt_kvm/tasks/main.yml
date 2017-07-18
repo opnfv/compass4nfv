@@ -1,0 +1,40 @@
+##############################################################################
+# Copyright (c) 2016-2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: create workspace directory
+  file:
+    path: "{{ workspace }}"
+    state: directory
+    mode: 0755
+
+- name: download rt_kvm kernel package
+  get_url:
+    url: "{{ rt_kvm_url }}"
+    dest: "{{ workspace }}/{{ rt_kvm_pkg }}"
+
+- name: install rt_kvm kernel
+  command: dpkg -i "{{ workspace }}/{{ rt_kvm_pkg }}"
+
+- name: update the grub
+  command: grub-mkconfig -o /boot/grub/grub.cfg
+
+- name: wait a moment
+  command: sleep 5
+
+- name: reboot the node
+  shell: sleep 2 && shutdown -r now 'Reboot required'
+  become: true
+  async: 1
+  poll: 0
+  ignore_errors: true
+
+- name: wait for reboot
+  local_action:
+    module: wait_for
+      host={{ ansible_eth0.ipv4.address }} port=22 delay=1 timeout=600

@@ -12,6 +12,13 @@
     path: /var/log/osa/
     state: directory
 
+- name: disable kernel update in rt_kvm scenario
+  lineinfile:
+    dest: /etc/ansible/roles/openstack_hosts/vars/ubuntu-16.04.yml
+    state: absent
+    regexp: 'linux-image-extra-*'
+  when: rt_kvm == "Enable"
+
 - name: copy openstack_user_config
   template:
     src: openstack_user_config.yml.j2
