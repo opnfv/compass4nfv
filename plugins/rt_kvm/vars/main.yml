@@ -1,4 +1,3 @@
-#!/bin/bash
 ##############################################################################
 # Copyright (c) 2016-2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
@@ -7,20 +6,11 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-sudo apt-get update
-sudo apt-get install -y git
+---
+workspace: /tmp/plugin
 
-#git clone https://gerrit.opnfv.org/gerrit/compass4nfv
+# yamllint disable rule:line-lengt
+rt_kvm_url: http://artifacts.opnfv.org/kvmfornfv/kvmfornfv-4bfeded9-kernel-4.4.50_rt62_ubuntu.x86_64.deb
+# yamllint enable rule:line-length
 
-#pushd compass4nfv
-
-CURRENT_DIR=$PWD
-SCENARIO=${SCENARIO:-os-nosdn-kvm-ha.yml}
-
-./build.sh
-
-export TAR_URL=file://$CURRENT_DIR/work/building/compass.tar.gz
-export DHA=$CURRENT_DIR/deploy/conf/vm_environment/$SCENARIO
-export NETWORK=$CURRENT_DIR/deploy/conf/vm_environment/network.yml
-
-./deploy.sh
+rt_kvm_pkg: kvmfornfv-4bfeded9-kernel-4.4.50_rt62_ubuntu.x86_64.deb
