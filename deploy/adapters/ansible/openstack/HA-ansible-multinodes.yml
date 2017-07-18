@@ -22,6 +22,7 @@
   roles:
     - config-compute
     - storage
+    - rt_kvm
 
 - hosts: localhost
   remote_user: root
