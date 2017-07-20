@@ -13,6 +13,8 @@ import sys  # noqa:F401
 
 from ansible.plugins.callback import CallbackBase
 
+COMPASS_HOST = "compass-deck"
+
 
 def task_error(display, host, data):
     display.display("task_error: host=%s,data=%s" % (host, data))
@@ -20,7 +22,7 @@ def task_error(display, host, data):
 #    if isinstance(data, dict):
 #        invocation = data.pop('invocation', {})
 
-    notify_host(display, "compass-deck", host, "failed")
+    notify_host(display, COMPASS_HOST, host, "failed")
 
 
 class CallbackModule(CallbackBase):
@@ -42,7 +44,7 @@ class CallbackModule(CallbackBase):
         # task_error(self._display, host, res)
         pass
 
-    def v2_runner_on_ok(self, host, res):
+    def v2_runner_on_ok(self, res):
         pass
 
     def v2_runner_on_skipped(self, host, item=None):
@@ -112,14 +114,26 @@ class CallbackModule(CallbackBase):
             if summary['unreachable'] > 0:
                 unreachable = True
 
-        clusterhosts = set(hosts) - set(['localhost'])
+        headers = {"Content-type": "application/json",
+                   "Accept": "*/*"}
+
+        conn = httplib.HTTPConnection(COMPASS_HOST, 80)
+        token = auth(conn)
+        headers["X-Auth-Token"] = token
+        get_url = "/api/hosts"
+        conn.request("GET", get_url, "", headers)
+        resp = conn.getresponse()
+        raise_for_status(resp)
+        host_data = json.loads(resp.read())
+        clusterhosts = [item["name"] for item in host_data]
+
         if failures or unreachable:
-            for host in clusterhosts:
-                notify_host(self._display, "compass-deck", host, "error")
-            return
+            host_status = "error"
+        else:
+            host_status = "succ"
 
         for host in clusterhosts:
-            notify_host(self._display, "compass-deck", host, "succ")
+            notify_host(self._display, "compass-deck", host, host_status)
 
 
 def raise_for_status(resp):
