@@ -34,7 +34,6 @@ $res
     #set $host_info[$host['hostname']] = $info
     #set $inc = $inc + 1
 #end for
-
 host_info: $host_info
 
 #set ip_settings={}
@@ -51,6 +50,7 @@ host_info: $host_info
 
 #set has = $getVar('ha', [])
 #set ha_vip = $getVar('ha_vip', [])
+run_dir: $getVar('run_dir', '')
 
 enable_secgroup: $getVar('enable_secgroup', True)
 enable_fwaas: $getVar('enable_fwaas', True)
@@ -186,13 +186,6 @@ CONGRESS_DBPASS: $congress_dbpass
 CONGRESS_PASS: $congress_pass
 DEMO_PASS: $demo_pass
 ADMIN_PASS: $admin_pass
-
-#set plugins = $getVar('plugins', [])
-#for item in plugins
-#set keys = $item.keys()
-#set values = $item.values()
-$keys[0]: $values[0]
-#end for
 
 #set neutron_service_plugins=['router']
 

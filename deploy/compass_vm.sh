@@ -129,6 +129,11 @@ function wait_ok() {
 function launch_compass() {
     local group_vars=$WORK_DIR/installer/compass-docker-compose/group_vars/all
     sed -i "s#^\(compass_dir:\).*#\1 $COMPASS_DIR#g" $group_vars
+    sed -i "s#^\(compass_deck:\).*#\1 $COMPASS_DECK#g" $group_vars
+    sed -i "s#^\(compass_tasks:\).*#\1 $COMPASS_TASKS#g" $group_vars
+    sed -i "s#^\(compass_cobbler:\).*#\1 $COMPASS_COBBLER#g" $group_vars
+    sed -i "s#^\(compass_db:\).*#\1 $COMPASS_DB#g" $group_vars
+    sed -i "s#^\(compass_mq:\).*#\1 $COMPASS_MQ#g" $group_vars
 
     ansible-playbook $WORK_DIR/installer/compass-docker-compose/bring_up_compass.yml
 }

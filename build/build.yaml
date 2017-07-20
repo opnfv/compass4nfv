@@ -18,7 +18,7 @@ packages:
   - name: compass-tasks-osa
     description: "compass task container for openstack deployment via openstack-ansible"
     get_method: docker
-    url: compass4nfv/compass-tasks-osa
+    url: wtwde/compass-tasks-osa:v0.3
 
   - name: compass-cobbler
     description: "cobbler container for compass"

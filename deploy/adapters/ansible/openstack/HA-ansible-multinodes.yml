@@ -25,9 +25,10 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - role: config-osa
-    - role: setup-host
-    - role: setup-infrastructure
-    - role: setup-openstack
-    - role: setup-openvswitch
-    - role: post-openstack
+    - config-osa
+    - setup-host
+    - setup-infrastructure
+    - setup-openstack
+    - sync-inventory
+    - setup-openvswitch
+    - post-openstack

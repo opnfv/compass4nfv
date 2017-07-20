@@ -108,8 +108,8 @@ class CallbackModule(CallbackBase):
 
         self._login(self.client)
 
-        for host in hosts:
-            if host == "localhost":
-                continue
-            clusterhost_name = host + "." + cluster_name
-            self.client.clusterhost_ready(clusterhost_name)
+        # for host in hosts:
+        #     if host == "localhost":
+        #         continue
+        #     clusterhost_name = host + "." + cluster_name
+        #     self.client.clusterhost_ready(clusterhost_name)
