@@ -49,8 +49,12 @@ plugin:
   orchestration:
     cm: ansible
     roles:
-      - role: opendaylight
-        phrase: post_openstack
+      - role: setup_opendaylight
+        excute_after: setup_openvswitch
+        inventory:
+          - localhost
+      - role: odl_cluster
+        excute_in: setup_opendaylight
         inventory:
           - neutron_all
           - galera_container
