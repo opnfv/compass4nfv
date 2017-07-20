@@ -50,7 +50,7 @@ plugin:
     cm: ansible
     roles:
       - role: opendaylight
-        phrase: post_openstack
+        excute_after: setup_openstack
         inventory:
           - neutron_all
           - galera_container

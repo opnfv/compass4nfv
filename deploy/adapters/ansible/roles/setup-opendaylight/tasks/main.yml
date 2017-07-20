@@ -1,0 +1,25 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+- name: copy setup-odl.yml
+  template:
+    src: setup-odl.yml.j2
+    dest: /opt/openstack-ansible/playbooks/setup-odl.yml
+
+- name: copy odl_cluster role
+  copy:
+    src: /var/ansible/run/openstack_ocata-opnfv2/roles/odl_cluster
+    dest: /etc/ansible/roles/
+
+- name: setup odl
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_ocata-opnfv2/ansible.log; \
+          cd /opt/openstack-ansible/playbooks; \
+          openstack-ansible setup-odl.yml > /dev/null"
+  when: opendaylight is defined and opendaylight == "Enable"

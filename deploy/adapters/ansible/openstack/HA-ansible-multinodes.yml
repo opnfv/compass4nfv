@@ -32,4 +32,5 @@
     - role: setup-infrastructure
     - role: setup-openstack
     - role: setup-openvswitch
+    - role: setup-opendaylight
     - role: post-openstack
