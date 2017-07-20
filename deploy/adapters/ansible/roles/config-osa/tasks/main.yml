@@ -58,16 +58,6 @@
     src: setup-ovs.yml
     dest: /opt/openstack-ansible/playbooks
 
-- name: copy setup-odl.yml
-  template:
-    src: setup-odl.yml.j2
-    dest: /opt/openstack-ansible/playbooks/setup-odl.yml
-
-- name: copy odl_cluster role
-  copy:
-    src: /var/ansible/run/openstack_ocata-opnfv2/roles/odl_cluster
-    dest: /etc/ansible/roles/
-
 - name: copy flavor roles
   copy:
     src: os-flavor
