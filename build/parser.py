@@ -43,7 +43,9 @@ def get_from_cache(cache, package):
     print "downloading remote file to local...."
     cmd = "curl --connect-timeout 10 -o " + localfile + " " + remotefile
     print cmd
-    os.system(cmd)
+    rc = os.system(cmd)
+    if rc != 0:
+        sys.exit(1)
 
 
 def get_from_git(cache, package):
@@ -53,7 +55,9 @@ def get_from_git(cache, package):
     os.system(cmd)
     cmd = "git clone " + package.get("url") + " " + localfile
     print cmd
-    os.system(cmd)
+    rc = os.system(cmd)
+    if rc != 0:
+        sys.exit(1)
 
 
 def get_from_docker(cache, package):
@@ -61,14 +65,18 @@ def get_from_docker(cache, package):
     os.system(cmd)
     cmd = "sudo docker save "+package.get("url")+" -o "+cache+"/"
     cmd += package.get("name")+".tar"
-    os.system(cmd)
+    rc = os.system(cmd)
+    if rc != 0:
+        sys.exit(1)
 
 
 def get_from_curl(cache, package):
     cmd = "curl --connect-timeout 10 -o " + cache + "/"
     cmd += package.get("name") + " " + package.get("url")
     print cmd
-    os.system(cmd)
+    rc = os.system(cmd)
+    if rc != 0:
+        sys.exit(1)
 
 
 def usage():
