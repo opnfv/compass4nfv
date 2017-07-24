@@ -21,7 +21,7 @@ hosts:
     interfaces:
       - eth1: 'E8:4D:D0:BA:63:4A'
     ipmiIp: 172.16.131.17
-    ipmiPass: Huawei@123
+    ipmiPass: Opnfv@pod4
     roles:
       - controller
       - ha
@@ -34,7 +34,7 @@ hosts:
     interfaces:
       - eth1: 'E8:4D:D0:BB:AA:C6'
     ipmiIp: 172.16.131.18
-    ipmiPass: Huawei@123
+    ipmiPass: Opnfv@pod4
     roles:
       - controller
       - ha
@@ -46,7 +46,7 @@ hosts:
     interfaces:
       - eth1: 'E8:4D:D0:B9:1F:4A'
     ipmiIp: 172.16.131.19
-    ipmiPass: Huawei@123
+    ipmiPass: Opnfv@pod4
     roles:
       - controller
       - ha
@@ -58,7 +58,7 @@ hosts:
     interfaces:
       - eth1: 'E8:4D:D0:BB:AA:EA'
     ipmiIp: 172.16.131.20
-    ipmiPass: Huawei@123
+    ipmiPass: Opnfv@pod4
     roles:
       - compute
       - ceph-osd
@@ -68,7 +68,7 @@ hosts:
     interfaces:
       - eth1: 'E8:4D:D0:BB:AB:1E'
     ipmiIp: 172.16.131.21
-    ipmiPass: Huawei@123
+    ipmiPass: Opnfv@pod4
     roles:
       - compute
       - ceph-osd
