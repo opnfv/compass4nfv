@@ -31,8 +31,8 @@
 - name: replace internalURL with publicURL in openrc
   replace:
     dest: /opt/openrc
-    regexp: "{{internal_vip}}"
-    replace: "{{ public_vip['ip']}}"
+    regexp: "{{ internal_vip['ip'] }}"
+    replace: "{{ public_vip['ip'] }}"
 
 - name: change the endpoint type
   replace:
