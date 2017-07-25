@@ -10,31 +10,6 @@
 
 #set controllers = $getVar('controller', [])
 #set computes = $getVar('compute', [])
-#set vlan_ip_sec_start = $getVar('vlan_ip_sec_start', '173.29.241.1')
-#set vxlan_ip_start = $getVar('vxlan_ip_start', '172.29.240.13')
-
-#def ipadd($ip, $inc)
-    #set list = $ip.split('.')
-    #set $list[3] = str(int($list[3]) + $inc)
-    #set res = '.'.join($list)
-$res
-#end def
-
-#set host_info = {}
-#for host in controllers
-    #set $host_info[$host['hostname']] = {'MGMT_IP': $host['install']['ip']}
-#end for
-
-#set inc = 0
-#for host in computes
-    #set info = {}
-    #set $info['MGMT_IP'] = $host['install']['ip']
-    #set $info['VLAN_IP_SECOND'] = $ipadd($vlan_ip_sec_start, $inc).strip('\n').encode('utf-8')
-    #set $info['VXLAN_IP'] = $ipadd($vxlan_ip_start, $inc).strip('\n').encode('utf-8')
-    #set $host_info[$host['hostname']] = $info
-    #set $inc = $inc + 1
-#end for
-host_info: $host_info
 
 #set ip_settings={}
 #for k,v in $getVar('ip_settings', {}).items()
@@ -45,17 +20,34 @@ host_info: $host_info
 #set $ip_settings[$k]=$host_ip_settings
 #end for
 
+#for item in $network_cfg["ip_settings"]
+#if $item["name"] == "mgmt"
+#set mgmt_cfg = $item
+#end if
+#if $item["name"] == "external"
+#set external_cfg = $item
+#end if
+#if $item["name"] == "tenant"
+#set tenant_cfg = $item
+#end if
+#if $item["name"] == "storage"
+#set storage_cfg = $item
+#end if
+#end for
+
 #set neutron_cfg = $getVar('neutron_config', {})
 #set ovs_config = $neutron_cfg.openvswitch
 
 #set has = $getVar('ha', [])
 #set ha_vip = $getVar('ha_vip', [])
+
 run_dir: $getVar('run_dir', '')
 
 enable_secgroup: $getVar('enable_secgroup', True)
 enable_fwaas: $getVar('enable_fwaas', True)
 enable_vpnaas: $getVar('enable_vpnaas', True)
 odl_l3_agent: $getVar('odl_l3_agent', 'Disable')
+moon: $getVar('moon', 'Disable')
 ha_network: $getVar('ha_network', 'Disable')
 onos_nic: $getVar('onos_nic', 'eth2')
 onos_sfc: $getVar('onos_sfc', 'Disable')
@@ -64,9 +56,10 @@ network_cfg: $network_cfg
 sys_intf_mappings: $sys_intf_mappings
 deploy_type: $getVar('deploy_type', 'virtual')
 
-public_cidr: $computes[0]['install']['subnet']
-storage_cidr: "{{ ip_settings[inventory_hostname]['storage']['cidr'] }}"
-mgmt_cidr: "{{ ip_settings[inventory_hostname]['mgmt']['cidr'] }}"
+mgmt_cidr: $mgmt_cfg["cidr"]
+external_cidr: $external_cfg["cidr"]
+tenant_cidr: $tenant_cfg["cidr"]
+storage_cidr: $storage_cfg["cidr"]
 
 public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
@@ -93,8 +86,8 @@ public_vip:
 db_host: "{{ internal_vip.ip }}"
 rabbit_host: "{{ internal_vip.ip }}"
 
-internal_ip: "{{ ip_settings[inventory_hostname]['mgmt']['ip'] }}"
-internal_nic: mgmt
+internal_ip: "{{ ip_settings[inventory_hostname]['tenant']['ip'] }}"
+internal_nic: tenant
 
 #set random_id = randint(1, 255)
 vrouter_id_internal: $random_id
@@ -111,7 +104,7 @@ dashboard_host: "{{ internal_ip }}"
 haproxy_hosts:
 #for $item in $has
 #set $hostname=$item["hostname"]
-  $hostname: $ip_settings[$hostname]["mgmt"]["ip"]
+  $hostname: $ip_settings[$hostname]["tenant"]["ip"]
 #end for
 
 host_index:
@@ -186,13 +179,6 @@ CONGRESS_PASS: $congress_pass
 DEMO_PASS: $demo_pass
 ADMIN_PASS: $admin_pass
 
-#set plugins = $getVar('plugins', [])
-#for item in plugins
-#set keys = $item.keys()
-#set values = $item.values()
-$keys[0]: $values[0]
-#end for
-
 #set neutron_service_plugins=['router']
 
 #if $getVar('enable_fwaas', True)
@@ -246,9 +232,3 @@ odl_base_features: ['config', 'standard', 'region', 'package', 'kar', 'ssh', 'ma
 odl_extra_features: ['odl-l2switch-switch', 'odl-ovsdb-plugin', 'odl-ovsdb-openstack', 'odl-ovsdb-northbound','odl-dlux-core', 'odl-restconf-all', 'odl-mdsal-clustering', 'odl-openflowplugin-flow-services', 'odl-netconf-connector', 'odl-netconf-connector-ssh', 'jolokia-osgi']
 odl_features: "{{ odl_base_features + odl_extra_features }}"
 odl_api_port: 8080
-
-#set moon_cfg = $getVar('moon_cfg', {})
-moon_master: $moon_cfg.master.flag
-moon_slave: $moon_cfg.slave.flag
-moon_slave_name: $moon_cfg.slave.name
-moon_master_ip: $moon_cfg.slave.master_ip
