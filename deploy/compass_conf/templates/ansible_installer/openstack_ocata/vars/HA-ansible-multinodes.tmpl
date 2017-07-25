@@ -67,7 +67,7 @@ deploy_type: $getVar('deploy_type', 'virtual')
 
 public_cidr: $computes[0]['install']['subnet']
 storage_cidr: "{{ ip_settings[inventory_hostname]['storage']['cidr'] }}"
-mgmt_cidr: "{{ ip_settings[inventory_hostname]['mgmt']['cidr'] }}"
+tenant_cidr: "{{ ip_settings[inventory_hostname]['tenant']['cidr'] }}"
 
 public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
@@ -94,8 +94,8 @@ public_vip:
 db_host: "{{ internal_vip.ip }}"
 rabbit_host: "{{ internal_vip.ip }}"
 
-internal_ip: "{{ ip_settings[inventory_hostname]['mgmt']['ip'] }}"
-internal_nic: mgmt
+internal_ip: "{{ ip_settings[inventory_hostname]['tenant']['ip'] }}"
+internal_nic: tenant
 
 #set random_id = randint(1, 255)
 vrouter_id_internal: $random_id
@@ -112,7 +112,7 @@ dashboard_host: "{{ internal_ip }}"
 haproxy_hosts:
 #for $item in $has
 #set $hostname=$item["hostname"]
-  $hostname: $ip_settings[$hostname]["mgmt"]["ip"]
+  $hostname: $ip_settings[$hostname]["tenant"]["ip"]
 #end for
 
 host_index:
