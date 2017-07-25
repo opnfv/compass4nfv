@@ -32,7 +32,7 @@
         dest: /etc/neutron/plugins/ml2/openvswitch_agent.ini
         regexp: '^bridge_mappings'
         insertafter: '^bridge_mappings'
-        line: "local_ip = {{hostvars[inventory_hostname]['ansible_br_vxlan']['ipv4']['address']}}"
+        line: "local_ip = {{hostvars[inventory_hostname]['ansible_br_tenant']['ipv4']['address']}}"
       notify:
         - Restart neutron-openvswitch-agent
       when:

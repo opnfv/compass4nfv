@@ -20,12 +20,12 @@
 # controller
 #for worker in $controllers
     #set worker_hostname = $worker.hostname
-    #set worker_ip = $ip_settings[$worker_hostname].mgmt.ip
+    #set worker_ip = $ip_settings[$worker_hostname]["tenant"]["ip"]
 $worker_ip $worker_hostname
 #end for
 # compute
 #for worker in $computes
     #set worker_hostname = $worker.hostname
-    #set worker_ip = $ip_settings[$worker_hostname].mgmt.ip
+    #set worker_ip = $ip_settings[$worker_hostname]["tenant"]["ip"]
 $worker_ip $worker_hostname
 #end for
