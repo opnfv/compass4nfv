@@ -97,7 +97,7 @@ function process_default_para()
 
     get_conf_name $*
     python ${COMPASS_DIR}/deploy/config_parse.py \
-           "$DHA" "$conf_dir" \
+           "$DHA" "$NETWORK" \
            "${COMPASS_DIR}/deploy/template" \
            "${WORK_DIR}/script" \
            "deploy_config.sh"
