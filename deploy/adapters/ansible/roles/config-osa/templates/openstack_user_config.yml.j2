@@ -1,20 +1,22 @@
 ---
 cidr_networks:
-  container: 10.1.0.0/24
+  container: {{ mgmt_cidr }}
   tunnel: 172.29.240.0/22
   storage: 172.16.2.0/24
 
 used_ips:
-  - "10.1.0.1,10.1.0.55"
-  - "10.1.0.100,10.1.0.110"
+{% set used_ips = mgmt_used_ips.stdout.split('|') %}
+{% for item in used_ips %}
+  - "{{ item }}"
+{% endfor %}
   - "172.29.240.1,172.29.240.50"
   - "172.16.2.1,172.16.2.50"
   - "172.29.248.1,172.29.248.50"
 
 global_overrides:
-  internal_lb_vip_address: 10.1.0.22
+  internal_lb_vip_address: {{ internal_vip.ip }}
   external_lb_vip_address: {{ public_vip.ip }}
-  tunnel_bridge: "br-vxlan"
+  tunnel_bridge: "br-tenant"
   management_bridge: "br-mgmt"
   provider_networks:
     - network:
@@ -29,7 +31,7 @@ global_overrides:
         is_container_address: true
         is_ssh_address: true
     - network:
-        container_bridge: "br-vxlan"
+        container_bridge: "br-tenant"
         container_type: "veth"
         container_interface: "eth10"
         ip_from_q: "tunnel"
@@ -43,7 +45,7 @@ global_overrides:
           - neutron_openvswitch_agent
 {% endif %}
     - network:
-        container_bridge: "br-vlan"
+        container_bridge: "br-external"
         container_type: "veth"
         container_interface: "eth12"
         host_bind_override: "eth12"
@@ -56,7 +58,7 @@ global_overrides:
           - neutron_openvswitch_agent
 {% endif %}
     - network:
-        container_bridge: "br-vlan"
+        container_bridge: "br-external"
         container_type: "veth"
         container_interface: "eth11"
         type: "vlan"
