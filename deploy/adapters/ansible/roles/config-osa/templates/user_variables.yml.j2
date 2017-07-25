@@ -22,8 +22,8 @@
 debug: false
 
 haproxy_keepalived_external_vip_cidr: "{{ public_vip.ip }}/32"
-haproxy_keepalived_internal_vip_cidr: "10.1.0.22/32"
-haproxy_keepalived_external_interface: br-vlan
+haproxy_keepalived_internal_vip_cidr: "{{ internal_vip.ip }}/32"
+haproxy_keepalived_external_interface: br-external
 haproxy_keepalived_internal_interface: br-mgmt
 keepalived_ping_address: "{{ ntp_server }}"
 
