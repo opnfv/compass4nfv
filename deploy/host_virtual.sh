@@ -43,7 +43,6 @@ function launch_host_vms() {
           -e "s/REPLACE_BOOT_MAC/${mac_array[i]}/g" \
           -e "s/REPLACE_NET_INSTALL/install/g" \
           -e "s/REPLACE_NET_IAAS/external_nat/g" \
-          -e "s/REPLACE_NET_TENANT/external_nat/g" \
           $COMPASS_DIR/deploy/template/vm/host.xml\
           > $vm_dir/libvirt.xml
 

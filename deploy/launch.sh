@@ -104,15 +104,6 @@ if [[ "$DEPLOY_HOST" == "true" || $REDEPLOY_HOST == "true" ]]; then
     echo $HOST_ROLES
     echo $TYPE
     echo $DHA
-    if [[ `echo $HOST_ROLES | grep opencontrail` ]]; then
-        ssh_options="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-        vgw_ip=$(sshpass -p 'root' ssh $ssh_options root@$MGMT_IP 'cat /home/opencontrail1.rc')
-        externet_cidr=$(sshpass -p 'root' ssh $ssh_options root@$MGMT_IP 'cat /home/opencontrail2.rc')
-        sudo ip route add $externet_cidr via $vgw_ip dev br-external 2>/dev/null
-        sleep 60
-        sudo python ${COMPASS_DIR}/deploy/reset_compute.py $TYPE $DHA
-        sleep 600
-    fi
 fi
 
 public_vip=$(get_public_vip)
