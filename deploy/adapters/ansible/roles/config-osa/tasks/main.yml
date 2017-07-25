@@ -77,3 +77,4 @@
   copy:
     src: fetch-files.yml
     dest: /opt/openstack-ansible/playbooks/fetch-files.yml
+

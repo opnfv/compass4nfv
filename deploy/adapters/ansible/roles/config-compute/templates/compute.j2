@@ -5,21 +5,42 @@
 auto lo
 iface lo inet loopback
 
-
 # Physical interface
 auto eth0
 iface eth0 inet manual
 
+# external interface
+{% set intf_external = sys_intf_mappings["external"]["interface"] %}
+{% if sys_intf_mappings["external"]["vlan_tag"] != "None" %}
+{% set intf_external = intf_external + '.' + sys_intf_mappings["external"]["vlan_tag"]|string %}
+{% endif %}
+auto {{ intf_external }}
+iface {{ intf_external }} inet manual
+{% if sys_intf_mappings["external"]["vlan_tag"] != "None" %}
+    vlan-raw-device {{ intf_external }}
+{% endif %}
 
-# OpenStack Networking VXLAN (tunnel/overlay) VLAN interface
-auto {{sys_intf_mappings["mgmt"]["interface"]}}.{{sys_intf_mappings["mgmt"]["vlan_tag"]}}
-iface {{sys_intf_mappings["mgmt"]["interface"]}}.{{sys_intf_mappings["mgmt"]["vlan_tag"]}} inet manual
-    vlan-raw-device {{sys_intf_mappings["mgmt"]["interface"]}}
+# tenant interface
+{% set intf_tenant = sys_intf_mappings["tenant"]["interface"] %}
+{% if sys_intf_mappings["tenant"]["interface"] != "None" %}
+{% set intf_tenant = intf_tenant + '.' + sys_intf_mappings["tenant"]["vlan_tag"]|string %}
+{% endif %}
+auto {{ intf_tenant }}
+iface {{ intf_tenant }} inet manual
+{% if sys_intf_mappings["tenant"]["interface"] != "None" %}
+    vlan-raw-device {{ intf_tenant }}
+{% endif %}
 
-# Storage network VLAN interface (optional)
-auto {{sys_intf_mappings["storage"]["interface"]}}.{{sys_intf_mappings["storage"]["vlan_tag"]}}
-iface {{sys_intf_mappings["storage"]["interface"]}}.{{sys_intf_mappings["storage"]["vlan_tag"]}} inet manual
-    vlan-raw-device {{sys_intf_mappings["storage"]["interface"]}}
+# storage interface
+{% set intf_storage = sys_intf_mappings["storage"]["interface"] %}
+{% if sys_intf_mappings["storage"]["interface"] != "None" %}
+{% set intf_storage = intf_storage + '.' + sys_intf_mappings["storage"]["vlan_tag"]|string %}
+{% endif %}
+auto {{ intf_storage }}
+iface {{ intf_storage }} inet manual
+{% if sys_intf_mappings["storage"]["interface"] != "None" %}
+    vlan-raw-device {{ intf_storage }}
+{% endif %}
 
 # Container/Host management bridge
 auto br-mgmt
@@ -28,29 +49,19 @@ iface br-mgmt inet static
     bridge_waitport 0
     bridge_fd 0
     bridge_ports eth0
-    address {{host_info[inventory_hostname].MGMT_IP}}
+    address {{ ip_settings[inventory_hostname]["mgmt"]["ip"] }}
     netmask 255.255.255.0
-
-# compute1 VXLAN (tunnel/overlay) bridge config
-auto br-vxlan
-iface br-vxlan inet static
-    bridge_stp off
-    bridge_waitport 0
-    bridge_fd 0
-    bridge_ports {{sys_intf_mappings["mgmt"]["interface"]}}.{{sys_intf_mappings["mgmt"]["vlan_tag"]}}
-    address {{host_info[inventory_hostname].VXLAN_IP}}
-    netmask 255.255.252.0
 
 # OpenStack Networking VLAN bridge
-auto br-vlan
-iface br-vlan inet static
+auto br-external
+iface br-external inet static
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
-    bridge_ports {{ network_cfg["provider_net_mappings"][0]["interface"] }}
-    address {{ip_settings[inventory_hostname]["br-prv"]["ip"]}}
+    bridge_ports {{ intf_external }}
+    address {{ ip_settings[inventory_hostname]["external"]["ip"] }}
     netmask 255.255.255.0
-    gateway {{ip_settings[inventory_hostname]["br-prv"]["gw"]}}
+    gateway {{ ip_settings[inventory_hostname]["external"]["gw"] }}
     offload-sg off
     # Create veth pair, don't bomb if already exists
     pre-up ip link add br-vlan-veth type veth peer name eth12 || true
@@ -62,20 +73,30 @@ iface br-vlan inet static
     bridge_ports br-vlan-veth
 
 # Add an additional address to br-vlan
-iface br-vlan inet static
-    # Flat network default gateway
-    # -- This needs to exist somewhere for network reachability
-    # -- from the router namespace for floating IP paths.
-    # -- Putting this here is primarily for tempest to work.
-    address {{host_info[inventory_hostname].VLAN_IP_SECOND}}
-    netmask 255.255.252.0
+#iface br-external inet static
+#    # Flat network default gateway
+#    # -- This needs to exist somewhere for network reachability
+#    # -- from the router namespace for floating IP paths.
+#    # -- Putting this here is primarily for tempest to work.
+#    address {{ host_info[inventory_hostname].VLAN_IP_SECOND }}
+#    netmask 255.255.255.0
 
-# compute storage bridge
+# VXLAN (tunnel/overlay) bridge config
+auto br-tenant
+iface br-tenant inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports {{ intf_tenant }}
+    address {{ ip_settings[inventory_hostname]["tenant"]["ip"] }}
+    netmask 255.255.255.0
+
+# storage bridge
 auto br-storage
 iface br-storage inet static
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
-    bridge_ports {{sys_intf_mappings["storage"]["interface"]}}.{{sys_intf_mappings["storage"]["vlan_tag"]}}
-    address {{ip_settings[inventory_hostname]["storage"]["ip"]}}
-    netmask 255.255.252.0
+    bridge_ports {{ intf_storage }}
+    address {{ ip_settings[inventory_hostname]["storage"]["ip"] }}
+    netmask 255.255.255.0

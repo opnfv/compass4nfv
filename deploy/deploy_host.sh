@@ -10,11 +10,11 @@
 rsa_file=$compass_vm_dir/boot.rsa
 
 function rename_nics(){
-    python $COMPASS_DIR/deploy/rename_nics.py $DHA $rsa_file $MGMT_IP $OS_VERSION
+    python $COMPASS_DIR/deploy/rename_nics.py $DHA $rsa_file $INSTALL_IP $OS_VERSION
 }
 
 function add_bonding(){
-    python $COMPASS_DIR/deploy/bonding.py $NETWORK $rsa_file $MGMT_IP
+    python $COMPASS_DIR/deploy/bonding.py $NETWORK $rsa_file $INSTALL_IP
 }
 
 function deploy_host(){
