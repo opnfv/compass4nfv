@@ -34,7 +34,6 @@ $res
     #set $host_info[$host['hostname']] = $info
     #set $inc = $inc + 1
 #end for
-host_info: $host_info
 
 #set ip_settings={}
 #for k,v in $getVar('ip_settings', {}).items()
@@ -45,11 +44,21 @@ host_info: $host_info
 #set $ip_settings[$k]=$host_ip_settings
 #end for
 
+#set mgmt_cfg = {}
+#for item in $network_cfg["ip_settings"]
+#if $item["name"] == "mgmt"
+#set mgmt_cfg = $item
+#break
+#end if
+#end for
+
 #set neutron_cfg = $getVar('neutron_config', {})
 #set ovs_config = $neutron_cfg.openvswitch
 
 #set has = $getVar('ha', [])
 #set ha_vip = $getVar('ha_vip', [])
+host_info: $host_info
+
 run_dir: $getVar('run_dir', '')
 
 enable_secgroup: $getVar('enable_secgroup', True)
@@ -64,14 +73,18 @@ network_cfg: $network_cfg
 sys_intf_mappings: $sys_intf_mappings
 deploy_type: $getVar('deploy_type', 'virtual')
 
+mgmt_cidr: $mgmt_cfg["cidr"]
+mgmt_ip_ranges: $mgmt_cfg["ip_ranges"][0]
+
 public_cidr: $computes[0]['install']['subnet']
 storage_cidr: "{{ ip_settings[inventory_hostname]['storage']['cidr'] }}"
-mgmt_cidr: "{{ ip_settings[inventory_hostname]['mgmt']['cidr'] }}"
+tenant_cidr: "{{ ip_settings[inventory_hostname]['tenant']['cidr'] }}"
 
 public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
 
 ntp_server: $ntp_server
+
 internal_vip:
   ip: $network_cfg["internal_vip"]["ip"]
   netmask: $network_cfg["internal_vip"]["netmask"]
@@ -93,8 +106,8 @@ public_vip:
 db_host: "{{ internal_vip.ip }}"
 rabbit_host: "{{ internal_vip.ip }}"
 
-internal_ip: "{{ ip_settings[inventory_hostname]['mgmt']['ip'] }}"
-internal_nic: mgmt
+internal_ip: "{{ ip_settings[inventory_hostname]['tenant']['ip'] }}"
+internal_nic: tenant
 
 #set random_id = randint(1, 255)
 vrouter_id_internal: $random_id
@@ -111,7 +124,7 @@ dashboard_host: "{{ internal_ip }}"
 haproxy_hosts:
 #for $item in $has
 #set $hostname=$item["hostname"]
-  $hostname: $ip_settings[$hostname]["mgmt"]["ip"]
+  $hostname: $ip_settings[$hostname]["tenant"]["ip"]
 #end for
 
 host_index:

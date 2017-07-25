@@ -19,12 +19,22 @@
     regexp: 'linux-image-extra-*'
   when: rt_kvm is defined and rt_kvm == "Enable"
 
-- name: copy openstack_user_config
+- name: copy get_used_ips.py
+  copy:
+    src: get_used_ips.py
+    dest: /tmp/get_used_ips.py
+
+- name: get used ips
+  script: /tmp/get_used_ips.py "{{ mgmt_cidr }}" \
+          "{{ mgmt_ip_ranges[0] }}" "{{ mgmt_ip_ranges[1] }}"
+  register: mgmt_used_ips
+
+- name: render openstack_user_config
   template:
     src: openstack_user_config.yml.j2
     dest: /etc/openstack_deploy/openstack_user_config.yml
 
-- name: copy user_variables
+- name: render user_variables
   template:
     src: user_variables.yml.j2
     dest: /etc/openstack_deploy/user_variables.yml
@@ -48,7 +58,7 @@
     src: cinder.yml
     dest: /etc/openstack_deploy/env.d/cinder.yml
 
-- name: copy ansible.cfg
+- name: render ansible.cfg
   template:
     src: ansible.cfg
     dest: /opt/openstack-ansible/playbooks/

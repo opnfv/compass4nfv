@@ -7,7 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-internal_vip: "10.1.0.22"
 flavors:
   - id: 0
     name: m1.nano
