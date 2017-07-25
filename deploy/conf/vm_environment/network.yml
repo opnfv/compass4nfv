@@ -12,19 +12,31 @@ nic_mappings: []
 bond_mappings: []
 
 provider_net_mappings:
-  - name: br-prv
+  - name: br-provider
     network: physnet
     interface: eth1
-    type: ovs
     role:
       - controller
       - compute
 
 sys_intf_mappings:
   - name: mgmt
+    interface: eth0
+    vlan_tag: None
+    role:
+      - controller
+      - compute
+
+  - name: external
+    interface: eth1
+    vlan_tag: None
+    role:
+      - controller
+      - compute
+
+  - name: tenant
     interface: eth1
     vlan_tag: 101
-    type: vlan
     role:
       - controller
       - compute
@@ -32,20 +44,31 @@ sys_intf_mappings:
   - name: storage
     interface: eth1
     vlan_tag: 102
-    type: vlan
-    role:
-      - controller
-      - compute
-
-  - name: external
-    interface: br-prv
-    type: ovs
     role:
       - controller
       - compute
 
 ip_settings:
   - name: mgmt
+    ip_ranges:
+      - - "10.1.0.100"
+        - "10.1.0.254"
+    cidr: "10.1.0.0/24"
+    role:
+      - controller
+      - compute
+
+  - name: external
+    ip_ranges:
+      - - "192.16.1.210"
+        - "192.16.1.220"
+    cidr: "192.16.1.0/24"
+    gw: "192.16.1.1"
+    role:
+      - controller
+      - compute
+
+  - name: tenant
     ip_ranges:
       - - "172.16.1.1"
         - "172.16.1.254"
@@ -63,18 +86,8 @@ ip_settings:
       - controller
       - compute
 
-  - name: external
-    ip_ranges:
-      - - "192.16.1.210"
-        - "192.16.1.220"
-    cidr: "192.16.1.0/24"
-    gw: "192.16.1.1"
-    role:
-      - controller
-      - compute
-
 internal_vip:
-  ip: 172.16.1.222
+  ip: 10.1.1.222
   netmask: "24"
   interface: mgmt
 
