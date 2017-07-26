@@ -120,20 +120,10 @@ set +x
 
 figlet -ctf slant Installation Complete!
 echo ""
-echo "+-----------------+----------+--------------------------------+"
-echo "| Dashboard       | Web      | http://$public_vip/horizon |"
-echo "|                 | Domain   | default                        |"
-echo "|                 | User     | admin                          |"
-echo "|                 | Password | console                        |"
-echo "+-------------------------------------------------------------+"
-echo "| Compass         | IP       | $MGMT_IP                  |"
-echo "| Virtual Machine | User     | root                           |"
-echo "|                 | Password | root                           |"
-echo "+-------------------------------------------------------------+"
-echo "| Openrc Path     | admin    | /opt/admin-openrc.sh           |"
-echo "|                 | demo     | /opt/demo-openrc.sh            |"
-echo "+-----------------+----------+--------------------------------+"
-echo "NOTE: openrc file is in the controller nodes"
+echo "+------------------------------------------------------------------+"
+echo "| To Use OpenStack CLI and Access Horizon, Follow instructions in  |"
+echo "| https://wiki.opnfv.org/display/compass4nfv/Containerized+Compass |"
+echo "+------------------------------------------------------------------+"
 echo ""
 
 if [[ ${DHA##*/} =~ "openo" ]]; then
