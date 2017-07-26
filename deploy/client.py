@@ -250,9 +250,9 @@ opts = [
     cfg.StrOpt('odl_l3_agent',
                help='odl l3 agent enable flag',
                default='Disable'),
-    cfg.StrOpt('moon',
-               help='moon enable flag',
-               default='Disable'),
+    cfg.StrOpt('moon_cfg',
+               help='moon config',
+               default='master:flag=Disable,slave:flag=Disable,slave:name=slave1,slave:master_ip=master_ip'),  # noqa
     cfg.StrOpt('onos_sfc',
                help='onos_sfc enable flag',
                default='Disable'),
@@ -728,6 +728,30 @@ class CompassClient(object):
                 'password': password
             }
 
+        moon_cfgs = [
+            cfg
+            for cfg in CONF.moon_cfg.split(',')
+            if cfg
+        ]
+        LOG.info(
+            'moon configure: %s', moon_cfgs
+        )
+        moon_cfg = {}
+        for cfg in moon_cfgs:
+            if ':' not in cfg:
+                raise Exception(
+                    'there is no : in cfg %s' % cfg  # noqa
+                )
+            role, conf_pair = cfg.split(':', 1)
+            if '=' not in conf_pair:
+                raise Exception(
+                    'there is no = in %s configure pair' % conf_pair
+                )
+            key, value = conf_pair.split('=', 1)
+            moon_cfg[role] = {} if role not in moon_cfg else moon_cfg[role]
+            moon_cfg[role][key] = value
+        package_config["moon_cfg"] = moon_cfg
+
         package_config["security"] = {"service_credentials": service_credential_cfg,  # noqa
                                       "console_credentials": console_credential_cfg}  # noqa
 
@@ -761,12 +785,8 @@ class CompassClient(object):
         package_config['enable_secgroup'] = (CONF.enable_secgroup == "true")
         package_config['enable_fwaas'] = (CONF.enable_fwaas == "true")
         package_config['enable_vpnaas'] = (CONF.enable_vpnaas == "true")
-        package_config[
-            'odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"   # noqa
-        package_config[
-            'moon'] = "Enable" if CONF.moon == "Enable" else "Disable"
-        package_config[
-            'onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
+        package_config['odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"   # noqa
+        package_config['onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"
         package_config['plugins'] = []
         if CONF.plugins:
             for item in CONF.plugins.split(','):
