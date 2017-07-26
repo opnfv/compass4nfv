@@ -11,9 +11,9 @@
 TYPE: virtual
 FLAVOR: cluster
 
-moon: "Enable"
 plugins:
   - opendaylight: "Enable"
+  - moon: "Enable"
 
 hosts:
   - name: host1
@@ -45,5 +45,4 @@ hosts:
 
   - name: host5
     roles:
-      - compute
-      - ceph-osd
+      - moon
