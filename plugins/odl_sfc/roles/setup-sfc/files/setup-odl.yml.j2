@@ -1,0 +1,13 @@
+---
+
+- name: run opendaylight role
+  hosts: neutron_all | galera_container | network_hosts | repo_container | utility
+  max_fail_percentage: 20
+  user: root
+  roles:
+    - odl_cluster
+  vars:
+    - odl_l3_agent: "{{ odl_l3_agent }}"
+    - odl_sfc: "{{ odl_sfc }}"
+  tags:
+    - odl
