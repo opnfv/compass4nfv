@@ -1,0 +1,7 @@
+---
+
+- name: Install networking-sfc for CLI
+  pip:
+    name: networking-sfc
+    version: "4.0.0"
+  when: odl_sfc == "Enable"

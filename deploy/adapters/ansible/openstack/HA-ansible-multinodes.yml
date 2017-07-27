@@ -24,6 +24,11 @@
     - storage
     - rt_kvm
 
+- hosts: all
+  remote_user: root
+  roles:
+    - sfc-pre
+
 - hosts: localhost
   remote_user: root
   roles:
@@ -33,5 +38,6 @@
     - setup-openstack
     - sync-inventory
     - setup-openvswitch
+    - setup-sfc
     - setup-opendaylight
     - post-openstack

@@ -1,0 +1,22 @@
+---
+
+- name: install crudini
+  package:
+    name: crudini
+    state: latest
+
+- name: install networking-odl
+  pip:
+    name: networking-odl
+    version: "{{ networking_odl_version }}"
+    virtualenv: /openstack/venvs/neutron-15.1.4    # Todo: hardcode, need to modify
+
+- name: install networking-sfc
+  pip:
+    name: networking-sfc
+    version: "4.0.0"
+    virtualenv: /openstack/venvs/neutron-15.1.4
+  when: odl_sfc == "Enable"
+
+- name: turn off neutron-server on control node
+  service: name=neutron-server state=stopped
