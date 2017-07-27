@@ -1,0 +1,30 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+# yamllint disable rule:line-length
+- name: clear setup-odl.yml.j2
+  file:
+    path: "/var/ansible/run/openstack_ocata-opnfv2/roles/setup-opendaylight/templates/setup-odl.yml.j2"
+    state: absent
+# yamllint enable rule:line-length
+
+- name: override setup-odl.yml.j2
+  copy:
+    src: setup-odl.yml.j2
+    dest: "/var/ansible/run/openstack_ocata-opnfv2/roles/setup-opendaylight/templates/"
+
+- name: clear odl_cluster for sfc
+  file:
+    path: "/var/ansible/run/openstack_ocata-opnfv2/roles/odl_cluster"
+    state: absent
+
+- name: copy odl_cluster role
+  shell: |
+    cp -r /var/ansible/run/openstack_ocata-opnfv2/roles/odl_cluster_sfc \
+          /var/ansible/run/openstack_ocata-opnfv2/roles/odl_cluster
