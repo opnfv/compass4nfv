@@ -35,3 +35,8 @@
     - setup-openvswitch
     - setup-opendaylight
     - post-openstack
+
+- hosts: moon
+  remote_user: root
+  roles:
+    - moon
