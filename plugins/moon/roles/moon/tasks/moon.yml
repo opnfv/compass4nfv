@@ -12,6 +12,32 @@
     path: /root/.pip/pip.conf
     state: absent
 
+- name: configure network
+  template:
+    src: compute.j2
+    dest: /etc/network/interfaces
+  notify:
+    - restart network service
+
+- meta: flush_handlers
+
+- name: check apt source
+  shell: "ping -c 2 {{ LOCAL_REPOSITORY_IP }} > /dev/null"
+  register: checkresult
+  ignore_errors: "true"
+
+- name: change sources list(apt)
+  template:
+    src: sources.list.lab
+    dest: /etc/apt/sources.list
+  when: checkresult.rc == 0
+
+- name: change sources list(apt)
+  template:
+    src: sources.list.official
+    dest: /etc/apt/sources.list
+  when: checkresult.rc != 0
+
 - name: check docker.list stat
   stat:
     path: /etc/apt/sources.list.d/docker.list
