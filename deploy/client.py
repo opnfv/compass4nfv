@@ -941,7 +941,7 @@ class CompassClient(object):
                 status, response = self.client.get_host_state(id)
                 if response['state'] != 'SUCCESSFUL':
                     ready = False
-                break
+                    break
 
             current_time = time.time()
             if not ready:
