@@ -35,6 +35,11 @@ packages:
     get_method: docker
     url: compass4nfv/compass-mq
 
+  - name: yardstick
+    description: "yardstick container for compass"
+    get_method: docker
+    url: opnfv/yardstick
+
   - name: compass-docker-compose
     description: "containerized compass compose ansible"
     get_method: git
