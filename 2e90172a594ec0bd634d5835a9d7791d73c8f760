@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_b9835a55",
+        "filename": "build/build.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "duplicate with patch https://gerrit.opnfv.org/gerrit/#/c/38325/",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 38
+      },
+      "revId": "2e90172a594ec0bd634d5835a9d7791d73c8f760",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
