@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da33351e_00bb1b0f",
+        "filename": "deploy/adapters/ansible/roles/config-compute/templates/compute.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 84,
+        "startChar": 2,
+        "endLine": 84,
+        "endChar": 10
+      },
+      "revId": "1a15551d5847c3bdf86261994a6c12c96d797fa2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_20be1f00",
+        "filename": "deploy/adapters/ansible/roles/config-compute/templates/compute.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "255.255.255.0",
+      "range": {
+        "startLine": 102,
+        "startChar": 11,
+        "endLine": 102,
+        "endChar": 25
+      },
+      "revId": "1a15551d5847c3bdf86261994a6c12c96d797fa2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_c0c0137f",
+        "filename": "deploy/adapters/ansible/roles/config-controller/templates/controller.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 80,
+        "startChar": 2,
+        "endLine": 80,
+        "endChar": 10
+      },
+      "revId": "1a15551d5847c3bdf86261994a6c12c96d797fa2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_e0c39788",
+        "filename": "deploy/adapters/ansible/roles/config-controller/templates/controller.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "255.255.255.0",
+      "range": {
+        "startLine": 88,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 25
+      },
+      "revId": "1a15551d5847c3bdf86261994a6c12c96d797fa2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_a0ca2f9f",
+        "filename": "deploy/adapters/ansible/roles/config-osa/templates/openstack_user_config.yml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "should be replaced in jinja template",
+      "range": {
+        "startLine": 5,
+        "startChar": 2,
+        "endLine": 5,
+        "endChar": 24
+      },
+      "revId": "1a15551d5847c3bdf86261994a6c12c96d797fa2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_80cf2bb0",
+        "filename": "deploy/adapters/ansible/roles/config-osa/templates/openstack_user_config.yml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "try to replace in jinja template",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 28
+      },
+      "revId": "1a15551d5847c3bdf86261994a6c12c96d797fa2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_40d52342",
+        "filename": "deploy/conf/base.conf",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "delete it",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "1a15551d5847c3bdf86261994a6c12c96d797fa2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_60d02754",
+        "filename": "deploy/conf/hardware_environment/huawei-pod1/network.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-08-03T11:29:55Z",
+      "side": 1,
+      "message": "vlan id should be correspond with POD setting",
+      "range": {
+        "startLine": 105,
+        "startChar": 14,
+        "endLine": 105,
+        "endChar": 18
+      },
+      "revId": "1a15551d5847c3bdf86261994a6c12c96d797fa2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
