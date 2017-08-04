@@ -7,7 +7,8 @@
 ##############################################################################
 ---
 - name: restart network service
-  shell: "/sbin/ifdown -a && \
+  shell: "ifconfig eth0 down && ifconfig eth0 up && \
+          /sbin/ifdown -a && \
           /sbin/ifup --ignore-errors -a"
 
 - name: restart nfs service

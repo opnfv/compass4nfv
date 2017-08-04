@@ -39,9 +39,3 @@
     dest: /opt/openrc
     regexp: "internalURL"
     replace: "publicURL"
-
-- name: replace Default with default in openrc
-  replace:
-    dest: /opt/openrc
-    regexp: "Default"
-    replace: "default"
