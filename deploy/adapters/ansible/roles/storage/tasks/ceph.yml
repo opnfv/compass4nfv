@@ -1,0 +1,45 @@
+---
+# Copyright 2016, Logan Vig <logan2211@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+- name: Create sparse ceph OSD files
+  command: truncate -s {{ host_loopback_ceph_size }} /var/{{ item }}.img
+  args:
+    creates: "/var/{{ item }}.img"
+  with_items: "{{ ceph_osd_images }}"
+  register: ceph_create
+  changed_when: false
+
+- name: Create the ceph loopback device
+  command: losetup -f /var/{{ item.item }}.img --show
+  with_items: "{{ ceph_create.results }}"
+  register: ceph_loopback
+  when: not item|skipped
+  changed_when: false
+
+- name: register ceph_loopback to localhost
+  set_fact:
+    fact_for_ceph: "{{ ceph_loopback.results | map(attribute='stdout') | list | to_yaml | trim }}"
+
+- name: Ensure that rc.local exists
+  file:
+    path: "{{ rc_local }}"
+    state: touch
+    mode: "u+x"
+
+- name: Create ceph loopback at boot time
+  lineinfile:
+    dest: "{{ rc_local }}"
+    line: "losetup -f /var/{{ item }}.img"
+    insertbefore: "{{ rc_local_insert_before }}"
+  with_items: "{{ ceph_osd_images }}"
