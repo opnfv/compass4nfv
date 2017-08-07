@@ -65,4 +65,12 @@
   tags:
     - storage
 
+- name: load ceph.yml
+  include: ceph.yml
+  when:
+    - "{{ hostvars[inventory_hostname]['groups']['ceph_mon'] |length > 0 }}"
+    - "{{ hostvars[inventory_hostname]['groups']['ceph_osd'] | length > 0 }}"
+  tags:
+    - storage
+
 - meta: flush_handlers
