@@ -1,0 +1,45 @@
+# #############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+# yamllint disable rule:truthy
+- name: Check hugepages
+  shell: grep -q intel_iommu /etc/default/grub
+  register: check_result
+  ignore_errors: True
+# yamllint enable rule:truthy
+
+- name: Config grub
+  lineinfile:
+    dest: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=""'
+    line: "{{ grub_cmdline }}"
+    state: present
+  when: check_result.rc == 1
+
+- name: Update grub
+  shell: update-grub
+  when: check_result.rc == 1
+
+- name: wait a moment
+  command: sleep 5
+  when: check_result.rc == 1
+
+- name: Reboot
+  shell: sleep 2 && shutdown -r now 'Reboot required'
+  become: true
+  async: 1
+  poll: 0
+  when: check_result.rc == 1
+  ignore_errors: true
+
+- name: Wait for reboot
+  local_action:
+    module: wait_for
+      host={{ ansible_eth0.ipv4.address }} port=22 delay=1 timeout=300
+  when: check_result.rc == 1
