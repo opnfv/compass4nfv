@@ -23,6 +23,8 @@
     - config-compute
     - storage
     - rt_kvm
+    - ins_dpdk
+    - ins_ovs
 
 - hosts: all
   remote_user: root
