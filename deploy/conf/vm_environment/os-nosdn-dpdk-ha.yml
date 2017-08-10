@@ -11,6 +11,9 @@
 TYPE: virtual
 FLAVOR: cluster
 
+plugins:
+  - dpdk: "Enable"
+
 hosts:
   - name: host1
     roles:

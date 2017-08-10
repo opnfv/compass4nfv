@@ -1,28 +1,14 @@
 ##############################################################################
-# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+# Copyright (c) 2016-2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Apache License, Version 2.0
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-
 ---
-TYPE: virtual
-FLAVOR: cluster
+- include: hugepages.yml
+  when: dpdk is defined and dpdk == "Enable"
 
-plugins:
-  - dpdk: "Enable"
-
-hosts:
-  - name: host1
-    roles:
-      - controller
-      - ha
-      - ceph-adm
-      - ceph-mon
-
-  - name: host2
-    roles:
-      - compute
-      - ceph-osd
+- include: dpdk.yml
+  when: dpdk is defined and dpdk == "Enable"

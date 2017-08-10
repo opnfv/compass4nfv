@@ -1,0 +1,81 @@
+# #############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+- name: install prerequisites package
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - gcc
+    - make
+    - cmake
+    - libpcap0.8
+    - libpcap0.8-dev
+
+- name: git clone DPDK code
+  git:
+    repo: "{{ dpdk_repo }}"
+    dest: "{{ dpdk_dir }}"
+    version: "{{ dpdk_version }}"
+
+- name: Configure DPDK
+  lineinfile:
+    dest: "{{ dpdk_dir }}/config/common_linuxapp"
+    regexp: '^{{ item.key }}='
+    line: "{{ item.key }}={{ item.value }}"
+  with_items:
+    - key: CONFIG_RTE_BUILD_COMBINE_LIBS
+      value: y
+  register: dpdk_config_change
+
+- name: make config DPDK
+  command: make config T=x86_64-native-linuxapp-gcc chdir={{ dpdk_dir }}
+
+- name: Configure PMD
+  lineinfile:
+    dest: "{{ dpdk_dir }}/build/.config"
+    regexp: '^{{ item.key }}='
+    line: "{{ item.key }}={{ item.value }}"
+  with_items:
+    - key: PMD_PCAP
+      value: y
+
+- name: Check if DPDK build exists
+  stat: path={{ dpdk_build }}
+  register: dpdk_build_status
+
+- name: Build DPDK
+  command: make install T=x86_64-native-linuxapp-gcc chdir={{ dpdk_dir }}
+  when: (dpdk_build_status.stat.isdir is not defined) or
+        (dpdk_rebuild is defined) or
+        dpdk_config_change.changed or dpdk_changed.changed
+
+- name: Get dpdk interface device name
+  command: echo "{{ compu_sys_mappings['tenant']['interface'] }}"
+  register: dpdk_device_name
+  when: compu_sys_mappings["tenant"]["type"] == "dpdk"
+
+- debug:
+    msg: "{{ dpdk_device_name }}"
+
+- name: Create DPDK scripts
+  template:
+    src: "templates/{{ item.name }}.j2"
+    dest: "/root/{{ item.name }}"
+    mode: 0755
+  with_items:
+    - name: dpdk_uio.sh
+      dpdk_build: '{{ dpdk_build }}'
+      dpdk_dir: '{{ dpdk_dir }}'
+      device_name: '{{ dpdk_device_name.stdout | default("eth2") }}'
+    - name: dpdk_vfio.sh
+      dpdk_build: '{{ dpdk_build }}'
+      dpdk_dir: '{{ dpdk_dir }}'
+      device_name: '{{ dpdk_device_name.stdout | default("eth2") }}'
