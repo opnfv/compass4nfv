@@ -23,6 +23,8 @@
     - config-compute
     - storage
     - rt_kvm
+    - ins_dpdk
+    - ins_ovs
 
 - hosts: all
   remote_user: root
@@ -37,6 +39,7 @@
     - setup-host
     - setup-infrastructure
     - setup-openstack
+    - dpdk-config
     - sync-inventory
     - setup-openvswitch
     - setup-sfc
