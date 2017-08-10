@@ -1,0 +1,44 @@
+##############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: create work directory
+  file:
+    path: "{{ work_dir }}"
+    state: directory
+    mode: 0755
+
+- name: decompress dpdk source
+  unarchive:
+    src: "{{ dpdk_pkg_url }}"
+    dest: "{{ work_dir }}"
+    remote_src: True
+
+- name: install prerequisites package
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gcc
+    - make
+    - cmake
+    - libpcap0.8
+    - libpcap0.8-dev
+
+- name: make dpdk
+  shell: |
+    export DPDK_DIR={{ work_dir }}/dpdk-stable-16.11.2
+    export DPDK_TARGET=x86_64-native-linuxapp-gcc
+    export DPDK_BUILD=$DPDK_DIR/$DPDK_TARGET
+
+    cd $DPDK_DIR
+
+    make config T=x86_64-native-linuxapp-gcc
+    sed -ri 's,(PMD_PCAP=).*,\1y,' build/.config
+
+    make install T=$DPDK_TARGET DESTDIR=install
