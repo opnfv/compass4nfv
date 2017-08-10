@@ -1,0 +1,9 @@
+#!/bin/bash
+ifdown {{ item.device_name }}
+modprobe uio
+lsmod |grep igb_uio
+if [ $? == 0 ];then
+    rmmod igb_uio
+fi
+insmod {{ item.dpdk_build }}/kmod/igb_uio.ko
+{{ item.dpdk_dir }}/tools/dpdk-devbind.py --bind=igb_uio {{ item.device_name }}
