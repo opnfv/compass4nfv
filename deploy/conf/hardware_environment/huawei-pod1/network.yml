@@ -52,8 +52,8 @@ sys_intf_mappings:
 ip_settings:
   - name: mgmt
     ip_ranges:
-      - - "10.1.0.100"
-        - "10.1.0.220"
+      - - "10.1.0.50"
+        - "10.1.0.100"
     dhcp_ranges:
       - - "10.1.0.2"
         - "10.1.0.49"
@@ -66,7 +66,7 @@ ip_settings:
   - name: tenant
     ip_ranges:
       - - "172.16.1.1"
-        - "172.16.1.254"
+        - "172.16.1.50"
     cidr: "172.16.1.0/24"
     role:
       - controller
@@ -75,7 +75,7 @@ ip_settings:
   - name: storage
     ip_ranges:
       - - "172.16.2.1"
-        - "172.16.2.254"
+        - "172.16.2.50"
     cidr: "172.16.2.0/24"
     role:
       - controller
@@ -106,7 +106,7 @@ public_net_info:
   enable: "True"
   network: ext-net
   type: flat
-  segment_id: 1000
+  segment_id: 10
   subnet: ext-subnet
   provider_network: physnet
   router: router-ext

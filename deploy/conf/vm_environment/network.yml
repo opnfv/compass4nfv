@@ -106,7 +106,7 @@ public_net_info:
   enable: "True"
   network: ext-net
   type: flat
-  segment_id: 10
+  segment_id: 1000
   subnet: ext-subnet
   provider_network: physnet
   router: router-ext
