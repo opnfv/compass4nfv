@@ -259,6 +259,12 @@ opts = [
     cfg.StrOpt('plugins',
                help='plugin dict',
                default='{}'),
+    cfg.StrOpt('offline_deployment',
+               help='offline_deployment',
+               default='Disable'),
+    cfg.StrOpt('offline_repo_port',
+               help='offline_repo_port',
+               default='5151'),
 ]
 CONF.register_cli_opts(opts)
 
@@ -727,6 +733,12 @@ class CompassClient(object):
                 'username': username,
                 'password': password
             }
+
+        ip_pattern = re.compile('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+        compass_ip = re.findall(ip_pattern, CONF.compass_server)[0]
+        package_config["compass_ip"] = compass_ip
+        package_config["offline_repo_port"] = CONF.offline_repo_port
+        package_config["offline_deployment"] = CONF.offline_deployment
 
         moon_cfgs = [
             cfg
