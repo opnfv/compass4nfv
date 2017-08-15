@@ -16,6 +16,18 @@
 
 - meta: flush_handlers
 
+- name: create pip conf directory
+  file:
+    path: "~/.pip/"
+    state: directory
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: add pip conf
+  copy:
+    src: pip.conf
+    dest: "~/.pip/pip.conf"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
 - name: check apt source
   shell: "ping -c 2 {{ LOCAL_REPOSITORY_IP }} > /dev/null"
   register: checkresult
@@ -32,6 +44,18 @@
     src: sources.list.official
     dest: /etc/apt/sources.list
   when: checkresult.rc != 0
+
+- name: change sources list(apt)
+  template:
+    src: sources.list.offline
+    dest: /etc/apt/sources.list
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: add apt.conf
+  copy:
+    src: apt.conf
+    dest: /etc/apt/apt.conf
+  when: offline_deployment is defined and offline_deployment == "Enable"
 
 - name: Install apt packages
   apt:

@@ -41,7 +41,84 @@
       galera_client_apt_repo_url: "http://192.168.137.222/mariadb"
       galera_repo_url: "[ arch=amd64 ] http://192.168.137.222/mariadb"
       uca_apt_repo_url: "[ arch=amd64 ] http://192.168.137.222/ubuntu-cloud"
-  when: checkresult.rc == 0
+  when:
+    - checkresult.rc == 0
+    - offline_deployment is defined and offline_deployment == "Disable"
+
+# yamllint disable rule:line-length
+- name: add mariadb local repository
+  blockinfile:
+    dest: /etc/openstack_deploy/user_variables.yml
+    block: |
+      galera_client_apt_repo_url: "http://192.168.102.2:9997/xenial-ocata-ppa xenial main"
+      galera_repo_url: "[ arch=amd64 ] http://192.168.102.2:9997/xenial-ocata-ppa xenial main"
+      uca_apt_repo_url: "[ arch=amd64 ] http://192.168.102.2:9997/xenial-ocata-ppa xenial main"
+      _rabbitmq_package_url: "http://192.168.102.2:9997/rabbitmq-server_3.6.9-1_all.deb"
+      percona_package_url: "http://192.168.102.2:9997/percona-xtrabackup-24_2.4.5-1.xenial_amd64.deb"
+      qpress_package_url: "http://192.168.102.2:9997/qpress_11-1.xenial_amd64.deb"
+      haproxy_hatop_download_url: "http://192.168.102.2:9997/hatop-0.7.7.tar.gz"
+      pip_upstream_url: "http://192.168.102.2:9997/get-pip.py"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+# yamllint enable rule:line-length
+
+- name: add lxc image for offline deloyment
+  blockinfile:
+    dest: /etc/ansible/roles/lxc_hosts/tasks/main.yml
+    insertbefore: '^- include: lxc_post_install.yml'
+    block: |
+      - name: add lxc image to the lxc cache dir
+        get_url:
+          url: "http://192.168.102.2:9997/download.tar.gz"
+          dest: "/opt/download.tar.gz"
+
+      - name: unarchive lxc image tarball
+        command: su -s /bin/sh -c "tar -zxf /opt/download.tar.gz -C /var/cache/lxc/"
+
+      - name: clear tarball
+        file:
+          path: "/opt/download.tar.gz"
+          state: absent
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: copy pip.conf for repo lxc
+  copy:
+    src: pip.conf
+    dest: "/etc/ansible/roles/repo_server/files/pip.conf"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: add pip.conf for repo lxc
+  blockinfile:
+    dest: "/etc/ansible/roles/repo_server/tasks/repo_pre_install.yml"
+    insertafter: '^# which'
+    block: |
+      - name: create pip conf directory
+        file:
+          path: "~/.pip/"
+          state: directory
+
+      - name: add pip.conf
+        copy:
+          src: pip.conf
+          dest: "~/.pip/pip.conf"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: copy apt.conf for lxc
+  copy:
+    src: apt.conf
+    dest: "/etc/ansible/roles/lxc_container_create/files/apt.conf"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: add apt.conf for lxc
+  blockinfile:
+    dest: "/etc/ansible/roles/lxc_container_create/tasks/container_create.yml"
+    insertbefore: '^- name: Create hostname'
+    block: |
+      - name: add apt.conf
+        copy:
+          src: apt.conf
+          dest: "/etc/apt/apt.conf"
+
+  when: offline_deployment is defined and offline_deployment == "Enable"
 
 - name: copy cinder.yml
   copy:
