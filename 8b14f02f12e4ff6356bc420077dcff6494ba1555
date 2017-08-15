@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "da33351e_6281398f",
+        "filename": "deploy/adapters/ansible/roles/config-osa/templates/user_variables_ceph.yml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2017-08-15T00:47:18Z",
+      "side": 1,
+      "message": "I will rebase and change",
+      "parentUuid": "da33351e_c7b5b7ce",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 32
+      },
+      "revId": "8b14f02f12e4ff6356bc420077dcff6494ba1555",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da33351e_27caa34f",
         "filename": "deploy/adapters/ansible/roles/config-osa/vars/main.yml",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2017-08-14T11:26:47Z",
       "side": 1,
       "message": "what this IP is used for?",
+      "range": {
+        "startLine": 10,
+        "startChar": 22,
+        "endLine": 10,
+        "endChar": 37
+      },
+      "revId": "8b14f02f12e4ff6356bc420077dcff6494ba1555",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_0274adcd",
+        "filename": "deploy/adapters/ansible/roles/config-osa/vars/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2017-08-15T00:47:18Z",
+      "side": 1,
+      "message": "this IP is our local repository",
+      "parentUuid": "da33351e_27caa34f",
       "range": {
         "startLine": 10,
         "startChar": 22,
