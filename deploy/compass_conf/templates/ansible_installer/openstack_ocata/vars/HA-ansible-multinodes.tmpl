@@ -64,6 +64,10 @@ public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
 
 ntp_server: $ntp_server
+
+offline_repo_ip: $getvar('offline_repo_ip', '')
+offline_repo_port: $getvar('offline_repo_port', '5151')
+
 internal_vip:
   ip: $network_cfg["internal_vip"]["ip"]
   netmask: $network_cfg["internal_vip"]["netmask"]
