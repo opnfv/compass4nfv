@@ -1,0 +1,1 @@
+deb [arch=amd64] http://{{ offline_repo_ip }}:{{ offline_repo_port }}/xenial-ocata-ppa xenial main

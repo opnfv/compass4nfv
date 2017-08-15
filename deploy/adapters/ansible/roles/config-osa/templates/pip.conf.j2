@@ -1,0 +1,29 @@
+# {{ ansible_managed }}
+
+[global]
+{% raw %}
+pre = {{ pip_enable_pre_releases }}
+{% if not pip_lock_to_internal_repo %}
+{% endraw %}
+index-url = http://{{ offline_repo_ip }}:{{ offline_repo_port }}/pip_pkg/simple
+trusted-host = {{ offline_repo_ip }}
+{% raw %}
+{% endif %}
+timeout = {{ pip_timeout }}
+{% if pip_lock_to_internal_repo and pip_links | length > 0 %}
+no-index = true
+trusted-host =
+{% for pip_link in pip_links %}
+        {{ pip_link.link | netloc_no_port }}
+{% endfor %}
+{% endif %}
+
+[install]
+upgrade = {{ pip_upgrade }}
+{% if pip_lock_to_internal_repo and pip_links | length > 0 %}
+find-links =
+{% for pip_link in pip_links %}
+        {{ pip_link.link }}
+{% endfor %}
+{% endif %}
+{% endraw %}
