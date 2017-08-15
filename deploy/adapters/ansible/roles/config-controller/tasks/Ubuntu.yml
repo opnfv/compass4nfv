@@ -16,6 +16,16 @@
 
 - meta: flush_handlers
 
+- name: create pip conf directory
+  file:
+    path: "~/.pip/"
+    state: directory
+
+- name: add pip conf
+  copy:
+    src: pip.conf
+    dest: "~/.pip/pip.conf"
+
 - name: check apt source
   shell: "ping -c 2 {{LOCAL_REPOSITORY_IP}} > /dev/null"
   register: checkresult
@@ -32,3 +42,9 @@
     src: sources.list.official
     dest: /etc/apt/sources.list
   when: checkresult.rc != 0
+
+- name: add apt.conf
+  copy:
+    src: apt.conf
+    dest: /etc/apt/apt.conf
+  when: checkresult.rc == 0

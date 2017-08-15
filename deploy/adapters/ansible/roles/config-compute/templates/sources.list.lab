@@ -1,7 +1,1 @@
-deb [ arch=amd64 ] http://{{LOCAL_REPOSITORY_IP}}/ubuntu/  xenial main restricted universe multiverse
-deb [ arch=amd64 ] http://{{LOCAL_REPOSITORY_IP}}/ubuntu/ xenial-security main restricted universe multiverse
-deb [ arch=amd64 ] http://{{LOCAL_REPOSITORY_IP}}/ubuntu/ xenial-updates main restricted universe multiverse
-
-deb-src [ arch=amd64 ] http://{{LOCAL_REPOSITORY_IP}}/ubuntu/ xenial main restricted universe multiverse
-deb-src [ arch=amd64 ] http://{{LOCAL_REPOSITORY_IP}}/ubuntu/ xenial-security main restricted universe multiverse
-deb-src [ arch=amd64 ] http://{{LOCAL_REPOSITORY_IP}}/ubuntu/ xenial-updates main restricted universe multiverse
+deb [arch=amd64] http://192.168.102.2:9997/xenial-ocata-ppa xenial main
