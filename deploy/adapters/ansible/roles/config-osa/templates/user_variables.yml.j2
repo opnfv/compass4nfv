@@ -27,6 +27,10 @@ haproxy_keepalived_external_interface: br-external
 haproxy_keepalived_internal_interface: br-mgmt
 keepalived_ping_address: "{{ ntp_server }}"
 
+cinder_cinder_conf_overrides:
+  DEFAULT:
+    public_endpoint: "https://{{ public_vip.ip }}"
+
 {% if "openvswitch" == NEUTRON_MECHANISM_DRIVERS[0] or
    "opendaylight" == NEUTRON_MECHANISM_DRIVERS[0]
 %}
