@@ -41,7 +41,165 @@
       galera_client_apt_repo_url: "http://192.168.137.222/mariadb"
       galera_repo_url: "[ arch=amd64 ] http://192.168.137.222/mariadb"
       uca_apt_repo_url: "[ arch=amd64 ] http://192.168.137.222/ubuntu-cloud"
-  when: checkresult.rc == 0
+  when:
+    - checkresult.rc == 0
+    - offline_deployment is defined and offline_deployment == "Disable"
+
+# yamllint disable rule:line-length
+- name: add mariadb local repository
+  blockinfile:
+    dest: /etc/openstack_deploy/user_variables.yml
+    block: |
+      galera_client_apt_repo_url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/xenial-ocata-ppa xenial main"
+      galera_repo_url: "[ arch=amd64 ] http://{{ offline_repo_ip }}:{{ offline_repo_port }}/xenial-ocata-ppa xenial main"
+      uca_apt_repo_url: "[ arch=amd64 ] http://{{ offline_repo_ip }}:{{ offline_repo_port }}/xenial-ocata-ppa xenial main"
+      _rabbitmq_package_url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/rabbitmq-server_3.6.9-1_all.deb"
+      percona_package_url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/percona-xtrabackup-24_2.4.5-1.xenial_amd64.deb"
+      qpress_package_url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/qpress_11-1.xenial_amd64.deb"
+      haproxy_hatop_download_url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/hatop-0.7.7.tar.gz"
+      pip_upstream_url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/get-pip.py"
+      ceph_stable_repo: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/xenial-ocata-ppa"
+      ceph_pkg_source: "uca"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+# yamllint enable rule:line-length
+
+- name: ignore galera client key
+  lineinfile:
+    dest: /etc/ansible/roles/galera_client/tasks/galera_client_install_apt.yml
+    insertafter: '^    - galera-client-apt-keys'
+    line: '  ignore_errors: true'
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: ignore galera server key
+  lineinfile:
+    dest: /etc/ansible/roles/galera_server/tasks/galera_install_apt.yml
+    insertafter: '^    - galera-apt-keys'
+    line: '  ignore_errors: true'
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: ignore git clone
+  lineinfile:
+    dest: /etc/ansible/roles/repo_build/tasks/repo_clone_git.yml
+    insertbefore: '^  async_status:'
+    line: '  ignore_errors: true'
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: add pbr to repo_pip_packages
+  lineinfile:
+    dest: /etc/ansible/roles/repo_build/defaults/main.yml
+    insertafter: '^  - cython'
+    line: '  - pbr'
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: ignore ceph special ppa
+  lineinfile:
+    dest: /etc/ansible/roles/ceph.ceph-common/tasks/installs/debian_ceph_repository.yml
+    insertafter: '^    - ppa:gluster/nfs-ganesha'
+    line: '  ignore_errors: true'
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: remove repo_build_pip_no_binary
+  lineinfile:
+    dest: /opt/openstack-ansible/playbooks/inventory/group_vars/repo_all.yml
+    state: absent
+    regexp: "{{ item }}"
+  with_items: ['^repo_build_pip_no_binary:', '^  - libvirt-python' ]
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: copy absolute requirement
+  copy:
+    src: "requirements_absolute_requirements.txt"
+    dest: "/opt/requirements_absolute_requirements.txt"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: update absolute requirements
+  blockinfile:
+    dest: /etc/ansible/roles/repo_build/tasks/repo_post_build.yml
+    insertbefore: '^- name: Copy get-pip script into release folder'
+    block: |
+      {% raw %}
+      - name: update absolute requirements
+        copy:
+          src: "/opt/requirements_absolute_requirements.txt"
+          dest: "{{ repo_build_release_path }}/requirements_absolute_requirements.txt"
+      {% endraw %}
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: add rally and tempest to requirement.txt
+  blockinfile:
+    dest: /etc/ansible/roles/repo_build/tasks/repo_pre_build.yml
+    insertbefore: '^- include: repo_clone_git.yml'
+    block: |
+      {% raw %}
+      - name: add rally and tempest
+        blockinfile:
+          dest: "{{ repo_build_release_path }}/requirements.txt"
+          insertafter: '^wheel'
+          block: |
+            rally
+            tempest
+      {% endraw %}
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: add lxc image for offline deloyment
+  blockinfile:
+    dest: /etc/ansible/roles/lxc_hosts/tasks/main.yml
+    insertbefore: '^- include: lxc_post_install.yml'
+    block: |
+      - name: add lxc image to the lxc cache dir
+        get_url:
+          url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/download.tar.gz"
+          dest: "/opt/download.tar.gz"
+
+      - name: unarchive lxc image tarball
+        command: su -s /bin/sh -c "tar -zxf /opt/download.tar.gz -C /var/cache/lxc/"
+
+      - name: clear tarball
+        file:
+          path: "/opt/download.tar.gz"
+          state: absent
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: configure pip.conf for lxc hosts and repo lxc
+  template:
+    src: pip.conf.j2
+    dest: "/etc/ansible/roles/pip_install/templates/pip.conf.j2"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: set set-upper-constraints downloading
+  blockinfile:
+    dest: /opt/openstack-ansible/playbooks/common-tasks/set-upper-constraints.yml
+    insertafter: '^# Use https'
+    block: |
+      - name: download upper-constraints.txt
+        get_url:
+          url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/upper-constraints.txt"
+          dest: /opt/
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: modify set-upper-constraints
+  shell: |
+    sed -i 's#\(--constraint\).*$#\1 /opt/upper-constraints.txt#g' \
+      /opt/openstack-ansible/playbooks/common-tasks/set-upper-constraints.yml ;
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: copy apt.conf for lxc
+  copy:
+    src: apt.conf
+    dest: "/etc/ansible/roles/lxc_container_create/files/apt.conf"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: add apt.conf for lxc
+  blockinfile:
+    dest: "/etc/ansible/roles/lxc_container_create/tasks/container_create.yml"
+    insertbefore: '^- name: Create hostname'
+    block: |
+      - name: add apt.conf
+        copy:
+          src: apt.conf
+          dest: "/etc/apt/apt.conf"
+
+  when: offline_deployment is defined and offline_deployment == "Enable"
 
 - name: copy cinder.yml
   copy:
