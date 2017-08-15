@@ -728,6 +728,10 @@ class CompassClient(object):
                 'password': password
             }
 
+        ip_pattern = re.compile('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+        compass_ip = re.findall(ip_pattern, CONF.compass_server)[0]
+        package_config["compass_ip"] = compass_ip
+
         moon_cfgs = [
             cfg
             for cfg in CONF.moon_cfg.split(',')

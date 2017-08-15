@@ -137,11 +137,19 @@ function launch_compass() {
     sed -i "s#^\(compass_db:\).*#\1 $COMPASS_DB#g" $group_vars
     sed -i "s#^\(compass_mq:\).*#\1 $COMPASS_MQ#g" $group_vars
 
+    if [[ $OFFLINE_DEPLOY == "true" ]]; then
+        sed -i "s#.*\(compass_repo:\).*#\1 $COMPASS_REPO#g" $group_vars
+    else
+        sed -i "s/^\(compass_repo:.*\)/#\1/g" $group_vars
+    fi
     sed -i "s#^\(host_ip:\).*#\1 $INSTALL_IP#g" $group_vars
     sed -i "s#^\(install_subnet:\).*#\1 ${INSTALL_CIDR%/*}#g" $group_vars
     sed -i "s#^\(install_prefix:\).*#\1 ${INSTALL_CIDR##*/}#g" $group_vars
     sed -i "s#^\(install_netmask:\).*#\1 $INSTALL_NETMASK#g" $group_vars
     sed -i "s#^\(install_ip_range:\).*#\1 $INSTALL_IP_RANGE#g" $group_vars
+
+    sed -i "s#^\(deck_port:\).*#\1 $COMPASS_DECK_PORT#g" $group_vars
+    sed -i "s#^\(repo_port:\).*#\1 $COMPASS_REPO_PORT#g" $group_vars
     ansible-playbook $WORK_DIR/installer/compass-docker-compose/bring_up_compass.yml
 }
 

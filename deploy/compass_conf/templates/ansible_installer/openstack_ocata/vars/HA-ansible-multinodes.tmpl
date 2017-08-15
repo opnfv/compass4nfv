@@ -37,7 +37,6 @@
 
 #set neutron_cfg = $getVar('neutron_config', {})
 #set ovs_config = $neutron_cfg.openvswitch
-
 #set has = $getVar('ha', [])
 #set ha_vip = $getVar('ha_vip', [])
 
@@ -64,6 +63,11 @@ public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
 
 ntp_server: $ntp_server
+
+offline_deployment: $getvar('offline_deployment', 'Disable')
+offline_repo_ip: $getVar('compass_ip', '')
+offline_repo_port: $getvar('offline_repo_port', '5151')
+
 internal_vip:
   ip: $network_cfg["internal_vip"]["ip"]
   netmask: $network_cfg["internal_vip"]["netmask"]
