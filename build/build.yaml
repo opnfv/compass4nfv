@@ -40,6 +40,11 @@ packages:
     get_method: docker
     url: opnfv/yardstick
 
+  - name: compass-repo-osa-ubuntu
+    description: "compass repo container for deployment"
+    get_method: docker
+    url: compass4nfv/compass-repo-osa-ubuntu
+
   - name: compass-docker-compose
     description: "containerized compass compose ansible"
     get_method: git
