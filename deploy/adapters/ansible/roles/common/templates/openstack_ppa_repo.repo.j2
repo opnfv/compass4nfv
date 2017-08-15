@@ -1,0 +1,7 @@
+[openstack_ppa_repo]
+name=openstack - openstack_repo
+proxy=_none_
+baseurl=http://{{ COMPASS_SERVER.stdout_lines[0] }}/cblr/repo_mirror/centos7-newton-ppa
+enabled=1
+gpgcheck=0
+skip_if_unavailable=1

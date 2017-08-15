@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-#set -x
+set -x
 WORK_DIR=$COMPASS_DIR/work/deploy
 
 mkdir -p $WORK_DIR/script
