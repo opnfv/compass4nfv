@@ -12,7 +12,7 @@ nic_mappings: []
 bond_mappings: []
 
 provider_net_mappings:
-  - name: br-provider
+  - name: br-prv
     network: physnet
     interface: eth1
     type: ovs
@@ -22,15 +22,9 @@ provider_net_mappings:
 
 sys_intf_mappings:
   - name: mgmt
-    interface: eth0
-    vlan_tag: None
-    role:
-      - controller
-      - compute
-
-  - name: tenant
     interface: eth1
     vlan_tag: 101
+    type: vlan
     role:
       - controller
       - compute
@@ -38,13 +32,14 @@ sys_intf_mappings:
   - name: storage
     interface: eth1
     vlan_tag: 102
+    type: vlan
     role:
       - controller
       - compute
 
   - name: external
-    interface: eth1
-    vlan_tag: None
+    interface: br-prv
+    type: ovs
     role:
       - controller
       - compute
@@ -52,21 +47,8 @@ sys_intf_mappings:
 ip_settings:
   - name: mgmt
     ip_ranges:
-      - - "10.1.0.50"
-        - "10.1.0.100"
-    dhcp_ranges:
-      - - "10.1.0.2"
-        - "10.1.0.49"
-    cidr: "10.1.0.0/24"
-    gw: "10.1.0.1"
-    role:
-      - controller
-      - compute
-
-  - name: tenant
-    ip_ranges:
       - - "172.16.1.1"
-        - "172.16.1.50"
+        - "172.16.1.254"
     cidr: "172.16.1.0/24"
     role:
       - controller
@@ -75,7 +57,7 @@ ip_settings:
   - name: storage
     ip_ranges:
       - - "172.16.2.1"
-        - "172.16.2.50"
+        - "172.16.2.254"
     cidr: "172.16.2.0/24"
     role:
       - controller
@@ -83,21 +65,21 @@ ip_settings:
 
   - name: external
     ip_ranges:
-      - - "192.168.10.10"
-        - "192.168.10.50"
-    cidr: "192.168.10.0/24"
-    gw: "192.168.10.1"
+      - - "192.168.107.210"
+        - "192.168.107.220"
+    cidr: "192.168.107.0/24"
+    gw: "192.168.107.1"
     role:
       - controller
       - compute
 
 internal_vip:
-  ip: 10.1.0.222
+  ip: 172.16.1.222
   netmask: "24"
   interface: mgmt
 
 public_vip:
-  ip: 192.168.10.222
+  ip: 192.168.107.222
   netmask: "24"
   interface: external
 
@@ -105,14 +87,14 @@ onos_nic: eth2
 public_net_info:
   enable: "True"
   network: ext-net
-  type: flat
-  segment_id: 10
+  type: vxlan
+  segment_id: 1000
   subnet: ext-subnet
   provider_network: physnet
   router: router-ext
   enable_dhcp: "False"
   no_gateway: "False"
-  external_gw: "192.168.10.1"
-  floating_ip_cidr: "192.168.10.0/24"
-  floating_ip_start: "192.168.10.100"
-  floating_ip_end: "192.168.10.200"
+  external_gw: "192.168.107.1"
+  floating_ip_cidr: "192.168.107.0/24"
+  floating_ip_start: "192.168.107.101"
+  floating_ip_end: "192.168.107.199"
