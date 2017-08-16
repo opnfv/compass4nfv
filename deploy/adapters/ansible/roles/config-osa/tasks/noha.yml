@@ -1,0 +1,19 @@
+# #############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+- name: disable kernel update in rt_kvm scenario
+  lineinfile:
+    dest: /etc/openstack_deploy/user_variables.yml
+    line: 'haproxy_use_keepalived: "True"'
+
+- name: disable kernel update in rt_kvm scenario
+  lineinfile:
+    dest: /opt/openstack-ansible/playbooks/vars/configs/keepalived_haproxy.yml
+    state: absent
+    regexp: '- haproxy_check_script'
