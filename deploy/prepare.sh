@@ -92,6 +92,11 @@ function  _prepare_python_env() {
                 sudo yum install -y libffi libffi-devel openssl-devel
                 sudo yum groupinstall -y 'Development Tools'
             fi
+
+            sudo docker version >/dev/null 2>&1
+            if [[ $? -ne 0 ]]; then
+                install_docker
+            fi
         fi
    fi
 
