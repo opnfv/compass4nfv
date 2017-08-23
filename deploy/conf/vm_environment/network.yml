@@ -12,12 +12,25 @@ nic_mappings: []
 bond_mappings: []
 
 provider_net_mappings:
-  - name: br-provider
-    network: physnet
-    interface: eth1
+  - name: br-provider0
+    network: physnet0
+    interface: eth10
     type: ovs
     role:
       - controller
+
+  - name: br-provider1
+    network: physnet1
+    interface: eth11
+    type: ovs
+    role:
+      - controller
+
+  - name: br-provider1
+    network: physnet1
+    interface: eth2
+    type: ovs
+    role:
       - compute
 
 sys_intf_mappings:
@@ -29,8 +42,8 @@ sys_intf_mappings:
       - compute
 
   - name: tenant
-    interface: eth1
-    vlan_tag: 101
+    interface: eth2
+    vlan_tag: None
     role:
       - controller
       - compute
@@ -102,13 +115,18 @@ public_vip:
   interface: external
 
 onos_nic: eth2
+tenant_net_info:
+  type: vlan
+  range: "1001:2000"
+  provider_network: physnet1
+
 public_net_info:
   enable: "True"
   network: ext-net
   type: flat
   segment_id: 1000
   subnet: ext-subnet
-  provider_network: physnet
+  provider_network: physnet0
   router: router-ext
   enable_dhcp: "False"
   no_gateway: "False"
@@ -116,3 +134,4 @@ public_net_info:
   floating_ip_cidr: "192.16.1.0/24"
   floating_ip_start: "192.16.1.101"
   floating_ip_end: "192.16.1.199"
+
