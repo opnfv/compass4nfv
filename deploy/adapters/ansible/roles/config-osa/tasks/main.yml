@@ -53,31 +53,6 @@
     src: ansible.cfg
     dest: /opt/openstack-ansible/playbooks/
 
-- name: copy setup-ovs.yml
-  copy:
-    src: setup-ovs.yml
-    dest: /opt/openstack-ansible/playbooks
-
-- name: copy flavor roles
-  copy:
-    src: os-flavor
-    dest: /etc/ansible/roles/
-
-- name: generate create-network.yml
-  template:
-    src: create-network.yml.j2
-    dest: /opt/openstack-ansible/playbooks/create-network.yml
-
-- name: generate create-flavor.yml
-  template:
-    src: create-flavor.yml.j2
-    dest: /opt/openstack-ansible/playbooks/create-flavor.yml
-
-- name: copy fetch-files.yml
-  copy:
-    src: fetch-files.yml
-    dest: /opt/openstack-ansible/playbooks/fetch-files.yml
-
 - name: copy user_ceph.yml
   copy:
     src: user_ceph.yml

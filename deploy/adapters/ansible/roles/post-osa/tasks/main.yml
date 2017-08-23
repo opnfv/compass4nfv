@@ -1,0 +1,12 @@
+---
+- name: remove bridge ubuntu
+  template:
+    src: compute.j2
+    dest: /etc/network/interfaces
+  notify:
+    - restart network service
+  when: ansible_distribution == 'Ubuntu'
+
+# TODO
+# - name: remove bridge centos
+#   when: ansible_distribution == 'CentOS'
