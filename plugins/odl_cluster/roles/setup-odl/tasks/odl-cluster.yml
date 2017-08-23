@@ -1,0 +1,46 @@
+---
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include_vars: "{{ openstack_passwd_file }}"
+
+- include: odl-pre.yml
+  when: inventory_hostname == "localhost"
+
+- include_vars: /tmp/odl-extra-vars.yml
+
+- include: control-hosts-1.yml
+  when: inventory_hostname in groups['network_hosts']     # Todo: modify to odl_hosts
+
+- include: control-repos-1.yml
+  vars:
+    odl_pip: "{{ networking_odl_url }}"
+  when: inventory_hostname in groups['repo_container']
+
+- include: control-servers-1.yml
+  when: inventory_hostname in groups['neutron_server']
+
+- include: control-agents-1.yml
+  when: inventory_hostname in groups['neutron_openvswitch_agent']
+
+- include: control-hosts-2.yml
+  when: inventory_hostname in groups['network_hosts']     # Todo: modify to odl_hosts
+
+- include: control-agents-2.yml
+  when: inventory_hostname in groups['neutron_openvswitch_agent']
+
+- include: control-servers-2.yml
+  when: inventory_hostname in groups['neutron_server']
+
+- include: control-agents-3.yml
+  when: inventory_hostname in groups['neutron_openvswitch_agent']
+
+- include: control-db-1.yml
+  when: inventory_hostname == groups['galera_container'][0]
+
+- include: control-servers-3.yml
+  when:
+    - inventory_hostname in groups['neutron_server'][0]
+    - inventory_hostname not in groups['network_hosts']
+
+- include: odl-post.yml

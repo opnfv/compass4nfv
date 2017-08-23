@@ -41,11 +41,21 @@ openstack_host_specific_kernel_modules:
 
 neutron_plugin_type: ml2.ovs
 
-neutron_ml2_drivers_type: "local,flat,vlan,vxlan"
+neutron_ml2_drivers_type: "local,flat,{{ tenant_net_info['type'] }}"
 
 neutron_provider_networks:
   network_flat_networks: "*"
-  network_types: "vxlan"
-  network_vxlan_ranges: "1:1000"
-  network_mappings: "physnet:br-provider"
+  network_types: "{{ tenant_net_info['type'] }}"
+{% if tenant_net_info["type"] == "vxlan" %}
+  network_vxlan_ranges: "{{ tenant_net_info['range'] }}"
+{% endif %}
+{% if tenant_net_info["type"] == "vlan" %}
+  network_vlan_ranges: "{{tenant_net_info['provider_network']}}:{{tenant_net_info['range']}}"
+{% endif %}
+{% set controller_mappings = [] %}
+{% for key, value in contr_prv_mappings.iteritems() %}
+{% set mapping = key + ":" + value["bridge"] %}
+{% set _ = controller_mappings.append(mapping) %}
+{% endfor %}
+  network_mappings: "{{ ','.join(controller_mappings) }}"
 {% endif %}
