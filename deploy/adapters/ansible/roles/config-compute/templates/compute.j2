@@ -11,34 +11,34 @@ iface eth0 inet manual
 
 # external interface
 {% set intf_external = sys_intf_mappings["external"]["interface"] %}
-{% if sys_intf_mappings["external"]["vlan_tag"] != "None" %}
+{% if sys_intf_mappings["external"]["vlan_tag"] | int %}
 {% set intf_external = intf_external + '.' + sys_intf_mappings["external"]["vlan_tag"]|string %}
 {% endif %}
 auto {{ intf_external }}
 iface {{ intf_external }} inet manual
-{% if sys_intf_mappings["external"]["vlan_tag"] != "None" %}
+{% if sys_intf_mappings["external"]["vlan_tag"] | int %}
     vlan-raw-device {{ intf_external }}
 {% endif %}
 
 # tenant interface
 {% set intf_tenant = sys_intf_mappings["tenant"]["interface"] %}
-{% if sys_intf_mappings["tenant"]["interface"] != "None" %}
+{% if sys_intf_mappings["tenant"]["vlan_tag"] | int %}
 {% set intf_tenant = intf_tenant + '.' + sys_intf_mappings["tenant"]["vlan_tag"]|string %}
 {% endif %}
 auto {{ intf_tenant }}
 iface {{ intf_tenant }} inet manual
-{% if sys_intf_mappings["tenant"]["interface"] != "None" %}
+{% if sys_intf_mappings["tenant"]["vlan_tag"] | int %}
     vlan-raw-device {{ intf_tenant }}
 {% endif %}
 
 # storage interface
 {% set intf_storage = sys_intf_mappings["storage"]["interface"] %}
-{% if sys_intf_mappings["storage"]["interface"] != "None" %}
+{% if sys_intf_mappings["storage"]["vlan_tag"] | int %}
 {% set intf_storage = intf_storage + '.' + sys_intf_mappings["storage"]["vlan_tag"]|string %}
 {% endif %}
 auto {{ intf_storage }}
 iface {{ intf_storage }} inet manual
-{% if sys_intf_mappings["storage"]["interface"] != "None" %}
+{% if sys_intf_mappings["storage"]["vlan_tag"] | int %}
     vlan-raw-device {{ intf_storage }}
 {% endif %}
 

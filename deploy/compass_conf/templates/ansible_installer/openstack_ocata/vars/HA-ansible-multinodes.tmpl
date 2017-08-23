@@ -35,9 +35,22 @@
 #end if
 #end for
 
+#set provider_net_mappings = $network_cfg["provider_net_mappings"]
+#set controller_mapping_list = []
+#set compute_mapping_list = []
+#for item in $provider_net_mappings
+#if "controller" in $item["role"]
+#set mapping = $item["network"] + ":" + $item["name"]
+#set _ = $controller_mapping_list.append($mapping)
+#end if
+#if "compute" in $item["role"]
+#set mapping = $item["network"] + ":" + $item["name"]
+#set _ = $compute_mapping_list.append($mapping)
+#end if
+#end for
+
 #set neutron_cfg = $getVar('neutron_config', {})
 #set ovs_config = $neutron_cfg.openvswitch
-
 #set has = $getVar('ha', [])
 #set ha_vip = $getVar('ha_vip', [])
 
@@ -52,7 +65,11 @@ onos_nic: $getVar('onos_nic', 'eth2')
 onos_sfc: $getVar('onos_sfc', 'Disable')
 ip_settings: $ip_settings
 network_cfg: $network_cfg
+
+provider_net_mappings: $network_cfg["provider_net_mappings"]
+
 sys_intf_mappings: $sys_intf_mappings
+
 deploy_type: $getVar('deploy_type', 'virtual')
 
 mgmt_cidr: $mgmt_cfg["cidr"]
@@ -60,8 +77,14 @@ external_cidr: $external_cfg["cidr"]
 tenant_cidr: $tenant_cfg["cidr"]
 storage_cidr: $storage_cfg["cidr"]
 
+tenant_net_info: "{{ network_cfg.tenant_net_info }}"
 public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
+
+#set controller_mappings = ','.join($controller_mapping_list)
+controller_mappings: $controller_mappings
+#set compute_mappings = ','.join($compute_mapping_list)
+compute_mappings: $compute_mappings
 
 ntp_server: $ntp_server
 internal_vip:
