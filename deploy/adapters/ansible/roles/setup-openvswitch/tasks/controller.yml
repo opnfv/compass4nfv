@@ -1,0 +1,49 @@
+#############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+#############################################################################
+---
+- name: stop neutron-openvswitch-agent
+  service:
+    name: neutron-openvswitch-agent
+    state: stopped
+
+- name: remove tunnel_types when vlan
+  lineinfile:
+    dest: /etc/neutron/plugins/ml2/openvswitch_agent.ini
+    state: absent
+    regexp: '^tunnel_types'
+  when:
+    - tenant_net_info["type"] == "vlan"
+  notify:
+    - restart neutron-openvswitch-agent
+
+- name: create controller bridges
+  openvswitch_bridge:
+    bridge: "{{ item['name'] }}"
+    state: present
+  with_items:
+    - "{{ provider_net_mappings }}"
+  when:
+    - controller in item["role"]
+  notify:
+    - restart neutron-openvswitch-agent
+
+- name: create controller bridge ports
+  openvswitch_port:
+    bridge: "{{ item['name'] }}"
+    port: "{{ item['interface'] }}"
+    state: present
+  with_items:
+    - "{{ provider_net_mappings }}"
+  when:
+    - controller in item["role"]
+
+- name: stop neutron-openvswitch-agent
+  service:
+    name: neutron-openvswitch-agent
+    state: started

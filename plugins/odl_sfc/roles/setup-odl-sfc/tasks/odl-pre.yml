@@ -1,0 +1,46 @@
+---
+
+- name: set l2_mapping l3_mapping
+  copy:
+    dest: /tmp/odl-extra-vars.yml
+    content: |
+      {% set contr_l2_list = [] %}
+      {% set contr_l3_list = [] %}
+      {% set pub_l2_mapping = [] %}
+      {% set pub_l3_mapping = [] %}
+      {% set pub_intf = [] %}
+      {% set pub_bridge = [] %}
+      {% for key, value in contr_prv_mappings.iteritems() %}
+      {% set l2_mapping = key + ":" + value["bridge"] %}
+      {% set l3_mapping = key + ":" + value["interface"] %}
+      {% set _ = contr_l2_list.append(l2_mapping) %}
+      {% set _ = contr_l3_list.append(l3_mapping) %}
+      {% if key == public_net_info["provider_network"] %}
+      {% set _ = pub_l2_mapping.append(l2_mapping) %}
+      {% set _ = pub_l3_mapping.append(l3_mapping) %}
+      {% set _ = pub_intf.append(value["interface"]) %}
+      {% set _ = pub_bridge.append(value["bridge"]) %}
+      {% endif %}
+      {% endfor %}
+      {% set compu_l2_list = [] %}
+      {% set compu_l3_list = [] %}
+      {% set compu_pub_intf = compu_sys_mappings["external"]["interface"] %}
+      {% set compu_pub_vlan = compu_sys_mappings["external"]["vlan_tag"] %}
+      {% if compu_pub_vlan | int %}
+      {% set compu_pub_intf = compu_pub_intf + '.' + compu_pub_vlan|string %}
+      {% endif %}
+      {% for key, value in compu_prv_mappings.iteritems() %}
+      {% set l2_mapping = key + ":" + value["bridge"] %}
+      {% set l3_mapping = key + ":" + value["interface"] %}
+      {% set _ = compu_l2_list.append(l2_mapping) %}
+      {% set _ = compu_l3_list.append(l3_mapping) %}
+      {% endfor %}
+      {% set pub_l3_mapping = pub_l3_mapping[0].replace(pub_intf[0], compu_pub_intf) %}
+      {% set _ = compu_l2_list.append(pub_l2_mapping[0]) %}
+      {% set _ = compu_l3_list.append(pub_l3_mapping) %}
+      public_bridge: "{{ pub_bridge[0] }}"
+      contr_public_intf: "{{ pub_intf[0] }}"
+      contr_l2_mappings: "{{ ','.join(contr_l2_list) }}"
+      contr_l3_mappings: "{{ ','.join(contr_l3_list) }}"
+      compu_l2_mappings: "{{ ','.join(compu_l2_list) }}"
+      compu_l3_mappings: "{{ ','.join(compu_l3_list) }}"

@@ -1,11 +1,11 @@
-# #############################################################################
+##############################################################################
 # Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Apache License, Version 2.0
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
-# #############################################################################
+##############################################################################
 ---
 - hosts: all
   remote_user: root
@@ -38,10 +38,46 @@
     - setup-infrastructure
     - setup-openstack
     - sync-inventory
+
+- hosts: compute
+  remote_user: root
+  roles:
+    - post-osa
+
+- hosts: neutron_openvswitch_agent
+  remote_user: root
+  roles:
     - setup-openvswitch
+
+- hosts: localhost
+  remote_user: root
+  roles:
     - setup-sfc
-    - setup-opendaylight
+  tags:
+    - sfc
+
+- hosts:
+    - localhost
+    - neutron_all
+    - galera_container
+    - network_hosts
+    - repo_container
+    - utility
+  remote_user: root
+  roles:
+    - setup-odl
+  tags:
+    - odl
+
+- hosts: utility_all[0]
+  remote_user: root
+  roles:
     - post-openstack
+
+- hosts: localhost
+  remote_user: root
+  roles:
+    - process-openrc
 
 - hosts: moon
   remote_user: root
