@@ -1,0 +1,8 @@
+DEVICE=br-vxlan
+TYPE=Bridge
+IPADDR={{host_info[inventory_hostname].VXLAN_IP}}
+NETMASK=255.255.252.0
+BOOTPROTO=none
+DEFROUTE="no"
+ONBOOT=yes
+DELAY=0

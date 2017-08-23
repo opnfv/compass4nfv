@@ -1,0 +1,230 @@
+#############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: rm pip.conf
+  file:
+    path: /root/.pip/pip.conf
+    state: absent
+
+- name: configure network
+  template:
+    src: compute.j2
+    dest: /etc/network/interfaces
+  notify:
+    - restart network service
+
+- meta: flush_handlers
+
+- name: check apt source
+  shell: "ping -c 2 {{ LOCAL_REPOSITORY_IP }} > /dev/null"
+  register: checkresult
+  ignore_errors: "true"
+
+- name: change sources list(apt)
+  template:
+    src: sources.list.lab
+    dest: /etc/apt/sources.list
+  when: checkresult.rc == 0
+
+- name: change sources list(apt)
+  template:
+    src: sources.list.official
+    dest: /etc/apt/sources.list
+  when: checkresult.rc != 0
+
+- name: check docker.list stat
+  stat:
+    path: /etc/apt/sources.list.d/docker.list
+  register: stat_result
+
+# [WARNING]: Consider using get_url or uri module rather than running wget
+- name: install docker
+  remote_user: root
+  shell: wget -qO- https://get.docker.com/ | sh
+  when: stat_result.stat.exists == False
+
+- name: remove conflict packages
+  remote_user: root
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=absent"
+  with_items:
+    - python3-pkg-resources
+
+- name: install dependent packages
+  remote_user: root
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items:
+    - git
+    - python3-dev
+    - python3-pip
+    - python3-venv
+    - python3-setuptools
+
+- name: make ubuntu dir
+  file:
+    path: /home/ubuntu
+    state: directory
+    mode: 0755
+
+- name: check moon code dir exists
+  stat:
+    path: /home/ubuntu/moon
+  register: stat_result
+
+- name: fetch moon source code
+  shell: git clone https://git.opnfv.org/moon /home/ubuntu/moon
+  when: stat_result.stat.exists == False
+
+- name: create moon etc conf
+  remote_user: root
+  file:
+    src: /home/ubuntu/moon/moonv4/moon_orchestrator/conf
+    dest: /etc/moon
+    state: link
+
+- name: configure moon.conf
+  lineinfile:
+    dest: /etc/moon/moon.conf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '^dist_dir=.*'
+      line: 'dist_dir=/home/ubuntu/moon/moonv4/moon_orchestrator/dist'
+    - regexp: '^password=.*'
+      line: 'password={{ ADMIN_PASS }}'
+
+- name: configure moon.conf for moon slave
+  lineinfile:
+    dest: /etc/moon/moon.conf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '^slave_name=.*'
+      line: 'slave_name={{ moon_slave_name }}'
+    - regexp: '^master_url=.*'
+      line: 'master_url=rabbit://moon:p4sswOrd1@{{ moon_master_ip }}/moon'
+    - regexp: '^master_login.*'
+      line: 'master_login=moon'
+    - regexp: '^master_password=.*'
+      line: 'master_password=p4sswOrd1'
+  when: moon_slave == "Enable"
+
+- name: list container netwroks
+  shell: docker network ls --format \{\{.Name\}\}
+  register: result
+
+- name: dump template generated file content
+  debug:
+    msg: "{{ result.stdout }}"
+
+- name: create moon network
+  shell: docker network create -d bridge --subnet=172.18.0.0/16 --gateway=172.18.0.1 moon
+  when: result.stdout.find("moon") == -1
+
+- name: list containers
+  shell: docker ps --format \{\{.Names\}\}
+  register: result
+
+- name: start rabbitmq
+  shell: |
+    docker run -dti \
+               --net=moon \
+               --hostname messenger \
+               --name messenger \
+               --link messenger:messenger \
+               -e RABBITMQ_DEFAULT_USER=moon \
+               -e RABBITMQ_DEFAULT_PASS=p4sswOrd1 \
+               -e RABBITMQ_NODENAME=rabbit@messenger \
+               -e RABBITMQ_DEFAULT_VHOST=moon \
+               -p 5671:5671 \
+               -p 5672:5672 \
+               rabbitmq:3-management
+  when: result.stdout.find("messenger") == -1
+
+- name: dump template generated file content
+  debug:
+    msg: "{{ result.stdout }}"
+
+- name: start mysql
+  shell: docker run -dti \
+                    --net=moon \
+                    --hostname db \
+                    --name db \
+                    -e MYSQL_ROOT_PASSWORD=p4sswOrd1 \
+                    -e MYSQL_DATABASE=moon \
+                    -e MYSQL_USER=moon \
+                    -e MYSQL_PASSWORD=p4sswOrd1 \
+                    -p 3306:3306 \
+                    mysql:latest
+  when: result.stdout.find("db") == -1
+
+- name: set messenger and db hosts name
+  remote_user: root
+  lineinfile:
+    dest: /etc/hosts
+    regexp: 'messenger'
+    line: '127.0.0.1 messenger db'
+
+- name: set keystone hosts name
+  remote_user: root
+  lineinfile:
+    dest: /etc/hosts
+    regexp: 'keystone'
+    line: '{{ internal_vip.ip }} keystone'
+
+- name: update pip
+  remote_user: root
+  shell: pip3 install pip --upgrade
+
+- name: run moon build_all.sh
+  shell: |
+    export MOON_HOME=/home/ubuntu/moon/moonv4;
+    cd ${MOON_HOME}/bin;
+    source build_all.sh;
+  args:
+    executable: /bin/bash
+
+- name: modify moon start.sh
+  lineinfile:
+    dest: /home/ubuntu/moon/moonv4/bin/start.sh
+    state: absent
+    regexp: "{{ item }}"
+  with_items:
+    - "^sleep 20s"
+    - "^.*starting Keystone container.*"
+    - "^docker run .*keystone.*"
+
+- name: run moon start.sh
+  shell: |
+    export MOON_HOME=/home/ubuntu/moon/moonv4;
+    cd ${MOON_HOME}/moon_orchestrator;
+    if [ ! -d tests/venv ]; then
+        pyvenv tests/venv;
+        source tests/venv/bin/activate;
+        pip3 install -r requirements.txt --upgrade;
+        pip3 install dist/moon_db-0.1.0.tar.gz --upgrade;
+        pip3 install dist/moon_utilities-0.1.0.tar.gz --upgrade;
+        pip3 install .  --upgrade;
+        cd ../moon_db/;
+        pip3 install -r requirements.txt --upgrade;
+    else
+        source tests/venv/bin/activate;
+    fi
+    killall -9  /home/ubuntu/moon/moonv4/moon_orchestrator/tests/venv/bin/python3.5
+    sleep 3
+    ( ( nohup ../bin/start.sh > /tmp/start.log 2>&1 ) & );
+  args:
+    executable: /bin/bash
+
+- name: fetch template generated file content
+  shell: whoami
+  register: template_gen_out
+
+- name: dump template generated file content
+  debug:
+    msg: "{{ template_gen_out.stdout }}"

@@ -15,7 +15,23 @@ used_ips:
 {% endif %}
 {% endfor %}
   - "{{ internal_vip.ip }}"
+  - "{{ public_vip.ip }}"
 
+{% if "linuxbridge" == NEUTRON_MECHANISM_DRIVERS[0] %}
+{% set neutron_agent = "neutron_linuxbridge_agent" %}
+{% else %}
+{% set neutron_agent = "neutron_openvswitch_agent" %}
+{% endif %}
+{% set provider_net_mappings = network_cfg["provider_net_mappings"] %}
+{% set public_net_info = network_cfg["public_net_info"] %}
+{% set ext_physnet = public_net_info["provider_network"] %}
+{% set ext_type = public_net_info["type"] %}
+{% set ext_intf = [] %}
+{% for item in provider_net_mappings %}
+{% if item["network"] == ext_physnet %}
+{% set _ = ext_intf.append(item["interface"]) %}
+{% endif %}
+{% endfor %}
 global_overrides:
   internal_lb_vip_address: {{ internal_vip.ip }}
   external_lb_vip_address: {{ public_vip.ip }}
@@ -33,46 +49,40 @@ global_overrides:
           - hosts
         is_container_address: true
         is_ssh_address: true
+{% if tenant_net_info["type"] == "vxlan" %}
     - network:
         container_bridge: "br-tenant"
         container_type: "veth"
-        container_interface: "eth10"
+        container_interface: "eth2"
         ip_from_q: "tunnel"
         type: "vxlan"
-        range: "1:1000"
+        range: "{{ tenant_net_info["range"] }}"
         net_name: "vxlan"
         group_binds:
-{% if "linuxbridge" == NEUTRON_MECHANISM_DRIVERS[0] %}
-          - neutron_linuxbridge_agent
-{% else %}
-          - neutron_openvswitch_agent
+          - {{ neutron_agent }}
 {% endif %}
     - network:
         container_bridge: "br-external"
         container_type: "veth"
-        container_interface: "eth12"
-        host_bind_override: "eth12"
+        container_interface: "{{ ext_intf[0] }}"
+        host_bind_override: "{{ ext_intf[0] }}"
+        type: "{{ ext_type }}"
+        net_name: "{{ ext_physnet }}"
+        group_binds:
+          - {{ neutron_agent }}
+{% for item in provider_net_mappings %}
+{% if item["network"] != ext_physnet and "controller" in item["role"] %}
+    - network:
+        container_bridge: "br-tenant"
+        container_type: "veth"
+        container_interface: "{{ item["interface"] }}"
+        host_bind_override: "{{ item["interface"] }}"
         type: "flat"
-        net_name: "{{ public_net_info.provider_network }}"
+        net_name: "{{ item["network"] }}"
         group_binds:
-{% if "linuxbridge" == NEUTRON_MECHANISM_DRIVERS[0] %}
-          - neutron_linuxbridge_agent
-{% else %}
-          - neutron_openvswitch_agent
+          - {{ neutron_agent }}
 {% endif %}
-    - network:
-        container_bridge: "br-external"
-        container_type: "veth"
-        container_interface: "eth11"
-        type: "vlan"
-        range: "1:1"
-        net_name: "vlan"
-        group_binds:
-{% if "linuxbridge" == NEUTRON_MECHANISM_DRIVERS[0] %}
-          - neutron_linuxbridge_agent
-{% else %}
-          - neutron_openvswitch_agent
-{% endif %}
+{% endfor %}
     - network:
         container_bridge: "br-storage"
         container_type: "veth"

@@ -3,13 +3,18 @@
 #set network_cfg = $getVar('network_cfg', {})
 #set ntp_server = $getVar('ntp_server', "")
 #set ceph_disk = $getVar('ceph_disk',"")
-#set $sys_intf_mappings= {}
-#for $intf_info in $network_cfg.sys_intf_mappings
-#set $sys_intf_mappings[$intf_info["name"]] = $intf_info
-#end for
-
 #set controllers = $getVar('controller', [])
 #set computes = $getVar('compute', [])
+#set $contr_sys_mappings= {}
+#set $compu_sys_mappings= {}
+#for $intf_info in $network_cfg.sys_intf_mappings
+#if "controller" in $intf_info["role"]
+#set $contr_sys_mappings[$intf_info["name"]] = $intf_info
+#end if
+#if "compute" in $intf_info["role"]
+#set $compu_sys_mappings[$intf_info["name"]] = $intf_info
+#end if
+#end for
 
 #set ip_settings={}
 #for k,v in $getVar('ip_settings', {}).items()
@@ -35,9 +40,20 @@
 #end if
 #end for
 
+#set provider_net_mappings = $network_cfg["provider_net_mappings"]
+#set contr_prv_mappings = {}
+#set compu_prv_mappings = {}
+#for item in $provider_net_mappings
+#if "controller" in $item["role"]
+#set $contr_prv_mappings[$item["network"]] = {"bridge":$item["name"],"interface":$item["interface"]}
+#end if
+#if "compute" in $item["role"]
+#set $compu_prv_mappings[$item["network"]] = {"bridge":$item["name"],"interface":$item["interface"]}
+#end if
+#end for
+
 #set neutron_cfg = $getVar('neutron_config', {})
 #set ovs_config = $neutron_cfg.openvswitch
-
 #set has = $getVar('ha', [])
 #set ha_vip = $getVar('ha_vip', [])
 
@@ -52,7 +68,15 @@ onos_nic: $getVar('onos_nic', 'eth2')
 onos_sfc: $getVar('onos_sfc', 'Disable')
 ip_settings: $ip_settings
 network_cfg: $network_cfg
-sys_intf_mappings: $sys_intf_mappings
+
+provider_net_mappings: $network_cfg["provider_net_mappings"]
+
+contr_sys_mappings: $contr_sys_mappings
+compu_sys_mappings: $compu_sys_mappings
+
+contr_prv_mappings: $contr_prv_mappings
+compu_prv_mappings: $compu_prv_mappings
+
 deploy_type: $getVar('deploy_type', 'virtual')
 
 mgmt_cidr: $mgmt_cfg["cidr"]
@@ -60,6 +84,7 @@ external_cidr: $external_cfg["cidr"]
 tenant_cidr: $tenant_cfg["cidr"]
 storage_cidr: $storage_cfg["cidr"]
 
+tenant_net_info: "{{ network_cfg.tenant_net_info }}"
 public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
 
@@ -67,19 +92,19 @@ ntp_server: $ntp_server
 internal_vip:
   ip: $network_cfg["internal_vip"]["ip"]
   netmask: $network_cfg["internal_vip"]["netmask"]
-#if "vlan_tag" in $sys_intf_mappings[$network_cfg["internal_vip"]["interface"]]
-  interface: $sys_intf_mappings[$network_cfg["internal_vip"]["interface"]]["name"]
+#if "vlan_tag" in $contr_sys_mappings[$network_cfg["internal_vip"]["interface"]]
+  interface: $contr_sys_mappings[$network_cfg["internal_vip"]["interface"]]["name"]
 #else
-  interface: $sys_intf_mappings[$network_cfg["internal_vip"]["interface"]]["interface"]
+  interface: $contr_sys_mappings[$network_cfg["internal_vip"]["interface"]]["interface"]
 #end if
 
 public_vip:
   ip: $network_cfg["public_vip"]["ip"]
   netmask: $network_cfg["public_vip"]["netmask"]
-#if "vlan_tag" in $sys_intf_mappings[$network_cfg["public_vip"]["interface"]]
-  interface: $sys_intf_mappings[$network_cfg["public_vip"]["interface"]]["name"]
+#if "vlan_tag" in $contr_sys_mappings[$network_cfg["public_vip"]["interface"]]
+  interface: $contr_sys_mappings[$network_cfg["public_vip"]["interface"]]["name"]
 #else
-  interface: $sys_intf_mappings[$network_cfg["public_vip"]["interface"]]["interface"]
+  interface: $contr_sys_mappings[$network_cfg["public_vip"]["interface"]]["interface"]
 #end if
 
 db_host: "{{ internal_vip.ip }}"
