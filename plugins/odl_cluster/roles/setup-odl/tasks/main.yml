@@ -1,0 +1,4 @@
+---
+
+- include: odl-cluster.yml
+  when: opendaylight is defined and opendaylight == "Enable"

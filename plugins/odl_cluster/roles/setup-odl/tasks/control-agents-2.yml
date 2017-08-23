@@ -1,0 +1,100 @@
+---
+
+- name: set opendaylight as the manager
+  command: |
+    su -s /bin/sh -c "ovs-vsctl set-manager tcp:{{ internal_lb_vip_address }}:6640;"
+
+- name: check br-int
+  shell: |
+    ovs-vsctl list-br | grep br-int; while [ $? -ne 0 ]; do sleep 10; \
+        ovs-vsctl list-br | grep br-int; done
+
+# yamllint disable rule:line-length
+- name: set local ip in openvswitch
+  shell: >
+    local_ip=$(grep local_ip /etc/neutron/plugins/ml2/openvswitch_agent.ini |
+    sed 's/local_ip =//g');
+    ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1)
+    other_config={'local_ip'="$local_ip"};
+  when: inventory_hostname not in groups['nova_compute']
+
+- name: set local ip in openvswitch
+  shell: >
+    local_ip=$(grep local_ip /etc/neutron/plugins/ml2/openvswitch_agent.ini |
+    sed 's/local_ip =//g');
+    ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1)
+    other_config={'local_ip'="$local_ip"};
+  when: inventory_hostname in groups['nova_compute']
+# yamllint enable rule:line-length
+
+- name: Setup br-provider
+  openvswitch_bridge:
+    bridge: "{{ public_bridge }}"
+    state: present
+  when:
+    - inventory_hostname not in groups['nova_compute']
+    - odl_l3_agent == "Disable"
+
+- name: add ovs uplink
+  openvswitch_port:
+    bridge: "{{ public_bridge }}"
+    port: "{{ contr_public_intf }}"
+    state: present
+  when:
+    - inventory_hostname not in groups['nova_compute']
+    - odl_l3_agent == "Disable"
+
+- name: set external nic in openvswitch
+  shell: |
+    ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) \
+        other_config:provider_mappings={{ contr_l2_mappings }}
+  when:
+    - odl_l3_agent == "Disable"
+    - inventory_hostname not in groups['nova_compute']
+
+- name: set external nic in openvswitch
+  shell: |
+    ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) \
+        other_config:provider_mappings={{ contr_l3_mappings }}
+  when:
+    - odl_l3_agent == "Enable"
+    - inventory_hostname not in groups['nova_compute']
+
+- name: set external nic in openvswitch
+  shell: |
+    ovs-vsctl set Open_vSwitch $(ovs-vsctl show | head -n 1) \
+        other_config:provider_mappings={{ compu_l3_mappings }}
+  when:
+    - odl_l3_agent == "Enable"
+    - inventory_hostname in groups['nova_compute']
+
+- name: Set host OVS configurations
+  command: |
+    /openstack/venvs/neutron-15.1.4/bin/neutron-odl-ovs-hostconfig \
+            --datapath_type=system --bridge_mappings={{ contr_l2_mappings }}
+  when:
+    - inventory_hostname not in groups['nova_compute']
+    - odl_l3_agent == "Disable"
+
+- name: Set host OVS configurations
+  command: |
+    /openstack/venvs/neutron-15.1.4/bin/neutron-odl-ovs-hostconfig \
+            --datapath_type=system --bridge_mappings={{ contr_l3_mappings }}
+  when:
+    - inventory_hostname not in groups['nova_compute']
+    - odl_l3_agent == "Enable"
+
+- name: Set host OVS configurations
+  command: |
+    /openstack/venvs/neutron-15.1.4/bin/neutron-odl-ovs-hostconfig --datapath_type=system
+  when:
+    - inventory_hostname in groups['nova_compute']
+    - odl_l3_agent == "Disable"
+
+- name: Set host OVS configurations
+  command: |
+    /openstack/venvs/neutron-15.1.4/bin/neutron-odl-ovs-hostconfig
+            --datapath_type=system --bridge_mappings={{ compu_l3_mappings }}
+  when:
+    - inventory_hostname in groups['nova_compute']
+    - odl_l3_agent == "Enable"
