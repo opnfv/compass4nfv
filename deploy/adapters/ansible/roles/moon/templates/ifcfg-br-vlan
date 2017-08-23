@@ -1,0 +1,11 @@
+DEVICE=br-vlan
+TYPE=Bridge
+IPADDR={{ ip_settings[inventory_hostname]["br-prv"]["ip"] }}
+PREFIX=24
+GATEWAY={{ ip_settings[inventory_hostname]["br-prv"]["gw"] }}
+BOOTPROTO=none
+ONBOOT=yes
+DELAY=0
+DEFROUTE="yes"
+DNS1=8.8.8.8
+DNS2=8.8.4.4

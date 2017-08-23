@@ -1,0 +1,69 @@
+---
+
+- name: configure opendaylight -> ml2
+  shell: |
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight_v2;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling "True";
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security;
+
+- name: configure bridge_mappings -> ml2
+  shell: |
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini \
+    ovs bridge_mappings "{{ contr_l2_mappings }}";
+  when:
+    - odl_l3_agent == "Disable"
+    - inventory_hostname not in groups['nova_compute']
+
+- name: configure bridge_mappings -> ml2
+  shell: |
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini \
+    ovs bridge_mappings "{{ compu_l2_mappings }}";
+  when:
+    - odl_l3_agent == "Disable"
+    - inventory_hostname in groups['nova_compute']
+
+- name: configure bridge_mappings for L3
+  shell: |
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini \
+    ovs bridge_mappings "{{ contr_l3_mappings }}";
+  when:
+    - odl_l3_agent == "Enable"
+    - inventory_hostname not in groups['nova_compute']
+
+- name: configure bridge_mappings for L3
+  shell: |
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini \
+    ovs bridge_mappings "{{ compu_l3_mappings }}";
+  when:
+    - odl_l3_agent == "Enable"
+    - inventory_hostname in groups['nova_compute']
+
+- name: configure external bridge name for L2
+  shell: |
+    crudini --set /etc/neutron/l3_agent.ini \
+    DEFAULT external_network_bridge "{{ public_bridge }}";
+  when: odl_l3_agent == "Disable"
+
+- name: configure opendaylight in ml2
+  shell: |
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl username admin;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl password admin;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl url \
+        http://{{ internal_lb_vip_address }}:8080/controller/nb/v2/neutron;
+    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_odl port_binding_controller \
+        pseudo-agentdb-binding;
+
+- name: configure metadata for l3 configuration
+  shell: |
+    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
+        enable_isolated_metadata "True";
+  when:
+    - inventory_hostname not in groups['nova_compute']
+
+- name: force metadata for l3 configuration
+  shell: |
+    crudini --set /etc/neutron/dhcp_agent.ini DEFAULT \
+        force_metadata "True";
+  when:
+    - inventory_hostname not in groups['nova_compute']
