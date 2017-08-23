@@ -7,7 +7,11 @@ iface lo inet loopback
 
 # Physical interface
 auto eth0
-iface eth0 inet manual
+iface eth0 inet static
+    address {{ ip_settings[inventory_hostname]["mgmt"]["ip"] }}
+    netmask 255.255.255.0
+    pre-up ifconfig br-mgmt down || true
+    pre-up brctl delbr br-mgmt || true
 
 # external interface
 {% set intf_external = compu_sys_mappings["external"]["interface"] %}
@@ -15,10 +19,16 @@ iface eth0 inet manual
 {% set intf_external = intf_external + '.' + compu_sys_mappings["external"]["vlan_tag"]|string %}
 {% endif %}
 auto {{ intf_external }}
-iface {{ intf_external }} inet manual
+iface {{ intf_external }} inet static
 {% if compu_sys_mappings["external"]["vlan_tag"] | int %}
     vlan-raw-device {{ intf_external }}
 {% endif %}
+    address {{ ip_settings[inventory_hostname]["external"]["ip"] }}
+    netmask 255.255.255.0
+    gateway {{ ip_settings[inventory_hostname]["external"]["gw"] }}
+    pre-up ip link del br-vlan-veth || true
+    pre-up ifconfig br-external down || true
+    pre-up brctl delbr br-external || true
 
 # tenant interface
 {% set intf_tenant = compu_sys_mappings["tenant"]["interface"] %}
@@ -26,10 +36,14 @@ iface {{ intf_external }} inet manual
 {% set intf_tenant = intf_tenant + '.' + compu_sys_mappings["tenant"]["vlan_tag"]|string %}
 {% endif %}
 auto {{ intf_tenant }}
-iface {{ intf_tenant }} inet manual
+iface {{ intf_tenant }} inet static
 {% if compu_sys_mappings["tenant"]["vlan_tag"] | int %}
     vlan-raw-device {{ intf_tenant }}
 {% endif %}
+    address {{ ip_settings[inventory_hostname]["tenant"]["ip"] }}
+    netmask 255.255.255.0
+    pre-up ifconfig br-tenant down || true
+    pre-up brctl delbr br-tenant || true
 
 # storage interface
 {% set intf_storage = compu_sys_mappings["storage"]["interface"] %}
@@ -37,57 +51,12 @@ iface {{ intf_tenant }} inet manual
 {% set intf_storage = intf_storage + '.' + compu_sys_mappings["storage"]["vlan_tag"]|string %}
 {% endif %}
 auto {{ intf_storage }}
-iface {{ intf_storage }} inet manual
+iface {{ intf_storage }} inet static
 {% if compu_sys_mappings["storage"]["vlan_tag"] | int %}
     vlan-raw-device {{ intf_storage }}
 {% endif %}
-
-# Container/Host management bridge
-auto br-mgmt
-iface br-mgmt inet static
-    bridge_stp off
-    bridge_waitport 0
-    bridge_fd 0
-    bridge_ports eth0
-    address {{ ip_settings[inventory_hostname]["mgmt"]["ip"] }}
-    netmask 255.255.255.0
-
-# OpenStack Networking VLAN bridge
-auto br-external
-iface br-external inet static
-    bridge_stp off
-    bridge_waitport 0
-    bridge_fd 0
-    bridge_ports {{ intf_external }}
-    address {{ ip_settings[inventory_hostname]["external"]["ip"] }}
-    netmask 255.255.255.0
-    gateway {{ ip_settings[inventory_hostname]["external"]["gw"] }}
-    offload-sg off
-    # Create veth pair, don't bomb if already exists
-    pre-up ip link add br-vlan-veth type veth peer name eth12 || true
-    # Set both ends UP
-    pre-up ip link set br-vlan-veth up
-    pre-up ip link set eth12 up
-    # Delete veth pair on DOWN
-    post-down ip link del br-vlan-veth || true
-    bridge_ports br-vlan-veth
-
-# VXLAN (tunnel/overlay) bridge config
-auto br-tenant
-iface br-tenant inet static
-    bridge_stp off
-    bridge_waitport 0
-    bridge_fd 0
-    bridge_ports {{ intf_tenant }}
-    address {{ ip_settings[inventory_hostname]["tenant"]["ip"] }}
-    netmask 255.255.255.0
-
-# storage bridge
-auto br-storage
-iface br-storage inet static
-    bridge_stp off
-    bridge_waitport 0
-    bridge_fd 0
-    bridge_ports {{ intf_storage }}
     address {{ ip_settings[inventory_hostname]["storage"]["ip"] }}
     netmask 255.255.255.0
+    pre-up ifconfig br-storage down || true
+    pre-up brctl delbr br-storage || true
+

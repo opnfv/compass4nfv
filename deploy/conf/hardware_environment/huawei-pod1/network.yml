@@ -14,15 +14,15 @@ bond_mappings: []
 provider_net_mappings:
   - name: br-provider
     network: physnet
-    interface: eth1
+    interface: eth10
     type: ovs
     role:
       - controller
-      - compute
 
 sys_intf_mappings:
   - name: mgmt
     interface: eth0
+    type: normal
     vlan_tag: None
     role:
       - controller
@@ -30,6 +30,7 @@ sys_intf_mappings:
 
   - name: tenant
     interface: eth1
+    type: normal
     vlan_tag: 101
     role:
       - controller
@@ -37,6 +38,7 @@ sys_intf_mappings:
 
   - name: storage
     interface: eth1
+    type: normal
     vlan_tag: 102
     role:
       - controller
@@ -44,6 +46,7 @@ sys_intf_mappings:
 
   - name: external
     interface: eth1
+    type: normal
     vlan_tag: None
     role:
       - controller
@@ -102,6 +105,11 @@ public_vip:
   interface: external
 
 onos_nic: eth2
+tenant_net_info:
+  type: vxlan
+  range: "1:1000"
+  provider_network: None
+
 public_net_info:
   enable: "True"
   network: ext-net
