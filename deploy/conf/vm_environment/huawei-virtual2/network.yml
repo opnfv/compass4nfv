@@ -14,11 +14,10 @@ bond_mappings: []
 provider_net_mappings:
   - name: br-provider
     network: physnet
-    interface: eth1
+    interface: eth10
     type: ovs
     role:
       - controller
-      - compute
 
 sys_intf_mappings:
   - name: mgmt
@@ -102,6 +101,11 @@ public_vip:
   interface: external
 
 onos_nic: eth2
+tenant_net_info:
+  type: vxlan
+  range: "1:1000"
+  provider_network: None
+
 public_net_info:
   enable: "True"
   network: ext-net
@@ -116,3 +120,4 @@ public_net_info:
   floating_ip_cidr: "192.16.1.0/24"
   floating_ip_start: "192.16.1.101"
   floating_ip_end: "192.16.1.199"
+

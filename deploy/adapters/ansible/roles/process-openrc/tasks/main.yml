@@ -7,39 +7,21 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-flavors:
-  - id: 0
-    name: m1.nano
-    vcpus: 1
-    ram: 64
-    disk: 1
+- name: replace http with https in openrc
+  replace:
+    dest: /opt/openrc
+    regexp: "http://"
+    replace: "https://"
 
-  - id: 1
-    name: m1.tiny
-    vcpus: 1
-    ram: 512
-    disk: 1
+- name: replace internalURL with publicURL in openrc
+  replace:
+    dest: /opt/openrc
+    regexp: "{{ internal_vip['ip'] }}"
+    replace: "{{ public_vip['ip'] }}"
 
-  - id: 2
-    name: m1.small
-    vcpus: 1
-    ram: 2048
-    disk: 20
+- name: change the endpoint type
+  replace:
+    dest: /opt/openrc
+    regexp: "internalURL"
+    replace: "publicURL"
 
-  - id: 3
-    name: m1.medium
-    vcpus: 2
-    ram: 4096
-    disk: 40
-
-  - id: 4
-    name: m1.large
-    vcpus: 4
-    ram: 8192
-    disk: 80
-
-  - id: 5
-    name: m1.xlarge
-    vcpus: 8
-    ram: 16384
-    disk: 160
