@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da33351e_d99a9c13",
+        "filename": "deploy/adapters/ansible/roles/post-openstack/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2017-08-24T07:54:54Z",
+      "side": 0,
+      "message": "change internal endpoint to public endpoint for functest in compass-tasks contanier.",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 24
+      },
+      "revId": "0ebcf5e461c5cecfb23b4497d8966485fd504c55",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
