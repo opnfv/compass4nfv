@@ -1,0 +1,193 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da33351e_4dba4124",
+        "filename": "deploy/adapters/ansible/openstack/HA-ansible-multinodes.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "Should we put dpdk_config hear",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 18
+      },
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_2db53d31",
+        "filename": "deploy/adapters/ansible/openstack/HA-ansible-multinodes.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "Should we put dpdk_install here?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 17
+      },
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_222b8c95",
+        "filename": "plugins/dpdk/mk_ovs.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "need sudo haere?",
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_6d78e58f",
+        "filename": "plugins/dpdk/mk_ovs.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "line 50 \u0026 51 are used for bare-metal case, will we use the same name in the virtual environment?",
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_0203e842",
+        "filename": "plugins/dpdk/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "extra space at the end of line",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 9
+      },
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_42fdf039",
+        "filename": "plugins/dpdk/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "Should the installation of  ovs and dpdk happen in post_openstack?",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 29
+      },
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_824b7886",
+        "filename": "plugins/dpdk/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "Extra space",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 6
+      },
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_8232580e",
+        "filename": "plugins/dpdk/plugins.desc",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "Does this dpdk_config mean revervation of hugepage memory, then it should happen as early as possible, otherwise, memory may be fragmented as time passed, then there will be no enough  hugepage left?",
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_8d83a955",
+        "filename": "plugins/dpdk/roles/hugepages/tasks/hugepages.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-08-24T23:55:23Z",
+      "side": 1,
+      "message": "line 1,2,3,4,5,6,7,8, and 9 has exra space at the end of the line.",
+      "range": {
+        "startLine": 9,
+        "startChar": 3,
+        "endLine": 9,
+        "endChar": 4
+      },
+      "revId": "f4c70475421f35d46844459747ff317569708031",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
