@@ -30,6 +30,10 @@
 
 export OPENSTACK_VERSION=${OPENSTACK_VERSION:-ocata}
 
+if [[ "x"$KUBERNETES_VERSION != "x" ]]; then
+   unset OPENSTACK_VERSION
+fi
+
 COMPASS_DIR=`cd ${BASH_SOURCE[0]%/*}/;pwd`
 export COMPASS_DIR
 
