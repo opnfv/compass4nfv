@@ -1,0 +1,19 @@
+---
+packages:
+  - python-devel
+  - gcc
+  - redhat-lsb-core
+  - python-crypto
+  - wget
+  - yum-plugin-priorities
+  - vim
+  - lsof
+  - strace
+  - net-tools
+
+
+pip_packages:
+  - crudini
+  - python-keyczar
+
+pip_conf: pip.conf
