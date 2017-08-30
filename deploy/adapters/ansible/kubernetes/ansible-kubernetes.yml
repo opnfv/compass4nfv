@@ -1,0 +1,32 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- hosts: all
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - pre-k8s
+
+- hosts: all
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - setup-k8s-network
+
+- hosts: all
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - install-k8s-dependence
+
+- hosts: localhost
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - kargo
