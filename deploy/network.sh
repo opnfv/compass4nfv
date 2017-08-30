@@ -124,7 +124,7 @@ function recover_nat_net() {
 }
 
 function setup_virtual_net() {
-  setup_nat_net install $INSTALL_GW $INSTALL_MASK
+  setup_nat_net install $INSTALL_GW $INSTALL_NETMASK
   setup_nat_net external_nat $EXT_NAT_GW $EXT_NAT_MASK $EXT_NAT_IP_START $EXT_NAT_IP_END
 }
 
@@ -170,7 +170,7 @@ function create_nets() {
     setup_"$TYPE"_net
 
     # create external network
-#    setup_bridge_external
+    # setup_bridge_external
     clear_forward_rejct_rules
 
     setup_network_boot_scripts
