@@ -1,0 +1,11 @@
+DEVICE={{ sys_intf_mappings["external"]["interface"]}}
+TYPE=Ethernet
+IPADDR={{ ip_settings[inventory_hostname]["external"]["ip"] }}
+PREFIX={{ ip_settings[inventory_hostname]["external"]["netmask"] }}
+GATEWAY={{ ip_settings[inventory_hostname]["external"]["gw"] }}
+BOOTPROTO=none
+ONBOOT=yes
+DELAY=0
+DEFROUTE="yes"
+DNS1=8.8.8.8
+DNS2=8.8.4.4
