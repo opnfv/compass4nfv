@@ -1,0 +1,20 @@
+---
+packages:
+  - ubuntu-cloud-keyring
+  - python-dev
+  - openvswitch-switch
+  - openvswitch-switch-dpdk
+  - python-memcache
+  - python-iniparse
+  - python-lxml
+  - python-crypto
+
+pip_packages:
+  - crudini
+  - python-keyczar
+  - yang2tosca
+
+pip_conf: pip.conf
+
+services:
+  - ntp

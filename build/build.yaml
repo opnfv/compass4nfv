@@ -20,6 +20,12 @@ packages:
     get_method: docker
     url: compass4nfv/compass-tasks-osa
 
+  - name: compass-tasks-k8s
+    description: "compass task container for kubernets deployment via kargo"
+    get_method: docker
+    url: compass4nfv/compass-tasks-k8s
+
+
   - name: compass-cobbler
     description: "cobbler container for compass"
     get_method: docker
