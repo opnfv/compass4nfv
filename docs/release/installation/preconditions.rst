@@ -21,30 +21,30 @@ networking and Unix/Linux administration.
 Preconditions
 -------------
 
-Before starting the installation of the Danube release of OPNFV,
+Before starting the installation of the Euphrates release of OPNFV,
 some planning must be done.
 
 
-Retrieving the installation ISO image
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Retrieving the installation tarball
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-First of all, The installation ISO is needed for deploying your OPNFV
+First of all, The installation tarball is needed for deploying your OPNFV
 environment, it included packages of Compass, OpenStack, OpenDaylight, ONOS
 and so on.
 
-The stable release ISO can be retrieved via `OPNFV software download page <https://www.opnfv.org/software>`_
+The stable release tarball can be retrieved via `OPNFV software download page <https://www.opnfv.org/software>`_
 
-The daily build ISO can be retrieved via OPNFV artifacts repository:
+The daily build tarball can be retrieved via OPNFV artifacts repository:
 
 http://artifacts.opnfv.org/compass4nfv.html
 
-NOTE: Search the keyword "compass4nfv/Danube" to locate the ISO image.
+NOTE: Search the keyword "compass4nfv/Euphrates" to locate the tarball.
 
 E.g.
-compass4nfv/danube/opnfv-2017-03-29_08-55-09.iso
+compass4nfv/euphrates/opnfv-2017-03-29_08-55-09.tar.gz
 
-The name of iso image includes the time of iso building, you can get the daily
-ISO according the building time.
+The name of tarball includes the time of tarball building, you can get the daily
+tarball according the building time.
 The git url and sha1 of Compass4nfv are recorded in properties files,
 According these, the corresponding deployment scripts can be retrieved.
 
@@ -58,9 +58,9 @@ To retrieve the repository of Compass4nfv on Jumphost use the following command:
 
 NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN ROOT DIRECTORY(INCLUDE SUBFOLDERS).
 
-To get stable /Danube release, you can use the following command:
+To get stable/euphrates release, you can use the following command:
 
-- git checkout Danube.1.0
+- git checkout Euphrates.1.0
 
 Setup Requirements
 ------------------

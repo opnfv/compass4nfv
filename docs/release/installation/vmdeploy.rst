@@ -5,6 +5,22 @@
 Installation on virtual machines
 ================================
 
+Quick Start
+-----------
+
+Only 1 command to try virtual deployment, if you have Internet access. Just Paste it and Run.
+
+.. code-block:: bash
+
+    curl https://raw.githubusercontent.com/opnfv/compass4nfv/euphrates/quickstart.sh | bash
+
+If you want to deploy noha with1 controller and 1 compute, run the following command
+
+.. code-block:: bash
+    export SCENARIO=os-nosdn-nofeature-noha.yml
+    export VIRT_NUMBER=2
+    curl https://raw.githubusercontent.com/opnfv/compass4nfv/euphrates/quickstart.sh | bash
+
 Nodes Configuration (Virtual Deployment)
 ----------------------------------------
 
@@ -129,7 +145,7 @@ Start Deployment (Virtual Deployment)
 1. Edit deploy.sh
 
 1.1. Set OS version for deployment nodes.
-     Compass4nfv supports ubuntu and centos based openstack newton.
+     Compass4nfv supports ubuntu and centos based openstack ocata.
 
 E.g.
 
@@ -148,7 +164,7 @@ E.g.
 .. code-block:: bash
 
     # Set ISO image corresponding to your code
-    export ISO_URL=file:///home/compass/compass4nfv.iso
+    export ISO_URL=file:///home/compass/compass4nfv.tar.gz
 
 1.3. Set scenario that you want to deploy
 
@@ -163,16 +179,6 @@ nosdn-nofeature scenario deploy sample
 
     # NETWORK is your network.yml's path
     export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network.yml
-
-ocl-nofeature scenario deploy sample
-
-.. code-block:: bash
-
-    # DHA is your dha.yml's path
-    export DHA=./deploy/conf/vm_environment/os-ocl-nofeature-ha.yml
-
-    # NETWORK is your network.yml's path
-    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network_ocl.yml
 
 odl_l2-moon scenario deploy sample
 
@@ -204,25 +210,15 @@ odl_l3-nofeature scenario deploy sample
     # NETWORK is your network.yml's path
     export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network.yml
 
-onos-nofeature scenario deploy sample
+odl-sfc deploy scenario sample
 
 .. code-block:: bash
 
     # DHA is your dha.yml's path
-    export DHA=./deploy/conf/vm_environment/os-onos-nofeature-ha.yml
+    export DHA=./deploy/conf/vm_environment/os-odl-sfc-ha.yml
 
     # NETWORK is your network.yml's path
-    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network_onos.yml
-
-onos-sfc deploy scenario sample
-
-.. code-block:: bash
-
-    # DHA is your dha.yml's path
-    export DHA=./deploy/conf/vm_environment/os-onos-sfc-ha.yml
-
-    # NETWORK is your network.yml's path
-    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network_onos.yml
+    export NETWORK=./deploy/conf/vm_environment/huawei-virtual1/network.yml
 
 2. Run ``deploy.sh``
 
