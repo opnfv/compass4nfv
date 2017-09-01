@@ -5,7 +5,7 @@
 Abstract
 ========
 
-This document describes how to install the Danube release of OPNFV when
+This document describes how to install the Ocata release of OPNFV when
 using Compass4nfv as a deployment tool covering it's limitations, dependencies
 and required system resources.
 
@@ -15,6 +15,9 @@ Version history
 +--------------------+--------------------+--------------------+---------------------------+
 | **Date**           | **Ver.**           | **Author**         | **Comment**               |
 |                    |                    |                    |                           |
++--------------------+--------------------+--------------------+---------------------------+
+| 2017-09-01         | 1.0.0              | Yifei Xue          | Rewritten for             |
+|                    |                    | (HUAWEI)           | Compass4nfv E release     |
 +--------------------+--------------------+--------------------+---------------------------+
 | 2017-02-21         | 3.0.0              | Justin chi         | Changes for D release     |
 |                    |                    | (HUAWEI)           |                           |

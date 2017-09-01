@@ -21,29 +21,28 @@ networking and Unix/Linux administration.
 Preconditions
 -------------
 
-Before starting the installation of the Danube release of OPNFV,
+Before starting the installation of the Euphrates release of OPNFV,
 some planning must be done.
 
 
-Retrieving the installation ISO image
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Retrieving the installation Tarball
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-First of all, The installation ISO is needed for deploying your OPNFV
-environment, it included packages of Compass, OpenStack, OpenDaylight, ONOS
-and so on.
+First of all, The installation tarball is needed for deploying your OPNFV
+environment, it included packages of compass docker images and OSA repo.
 
-The stable release ISO can be retrieved via `OPNFV software download page <https://www.opnfv.org/software>`_
+The stable tarball can be retrieved via `OPNFV software download page <https://www.opnfv.org/software>`_
 
-The daily build ISO can be retrieved via OPNFV artifacts repository:
+The daily build tarball can be retrieved via OPNFV artifacts repository:
 
 http://artifacts.opnfv.org/compass4nfv.html
 
-NOTE: Search the keyword "compass4nfv/Danube" to locate the ISO image.
+NOTE: Search the keyword "compass4nfv/Euphrates" to locate the ISO image.
 
 E.g.
-compass4nfv/Danube/opnfv-2016-09-18_08-15-13.iso
+compass4nfv/Euphrates/opnfv-2017-09-18_08-15-13.tar.gz
 
-The name of iso image includes the time of iso building, you can get the daily
+The name of tarball includes the time of iso building, you can get the daily
 ISO according the building time.
 The git url and sha1 of Compass4nfv are recorded in properties files,
 According these, the corresponding deployment scripts can be retrieved.
@@ -58,9 +57,9 @@ To retrieve the repository of Compass4nfv on Jumphost use the following command:
 
 NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN ROOT DIRECTORY(INCLUDE SUBFOLDERS).
 
-To get stable /Danube release, you can use the following command:
+To get stable /Euphrates release, you can use the following command:
 
-- git checkout Danube.1.0
+- git checkout Euphrates.1.0
 
 Setup Requirements
 ------------------
@@ -126,17 +125,17 @@ Network requirements include:
 
        -  IPMI Network
 
-       -  Openstack mgmt Network*
+       -  br-mgmt Network*
 
-       -  Openstack external Network*
+       -  br-vlan Network*
 
-       -  Openstack tenant Network*
+       -  br-tenant Network*
 
-       -  Openstack storage Network*
+       -  br-storage Network*
 
 3.     Lights out OOB network access from Jumphost with IPMI node enabled (Bare Metal deployment only).
 
-4.     External network has Internet access, meaning a gateway and DNS availability.
+4.     br-vlan network has Internet access, meaning a gateway and DNS availability.
 
 **The networks with(*) can be share one NIC(Default configuration) or use an exclusive**
 **NIC(Reconfigurated in network.yml).**

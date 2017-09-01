@@ -199,7 +199,7 @@ IP Settings
 
         - ip_ranges -- ip addresses range provided for this network.
 
-        - cidr -- the IPv4 address and its associated routing prefix and subnet maskã
+        - cidr -- the IPv4 address and its associated routing prefix and subnet mask?
 
         - gw -- need to add this line only if network is external.
 
@@ -225,11 +225,6 @@ Public VIP
         - netmask -- the length of netmask
 
         - interface -- mostly external.
-
-ONOS NIC
-~~~~~~~~
-
-        - the NIC for ONOS, if there is no ONOS configured, leave it unchanged.
 
 
 Public Network
@@ -316,127 +311,21 @@ Public Network
 **The following figure shows the interfaces and nics of JumpHost and deployment nodes in
 huawei-pod1 network configuration(default one nic for openstack networks).**
 
-.. code-block:: console
+.. figure:: images/single_nic.png
+    :alt: Single nic scenario
+    :figclass: align-center
 
+    Fig 1. Single nic scenario
 
-    +--------------JumpHost-------------+
-    |                                   |
-    |   +-+Compass+-+                   |
-    |   |           +     +--------+    |    External-network
-    |   |         eth2+---+br-ext  +-+eth0+----------------------+
-    |   |           +     +--------+    |                        |
-    |   |           |                   |                        |
-    |   |           |                   |                        |
-    |   |           +     +--------+    |    Install-network     |
-    |   |         eth1+---+install +-+eth1+-----------------+    |
-    |   |           +     +--------+    |                   |    |
-    |   |           |                   |                   |    |
-    |   |           |                   |                   |    |
-    |   |           +                   |    IPMI-network   |    |
-    |   |         eth0                eth2+-----------+     |    |
-    |   |           +                   |             |     |    |
-    |   +---+VM+----+                   |             |     |    |
-    +-----------------------------------+             |     |    |
-                                                      |     |    |
-                                                      |     |    |
-                                                      |     |    |
-                                                      |     |    |
-    +---------------Host1---------------+             |     |    |
-    |                                   |             |     |    |
-    |                                  eth0+----------------+    |
-    |                                   |             |     |    |
-    |                   mgmt +--------+ |             |     |    |
-    |                                 | |             |     |    |
-    |                +-----------+    | |             |     |    |
-    |   external+----+  br-prv   +----+eth1+---------------------+
-    |                +-----------+    | |             |     |    |
-    |                                 | |             |     |    |
-    |                   storage +-----+ |             |     |    |
-    |                                   |             |     |    |
-    +-----------------------------------+             |     |    |
-    |                                 IPMI+-----------+     |    |
-    +-----------------------------------+             |     |    |
-                                                      |     |    |
-                                                      |     |    |
-                                                      |     |    |
-    +---------------Host2---------------+             |     |    |
-    |                                   |             |     |    |
-    |                                  eth0+----------------+    |
-    |                                   |             |          |
-    |                   mgmt +--------+ |             |          |
-    |                                 | |             |          |
-    |                +-----------+    | |             |          |
-    |   external+----+  br-prv   +----+eth1+---------------------+
-    |                +-----------+    | |             |
-    |                                 | |             |
-    |                   storage +-----+ |             |
-    |                                   |             |
-    +-----------------------------------+             |
-    |                                 IPMI+-----------+
-    +-----------------------------------+
 
 **The following figure shows the interfaces and nics of JumpHost and deployment nodes in
 intel-pod8 network configuration(openstack networks are seperated by multiple NICs).**
 
-.. code-block:: console
+.. figure:: images/multi_nics.png
+    :alt: Multiple nics scenario
+    :figclass: align-center
 
-
-    +-------------+JumpHost+------------+
-    |                                   |
-    |   +-+Compass+-+                   |
-    |   |           +     +--------+    |    External-network
-    |   |         eth2+---+br-ext  +-+eth0+----------------------+
-    |   |           +     +--------+    |                        |
-    |   |           |                   |                        |
-    |   |           |                   |                        |
-    |   |           +     +--------+    |    Install-network     |
-    |   |         eth1+---+install +-+eth1+-----------------+    |
-    |   |           +     +--------+    |                   |    |
-    |   |           |                   |                   |    |
-    |   |           |                   |                   |    |
-    |   |           +                   |    IPMI-network   |    |
-    |   |         eth0                eth2+-----------+     |    |
-    |   |           +                   |             |     |    |
-    |   +---+VM+----+                   |             |     |    |
-    +-----------------------------------+             |     |    |
-                                                      |     |    |
-                                                      |     |    |
-                                                      |     |    |
-                                                      |     |    |
-    +--------------+Host1+--------------+             |     |    |
-    |                                   |             |     |    |
-    |                                  eth0+----------------+    |
-    |                                   |             |     |    |
-    |                      +--------+   |             |     |    |
-    |         external+----+br-prv  +-+eth1+---------------------+
-    |                      +--------+   |             |     |    |
-    |         storage +---------------+eth2+-------------------------+
-    |                                   |             |     |    |   |
-    |         Mgmt    +---------------+eth3+----------------------------+
-    |                                   |             |     |    |   |  |
-    |                                   |             |     |    |   |  |
-    +-----------------------------------+             |     |    |   |  |
-    |                                 IPMI+-----------+     |    |   |  |
-    +-----------------------------------+             |     |    |   |  |
-                                                      |     |    |   |  |
-                                                      |     |    |   |  |
-                                                      |     |    |   |  |
-                                                      |     |    |   |  |
-    +--------------+Host2+--------------+             |     |    |   |  |
-    |                                   |             |     |    |   |  |
-    |                                  eth0+----------------+    |   |  |
-    |                                   |             |          |   |  |
-    |                      +--------+   |             |          |   |  |
-    |         external+----+br-prv  +-+eth1+---------------------+   |  |
-    |                      +--------+   |             |              |  |
-    |         storage +---------------+eth2+-------------------------+  |
-    |                                   |             | storage-network |
-    |         Mgmt    +---------------+eth3+----------------------------+
-    |                                   |             | mgmt-network
-    |                                   |             |
-    +-----------------------------------+             |
-    |                                 IPMI+-----------+
-    +-----------------------------------+
+    Fig 2. Multiple nics scenario
 
 
 Start Deployment (Bare Metal Deployment)
@@ -457,14 +346,14 @@ E.g.
     or
     export OS_VERSION=centos7
 
-1.2. Set ISO image corresponding to your code
+1.2. Set tarball corresponding to your code
 
 E.g.
 
 .. code-block:: bash
 
     # Set ISO image corresponding to your code
-    export ISO_URL=file:///home/compass/compass4nfv.iso
+    export ISO_URL=file:///home/compass/compass4nfv.tar.gz
 
 1.3. Set hardware deploy jumpserver PXE NIC. (set eth1 E.g.)
      You do not need to set it when virtual deploy.
@@ -490,16 +379,6 @@ nosdn-nofeature scenario deploy sample
 
     # NETWORK is your network.yml's path
     export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network.yml
-
-ocl-nofeature scenario deploy sample
-
-.. code-block:: bash
-
-    # DHA is your dha.yml's path
-    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-ocl-nofeature-ha.yml
-
-    # NETWORK is your network.yml's path
-    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network_ocl.yml
 
 odl_l2-moon scenario deploy sample
 
@@ -531,25 +410,15 @@ odl_l3-nofeature scenario deploy sample
     # NETWORK is your network.yml's path
     export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network.yml
 
-onos-nofeature scenario deploy sample
+odl-sfc deploy scenario sample
 
 .. code-block:: bash
 
     # DHA is your dha.yml's path
-    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-onos-nofeature-ha.yml
+    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-odl-sfc-ha.yml
 
     # NETWORK is your network.yml's path
-    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
-
-onos-sfc deploy scenario sample
-
-.. code-block:: bash
-
-    # DHA is your dha.yml's path
-    export DHA=./deploy/conf/hardware_environment/huawei-pod1/os-onos-sfc-ha.yml
-
-    # NETWORK is your network.yml's path
-    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network_onos.yml
+    export NETWORK=./deploy/conf/hardware_environment/huawei-pod1/network.yml
 
 2. Run ``deploy.sh``
 
