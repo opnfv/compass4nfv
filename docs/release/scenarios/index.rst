@@ -12,4 +12,7 @@ Compass4NFV Scenarios
 
     os-nosdn-nofeature-ha.rst
     os-odl-nofeature-ha.rst
+    os-odl-sfc-ha.rst
+    os-nosdn-kvm-ha.rst
+    k8s-nosdn-nofeature-ha.rst
 
