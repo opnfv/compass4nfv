@@ -52,33 +52,38 @@ an additional tagged VLAN is added if uses default network configuration.
 How to set OpenStack Dashboard login user and password
 ======================================================
 
-It uses admin/console as the default user/pass for OpenStack Dashboard, and you can set it in below file:
-compass4nfv/deploy/conf/base.conf
+It uses admin as the default user for OpenStack Dashboard. The password can be achieved as below:
+
+.. code-block:: bash
+
+    sudo docker cp compass-tasks:/opt/openrc ./
+    sudo cat openrc | grep OS_PASSWORD
 
 How to visit OpenStack Dashboard
 ================================
 
-You can visit OpenStack Dashboard by URL: http://{puclib_vip}/horizon
+For vm deployment, because NAT bridge is used in virtual deployment, horizon can not be access directly
+in external IP address. you need to cofigure the related IPtables rule at first.
 
-The public virtual IP is configured in "compass4nfv/deploy/conf/hardware_environment/huawei-pod1/network.yml"
-or "compass4nfv_FAQ/deploy/conf/vm_environment/huawei-virtual1/network.yml", defined as below:
+.. code-block:: bash
 
-.. code-block:: yaml
+    iptables -t nat -A PREROUTING -d $EX_IP -p tcp --dport  $PORT -j DNAT --to 192.16.1.222:443
 
-    public_vip:
-      ip: 192.168.50.240
+The $EX_IP here is the server's ip address that can be access from external.
+You can use below command to query your external IP address.
+
+.. code-block:: bash
+
+    external_nic=`ip route |grep '^default'|awk '{print $5F}'
+    ip addr show $external_nic
+The $PORT here is the one of the port [1- 65535] that does't be used in system.
+
+After that, you can visit OpenStack Dashboard by URL: http://$EX_IP:$PORT
 
 How to access controller nodes after deployment
 ===============================================
 
-1. First you should login Compass VM via ssh command on Jumphost by default user/pass root/root.
-The default login IP of Compass VM is configured in "compass4nfv/deploy/conf/base.conf", defined as below:
-
-.. code-block:: bash
-
-    export MGMT_IP=${MGMT_IP:-192.168.200.2}
-
-2. Then you can login the controller nodes (host1-3) by default user/pass root/root via the install
+You can login the controller nodes (host1-3) by default user/pass root/root via the install
 network IPs which are configured in "compass4nfv/deploy/conf/base.conf", defined as below:
 
 .. code-block:: bash
@@ -111,8 +116,13 @@ network IPs which are configured in "compass4nfv/deploy/conf/base.conf", defined
 Where is OpenStack RC file
 ==========================
 
-It is located /opt/admin-openrc.sh in each controller node as default. Please source it first if you
-want to use OpenStack CLI.
+The RC file named openrc is located in /root in utility container on each controller node as default.
+Please source it first if you want to use OpenStack CLI.
+
+.. code-block:: bash
+
+    lxc-attach -n $(lxc-ls | grep utility)
+    source /root/openrc
 
 How to recovery network connection after Jumphost reboot
 ========================================================
