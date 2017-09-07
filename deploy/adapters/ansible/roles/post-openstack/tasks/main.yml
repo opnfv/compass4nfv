@@ -16,6 +16,7 @@
   when:
     - public_net_info.enable == "True"
     - public_net_info.type == "flat"
+    - inventory_hostname == groups['utility_all'][0]
 
 - name: create external net
   shell: |
@@ -27,6 +28,7 @@
   when:
     - public_net_info.enable == "True"
     - public_net_info.type == "vlan"
+    - inventory_hostname == groups['utility_all'][0]
 
 - name: create external subnet
   shell: |
@@ -37,6 +39,8 @@
     --gateway "{{ public_net_info.external_gw }}" \
     --subnet-range "{{ public_net_info.floating_ip_cidr }}" \
     "{{ public_net_info.subnet }}"
+  when:
+    - inventory_hostname == groups['utility_all'][0]
 
 - name: create openstack flavors
   shell: |
@@ -45,15 +49,22 @@
     --id {{ item.id }} --ram {{ item.ram }} \
     --disk {{ item.disk }} --vcpus {{ item.vcpus }} || true
   with_items: "{{ flavors }}"
+  when:
+    - inventory_hostname == groups['utility_all'][0]
+
 
 - name: fetch openrc
   fetch:
     src: /root/openrc
     dest: /opt/openrc
     flat: "yes"
+  when:
+    - inventory_hostname == groups['utility_all'][0]
 
 - name: fetch haproxy.cert
   fetch:
     src: /etc/ssl/certs/haproxy.cert
     dest: /opt/os_cacert
     flat: "yes"
+  when:
+    - inventory_hostname == groups['network_hosts'][0]

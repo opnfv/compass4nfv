@@ -69,7 +69,9 @@
   tags:
     - odl
 
-- hosts: utility_all[0]
+- hosts:
+    - utility_all[0]
+    - network_hosts[0]
   remote_user: root
   roles:
     - post-openstack
