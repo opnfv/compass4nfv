@@ -8,7 +8,6 @@
 - name: install networking-odl
   pip:
     name: networking-odl
-    version: "{{ networking_odl_version }}"
     virtualenv: /openstack/venvs/neutron-15.1.4    # Todo: hardcode, need to modify
 
 - name: turn off neutron-server on control node

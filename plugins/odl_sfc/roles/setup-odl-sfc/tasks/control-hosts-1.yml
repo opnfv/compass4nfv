@@ -94,6 +94,11 @@
     sed -i 's/port="8282"/port="8081"/'
     {{ odl_home }}configuration/tomcat-server.xml
 
+- name: modify 8181 to 8081
+  shell: >
+    sed -i 's/8181/8081/'
+    {{ odl_home }}etc/org.ops4j.pax.web.cfg
+
 - name: remove karaf data directory
   file:
     path: "{{ odl_home }}data"
