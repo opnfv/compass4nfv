@@ -10,5 +10,5 @@
 
 - name: copy odl_cluster role
   shell: |
-    cp -rf /var/ansible/run/openstack_ocata-opnfv2/roles/setup-odl-sfc \
-          /var/ansible/run/openstack_ocata-opnfv2/roles/setup-odl
+    cp -rf /var/ansible/run/openstack_ocata-opnfv2/roles/setup-odl-sfc/* \
+          /var/ansible/run/openstack_ocata-opnfv2/roles/setup-odl/

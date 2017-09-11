@@ -15,7 +15,7 @@
 - include: control-repos-1.yml
   vars:
     odl_pip: "{{ networking_odl_url }}"
-  when: inventory_hostname in groups['repo_container']
+  when: inventory_hostname == groups['repo_container'][0]
 
 - include: control-servers-1.yml
   when: inventory_hostname in groups['neutron_server']
