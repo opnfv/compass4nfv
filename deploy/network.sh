@@ -29,6 +29,7 @@ function setup_bridge_net()
 
     sudo virsh net-define $WORK_DIR/network/$net_name.xml
     sudo virsh net-start $net_name
+    sudo virsh net-autostart $net_name
 }
 
 function recover_bridge_net()
@@ -83,6 +84,7 @@ function setup_bridge_external()
 
     sudo virsh net-define $WORK_DIR/network/external.xml
     sudo virsh net-start external
+    sudo virsh net-autostart external
 
     python $COMPASS_DIR/deploy/setup_vnic.py
 }
@@ -115,6 +117,7 @@ function setup_nat_net() {
 
     sudo virsh net-define $WORK_DIR/network/$net_name.xml
     sudo virsh net-start $net_name
+    sudo virsh net-autostart $net_name
 }
 
 function recover_nat_net() {
