@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da33351e_cf13b2b6",
+        "filename": "plugins/dpdk/roles/ins_dpdk/vars/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3363
+      },
+      "writtenOn": "2017-09-12T23:29:58Z",
+      "side": 1,
+      "message": "In bare-metal case, will this needed to be changed to get better performance?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 108
+      },
+      "revId": "9f71d9f1f17c806f71f034f28a3da9f5f4cb5a16",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
