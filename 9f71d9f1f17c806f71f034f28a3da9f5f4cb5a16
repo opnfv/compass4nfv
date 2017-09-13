@@ -22,6 +22,30 @@
       "revId": "9f71d9f1f17c806f71f034f28a3da9f5f4cb5a16",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da33351e_456943bd",
+        "filename": "plugins/dpdk/roles/ins_dpdk/vars/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 386
+      },
+      "writtenOn": "2017-09-13T09:48:35Z",
+      "side": 1,
+      "message": "Yes, I would like to add a var in plugin description",
+      "parentUuid": "da33351e_cf13b2b6",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 108
+      },
+      "revId": "9f71d9f1f17c806f71f034f28a3da9f5f4cb5a16",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
