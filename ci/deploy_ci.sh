@@ -18,6 +18,10 @@ case $DEPLOY_SCENARIO in
         echo "os-onos-sfc-ha scenario supports mitaka only"
         exit 1
         ;;
+    k8-nosdn-nofeature-ha)
+        export COMPASS_OS_VERSION=centos7
+        export KUBERNETES_VERSION="v1.7.3"
+        ;;
 esac
 
 if [[ $ROOT_BUILD_CAUSE == MANUALTRIGGER ]]; then
