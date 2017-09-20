@@ -1,0 +1,75 @@
+##############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+---
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiUser: root
+ipmiVer: '2.0'
+
+odl_l3_agent: "Enable"
+hosts:
+  - name: host1
+    mac: '88:cf:98:61:66:77'
+    interfaces:
+      - eth1: '88:CF:98:61:66:76'
+    ipmiIp: 192.168.120.12
+    ipmiPass: Opnfv@pod7
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-adm
+      - ceph-mon
+
+  - name: host2
+    mac: '88:cf:98:61:66:c9'
+    interfaces:
+      - eth1: '88:CF:98:61:66:C8'
+    ipmiIp: 192.168.120.13
+    ipmiPass: Opnfv@pod7
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-mon
+
+  - name: host3
+    mac: '88:cf:98:83:31:98'
+    interfaces:
+      - eth1: '88:CF:98:83:31:97'
+    ipmiIp: 192.168.120.14
+    ipmiPass: Opnfv@pod7
+    roles:
+      - controller
+      - ha
+      - odl
+      - ceph-mon
+
+  - name: host4
+    mac: '88:cf:98:61:67:09'
+    interfaces:
+      - eth1: '88:CF:98:61:67:08'
+    ipmiIp: 192.168.120.15
+    ipmiPass: Opnfv@pod7
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host5
+    mac: '88:cf:98:83:31:e4'
+    interfaces:
+      - eth1: '88:CF:98:83:31:E3'
+    ipmiIp: 192.168.120.16
+    ipmiPass: Opnfv@pod7
+    roles:
+      - compute
+      - ceph-osd
