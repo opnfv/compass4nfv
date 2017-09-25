@@ -65,13 +65,13 @@ function prepare_env()
             if ! apt --installed list 2>/dev/null |grep "\<$i\>"
             then
                 sudo apt-get install  -y --force-yes  $i
-                sudo pip install pyyaml
             fi
+            sudo pip install pyyaml
         fi
         if [[ $REDHAT_REL == true ]]; then
             sudo yum install $i -y
-            sudo pip install pyyaml
         fi
+        sudo pip install pyyaml
     done
     set -e
 }
