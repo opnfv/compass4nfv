@@ -15,9 +15,9 @@ POWER_TOOL: ipmitool
 
 ipmiVer: '2.0'
 
+
 plugins:
-  - opendaylight: "Enable"
-  - moon: "Enable"
+  - rt_kvm: "Enable"
 
 hosts:
   - name: host1
@@ -30,7 +30,6 @@ hosts:
     roles:
       - controller
       - ha
-      - odl
       - ceph-adm
       - ceph-mon
 
@@ -44,9 +43,7 @@ hosts:
     roles:
       - controller
       - ha
-      - odl
       - ceph-mon
-
 
   - name: host3
     mac: 'EC:38:8F:79:10:CC'
@@ -58,9 +55,7 @@ hosts:
     roles:
       - controller
       - ha
-      - odl
       - ceph-mon
-
 
   - name: host4
     mac: 'EC:38:8F:79:0C:6C'
@@ -81,4 +76,5 @@ hosts:
     interfaces:
       - eth1: 'EC:38:8F:7A:E6:EE'
     roles:
-      - moon
+      - compute
+      - ceph-osd

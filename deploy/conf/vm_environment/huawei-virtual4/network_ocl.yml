@@ -65,10 +65,10 @@ ip_settings:
 
   - name: external
     ip_ranges:
-      - - "192.168.103.210"
-        - "192.168.103.220"
-    cidr: "192.168.103.0/24"
-    gw: "192.168.103.1"
+      - - "192.168.107.210"
+        - "192.168.107.220"
+    cidr: "192.168.107.0/24"
+    gw: "192.168.107.1"
     role:
       - controller
       - compute
@@ -79,7 +79,7 @@ internal_vip:
   interface: mgmt
 
 public_vip:
-  ip: 192.168.103.222
+  ip: 192.168.107.222
   netmask: "24"
   interface: external
 

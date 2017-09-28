@@ -66,7 +66,7 @@ ip_settings:
   - name: external
     ip_ranges:
       - - "192.168.11.10"
-        - "192.168.11.15"
+        - "192.168.11.50"
     cidr: "192.168.11.0/24"
     gw: "192.168.11.1"
     role:
@@ -79,7 +79,7 @@ internal_vip:
   interface: mgmt
 
 public_vip:
-  ip: 192.168.11.18
+  ip: 192.168.11.51
   netmask: "24"
   interface: external
 
@@ -88,7 +88,7 @@ public_net_info:
   enable: "True"
   network: ext-net
   type: vxlan
-  segment_id: 1000
+  segment_id: 10
   subnet: ext-subnet
   provider_network: physnet
   router: router-ext
@@ -96,5 +96,5 @@ public_net_info:
   no_gateway: "False"
   external_gw: "192.168.11.1"
   floating_ip_cidr: "192.168.11.0/24"
-  floating_ip_start: "192.168.11.30"
-  floating_ip_end: "192.168.11.100"
+  floating_ip_start: "192.168.11.100"
+  floating_ip_end: "192.168.11.200"

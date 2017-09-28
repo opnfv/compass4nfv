@@ -15,9 +15,10 @@ POWER_TOOL: ipmitool
 
 ipmiVer: '2.0'
 
+odl_l3_agent: "Enable"
 plugins:
   - opendaylight: "Enable"
-  - moon: "Enable"
+  - odl_sfc: "Enable"
 
 hosts:
   - name: host1
@@ -81,4 +82,5 @@ hosts:
     interfaces:
       - eth1: 'EC:38:8F:7A:E6:EE'
     roles:
-      - moon
+      - compute
+      - ceph-osd
