@@ -1,4 +1,6 @@
 ---
 
 - include: odl-cluster.yml
-  when: opendaylight is defined and opendaylight == "Enable"
+  when:
+    - opendaylight is defined and opendaylight == "Enable"
+    - odl_sfc is not defined
