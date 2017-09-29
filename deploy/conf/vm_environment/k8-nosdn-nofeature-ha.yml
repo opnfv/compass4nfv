@@ -14,29 +14,23 @@ FLAVOR: cluster
 hosts:
   - name: host1
     roles:
-      - controller
-      - ha
-      - ceph-adm
-      - ceph-mon
+      - kube_master
+      - etcd
 
   - name: host2
     roles:
-      - controller
-      - ha
-      - ceph-mon
+      - kube_master
+      - etcd
 
   - name: host3
     roles:
-      - controller
-      - ha
-      - ceph-mon
+      - kube_master
+      - etcd
 
   - name: host4
     roles:
-      - compute
-      - ceph-osd
+      - kube_node
 
   - name: host5
     roles:
-      - compute
-      - ceph-osd
+      - kube_node
