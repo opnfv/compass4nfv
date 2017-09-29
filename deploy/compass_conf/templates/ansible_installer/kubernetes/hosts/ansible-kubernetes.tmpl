@@ -9,22 +9,22 @@
 
 # localhost
 127.0.0.1 localhost
-#set controllers = $getVar('controller', [])
-#set computes = $getVar('compute', [])
-#if not $isinstance($controllers, list)
-    #set controllers = [$controllers]
+#set kube_masters = $getVar('kube_master', [])
+#set kube_nodes = $getVar('kube_node', [])
+#if not $isinstance($kube_masters, list)
+    #set kube_masters = [$kube_masters]
 #end if
-#if not $isinstance($compute, list)
-    #set computes = [$computes]
+#if not $isinstance($kube_nodes, list)
+    #set kube_nodes = [$kube_nodes]
 #end if
-# controller
-#for worker in $controllers
+# kube_master
+#for worker in $kube_masters
     #set worker_hostname = $worker.hostname
     #set worker_ip = $ip_settings[$worker_hostname].mgmt.ip
 $worker_ip $worker_hostname
 #end for
-# compute
-#for worker in $computes
+# kube_node
+#for worker in $kube_nodes
     #set worker_hostname = $worker.hostname
     #set worker_ip = $ip_settings[$worker_hostname].mgmt.ip
 $worker_ip $worker_hostname
