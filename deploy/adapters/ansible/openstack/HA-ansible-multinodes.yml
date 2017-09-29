@@ -51,13 +51,6 @@
   roles:
     - setup-openvswitch
 
-- hosts: localhost
-  remote_user: root
-  roles:
-    - setup-sfc
-  tags:
-    - sfc
-
 - hosts:
     - localhost
     - neutron_all
@@ -70,6 +63,19 @@
     - setup-odl
   tags:
     - odl
+
+- hosts:
+    - localhost
+    - neutron_all
+    - galera_container
+    - network_hosts
+    - repo_container
+    - utility
+  remote_user: root
+  roles:
+    - setup-odl-sfc
+  tags:
+    - odl_sfc
 
 - hosts:
     - utility_all[0]
