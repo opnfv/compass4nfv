@@ -20,8 +20,8 @@
 #set has = $getVar('ha', [])
 #set ha_vip = $getVar('ha_vip', [])
 
-#set controllers = $getVar('controller', [])
-#set computers = $getVar('compute', [])
+#set kube_masters = $getVar('kube_master', [])
+#set kube_nodes = $getVar('kube_node', [])
 
 enable_secgroup: $getVar('enable_secgroup', True)
 enable_fwaas: $getVar('enable_fwaas', True)
@@ -35,7 +35,7 @@ network_cfg: $network_cfg
 sys_intf_mappings: $sys_intf_mappings
 deploy_type: $getVar('deploy_type', 'virtual')
 
-public_cidr: $computers[0]['install']['subnet']
+public_cidr: $kube_nodes[0]['install']['subnet']
 storage_cidr: "{{ ip_settings[inventory_hostname]['storage']['cidr'] }}"
 mgmt_cidr: "{{ ip_settings[inventory_hostname]['mgmt']['cidr'] }}"
 
