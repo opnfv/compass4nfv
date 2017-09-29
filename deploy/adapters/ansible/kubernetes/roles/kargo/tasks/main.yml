@@ -58,11 +58,18 @@
   tags:
     - ansible
 
+- name: copy inventoriy.json file
+  copy:
+    src: /var/ansible/run/kubernetes-opnfv2/inventories/inventory.json
+    dest: /tmp/inventory.json
+  tags:
+    - ansible
+
 - name: generate kargo inventories
   shell: >
     python /tmp/generate_inventories.py \
            "/opt/kargo_k8s/inventory/inventory.cfg" \
-           "{{ ip_settings | to_json }}"
+           "/tmp/inventory.json"
   tags:
     - ansible
 
