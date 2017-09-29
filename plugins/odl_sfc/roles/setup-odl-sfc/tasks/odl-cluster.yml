@@ -4,7 +4,7 @@
 
 - include_vars: "{{ openstack_passwd_file }}"
 
-- include_vars: odl-pre.yml
+- include: odl-pre.yml
   when: inventory_hostname == "localhost"
 
 - include_vars: /tmp/odl-extra-vars.yml

@@ -135,6 +135,16 @@ System Limitations
 
 **Min Jumphost requirements:** At least 16GB of RAM, 16 core CPU
 
+Scenario Limitations
+--------------------
+
+**ODL SFC:** In the Euphrates1.0, Compass doesn't integrate OpenStack Tacker
+Project yet. However, the SFC related test cases in Functest always use Tacker
+as NFVO to delivery VNFFG or SFC related requests to ODL via networking-sfc.
+So the odl-sfc scenario of Compass cannot pass the SFC testcases in Functest.
+But if you want to use verify SFC in the cluster deployed by Compass, you can
+use neutron CLI to achieve the same effect.
+
 Known issues
 ------------
 
@@ -144,7 +154,6 @@ Known issues
 | Ceph Related Scenario | After a power failure or reboot,| Deploy without Ceph   |
 |                       | the cluster cannot heal itself  |                       |
 +-----------------------+---------------------------------+-----------------------+
-
 
 Test Result
 ===========
