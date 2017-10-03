@@ -6,7 +6,7 @@ Compass4nfv configuration
 =========================
 
 This document describes providing guidelines on how to install and
-configure the Danube release of OPNFV when using Compass as a
+configure the Euphrates release of OPNFV when using Compass4nfv as a
 deployment tool including required software and hardware
 configurations.
 
