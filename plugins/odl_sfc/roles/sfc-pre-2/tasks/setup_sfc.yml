@@ -32,3 +32,15 @@
         when:
           - inventory_hostname in groups['neutron_openvswitch_agent']
           - inventory_hostname not in groups['nova_compute']
+
+- name: open tacker installation
+  lineinfile:
+    dest: /opt/openstack-ansible/playbooks/setup-openstack.yml
+    insertbefore: '- include: os-tempest'
+    line: '- include: os-tacker-install.yml'
+
+# This is a bug in ocata, will be removed in the future
+- name: limit the version of networking-sfc in os_tacker
+  shell: |
+    sed -i 's/networking-sfc/networking-sfc==4.0.0/g' \
+        /etc/ansible/roles/os_tacker/defaults/main.yml
