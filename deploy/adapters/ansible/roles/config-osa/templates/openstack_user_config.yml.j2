@@ -213,6 +213,13 @@ metrics_hosts:
     ip: {{ hostvars[host]['ansible_ssh_host'] }}
 {% endfor %}
 
+# tacker (mano service)
+mano_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
+
 # nova hypervisors
 compute_hosts:
 {% for host in groups.compute%}

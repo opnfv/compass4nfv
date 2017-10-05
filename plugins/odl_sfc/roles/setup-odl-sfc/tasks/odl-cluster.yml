@@ -48,4 +48,7 @@
     - inventory_hostname in groups['neutron_server'][0]
     - inventory_hostname not in groups['network_hosts']
 
+- include: control-tacker-1.yml
+  when: inventory_hostname in groups['tacker_all']
+
 - include: odl-post.yml
