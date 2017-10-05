@@ -9,3 +9,4 @@
 ---
 LOCAL_REPOSITORY_IP: "192.168.137.222"
 ceph_host: "{{ hostvars[inventory_hostname]['groups']['ceph_osd'][0] }}"
+networking_sfc_version: 4.0.0
