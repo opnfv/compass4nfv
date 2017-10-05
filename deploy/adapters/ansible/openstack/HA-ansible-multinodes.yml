@@ -71,6 +71,7 @@
     - network_hosts
     - repo_container
     - utility
+    - tacker_all
   remote_user: root
   roles:
     - setup-odl-sfc
