@@ -202,6 +202,17 @@ unset ROLE_VENV_WITH_INDEX
 #unset ROLE_VENV_WITH_INDEX
 
 ROLE_VENV_WITH_INDEX=false
+ROLE_VENV_PATH="/tmp/openstack-venv-builder/venvs/tacker"
+ROLE_VENV_FILE="tacker-15.1.4-x86_64"
+if [ ! -f "${ROLE_VENV_FILE}.tgz" ];then
+    venv_create "${ROLE_VENV_PATH}" "${ROLE_VENV_FILE}" "${ROLE_VENV_WITH_INDEX}" "python-tackerclient mysql-python networking-sfc==4.0.0 pymysql python-heatclient python-tackerclient tacker" &
+    pid[3]=$!
+fi
+unset ROLE_VENV_PATH
+unset ROLE_VENV_FILE
+unset ROLE_VENV_WITH_INDEX
+
+ROLE_VENV_WITH_INDEX=false
 ROLE_VENV_PATH="/tmp/openstack-venv-builder/venvs/horizon"
 ROLE_VENV_FILE="horizon-15.1.4-x86_64"
 if [ ! -f "${ROLE_VENV_FILE}.tgz" ];then

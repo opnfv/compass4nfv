@@ -138,6 +138,12 @@
       {% endraw %}
   when: offline_deployment is defined and offline_deployment == "Enable"
 
+# This is a bug in ocata, will be removed in the future
+- name: limit the version of networking-sfc in os_tacker
+  shell: |
+    sed -i 's/networking-sfc/networking-sfc=={{ networking_sfc_version }}/g' \
+        /etc/ansible/roles/os_tacker/defaults/main.yml
+
 - name: add rally and tempest to requirement.txt
   blockinfile:
     dest: /etc/ansible/roles/repo_build/tasks/repo_pre_build.yml
