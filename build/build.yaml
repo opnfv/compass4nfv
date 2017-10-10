@@ -13,7 +13,7 @@ packages:
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
-    url: compass4nfv/compass-deck
+    url: compass4nfv/compass-deck:latest
 
   - name: compass-tasks-osa
     description: "compass task container for openstack deployment via openstack-ansible"
@@ -23,28 +23,28 @@ packages:
   - name: compass-tasks-k8s
     description: "compass task container for kubernets deployment via kargo"
     get_method: docker
-    url: compass4nfv/compass-tasks-k8s
+    url: compass4nfv/compass-tasks-k8s:latest
 
 
   - name: compass-cobbler
     description: "cobbler container for compass"
     get_method: docker
-    url: compass4nfv/compass-cobbler
+    url: compass4nfv/compass-cobbler:latest
 
   - name: compass-db
     description: "datebase container for compass"
     get_method: docker
-    url: compass4nfv/compass-db
+    url: compass4nfv/compass-db:latest
 
   - name: compass-mq
     description: "message queue container for compass"
     get_method: docker
-    url: compass4nfv/compass-mq
+    url: compass4nfv/compass-mq:latest
 
   - name: yardstick
     description: "yardstick container for compass"
     get_method: docker
-    url: opnfv/yardstick
+    url: opnfv/yardstick:latest
 
   - name: compass-repo-osa-ubuntu
     description: "compass repo container for deployment"
