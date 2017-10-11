@@ -1,4 +1,8 @@
 #!/bin/bash
+ovsdb-server --remote=punix:/usr/local/var/run/openvswitch/db.sock \
+          --remote=db:Open_vSwitch,Open_vSwitch,manager_options \
+          --pidfile --detach
+
 export DB_SOCK=/usr/local/var/run/openvswitch/db.sock
 sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-init=true
 sudo ovs-vswitchd unix:$DB_SOCK --pidfile --detach

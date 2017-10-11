@@ -7,4 +7,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include: "{{ ansible_distribution }}.yml"
+- include_vars: "{{ ansible_distribution }}.yml"
+
+- include: neutron_agent.yml
+  when: inventory_hostname in groups['neutron_openvswitch_agent']
+
+- include: compute.yml
+  when: inventory_hostname in groups['compute']
