@@ -1,0 +1,14 @@
+#########################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##########################################################################
+---
+devbind_script: /root/dpdk/tools/dpdk-devbind.py
+switch_driver_script: /root/dpdk_uio.sh
+openvswitch_service: openvswitch-switch
+ovs_agent_service: neutron-openvswitch-agent
+libvirtd_service: libvirtd
