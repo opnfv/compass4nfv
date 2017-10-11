@@ -64,11 +64,10 @@
 - name: Create OVS scripts
   template:
     src: "templates/{{ item }}.j2"
-    dest: "/root/{{ item }}"
+    dest: "/opt/{{ item }}"
     mode: 0755
   with_items:
     - start_ovs_vswitchd.sh
-    - start_ovsdb_server.sh
 
 - name: Create folders
   file: path={{ item }} state=directory
@@ -89,9 +88,6 @@
   command: ovsdb-tool create /usr/local/etc/openvswitch/conf.db /usr/local/share/openvswitch/vswitch.ovsschema
   when: ovs_dbconfig_status.stat.exists == false
 # yamllint enable rule:line-length
-
-- name: Start ovsdb Server
-  command: /root/start_ovsdb_server.sh
 
 - name: Start OVS vswitchd with DPDK support enabled
   command: /root/start_ovs_vswitchd.sh

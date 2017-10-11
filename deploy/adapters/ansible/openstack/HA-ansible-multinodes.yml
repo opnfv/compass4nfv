@@ -45,6 +45,7 @@
   remote_user: root
   roles:
     - post-osa
+    - config-dpdk
 
 - hosts: neutron_openvswitch_agent
   remote_user: root
