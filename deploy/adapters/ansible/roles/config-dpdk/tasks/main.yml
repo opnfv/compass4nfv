@@ -1,4 +1,4 @@
-#############################################################################
+##############################################################################
 # Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
@@ -7,4 +7,5 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include: "{{ ansible_distribution }}.yml"
+- include: config.yml
+  when: dpdk is defined and dpdk == "Enable"

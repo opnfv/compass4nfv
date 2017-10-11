@@ -1,0 +1,17 @@
+[Unit]
+Description=openvswitch-switch
+
+[Service]
+User=root
+Group=root
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/start_ovs_vswitchd.sh
+
+TimeoutSec=120
+#Restart=on-failure
+#RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
+
