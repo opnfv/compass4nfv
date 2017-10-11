@@ -1,11 +1,11 @@
-# #############################################################################
+##############################################################################
 # Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Apache License, Version 2.0
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
-# #############################################################################
+##############################################################################
 ---
 - name: install prerequisites package
   apt:
@@ -64,11 +64,10 @@
 - name: Create OVS scripts
   template:
     src: "templates/{{ item }}.j2"
-    dest: "/root/{{ item }}"
+    dest: "/opt/{{ item }}"
     mode: 0755
   with_items:
     - start_ovs_vswitchd.sh
-    - start_ovsdb_server.sh
 
 - name: Create folders
   file: path={{ item }} state=directory
@@ -90,8 +89,5 @@
   when: ovs_dbconfig_status.stat.exists == false
 # yamllint enable rule:line-length
 
-- name: Start ovsdb Server
-  command: /root/start_ovsdb_server.sh
-
 - name: Start OVS vswitchd with DPDK support enabled
-  command: /root/start_ovs_vswitchd.sh
+  command: /opt/start_ovs_vswitchd.sh

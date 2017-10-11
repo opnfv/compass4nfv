@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2016-2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Apache License, Version 2.0
@@ -7,11 +7,5 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-# yamllint disable rule:line-length
-grub_cmdline: GRUB_CMDLINE_LINUX_DEFAULT="hugepagesz=2M hugepages=2048 iommu=pt intel_iommu=on isolcpus=0-7"
-# yamllint enable rule:line-length
-
-dpdk_dir: /root/dpdk
-dpdk_build: '{{ dpdk_dir }}/x86_64-native-linuxapp-gcc'
-dpdk_repo: https://github.com/dpdk/dpdk.git
-dpdk_version: v16.11
+- include: config.yml
+  when: dpdk is defined and dpdk == "Enable"
