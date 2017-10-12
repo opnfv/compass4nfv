@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_3c03e8b9",
+        "filename": "INFO",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 332
+      },
+      "writtenOn": "2017-10-12T11:53:23Z",
+      "side": 0,
+      "message": "While we\u0027re at it, can we change my email to ash@yunify.org?",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 32
+      },
+      "revId": "2962812740c0507cefdc7d76aba320be15df14c3",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
