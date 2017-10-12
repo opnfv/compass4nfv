@@ -1,0 +1,51 @@
+# #############################################################################
+# Copyright (c) 2017 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    -libstatgrab
+    -log4cplus
+    -rrdtool
+    -rrdtool-devel
+    -mcelog
+    -libvirt
+    -libvirt-devel
+    -gcc
+
+- name: create workspace directory
+  file:
+    path: "{{ workspace }}"
+    state: directory
+    mode: 0755
+ 
+- name: download and install barometer packages
+  shell: \
+    cd "{{ workspace }}" \
+    wget "{{ artifacts_barometer }}/libcollectdclient1_{{ collectd_ver }}" \
+    wget "{{ artifacts_barometer }}/libcollectdclient-dev-{{ collect_ver }}" \
+    wget "{{ artifacts_barometer }}/collectd-core_{{ collectd_ver }}" \
+    wget "{{ artfacts_barometer }}/collectd_debug_{{ collectd_ver }}" \
+    wget "{{ artifacts_barometer }}/collectd-dev_{{ collectd_ver }}" \
+    wget "{{ artifacts_barometer }}/collectd-utils_{{ collectd_ver }}" \
+    apt-get install ./libcollectd*.deb
+    apt-get install ./collectd*.deb
+
+
+#    wget "{{ artifacts_barometer }}/collectd-ovs_events-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/collectd-ovs_stats-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/collectd-virt-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/intel-cmt-cat-{{ rdt_suffix }}" \
+#    wget "{{ artifacts_barometer }}/intel-cmt-cat-devel-{{ rdt_suffix }}" \
+#    wget "{{ artifacts_barometer }}/collectd-python-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/collectd-snmp-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/collectd-intel_rdt-{{ collectd_ver }}" \
+

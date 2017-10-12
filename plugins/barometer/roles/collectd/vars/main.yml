@@ -1,0 +1,13 @@
+############################################################################333
+#
+# 
+#
+###############################################################################
+---
+workspace: /tmp/plugin
+
+artifacts_barometer: https://pkg.ci.collectd.org/deb/dists/trusty/collectd-5.7/binary-amd64/
+
+barometer_version: 5.7.2.37.g45492ba-1~trusty_amd64.deb
+
+
