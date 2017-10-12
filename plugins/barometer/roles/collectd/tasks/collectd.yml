@@ -1,0 +1,102 @@
+# #############################################################################
+# Copyright (c) 2017 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libltdl7
+    - init-system-helpers
+    - rrdtool
+    - libc6
+    - librrd4
+    - libvirt-bin
+    - libvirt-dev
+    - gcc
+    - mcelog
+
+- name: create workspace directory
+  file:
+    path: "{{ workspace }}"
+    state: directory
+    mode: 0755
+
+- name: download and install barometer packages
+  shell: |
+    cd "{{ workspace }}";
+    wget "{{ artifacts_barometer }}/libcollectdclient1_{{ collectd_ver }}";
+    wget "{{ artifacts_barometer }}/libcollectdclient-dev_{{ collectd_ver }}";
+    wget "{{ artifacts_barometer }}/collectd-core_{{ collectd_ver }}";
+    wget "{{ artifacts_barometer }}/collectd-dbg_{{ collectd_ver }}";
+    wget "{{ artifacts_barometer }}/collectd-utils_{{ collectd_ver }}";
+    wget "{{ artifacts_barometer }}/collectd_{{ collectd_ver }}";
+    apt-get install ./libcollectd*.deb -y;
+    apt-get install ./collectd*.deb -y
+
+#    wget "{{ artifacts_barometer }}/collectd-ovs_events-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/collectd-ovs_stats-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/collectd-virt-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/intel-cmt-cat-{{ rdt_suffix }}" \
+#    wget "{{ artifacts_barometer }}/intel-cmt-cat-devel-{{ rdt_suffix }}" \
+#    wget "{{ artifacts_barometer }}/collectd-python-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/collectd-snmp-{{ collectd_ver }}" \
+#    wget "{{ artifacts_barometer }}/collectd-intel_rdt-{{ collectd_ver }}" \
+
+- name: install dependent packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - python3-pip
+
+- name: make stack dir
+  file:
+    path: /opt/stack
+    state: directory
+    mode: 0755
+
+- name: check plugin dir exists
+  stat:
+    path: /opt/stack/collectd-ceilometer-plugin
+  register: stat_result
+
+- name: fetch collectd plugin source code
+  shell: |
+    cd /opt/stack;
+    git clone https://github.com/openstack/collectd-ceilometer-plugin.git;
+    cd /opt/stack/collectd-ceilometer-plugin;
+    git checkout stable/ocata
+  when: stat_result.stat.exists == False
+
+- name: create collectd-gnocchi-plugin conf
+  remote_user: root
+  file:
+    src: /opt/stack/collectd-ceilometer-plugin/etc/collectd.conf.d/collectd-gnocchi-plugin.conf
+    dest: /etc/collectd/collectd.conf.d/collectd-gnocchi-plugin.conf
+    state: link
+
+- name: configure conf
+  lineinfile:
+    dest: /etc/collectd/collectd.conf.d/collectd-gnocchi-plugin.conf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: 'OS_AUTH_URL "<OS_AUTH_URL>"'
+      line: '        OS_AUTH_URL "http://{{ internal_vip.ip }}:35357/v3/"'
+    - regexp: 'OS_USERNAME "gnocchi"'
+      line: '        OS_USERNAME "ceilometer"'
+    - regexp: 'OS_PASSWORD "password"'
+      line: '        OS_PASSWORD "{{ ceilometer_service_password }}"'
+
+- name: install gnocchiclient, restart collectd
+  shell: |
+    pip install gnocchiclient;
+    systemctl restart collectd
