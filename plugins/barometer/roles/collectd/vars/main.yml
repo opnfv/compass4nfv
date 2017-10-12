@@ -1,0 +1,16 @@
+# #############################################################################
+# Copyright (c) 2017 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+workspace: /tmp/plugin
+
+artifacts_barometer: https://pkg.ci.collectd.org/deb/dists/xenial/collectd-5.7/binary-amd64/
+
+collectd_ver: 5.7.2.51.gcb6b71d-1~xenial_amd64.deb
+
+collectd_xenial_all: 5.7.2.51.gcb6b71d-1~xenial_all.deb
