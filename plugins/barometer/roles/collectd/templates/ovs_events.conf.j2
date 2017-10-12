@@ -1,0 +1,11 @@
+<LoadPlugin ovs_events>
+   Interval 1
+</LoadPlugin>
+<Plugin "ovs_events">
+   Port 6640
+   Socket "/var/run/openvswitch/db.sock"
+   Interfaces "br0" "veth0"
+   SendNotification false
+   DispatchValues true
+</Plugin>
+

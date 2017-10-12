@@ -1,0 +1,37 @@
+<LoadPlugin python>
+  Globals true
+</LoadPlugin>
+
+<Plugin python>
+    ModulePath "/opt/stack/collectd-ceilometer-plugin"
+    LogTraces true
+    Interactive false
+    Import "collectd_ceilometer.aodh.plugin"
+
+    <Module "collectd_ceilometer.aodh.plugin">
+
+        # Verbosity True|False
+        VERBOSE False
+
+        # Service endpoint addresses
+        OS_AUTH_URL "http://{{ internal_vip.ip }}:35357/v3/"
+
+        # Plugin address
+        #CEILOMETER_URL_TYPE "internalURL"
+
+        # Plugin timeout in ms
+        #CEILOMETER_TIMEOUT "1000"
+
+        # # Plugin user creds
+        OS_USERNAME "ceilometer"
+        OS_PASSWORD "{{ ceilometer_service_password }}"
+        OS_TENANT_NAME "service"
+
+        # Libvirt meter enabled
+        LIBVIRT_METER_ENABLED False
+
+        <ALARM_SEVERITIES>
+        </ALARM_SEVERITIES>
+    </Module>
+</Plugin>
+
