@@ -19,7 +19,7 @@
 # ##
 
 # # Debug and Verbose options.
-debug: false
+debug: true
 
 haproxy_keepalived_external_vip_cidr: "{{ public_vip.ip }}/32"
 haproxy_keepalived_internal_vip_cidr: "{{ internal_vip.ip }}/32"
@@ -28,8 +28,8 @@ haproxy_keepalived_internal_interface: br-mgmt
 keepalived_ping_address: "{{ ntp_server }}"
 
 cinder_cinder_conf_overrides:
-  DEFAULT:
-    public_endpoint: "https://{{ public_vip.ip }}"
+  oslo_middleware:
+    enable_proxy_headers_parsing: True
 
 {% if "openvswitch" == NEUTRON_MECHANISM_DRIVERS[0] or
    "opendaylight" == NEUTRON_MECHANISM_DRIVERS[0]
