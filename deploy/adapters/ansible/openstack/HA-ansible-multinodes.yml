@@ -25,6 +25,7 @@
     - rt_kvm
     - ins_dpdk
     - ins_ovs
+    - collectd
 
 - hosts: all
   remote_user: root
