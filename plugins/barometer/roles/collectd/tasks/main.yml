@@ -1,0 +1,6 @@
+
+---
+- include collectd.yml
+  when: barometer is defined and barometer == "Enable"
+
+
