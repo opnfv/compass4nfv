@@ -1,0 +1,126 @@
+# #############################################################################
+# Copyright (c) 2017 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libltdl7
+    - init-system-helpers
+    - mcelog
+    - rrdtool
+    - libc6
+    - librrd4
+    - libvirt-bin
+    - libvirt-dev
+    - gcc
+    - git
+    - python3-pip
+
+- name: create workspace directory
+  file:
+    path: "{{ workspace }}"
+    state: directory
+    mode: 0755
+
+- name: download, unarchive and install collectd packages
+  shell: |
+    cd "{{ workspace }}";
+    wget "{{ artifacts_collectd_pkg }}";
+    su -s /bin/sh -c \
+        "tar xzf collectd_pkg.tar.gz -C {{ workspace }} --strip-components 1";
+    apt-get install ./libcollectd*.deb -y;
+    apt-get install ./collectd*.deb -y
+
+- name: make stack dir
+  file:
+    path: /opt/stack
+    state: directory
+    mode: 0755
+
+- name: check plugin dir exists
+  stat:
+    path: /opt/stack/collectd-ceilometer-plugin
+  register: stat_result
+
+- name: fetch collectd plugin source code
+  shell: |
+    cd /opt/stack;
+    git clone https://github.com/openstack/collectd-ceilometer-plugin.git;
+    cd /opt/stack/collectd-ceilometer-plugin;
+    git checkout stable/pike
+  when: stat_result.stat.exists == False
+
+- name: configure logfile conf
+  template:
+    src: logfile.conf.j2
+    dest: /etc/collectd/collectd.conf.d/logfile.conf
+
+- name: configure collectd-aodh plugin conf
+  template:
+    src: collectd-aodh.conf.j2
+    dest: /etc/collectd/collectd.conf.d/collectd-aodh-plugin.conf
+
+- name: configure collectd-gnocchi plugin conf
+  template:
+    src: collectd-gnocchi.conf.j2
+    dest: /etc/collectd/collectd.conf.d/collectd-gnocchi-plugin.conf
+
+- name: configure hugepages conf
+  template:
+    src: hugepages.conf.j2
+    dest: /etc/collectd/collectd.conf.d/hugepages.conf
+
+- name: configure mcelog conf
+  template:
+    src: mcelog.conf.j2
+    dest: /etc/collectd/collectd.conf.d/mcelog.conf
+
+- name: configure ovs_stats conf
+  template:
+    src: ovs_stats.conf.j2
+    dest: /etc/collectd/collectd.conf.d/ovs_stats.conf
+
+- name: configure ovs_events conf
+  template:
+    src: ovs_events.conf.j2
+    dest: /etc/collectd/collectd.conf.d/ovs_events.conf
+
+- name: configure collectd conf
+  lineinfile:
+    dest: /etc/collectd/collectd.conf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '#LoadPlugin numa'
+      line: 'LoadPlugin numa'
+    - regexp: '#LoadPlugin virt'
+      line: 'LoadPlugin virt'
+    - regexp: '#LoadPlugin cpufreq'
+      line: 'LoadPlugin cpufreq'
+    - regexp: '#LoadPlugin cpusleep'
+      line: 'LoadPlugin cpusleep'
+
+- name: configure mcelog conf
+  lineinfile:
+    dest: /etc/mcelog/mcelog.conf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '#socket-path = /var/run/mcelog-client'
+      line: 'socket-path = /var/run/mcelog-client'
+
+- name: install gnocchiclient, aodhclient, set ovs manager, restart mcelog, collectd
+  shell: |
+    pip install gnocchiclient;
+    pip install aodhclient;
+    ovs-vsctl set-manager ptcp:6640:127.0.0.1;
+    systemctl restart mcelog;
+    systemctl restart collectd
