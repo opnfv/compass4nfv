@@ -1,0 +1,15 @@
+##############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: change pandas version
+  shell: |
+    mkdir -p /tmp/pandas;
+    pip install pandas==0.20.3 -d /tmp/pandas;
+    rm -rf {{ repo_dest_path }}/pandas*
+    cp /tmp/pandas/pandas-0.20.3-cp27-cp27mu-manylinux1_x86_64.whl {{ repo_dest_path }}
