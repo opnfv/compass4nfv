@@ -252,3 +252,13 @@
   include: noha.yml
   when:
     - "{{ hostvars[inventory_hostname]['groups']['controller'] | length < 2 }}"
+
+- name: change repo_clone_git.yml
+  blockinfile:
+    dest: /etc/ansible/roles/repo_build/tasks/repo_clone_git.yml
+    block: |
+      - name: fix the pandas version
+        lineinfile:
+          dest: {% raw %}"{{ repo_build_git_dir }}/gnocchi/requirements.txt"
+          regexp: '^pandas'
+          line: "pandas==0.20.3"{% endraw %}
