@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_b7738eb0",
+        "filename": "plugins/barometer/plugin.desc",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-10-16T03:48:07Z",
+      "side": 1,
+      "message": "The role name under roles directory is collectd. Can we keep them the same?",
+      "range": {
+        "startLine": 48,
+        "startChar": 14,
+        "endLine": 48,
+        "endChar": 31
+      },
+      "revId": "bb50cbdea4ea20d621270b4e25b8f9e8f72ca9ba",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_574b2259",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-10-16T03:48:07Z",
+      "side": 1,
+      "message": "Need to delete all of the blanks in every file.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 1
+      },
+      "revId": "bb50cbdea4ea20d621270b4e25b8f9e8f72ca9ba",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_77790693",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-10-16T03:48:07Z",
+      "side": 1,
+      "message": "Perhaps no this symbol in ansible shell module. Need to change to \"|\".",
+      "range": {
+        "startLine": 31,
+        "startChar": 9,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "bb50cbdea4ea20d621270b4e25b8f9e8f72ca9ba",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_d76e12c9",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-10-16T03:48:07Z",
+      "side": 1,
+      "message": "Please change all the \"\\\" to \";\" at the end of each line. It will be better.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 35
+      },
+      "revId": "bb50cbdea4ea20d621270b4e25b8f9e8f72ca9ba",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_974daa75",
+        "filename": "plugins/barometer/roles/collectd/vars/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-10-16T03:48:07Z",
+      "side": 1,
+      "message": "1. Should it be \"collectd_ver\" here? I found the \"barometer_version\" is not used in the tasks and \"collectd_ver\" used in tacks is not defined.\n2. Currently we use ubuntu xenial for the host os of compute nodes. So I am not sure whether the debian packages of trusty here are OK to be deployed.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 17
+      },
+      "revId": "bb50cbdea4ea20d621270b4e25b8f9e8f72ca9ba",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
