@@ -252,3 +252,14 @@
   include: noha.yml
   when:
     - "{{ hostvars[inventory_hostname]['groups']['controller'] | length < 2 }}"
+
+- name: copy the repo_fix_andas.yml
+  template:
+    src: repo_fix_pandas.yml
+    dest: /etc/ansible/roles/repo_build/tasks/repo_fix_pandas.yml
+
+- name: change repore build
+  lineinfile:
+    dest: /etc/ansible/roles/repo_build/tasks/main.yml
+    insertafter: "^- include: repo_post_build.yml"
+    line: "- include: repo_fix_pandas.yml"
