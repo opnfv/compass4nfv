@@ -31,7 +31,7 @@ Release Data
 | **Release designation**              | Euphrates.1.0                        |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | September 2017                       |
+| **Release date**                     | October 2017                         |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | OPNFV Euphrates release              |
@@ -68,6 +68,8 @@ upstream components supported with this release.
  - Ubuntu 16.04/Centos 7.3
 
  - Openstack (Ocata release)
+
+ - Kubernates (1.7.3)
 
  - Opendaylight (Nitrogen release)
 

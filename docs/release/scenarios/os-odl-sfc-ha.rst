@@ -9,9 +9,9 @@ deployment with the OpenDaylight controller and SFC feature enabled.
    :depth: 3
    :local:
 
-============
-Introduction
-============
+=============
+os-odl-sfc-ha
+=============
 
 This scenario is used to deploy an Ocata OpenStack deployment with
 OpenDaylight Nitrogen, Ceph Jewel, and SFC feature enabled.
