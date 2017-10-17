@@ -131,9 +131,44 @@ How to recovery network connection after Jumphost reboot
 
     source deploy/network.sh && save_network_info
 
+How to use Kubernetes CLI
+=========================
+
+Login one of the controllers
+----------------------------
+
+There are 3 controllers referring to host1 to host3 with IPs from 10.1.0.50 to 10.1.0.52.
+The username of the nodes is root, and the password is root.
+
+.. code-block:: bash
+
+    ssh root@10.1.0.50
+
+Run the Kubernetes command
+--------------------------
+
+Kubectl controls the Kubernetes cluster manager.
+
+.. code-block:: bash
+
+    kubectl help
+
+Follow the k8s example to create a ngnix service
+------------------------------------------------
+
+To create a nginx service, please read Ref[2] at the end of this page.
+
 References
 ==========
+
+[1]
+---
+
 For more information on the Compass4nfv FAQ, please visit
 
 `COMPASS FAQ WIKI Page <https://wiki.opnfv.org/compass4nfv_faq>`_
 
+[2]
+---
+
+`K8s Get-Started Page <http://containertutorials.com/get_started_kubernetes/k8s_example.html>`_
