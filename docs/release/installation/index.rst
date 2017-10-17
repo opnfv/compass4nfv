@@ -17,6 +17,8 @@ Compass4nfv Installation Instructions
    configure-network.rst
    bmdeploy.rst
    vmdeploy.rst
+   k8s-intro.rst
+   k8s-deploy.rst
    offline-deploy.rst
    expansion.rst
    references.rst
