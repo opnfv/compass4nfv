@@ -9,9 +9,9 @@ deployment with the OpenDaylight controller and no feature enabled.
    :depth: 3
    :local:
 
-============
-Introduction
-============
+===================
+os-odl-nofeature-ha
+===================
 
 This scenario is used to deploy an Ocata OpenStack deployment with
 OpenDaylight Nitrogen, Ceph Jewel, and without any NFV feature enabled.
