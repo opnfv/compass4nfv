@@ -1,0 +1,71 @@
+#############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+- name: modify the aodh haproxy config
+  replace:
+    dest: /opt/openstack-ansible/playbooks/vars/configs/haproxy_config.yml
+    regexp: '- "expect status 401"'
+    replace: '- "expect status 200"'
+
+- name: add OS_AUTH_TYPE in openrc
+  lineinfile:
+    dest: /etc/ansible/roles/openstack_openrc/templates/openrc.j2
+    line: "export OS_AUTH_TYPE=password"
+
+- name: copy the ceilometer policy yaml
+  copy:
+    dest: /etc/ansible/roles/os_ceilometer/templates/policy.json.j2
+    src: policy.json
+    mode: 0664
+
+- name: replace the ceilometer policy
+  lineinfile:
+    dest: /etc/ansible/roles/os_ceilometer/tasks/ceilometer_post_install.yml
+    regexp: "ceilometer_policy_user_content"
+    line: '      src: "policy.json.j2"'
+    backrefs: "yes"
+
+- name: modify the os-ceilometer-install.yml
+  blockinfile:
+    dest: /opt/openstack-ansible/playbooks/os-ceilometer-install.yml
+    insertbefore: "common-tasks/package-cache-proxy.yml"
+    block: |
+      # create ceilometer db
+          - include: common-tasks/mysql-db-user.yml
+            static: no
+            vars: {% raw %}
+              user_name: "{{ ceilometer_galera_user }}"
+              password: "{{ ceilometer_container_db_password }}"
+              login_host: "{{ ceilometer_galera_address }}"
+              db_name: "{{ ceilometer_galera_database }}"
+            when: inventory_hostname == groups['ceilometer_all'][0]{% endraw %}
+
+- name: modify the os-ceilometer-install.yml
+  lineinfile:
+    dest: /opt/openstack-ansible/playbooks/os-ceilometer-install.yml
+    insertafter: "is_metal"
+    line: "{{ item }}"
+  with_items:
+    - "    ceilometer_galera_user: ceilometer"
+    - "    ceilometer_galera_database: ceilometer"
+
+- name: modify the os-ceilometer-install.yml
+  lineinfile:
+    dest: /opt/openstack-ansible/playbooks/os-ceilometer-install.yml
+    insertafter: "is_metal"
+    line: '   {% raw %} ceilometer_galera_address: "{{ galera_address }}"{% endraw %}'
+
+# yamllint disable rule:line-length
+- name: change the ceilometer.conf.j2
+  blockinfile:
+    dest: /etc/ansible/roles/os_ceilometer/templates/ceilometer.conf.j2
+    block: |
+      [database]{% raw %}
+      connection = mysql+pymysql://{{ ceilometer_galera_user }}:{{ ceilometer_container_db_password }}@{{ceilometer_galera_address }}/{{ ceilometer_galera_database }}?charset=utf86{% endraw %}
+# yamllint enable rule:line-length
