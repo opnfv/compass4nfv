@@ -44,7 +44,7 @@ Supported Openstack Flavor and Features
 | Multi-Nic     |    Yes       |    Yes       |     Yes       |    Yes        |
 | Support       |              |              |               |               |
 +---------------+--------------+--------------+---------------+---------------+
-| Boot          |    Yes       |    Yes       |     Yes       |    YES        |
+| Boot          |    Yes       |    Yes       |     Yes       |    Yes        |
 | Recovery      |              |              |               |               |
 +---------------+--------------+--------------+---------------+---------------+
 | SFC           |    No        |    No        |     Yes       |    Yes        |

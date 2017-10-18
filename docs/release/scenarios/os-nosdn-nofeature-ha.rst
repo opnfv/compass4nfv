@@ -9,9 +9,9 @@ deployment with no SDN controller and no feature enabled.
    :depth: 3
    :local:
 
-============
-Introduction
-============
+=====================
+os-nosdn-nofeature-ha
+=====================
 
 This scenario is used to deploy an Ocata OpenStack deployment with
 Ceph Jewel, and without SDN controller nor any NFV feature enabled.
