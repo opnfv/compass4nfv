@@ -74,11 +74,6 @@ upstream components supported with this release.
  - Opendaylight (Nitrogen release)
 
 
-Document version change
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Adjusted the document structure, and you can see document at `OPNFV(Euphrates) Compass4nfv installation instructions <http://artifacts.opnfv.org/compass4nfv/docs/configguide/index.html>`_.
-
 Reason for new version
 ----------------------
 
@@ -162,5 +157,5 @@ Test Result
 The Euphrates release with the Compass4nfv deployment toolchain has undergone QA test
 runs with the following results:
 
-Functest: http://testresults.opnfv.org/reporting/functest/release/danube/index-status-compass.html
+Functest: http://testresults.opnfv.org/reporting/euphrates/functest/status-compass.html
 
