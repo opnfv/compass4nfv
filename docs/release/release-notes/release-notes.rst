@@ -162,5 +162,5 @@ Test Result
 The Euphrates release with the Compass4nfv deployment toolchain has undergone QA test
 runs with the following results:
 
-Functest: http://testresults.opnfv.org/reporting/functest/release/danube/index-status-compass.html
+Functest: http://testresults.opnfv.org/reporting/euphrates/functest/status-compass.html
 
