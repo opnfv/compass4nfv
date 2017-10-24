@@ -1,0 +1,82 @@
+#############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: get dpdk interface device name
+  command: echo "{{ compu_sys_mappings['tenant']['interface'] }}"
+  register: dpdk_device_name
+
+- name: get dpdk interface ip
+  shell: >
+    ip a show "{{ dpdk_device_name.stdout }}" | grep -E "\<inet\>" |
+    awk '{print $2}'
+  register: dpdk_device_ip
+
+- debug:
+    msg: "{{ dpdk_device_ip.stdout }}"
+
+- name: get dpdk interface device pci
+  shell: >
+    {{ devbind_script }} -s | grep {{ dpdk_device_name.stdout }} |
+    awk '{print $1}'
+  register: dpdk_device_pci
+
+- name: switch dpdk interface driver
+  shell: "{{ switch_driver_script }}"
+  notify: service openvswitch restart
+
+- name: kill ovs process
+  shell: >
+    ps aux | grep ovs | grep -v grep | awk '{print $2}' | xargs kill -9 |
+    true
+  notify: service openvswitch restart
+
+- name: copy service file
+  copy:
+    src: openvswitch-switch.service
+    dest: /lib/systemd/system/openvswitch-switch.service
+  notify: service openvswitch restart
+
+- name: config libvirtd
+  shell: echo 'user = "root"' >> /etc/libvirt/qemu.conf
+  notify: service libvirtd restart
+
+- meta: flush_handlers
+
+- name: config neutron-openvswitch-agent
+  blockinfile:
+    dest: /etc/neutron/plugins/ml2/openvswitch_agent.ini
+    insertafter: '^\[ovs\]'
+    block: |
+      datapath_type=netdev
+      vhostuser_socket_dir=/usr/local/var/run/openvswitch
+
+- name: set ovs manager
+  shell: ovs-vsctl set-manager ptcp:6640:127.0.0.1
+  notify: service neutron-openvswitch-agent restart
+
+- name: config ovs to dpdk
+  shell: |
+    ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-init=true
+    ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-socket-mem="{{ dpdk_memory }}"
+  notify: service neutron-openvswitch-agent restart
+
+- name: add dpdk bridge
+  shell: |
+    ovs-vsctl add-br br-dpdk -- set bridge br-dpdk datapath_type=netdev
+    ovs-vsctl add-port br-dpdk dpdk0 -- set Interface dpdk0 \
+    type=dpdk options:dpdk-devargs="{{ dpdk_device_pci.stdout }}"
+  notify: service neutron-openvswitch-agent restart
+
+- name: bind ip on dpdk bridge
+  shell: |
+    ifconfig br-dpdk "{{ dpdk_device_ip.stdout }}"
+    ifconfig br-dpdk up
+  notify: service neutron-openvswitch-agent restart
+
+- meta: flush_handlers

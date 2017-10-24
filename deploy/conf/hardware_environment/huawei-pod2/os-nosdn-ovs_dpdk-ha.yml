@@ -26,6 +26,7 @@ hosts:
     ipmiIp: 172.16.130.20
     interfaces:
       - eth1: 'EC:38:8F:79:0C:2D'
+      - eth2: 'EC:38:8F:79:0C:2E'
     roles:
       - controller
       - ha
@@ -39,6 +40,7 @@ hosts:
     ipmiPass: Opnfv@pod2
     interfaces:
       - eth1: 'EC:38:8F:79:0C:49'
+      - eth2: 'EC:38:8F:79:0C:4A'
     roles:
       - controller
       - ha
@@ -51,6 +53,7 @@ hosts:
     ipmiPass: Opnfv@pod2
     interfaces:
       - eth1: 'EC:38:8F:79:10:CD'
+      - eth2: 'EC:38:8F:79:10:CE'
     roles:
       - controller
       - ha
@@ -63,6 +66,7 @@ hosts:
     ipmiPass: Opnfv@pod2
     interfaces:
       - eth1: 'EC:38:8F:79:0C:6D'
+      - eth2: 'EC:38:8F:79:0C:6E'
     roles:
       - compute
       - ceph-osd
@@ -74,6 +78,7 @@ hosts:
     ipmiPass: Opnfv@pod2
     interfaces:
       - eth1: 'EC:38:8F:7A:E6:EE'
+      - eth2: 'EC:38:8F:7A:E6:EF'
     roles:
       - compute
       - ceph-osd

@@ -1,0 +1,23 @@
+---
+- name: remove bridge ubuntu
+  template:
+    src: compute.j2
+    dest: /etc/network/interfaces
+  notify:
+    - restart network service
+
+- name: fix mapping in compute
+  shell: |
+    {% set compute_mappings = [] %}
+    {% for key, value in compu_prv_mappings.iteritems() %}
+    {% set mapping = key + ":" + value["bridge"] %}
+    {% set _ = compute_mappings.append(mapping) %}
+    {% endfor %}
+    {% if compute_mappings | length != 0 %}
+    sed -i "s/^\(bridge_mappings\).*/\1 = {{ ','.join(compute_mappings) }}/g" \
+    /etc/neutron/plugins/ml2/openvswitch_agent.ini
+    {% else %}
+    sed -i "/bridge_mappings/d" /etc/neutron/plugins/ml2/openvswitch_agent.ini
+    {% endif %}
+
+- meta: flush_handlers

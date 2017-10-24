@@ -7,4 +7,9 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- include: "{{ ansible_distribution }}.yml"
+- name: config neutron-openvswitch-agent
+  lineinfile:
+    dest: /etc/neutron/plugins/ml2/openvswitch_agent.ini
+    regexp: '^firewall_driver'
+    line: "firewall_driver = openvswitch"
+  notify: service neutron-openvswitch-agent restart
