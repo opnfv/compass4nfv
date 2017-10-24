@@ -229,24 +229,30 @@
     src: user_ceph.yml
     dest: /etc/openstack_deploy/user_ceph.yml
   when:
-    - "{{ hostvars[inventory_hostname]['groups']['ceph_mon'] | length > 0 }}"
-    - "{{ hostvars[inventory_hostname]['groups']['ceph_osd'] | length > 0 }}"
+    - hostvars[inventory_hostname]['groups']['ceph_mon'] is defined and
+      "{{ hostvars[inventory_hostname]['groups']['ceph_mon'] | length > 0 }}"
+    - hostvars[inventory_hostname]['groups']['ceph_osd'] is defined and
+      "{{ hostvars[inventory_hostname]['groups']['ceph_osd'] | length > 0 }}"
 
 - name: render ceph.yml.j2
   template:
     src: ceph.yml.j2
     dest: /etc/openstack_deploy/conf.d/ceph.yml
   when:
-    - "{{ hostvars[inventory_hostname]['groups']['ceph_mon'] | length > 0 }}"
-    - "{{ hostvars[inventory_hostname]['groups']['ceph_osd'] | length > 0 }}"
+    - hostvars[inventory_hostname]['groups']['ceph_mon'] is defined and
+      "{{ hostvars[inventory_hostname]['groups']['ceph_mon'] | length > 0 }}"
+    - hostvars[inventory_hostname]['groups']['ceph_osd'] is defined and
+      "{{ hostvars[inventory_hostname]['groups']['ceph_osd'] | length > 0 }}"
 
 - name: render user_variables_ceph.yml.j2
   template:
     src: user_variables_ceph.yml.j2
     dest: /etc/openstack_deploy/user_variables_ceph.yml
   when:
-    - "{{ hostvars[inventory_hostname]['groups']['ceph_mon'] | length > 0 }}"
-    - "{{ hostvars[inventory_hostname]['groups']['ceph_osd'] | length > 0 }}"
+    - hostvars[inventory_hostname]['groups']['ceph_mon'] is defined and
+      "{{ hostvars[inventory_hostname]['groups']['ceph_mon'] | length > 0 }}"
+    - hostvars[inventory_hostname]['groups']['ceph_osd'] is defined and
+      "{{ hostvars[inventory_hostname]['groups']['ceph_osd'] | length > 0 }}"
 
 - name: adapt no ha scenario
   include: noha.yml
