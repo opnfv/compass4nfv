@@ -94,6 +94,29 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_29cee85a",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-10-26T03:42:47Z",
+      "side": 1,
+      "message": "Small typo here: collectd_ver",
+      "range": {
+        "startLine": 34,
+        "startChar": 61,
+        "endLine": 34,
+        "endChar": 72
+      },
+      "revId": "bb50cbdea4ea20d621270b4e25b8f9e8f72ca9ba",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_d76e12c9",
         "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
         "patchSetId": 1
