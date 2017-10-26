@@ -83,6 +83,12 @@
   tags:
     - ansible
 
+- name: enable helm 
+  lineinfile:
+     dest: /opt/kargo_k8s/inventory/group_vars/k8s-cluster.yml
+     regexp: '^helm_enabled:'
+     line: 'helm_enabled: {{ helm_flag }}'
+
 - name: run kargo playbook
   shell: |
     cd /opt/kargo_k8s
