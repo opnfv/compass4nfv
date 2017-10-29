@@ -10,16 +10,9 @@
   shell: >
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers opendaylight_v2;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling "True";
+    crudini --del /etc/neutron/plugins/ml2/ml2_conf.ini ovs;
+    crudini --del /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firewall_driver;
     crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 extension_drivers port_security;
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings
-    "{{ contr_l2_mappings }}";
-
-- name: configure bridge_mappings for L3
-  shell: >
-    crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings
-    "{{ contr_l3_mappings }}";
-  when: odl_l3_agent == "Enable"
 
 - name: turn off l3 ha for odl l2
   shell: |
