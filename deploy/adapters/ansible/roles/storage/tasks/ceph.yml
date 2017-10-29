@@ -43,3 +43,10 @@
     line: "losetup -f /var/{{ item }}.img"
     insertbefore: "{{ rc_local_insert_before }}"
   with_items: "{{ ceph_osd_images }}"
+
+- name: Create ceph partitions at boot time
+  lineinfile:
+    dest: "{{ rc_local }}"
+    line: "partprobe -s {{ item }}"
+    insertbefore: "{{ rc_local_insert_before }}"
+  with_items: "{{ ceph_loopback.results | map(attribute='stdout') | list }}"
