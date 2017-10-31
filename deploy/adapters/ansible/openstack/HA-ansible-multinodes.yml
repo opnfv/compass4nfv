@@ -41,7 +41,10 @@
     - setup-openstack
     - sync-inventory
 
-- hosts: compute
+- hosts:
+    - compute
+    - utility
+    - neutron_server
   remote_user: root
   roles:
     - post-osa
