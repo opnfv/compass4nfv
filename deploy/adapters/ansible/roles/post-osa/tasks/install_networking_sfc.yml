@@ -1,0 +1,73 @@
+---
+
+- name: install networking-sfc
+  pip:
+    name: networking-sfc
+    virtualenv: /openstack/venvs/neutron-15.1.4
+  when:
+    - inventory_hostname in groups['neutron_server']
+
+- name: install crudini
+  package:
+    name: crudini
+    state: latest
+  when:
+    - inventory_hostname in groups['neutron_server']
+
+- name: Install networking-sfc for CLI
+  pip:
+    name: networking-sfc
+  when:
+    - inventory_hostname in groups['utility']
+
+- name: turn off neutron-server on control node
+  service: name=neutron-server state=stopped
+  when: inventory_hostname in groups['neutron_server']
+
+- name: copy sfc.conf
+  copy:
+    src: "{{ sfc_plugins.src }}"
+    dest: "{{ sfc_plugins.dst }}"
+    mode: 0755
+  when: inventory_hostname in groups['neutron_server']
+
+- name: Configure SFC driver
+  shell: crudini --merge /etc/neutron/neutron.conf < /opt/sfc.conf
+  when: inventory_hostname in groups['neutron_server']
+
+- name: delete sfc.conf
+  shell: rm -rf {{ sfc_plugins.dst }}
+  when: inventory_hostname in groups['neutron_server']
+
+- name: Perform a Neutron DB online upgrade
+  command: |
+    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+                      --config-file /etc/neutron/neutron.conf
+                      --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
+                      upgrade --expand
+  become: "yes"
+  become_user: "neutron"
+  when: inventory_hostname in groups['neutron_server'][0]
+
+- name: Perform a Neutron DB offline upgrade
+  command: |
+    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+                      --config-file /etc/neutron/neutron.conf
+                      --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
+                      upgrade --contract
+  become: "yes"
+  become_user: "neutron"
+  when: inventory_hostname in groups['neutron_server'][0]
+
+- name: SFC DB upgrade
+  command: |
+    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+                      --subproject networking-sfc
+                      upgrade head
+  become: "yes"
+  become_user: "neutron"
+  when: inventory_hostname in groups['neutron_server'][0]
+
+- name: turn on neutron-server on control node
+  service: name=neutron-server state=started
+  when: inventory_hostname in groups['neutron_server']
