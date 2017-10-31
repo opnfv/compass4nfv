@@ -8,3 +8,10 @@
 ##############################################################################
 ---
 - include: "{{ ansible_distribution }}.yml"
+  when: inventory_hostname in groups['compute']
+
+# install networking-sfc for non odl scenarios
+- include: install_networking_sfc.yml
+  when:
+    - odl_sfc is not defined or odl_sfc == "Disable"
+    - inventory_hostname not in groups['compute']
