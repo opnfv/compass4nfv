@@ -1,0 +1,5 @@
+---
+
+sfc_plugins:
+  src: sfc.conf
+  dst: /opt/sfc.conf
