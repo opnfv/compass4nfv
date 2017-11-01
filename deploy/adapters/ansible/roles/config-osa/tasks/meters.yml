@@ -9,7 +9,7 @@
 ---
 - name: modify the aodh haproxy config
   replace:
-    dest: /opt/openstack-ansible/playbooks/vars/configs/haproxy_config.yml
+    dest: /opt/openstack-ansible/group_vars/all/haproxy.yml
     regexp: '- "expect status 401"'
     replace: '- "expect status 200"'
 
