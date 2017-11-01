@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 - name: setup infrastructure
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_ocata-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible setup-infrastructure.yml \
@@ -19,10 +19,9 @@
   register: setup_infrastructure_result
 
 - fail:
-    msg: "there are some task failed when setup infrastructure."
-  when: setup_infrastructure_result.stdout.find('failed={{item}}') != -1
-  with_sequence: start=1 end={{ max_failed_times }} stride=1
-
-- fail:
     msg: "some host are unreachable."
   when: setup_infrastructure_result.stdout.find('unreachable=1') != -1
+
+- fail:
+    msg: "there are some task failed when setup infrastructure."
+  when: setup_infrastructure_result.stdout.find('Mark setup-infrastructure completed') == -1
