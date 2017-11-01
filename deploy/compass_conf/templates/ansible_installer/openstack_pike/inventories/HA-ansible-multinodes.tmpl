@@ -1,0 +1,74 @@
+#set inventory_json = $getVar('inventory_json', [])
+#!/usr/bin/env python
+
+import os
+import sys
+import copy
+import argparse
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
+local_inventory='$inventory_json'
+
+def _byteify(data, ignore_dicts = False):
+    if isinstance(data, unicode):
+        return data.encode('utf-8')
+    if isinstance(data, list):
+        return [ _byteify(item, ignore_dicts=True) for item in data ]
+    if isinstance(data, dict) and not ignore_dicts:
+        return {
+            _byteify(key, ignore_dicts=True): _byteify(value, ignore_dicts=True)
+            for key, value in data.iteritems()
+        }
+    return data
+
+def merge_dict(ldict, rdict, overwrite=True):
+    if not (ldict and rdict):
+        return
+
+    if not isinstance(ldict, dict):
+        raise TypeError('ldict type is %s not dict' % type(ldict))
+
+    if not isinstance(rdict, dict):
+        raise TypeError('rdict type is %s not dict' % type(rdict))
+
+    for key, value in rdict.items():
+        if isinstance(value, dict) and key in ldict and isinstance(ldict[key],
+                                                                 dict):
+            merge_dict(ldict[key], value, overwrite)
+        else:
+            if overwrite or key not in ldict:
+                ldict[key] = copy.deepcopy(value)
+
+def load_inventory(inventory):
+    if not os.path.exists(inventory):
+        raise RuntimeError('file: %s not exist' % inventory)
+    with open(inventory, 'r') as fd:
+        return json.load(fd, object_hook=_byteify)
+
+def dump_inventory(inventory, data):
+    with open(inventory, 'w') as fd:
+        json.dump(data, fd, indent=4)
+
+def merge_inventory(linv, rinv):
+    ldata = load_inventory(linv)
+    rdata = load_inventory(rinv)
+    merge_dict(ldata, rdata, overwrite=True)
+    dump_inventory(linv, ldata)
+
+def read_cli_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--list', action = 'store_true')
+    parser.add_argument('--merge', action = 'store')
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    get_args = read_cli_args()
+    new_inventory = get_args.merge
+    if get_args.list:
+        print load_inventory(local_inventory)
+    elif new_inventory:
+        merge_inventory(local_inventory, new_inventory)

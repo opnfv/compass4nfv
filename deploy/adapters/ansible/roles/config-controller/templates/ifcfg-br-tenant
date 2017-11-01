@@ -1,0 +1,6 @@
+DEVICE=br-tenant
+TYPE=Bridge
+BOOTPROTO=none
+DEFROUTE="no"
+ONBOOT=yes
+DELAY=0

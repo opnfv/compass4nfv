@@ -1,7 +1,7 @@
 ---
 - name: copy download script
-  copy:
-    src: odl_pkg.sh
+  template:
+    src: odl_pkg.sh.j2
     dest: /opt/odl_pkg.sh
     mode: 0777
 

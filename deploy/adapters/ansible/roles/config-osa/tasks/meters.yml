@@ -8,10 +8,10 @@
 # #############################################################################
 ---
 - name: modify the aodh haproxy config
-  replace:
-    dest: /opt/openstack-ansible/playbooks/vars/configs/haproxy_config.yml
-    regexp: '- "expect status 401"'
-    replace: '- "expect status 200"'
+  copy:
+    dest: /opt/openstack-ansible/group_vars/all/haproxy.yml
+    src: haproxy.yml
+    mode: 0664
 
 - name: add OS_AUTH_TYPE in openrc
   lineinfile:

@@ -1,0 +1,79 @@
+##############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+
+# yamllint disable rule:line-length
+- name: add eth0 ip addresss
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: "IPADDR={{ ip_settings[inventory_hostname][\"mgmt\"][\"ip\"] }}"
+
+- name: add eth0 netmask
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: "NETMASK=255.255.255.0"
+
+- name: Disable default gw in eth0
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: "DEFROUTE=\"no\""
+
+- name: generate ifcfg-external
+  template:
+    src: ifcfg-external.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["external"]["interface"]}}
+
+- name: generate ifcfg-storage
+  template:
+    src: ifcfg-storage.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["storage"]["interface"]}}.{{compu_sys_mappings["storage"]["vlan_tag"]}}
+
+- name: generate ifcfg-tenant
+  template:
+    src: ifcfg-tenant.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["tenant"]["interface"]}}.{{compu_sys_mappings["tenant"]["vlan_tag"]}}
+
+# yamllint enable rule:line-length
+
+- name: remove ifcfg-br-mgmt script
+  file:
+    path: /etc/sysconfig/network-scripts/ifcfg-br-mgmt
+    state: absent
+
+- name: remove ifcfg-br-external script
+  file:
+    path: /etc/sysconfig/network-scripts/ifcfg-br-external
+    state: absent
+
+- name: remove ifcfg-br-storage script
+  file:
+    path: /etc/sysconfig/network-scripts/ifcfg-br-storage
+    state: absent
+
+- name: remove ifcfg-br-tenant script
+  file:
+    path: /etc/sysconfig/network-scripts/ifcfg-br-tenant
+    state: absent
+
+- name: restart the network
+  shell: systemctl restart network
+
+- name: fix mapping in compute
+  shell: |
+    {% set compute_mappings = [] %}
+    {% for key, value in compu_prv_mappings.iteritems() %}
+    {% set mapping = key + ":" + value["bridge"] %}
+    {% set _ = compute_mappings.append(mapping) %}
+    {% endfor %}
+    {% if compute_mappings | length != 0 %}
+    sed -i "s/^\(bridge_mappings\).*/\1 = {{ ','.join(compute_mappings) }}/g" \
+    /etc/neutron/plugins/ml2/openvswitch_agent.ini
+    {% else %}
+    sed -i "/bridge_mappings/d" /etc/neutron/plugins/ml2/openvswitch_agent.ini
+    {% endif %}

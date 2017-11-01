@@ -1,0 +1,7 @@
+DEVICE={{compu_sys_mappings["tenant"]["interface"]}}.{{compu_sys_mappings["tenant"]["vlan_tag"]}}
+BOOTPROTO=none
+ONBOOT=yes
+VLAN=yes
+IPADDR={{ ip_settings[inventory_hostname]["tenant"]["ip"] }}
+NETMASK=255.255.255.0
+DEFROUTE="no"

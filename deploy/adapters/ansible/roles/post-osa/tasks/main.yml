@@ -8,10 +8,18 @@
 ##############################################################################
 ---
 - include: "{{ ansible_distribution }}.yml"
-  when: inventory_hostname in groups['compute']
+  when:
+    - inventory_hostname in groups['compute']
+    - ansible_distribution == 'Ubuntu'
 
 # install networking-sfc for non odl scenarios
-- include: install_networking_sfc.yml
+# - include: install_networking_sfc.yml
+#   when:
+#     - odl_sfc is not defined or odl_sfc == "Disable"
+#     - inventory_hostname not in groups['compute']
+#   when: ansible_distribution == 'Ubuntu'
+
+- include: "{{ ansible_os_family }}.yml"
   when:
-    - odl_sfc is not defined or odl_sfc == "Disable"
-    - inventory_hostname not in groups['compute']
+    - ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+    - inventory_hostname in groups['compute']

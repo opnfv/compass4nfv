@@ -1,6 +1,6 @@
 DEVICE=br-mgmt
 TYPE=Bridge
-IPADDR={{host_info[inventory_hostname].MGMT_IP}}
+IPADDR={{ip_settings[inventory_hostname]["mgmt"]["ip"]}}
 PREFIX=24
 BOOTPROTO=none
 ONBOOT=yes
