@@ -96,7 +96,7 @@
 
 - name: remove repo_build_pip_no_binary
   lineinfile:
-    dest: /opt/openstack-ansible/playbooks/inventory/group_vars/repo_all.yml
+    dest: /opt/openstack-ansible/group_vars/repo_all.yml
     state: absent
     regexp: "{{ item }}"
   with_items: ['^repo_build_pip_no_binary:', '^  - libvirt-python']
@@ -139,10 +139,10 @@
   when: offline_deployment is defined and offline_deployment == "Enable"
 
 # This is a bug in ocata, will be removed in the future
-- name: limit the version of networking-sfc in os_tacker
-  shell: |
-    sed -i 's/networking-sfc$/networking-sfc=={{ networking_sfc_version }}/g' \
-        /etc/ansible/roles/os_tacker/defaults/main.yml
+# - name: limit the version of networking-sfc in os_tacker
+#  shell: |
+#    sed -i 's/networking-sfc$/networking-sfc=={{ networking_sfc_version }}/g' \
+#        /etc/ansible/roles/os_tacker/defaults/main.yml
 
 - name: add rally and tempest to requirement.txt
   blockinfile:
@@ -270,10 +270,10 @@
     src: repo_fix_pandas.yml
     dest: /etc/ansible/roles/repo_build/tasks/repo_fix_pandas.yml
 
-- name: change repore build
-  lineinfile:
-    dest: /etc/ansible/roles/repo_build/tasks/main.yml
-    insertafter: "^- include: repo_post_build.yml"
-    line: "- include: repo_fix_pandas.yml"
+# - name: change repore build
+#  lineinfile:
+#    dest: /etc/ansible/roles/repo_build/tasks/main.yml
+#    insertafter: "^- include: repo_post_build.yml"
+#    line: "- include: repo_fix_pandas.yml"
 
 - include: meters.yml
