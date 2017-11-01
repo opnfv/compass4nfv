@@ -19,7 +19,7 @@ If you want to deploy noha with1 controller and 1 compute, run the following com
 .. code-block:: bash
     export SCENARIO=os-nosdn-nofeature-noha.yml
     export VIRT_NUMBER=2
-    curl https://raw.githubusercontent.com/opnfv/compass4nfv/euphrates/quickstart.sh | bash
+    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/euphrates/quickstart.sh | bash
 
 Nodes Configuration (Virtual Deployment)
 ----------------------------------------
