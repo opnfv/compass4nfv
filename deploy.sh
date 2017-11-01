@@ -28,7 +28,9 @@
 # export NETWORK=/home/compass4nfv/deploy/conf/vm_environment/huawei-virtual1/network.yml
 #export NETWORK=
 
-export OPENSTACK_VERSION=${OPENSTACK_VERSION:-ocata}
+#export OPENSTACK_VERSION=${OPENSTACK_VERSION:-ocata}
+
+export OPENSTACK_VERSION=pike
 
 export COMPASS_ARCH=$(uname -m)
 

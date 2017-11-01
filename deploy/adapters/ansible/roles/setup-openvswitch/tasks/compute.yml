@@ -7,10 +7,17 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 #############################################################################
 ---
+- include_vars: "{{ ansible_os_family }}.yml"
+
 - name: stop neutron-openvswitch-agent
   service:
     name: neutron-openvswitch-agent
     state: stopped
+
+- name: restart openvswitch service
+  service:
+    name: "{{ ovs_service }}"
+    state: restarted
 
 - name: remove tunnel_types when vlan
   lineinfile:
@@ -43,7 +50,7 @@
   when:
     - compute in item["role"]
 
-- name: stop neutron-openvswitch-agent
+- name: start neutron-openvswitch-agent
   service:
     name: neutron-openvswitch-agent
     state: started

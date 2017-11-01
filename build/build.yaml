@@ -1,14 +1,14 @@
 ---
 packages:
-  - name: CentOS-7-x86_64-Minimal-1611.iso
+  - name: CentOS-7-x86_64-Minimal-1708.iso
     description: "Centos ISO of each host for provisioning"
     get_method: cached
-    url: http://artifacts.opnfv.org/compass4nfv/package/master/CentOS-7-x86_64-Minimal-1611.iso
+    url: http://artifacts.opnfv.org/compass4nfv/package/master/CentOS-7-x86_64-Minimal-1708.iso
 
-  - name: ubuntu-16.04-server-amd64.iso
+  - name: ubuntu-16.04.3-server-amd64.iso
     description: "Ubuntu ISO of each host for provisioning"
     get_method: cached
-    url: http://artifacts.opnfv.org/compass4nfv/package/master/ubuntu-16.04-server-amd64.iso
+    url: http://artifacts.opnfv.org/compass4nfv/package/master/ubuntu-16.04.3-server-amd64.iso
 
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
@@ -18,7 +18,7 @@ packages:
   - name: compass-tasks-osa
     description: "compass task container for openstack deployment via openstack-ansible"
     get_method: docker
-    url: compass4nfv/compass-tasks-osa:euphrates
+    url: yifei0van0xue/compass-tasks-osa:latest
 
   - name: compass-tasks-k8s
     description: "compass task container for kubernets deployment via kargo"
@@ -29,7 +29,7 @@ packages:
   - name: compass-cobbler
     description: "cobbler container for compass"
     get_method: docker
-    url: compass4nfv/compass-cobbler:latest
+    url: yifei0van0xue/compass-cobbler:latest
 
   - name: compass-db
     description: "datebase container for compass"
@@ -54,4 +54,4 @@ packages:
   - name: compass-docker-compose
     description: "containerized compass compose ansible"
     get_method: git
-    url: https://github.com/Compass4NFV/compass-docker-compose.git
+    url: https://github.com/yifei-xue/compass-docker-compose.git
