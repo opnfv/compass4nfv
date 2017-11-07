@@ -20,11 +20,11 @@ import sys
 
 from ansible.plugins.callback import CallbackBase
 
-current_dir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(current_dir + '/..')
+compass_bin = "/opt/compass/bin"
+sys.path.append(compass_bin)
 
+import switch_virtualenv
 
-# import switch_virtualenv  # noqa
 from compass.apiclient.restful import Client  # noqa: E402
 from compass.utils import flags  # noqa: E402
 

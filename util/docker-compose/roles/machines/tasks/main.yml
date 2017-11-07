@@ -1,0 +1,21 @@
+---
+- name: create switch file if test mode enabled
+  template: src=switch_machines_file.j2
+            dest="{{ docker_compose_dir }}/switch_machines_file"
+  tags:
+    - redploy
+
+- name: docker cp switch_machines_file
+  shell: |
+    docker cp "{{ docker_compose_dir }}/switch_machines_file" \
+    compass-deck:/tmp/switch_machines_file
+  tags:
+    - redploy
+
+- name: inject switches and mac addresses
+  shell: |
+    docker exec compass-deck bash -c \
+    "/opt/compass/bin/manage_db.py set_switch_machines \
+    --switch_machines_file /tmp/switch_machines_file"
+  tags:
+    - redploy
