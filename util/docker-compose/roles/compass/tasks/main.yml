@@ -1,0 +1,139 @@
+---
+- include_vars: "{{ compass_dists_dir }}/build.yaml"
+
+- set_fact:
+    image_name: "{{ item.name | regex_replace('-', '_') }}"
+    image_repo: "{{ item.url }}"
+  with_items: "{{ packages }}"
+  when: item.name in compose_images
+  register: compass_images
+
+- name: generate compose_images.yml
+  copy:
+    dest: "{{ compass_dists_dir }}/compose_images.yml"
+    content: |
+      {% set image_dict = {} %}
+      {% for item in compass_images.results %}
+      {% if "ansible_facts" in item %}
+      {% set facts = item.ansible_facts %}
+      {% set _ = image_dict.update({facts.image_name: facts.image_repo}) %}
+      {% endif %}
+      {% endfor %}
+      {% for key in image_dict %}
+      {{ key }}: {{ image_dict[key] }}
+      {% endfor %}
+
+- include_vars: "{{ compass_dists_dir }}/compose_images.yml"
+
+- name: get jumphost ip
+  shell: |
+    external_nic=`ip route |grep '^default'|awk '{print $5F}'|sed -n '1p'`
+    host_ip=`ifconfig $external_nic | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+    echo $host_ip
+  register: external_ip
+
+- name: fix name.service
+  shell: |
+    if [ ! -f "/etc/apparmor.d/disable/usr.sbin.named" ]; then
+        ln -s /etc/apparmor.d/usr.sbin.named /etc/apparmor.d/disable/
+        apparmor_parser -R /etc/apparmor.d/usr.sbin.named
+    fi
+
+- name: render docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_compose_dir }}/docker-compose.yml"
+
+- name: docker-compose down
+  shell: docker-compose down
+  args:
+    chdir: "{{ docker_compose_dir }}"
+
+- name: load docker images
+  shell: |
+    images=$(ls "{{ compass_dists_dir }}" | grep .*.tar)
+    for image in $images
+    do
+        docker load -i "{{ compass_dists_dir }}/$image"
+    done
+
+- name: copy files
+  shell:
+    cp -rf "{{ item }}" "{{ docker_compose_dir }}"
+  with_items:
+    - "{{ compass_dir }}/deploy/adapters/ansible"
+    - "{{ compass_dir }}/deploy/compass_conf"
+    - "{{ compass_dir }}/deploy/adapters/cobbler"
+
+- name: retrieve plugins list
+  command: "ls {{ compass_dir }}/plugins/"
+  register: plugin_list
+
+- name: copy plugins roles
+  copy:
+    src: "{{ compass_dir }}/plugins/{{ item }}/roles/"
+    dest: "{{ docker_compose_dir }}/ansible/roles/"
+  with_items: "{{ plugin_list.stdout_lines }}"
+  when: item != 'template'
+
+- name: chmod directory
+  file:
+    dest: "{{ item }}"
+    mode: 0755
+  with_items:
+    - "{{ compass_dir }}/deploy/adapters/ansible"
+    - "{{ compass_dir }}/deploy/compass_conf"
+    - "{{ compass_dir }}/deploy/adapters/cobbler"
+
+- name: copy ansible scripts into ansible folder
+  shell: |
+    for i in `ls "{{ docker_compose_dir }}/ansible" | grep "openstack_"`; do
+        cp -rf "{{ docker_compose_dir }}"/ansible/openstack/* \
+             "{{ docker_compose_dir }}"/ansible/$i
+    done
+
+- name: create run dir
+  file:
+    path: "{{ docker_compose_dir }}/ansible/run"
+    state: directory
+
+- name: render cobbler
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ docker_compose_dir }}/compass_conf/os_installer/{{ item }}"
+  with_items:
+    - cobbler.conf
+
+- name: docker-compose up
+  shell: docker-compose up -d
+  args:
+    chdir: "{{ docker_compose_dir }}"
+
+- name: create compass db tables
+  shell: |
+    sleep 3; \
+    docker exec compass-deck bash -c "/opt/compass/bin/manage_db.py createdb"
+  register: result1
+  until: result1.rc == 0
+  retries: 10
+  delay: 2
+  tags:
+    - redploy
+
+- name: add ansible callback
+  shell: |
+    docker cp "{{ item }}" \
+    compass-deck:/root/compass-deck/bin/ansible_callbacks
+    docker cp "{{ item }}" \
+    compass-tasks:/opt/ansible_callbacks
+  with_items:
+    - "{{ compass_dir }}/deploy/status_callback.py"
+    - "{{ compass_dir }}/deploy/playbook_done.py"
+
+- name: rm ansible run
+  shell: |
+    docker exec compass-tasks bash -c "rm -rf /var/ansible/run/*"
+
+- name: start httpd service
+  shell: |
+    docker exec compass-deck bash -c "systemctl start httpd"

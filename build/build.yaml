@@ -15,16 +15,10 @@ packages:
     get_method: docker
     url: compass4nfv/compass-deck:latest
 
-  - name: compass-tasks-osa
-    description: "compass task container for openstack deployment via openstack-ansible"
+  - name: compass-tasks
+    description: "compass task container integrated with openstack-ansible and kubespray"
     get_method: docker
-    url: yifei0van0xue/compass-tasks-osa:latest
-
-  - name: compass-tasks-k8s
-    description: "compass task container for kubernets deployment via kargo"
-    get_method: docker
-    url: compass4nfv/compass-tasks-k8s:latest
-
+    url: huangxiangyu/compass-tasks:latest
 
   - name: compass-cobbler
     description: "cobbler container for compass"
@@ -50,8 +44,3 @@ packages:
     description: "compass repo container for deployment"
     get_method: docker
     url: compass4nfv/compass-repo-osa-ubuntu:euphrates
-
-  - name: compass-docker-compose
-    description: "containerized compass compose ansible"
-    get_method: git
-    url: https://github.com/yifei-xue/compass-docker-compose.git

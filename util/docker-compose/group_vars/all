@@ -1,0 +1,41 @@
+---
+# env vars
+compass_dir:
+compass_dists_dir: "{{ compass_dir }}/work/deploy/installer/compass_dists"
+docker_compose_dir: "{{ compass_dir }}/work/deploy/docker"
+
+compose_images:
+
+docker_tag: v0.1
+deck_port: 5050
+repo_port: 5151
+
+host_ip: 10.1.0.1
+install_subnet: 10.1.0.0
+install_prefix: 24
+install_netmask: 255.255.255.0
+install_ip_range: 10.1.0.100 10.1.0.250
+
+pip_pkg_name: pip-openstack.tar.gz
+feature_pkg_name: packages.tar.gz
+
+distros:
+  ubuntu-16.04.3:
+    breed: "ubuntu"
+    kickstart: "default16.seed"
+    kopts: "netcfg/choose_interface=auto console='ttyS0,115200n8' console=tty0 net.ifnames=0 biosdevname=0 vga=788"
+    kopts_post: "console='ttyS0,115200n8' console=tty0 net.ifnames=0 biosdevname=0 vga=788"
+    extra: "--apt-dists=xenial --apt-components=main"
+    aliase: "xenial"
+    version: "ubuntu"
+    iso_name: ubuntu-16.04.3-server-amd64
+    ppa_name: xenial-pike-ppa
+
+  CentOS-7:
+    breed: "redhat"
+    kickstart: "default.ks"
+    aliase: "centos7"
+    version: "centos"
+    iso_name: CentOS-7-x86_64-Minimal-1708
+    ppa_name: centos7-pike-ppa
+
