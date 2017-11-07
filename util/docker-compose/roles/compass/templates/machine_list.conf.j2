@@ -1,0 +1,14 @@
+MACHINE_LIST = [
+    {
+        '127.0.0.1': [
+{% set port_num = 200 %}
+{% for mac in mac_addresses %}
+            {
+                'port': '{{ port_num }}',
+                'mac': '{{ mac }}',
+                'vlan': 0
+            },
+{% endfor %}
+        ]
+    }
+]

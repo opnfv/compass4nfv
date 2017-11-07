@@ -1,0 +1,48 @@
+---
+- name: install packege
+  shell: |
+    docker exec compass-tasks bash -c \
+    "yum upgrade -y; \
+     yum install https://rdoproject.org/repos/openstack-ocata/rdo-release-ocata.rpm -y; \
+     yum install git ntp ntpdate openssh-server python-devel sudo '@Development Tools' -y"
+
+- name: git clone openstack-ansible
+  shell: |
+    docker exec compass-tasks bash -c \
+    "rm -rf /opt/openstack-ansible; \
+     git clone https://git.openstack.org/openstack/openstack-ansible /opt/openstack-ansible"
+
+- name: change openstack-ansible to ocata branch
+  shell: |
+    docker exec compass-tasks bash -c \
+    "cd /opt/openstack-ansible; \
+     git checkout -b ocata remotes/origin/stable/ocata"
+
+- name: copy /opt/openstack-ansible/etc/openstack_deploy to /etc/openstack_deploy
+  shell: |
+    docker exec compass-tasks bash -c \
+    "rm -rf /etc/openstack_deploy; \
+     /bin/cp -rf /opt/openstack-ansible/etc/openstack_deploy /etc/openstack_deploy"
+
+- name: bootstrap
+  shell: |
+    docker exec compass-tasks bash -c \
+    "cd /opt/openstack-ansible; \
+     scripts/bootstrap-ansible.sh; \
+     rm /usr/local/bin/ansible-playbook -f"
+
+- name: generate password token
+  shell: |
+    docker exec compass-tasks bash -c \
+    " cd /opt/openstack-ansible/scripts/; \
+      python pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml"
+
+- name: copy cinder file
+  copy:
+   src: cinder.yml
+   dest: "{{ docker_compose_dir }}/cinder.yml"
+
+- name: copy file to docker
+  shell: |
+    docker cp "{{ docker_compose_dir }}/cinder.yml" \
+    compass-tasks:/etc/openstack_deploy/env.d/cinder.yml;

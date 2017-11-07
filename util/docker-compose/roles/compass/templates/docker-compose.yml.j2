@@ -1,0 +1,103 @@
+version: '2'
+
+services:
+{% if compass_db is defined %}
+  compass-db:
+    container_name: compass-db
+    hostname: compass-db
+    privileged: true
+    expose:
+    - 3306
+    tty: true
+    image: {{ compass_db }}
+    stdin_open: true
+    command:
+    - /sbin/entrypoint.sh
+{% endif %}
+
+{% if compass_mq is defined %}
+  compass-mq:
+    container_name: compass-mq
+    hostname: compass-mq
+    privileged: true
+    expose:
+    - 5672
+    tty: true
+    image: {{ compass_mq }}
+    stdin_open: true
+{% endif %}
+
+{% if compass_tasks is defined %}
+  compass-tasks:
+    container_name: compass-tasks
+    hostname: compass-tasks
+    privileged: true
+    image: {{ compass_tasks }}
+    links:
+    - compass-mq
+    - compass-cobbler
+    depends_on:
+    - compass-mq
+    - compass-cobbler
+    stdin_open: true
+    volumes:
+    - {{ docker_compose_dir }}/compass_conf:/etc/compass
+    - {{ docker_compose_dir }}/ansible:/var/ansible
+    command:
+    - /usr/local/bin/start.sh
+{% endif %}
+
+{% if compass_deck is defined %}
+  compass-deck:
+    container_name: compass-deck
+    hostname: compass-deck
+    privileged: true
+    image: {{ compass_deck }}
+    ports:
+    - {{ host_ip }}:{{ deck_port }}:80/tcp
+    - {{ external_ip.stdout }}:{{ deck_port }}:80/tcp
+    tty: true
+    links:
+    - compass-db
+    - compass-mq
+    depends_on:
+    - compass-db
+    - compass-mq
+    stdin_open: true
+    volumes:
+    - {{ docker_compose_dir }}/compass_conf:/etc/compass
+    command:
+    - /sbin/init
+    - /usr/local/bin/start.sh
+{% endif %}
+
+{% if compass_cobbler is defined %}
+  compass-cobbler:
+    container_name: compass-cobbler
+    hostname: compass-cobbler
+    network_mode: host
+    privileged: true
+    image: {{ compass_cobbler }}
+    ports:
+    - {{ host_ip }}:80:80/tcp
+    - {{ host_ip }}:69:69
+    - {{ host_ip }}:443:443/tcp
+    - {{ host_ip }}:25151:25151/tcp
+    - {{ host_ip }}:67:67/tcp
+    volumes:
+    - {{ docker_compose_dir }}/cobbler:/root/cobbler
+    command:
+    - /sbin/init
+{% endif %}
+
+{% if compass_repo is defined %}
+  compass-repo:
+    container_name: compass-repo
+    hostname: compass-repo
+    privileged: true
+    image: {{ compass_repo }}
+    ports:
+    - {{ host_ip }}:{{ repo_port }}:80/tcp
+    tty: true
+    stdin_open: true
+{% endif %}

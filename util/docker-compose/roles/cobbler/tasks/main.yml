@@ -1,0 +1,97 @@
+---
+- name: copy files
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "cp -rf /root/cobbler/* /var/lib/cobbler/; \
+     rm -rf /var/lib/cobbler/conf; \
+     cp -rf /root/cobbler/conf/* /etc/cobbler"
+
+- name: chmod migrate_ks.py
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "chmod +x /var/lib/cobbler/triggers/sync/post/migrate_ks.py"
+
+- name: render cobbler files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ docker_compose_dir }}/cobbler/{{ item }}"
+  with_items:
+    - dhcp.template
+    - named.template
+    - settings
+    - zone.template
+
+- name: copy files to /etc/cobbler
+  shell: |
+    docker cp "{{ docker_compose_dir }}/cobbler/{{ item }}" compass-cobbler:/etc/cobbler
+  with_items:
+    - dhcp.template
+    - named.template
+    - settings
+    - zone.template
+
+# - name: restart cobblerd service
+#   shell: |
+#     docker exec compass-cobbler bash -c \
+#     "service cobblerd restart"
+
+- name: prepare iso and ppa
+  shell: |
+    docker cp "{{ compass_dists_dir }}/{{ item.value.iso_name }}.iso" compass-cobbler:/tmp
+    docker exec compass-cobbler bash -c \
+    "mkdir -p /mnt/{{ item.value.iso_name }}; \
+     mount -o loop /tmp/{{ item.value.iso_name }}.iso /mnt/{{ item.value.iso_name }}"
+    docker cp "{{ compass_dists_dir }}/{{ item.value.ppa_name }}.tar.gz" compass-cobbler:/tmp
+    docker exec compass-cobbler bash -c \
+    "mkdir -p /var/lib/cobbler/repo_mirror/{{ item.value.ppa_name }}"
+  with_dict: "{{ distros }}"
+  run_once: "True"
+  ignore_errors: "True"
+
+- name: cobbler import iso
+  shell: |
+    name=`basename {{ item.value.iso_name }} | \
+    sed -e 's/.iso//g' -e 's/-amd64//g' -e 's/-x86_64//g'`
+    docker exec compass-cobbler bash -c \
+    "service cobblerd restart;
+     sleep 3;
+     cobbler import --name $name \
+                    --path /mnt/{{ item.value.iso_name }} \
+                    --arch x86_64 \
+                    --kickstart /var/lib/cobbler/kickstarts/{{ item.value.kickstart }} \
+                    --breed {{ item.value.breed }}"
+  with_dict: "{{ distros }}"
+  run_once: "True"
+  register: result2
+  until: result2.rc == 0
+  retries: 10
+  delay: 3
+
+- name: add repos
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "cobbler repo add --name {{ item.value.ppa_name }} \
+                      --mirror /var/lib/cobbler/repo_mirror/{{ item.value.ppa_name }} \
+                      --mirror-locally True \
+                      --arch=x86_64 {{ item.value.extra | default()}}"
+  with_dict: "{{ distros }}"
+  run_once: "True"
+
+- name: edit profiles
+  shell: |
+    name=`basename {{ item.value.iso_name }} | \
+    sed -e 's/.iso//g' -e 's/-amd64//g' -e 's/-x86_64//g'`-x86_64
+    docker exec compass-cobbler bash -c \
+    "cobbler profile edit --name $name \
+                          --name-servers '' \
+                          --repos {{ item.value.ppa_name }} \
+                          --ksmeta \"tree=http://{{ host_ip }}/cobbler/ks_mirror/$name\" \
+                          --kopts \"{{ item.value.kopts | default('') }}\" \
+                          --kopts-post \"{{ item.value.kopts_post | default('') }}\""
+  with_dict: "{{ distros }}"
+  run_once: "True"
+
+- name: cobbler sync
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "cobbler sync"

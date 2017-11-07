@@ -16,13 +16,13 @@ from ansible.plugins.callback import CallbackBase
 COMPASS_HOST = "compass-deck"
 
 
-def task_error(display, host, data):
-    display.display("task_error: host=%s,data=%s" % (host, data))
-
-#    if isinstance(data, dict):
-#        invocation = data.pop('invocation', {})
-
-    notify_host(display, COMPASS_HOST, host, "failed")
+# def task_error(display, host, data):
+#     display.display("task_error: host=%s,data=%s" % (host, data))
+#
+#     if isinstance(data, dict):
+#         invocation = data.pop('invocation', {})
+#
+#     notify_host(display, COMPASS_HOST, host, "failed")
 
 
 class CallbackModule(CallbackBase):
@@ -101,39 +101,47 @@ class CallbackModule(CallbackBase):
 
     def v2_playbook_on_stats(self, stats):
         self._display.display("playbook_on_stats enter")
+        all_vars = self.play.get_variable_manager().get_vars(self.loader)
+        host_vars = all_vars["hostvars"]
         hosts = sorted(stats.processed.keys())
-        failures = False
-        unreachable = False
-
-        for host in hosts:
-            summary = stats.summarize(host)
-            # self._display.display("host: %s \nsummary: %s\n" % (host, summary)) # noqa
-
-            if summary['failures'] > 0:
-                failures = True
-            if summary['unreachable'] > 0:
-                unreachable = True
+        cluster_name = host_vars[hosts[0]]['cluster_name']
 
         headers = {"Content-type": "application/json",
                    "Accept": "*/*"}
-
         conn = httplib.HTTPConnection(COMPASS_HOST, 80)
         token = auth(conn)
         headers["X-Auth-Token"] = token
-        get_url = "/api/hosts"
+        get_url = "/api/clusterhosts"
         conn.request("GET", get_url, "", headers)
         resp = conn.getresponse()
         raise_for_status(resp)
-        host_data = json.loads(resp.read())
-        clusterhosts = [item["name"] for item in host_data]
+        clusterhost_data = json.loads(resp.read())
+        clusterhost_mapping = {}
+        for item in clusterhost_data:
+            if item["clustername"] == cluster_name:
+                clusterhost_mapping.update({item["hostname"]:
+                                           item["clusterhost_id"]})
 
-        if failures or unreachable:
-            host_status = "error"
-        else:
-            host_status = "succ"
+        force_error = False
+        if "localhost" in hosts:
+            summary = stats.summarize("localhost")
+            if summary['failures'] > 0 or summary['unreachable'] > 0:
+                force_error = True
 
-        for host in clusterhosts:
-            notify_host(self._display, "compass-deck", host, host_status)
+        for hostname, hostid in clusterhost_mapping.iteritems():
+            if hostname not in hosts:
+                continue
+
+            summary = stats.summarize(hostname)
+            # self._display.display("host: %s \nsummary: %s\n" % (host, summary)) # noqa
+
+            if summary['failures'] > 0 or summary['unreachable'] > 0 \
+               or force_error:
+                status = "error"
+            else:
+                status = "succ"
+            self._display.display("hostname: %s" % hostname)
+            notify_host(self._display, COMPASS_HOST, hostid, status)
 
 
 def raise_for_status(resp):
@@ -157,17 +165,15 @@ def auth(conn):
     return json.loads(resp.read())["token"]
 
 
-def notify_host(display, compass_host, host, status):
-    display.display("hostname: %s" % host)
-    host = host.strip("host")
-    url = "/api/clusterhosts/%s/state" % host
+def notify_host(display, compass_host, hostid, status):
+    url = "/api/clusterhosts/%s/state" % hostid
     if status == "succ":
         body = {"state": "SUCCESSFUL"}
     elif status == "error":
         body = {"state": "ERROR"}
     else:
-        display.error("notify_host: host %s with status %s is not supported"
-                      % (host, status))
+        display.error("notify_host: hostid %s with status %s is not supported"
+                      % (hostid, status))
         return
 
     headers = {"Content-type": "application/json",

@@ -27,11 +27,11 @@ function install_compass_core() {
 }
 
 function set_compass_machine() {
-    local config_file=$WORK_DIR/installer/compass-docker-compose/group_vars/all
+    local config_file=$WORK_DIR/installer/docker-compose/group_vars/all
     sed -i '/pxe_boot_macs/d' $config_file
     echo "pxe_boot_macs: [${machines}]" >> $config_file
 
-    ansible-playbook $WORK_DIR/installer/compass-docker-compose/add_machine.yml
+    ansible-playbook $WORK_DIR/installer/docker-compose/add_machine.yml
 }
 
 function install_compass() {
@@ -129,13 +129,9 @@ function wait_ok() {
 }
 
 function launch_compass() {
-    local group_vars=$WORK_DIR/installer/compass-docker-compose/group_vars/all
+    local group_vars=$WORK_DIR/installer/docker-compose/group_vars/all
     sed -i "s#^\(compass_dir:\).*#\1 $COMPASS_DIR#g" $group_vars
-    sed -i "s#^\(compass_deck:\).*#\1 $COMPASS_DECK#g" $group_vars
-    sed -i "s#^\(compass_tasks:\).*#\1 $COMPASS_TASKS#g" $group_vars
-    sed -i "s#^\(compass_cobbler:\).*#\1 $COMPASS_COBBLER#g" $group_vars
-    sed -i "s#^\(compass_db:\).*#\1 $COMPASS_DB#g" $group_vars
-    sed -i "s#^\(compass_mq:\).*#\1 $COMPASS_MQ#g" $group_vars
+    sed -i "s#^\(compose_images:\).*#\1 $COMPOSE_IMAGES#g" $group_vars
 
     if [[ $OFFLINE_DEPLOY == "Enable" ]]; then
         sed -i "s#.*\(compass_repo:\).*#\1 $COMPASS_REPO#g" $group_vars
@@ -150,7 +146,7 @@ function launch_compass() {
 
     sed -i "s#^\(deck_port:\).*#\1 $COMPASS_DECK_PORT#g" $group_vars
     sed -i "s#^\(repo_port:\).*#\1 $COMPASS_REPO_PORT#g" $group_vars
-    ansible-playbook $WORK_DIR/installer/compass-docker-compose/bring_up_compass.yml
+    ansible-playbook $WORK_DIR/installer/docker-compose/bring_up_compass.yml
 }
 
 function recover_compass() {
