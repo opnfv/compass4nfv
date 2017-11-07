@@ -48,15 +48,21 @@ function prepare_env() {
     fi
 
     # prepare work dir
-    sudo rm -rf $WORK_DIR/{installer,vm,network,iso,docker}
-    mkdir -p $WORK_DIR/installer
+    sudo rm -rf $WORK_DIR/{vm,network,iso,docker}
     mkdir -p $WORK_DIR/vm
     mkdir -p $WORK_DIR/network
     mkdir -p $WORK_DIR/iso
     mkdir -p $WORK_DIR/cache
     mkdir -p $WORK_DIR/docker
 
-    extract_tar
+    # Don't destroy/recreate install directory if COMPASS_KEEP_INSTALL_DIR=yes
+    # and install directory exists
+    if [ "$COMPASS_KEEP_INSTALL_DIR" != "yes" ] || [ ! -d $WORK_DIR/installer ]
+    then
+        sudo rm -rf $WORK_DIR/installer
+        mkdir -p $WORK_DIR/installer
+        extract_tar
+    fi
 
     chmod 755 $WORK_DIR -R
 
