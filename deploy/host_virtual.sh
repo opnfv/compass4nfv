@@ -13,14 +13,27 @@ function tear_down_machines() {
     IFS=,
     for i in $HOSTNAMES; do
         sudo virsh destroy $i
-        sudo virsh undefine $i
+        sudo virsh undefine --nvram $i
         rm -rf $host_vm_dir/$i
     done
     IFS=$old_ifs
 }
 
 function reboot_hosts() {
-    log_warn "reboot_hosts do nothing"
+    # We do need it for aarch64
+    if [ "$COMPASS_ARCH" = "aarch64" ]; then
+        old_ifs=$IFS
+        IFS=,
+        for i in $HOSTNAMES; do
+            sudo virsh destroy $i
+            sleep 3
+            sudo virsh start $i
+            sleep 3
+        done
+        IFS=$old_ifs
+    else
+        log_warn "reboot_hosts do nothing"
+    fi
 }
 
 function launch_host_vms() {
@@ -28,6 +41,13 @@ function launch_host_vms() {
     IFS=,
     #function_bod
     mac_array=($machines)
+
+    # Select vm template per arch
+    vm_template_dir="$COMPASS_DIR/deploy/template/vm"
+    vm_template_file="$vm_template_dir/host.xml"
+    vm_template_arch="$vm_template_dir/host-$COMPASS_ARCH.xml"
+    [ -f $vm_template_arch ] && vm_template_file=$vm_template_arch
+
     log_info "bringing up pxe boot vms"
     i=0
     for host in $HOSTNAMES; do
@@ -43,7 +63,7 @@ function launch_host_vms() {
           -e "s/REPLACE_BOOT_MAC/${mac_array[i]}/g" \
           -e "s/REPLACE_NET_INSTALL/install/g" \
           -e "s/REPLACE_NET_IAAS/external_nat/g" \
-          $COMPASS_DIR/deploy/template/vm/host.xml\
+          "$vm_template_file" \
           > $vm_dir/libvirt.xml
 
         sudo virsh define $vm_dir/libvirt.xml

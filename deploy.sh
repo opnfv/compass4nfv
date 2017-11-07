@@ -30,6 +30,8 @@
 
 export OPENSTACK_VERSION=${OPENSTACK_VERSION:-ocata}
 
+export COMPASS_ARCH=$(uname -m)
+
 if [[ "x"$KUBERNETES_VERSION != "x" ]]; then
    unset OPENSTACK_VERSION
 fi
