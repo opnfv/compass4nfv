@@ -21,8 +21,12 @@
 
 - name: configure local mirror repo
   copy:
-    src: mirrors.repo
+    src: "{{ item }}"
     dest: /etc/yum.repos.d/mirrors.repo
+  with_first_found:
+    - files:
+      - mirrors_{{ ansible_architecture }}.repo
+      - mirrors.repo
   run_once: "True"
 
 - name: clean local pip conf to use official pip repo
