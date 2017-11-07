@@ -1,0 +1,71 @@
+---
+- name: config avahi
+  template:
+    src: compass_discovery.service.j2
+    dest: "{{ docker_compose_dir }}/extra/compass_discovery.service"
+
+- name: restart avahi service
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "cp -rf /root/extra/compass_discovery.service /etc/avahi/services/; \
+     service avahi-daemon restart"
+
+- name: add tinycore signature
+  template:
+    src: distro_signatures.json.j2
+    dest: "{{ docker_compose_dir }}/extra/distro_signatures.json"
+
+- name: restart cobblerd service
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "cp -rf /root/extra/distro_signatures.json /var/lib/cobbler/; \
+     service cobblerd restart"
+
+- name: config dhcp
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "sed -i 's/deny unknown-clients/allow unknown-clients/' /etc/cobbler/dhcp.template"
+
+- name: download tinycore
+  get_url:
+    url: "{{ tinycore_url }}"
+    dest: "{{ docker_compose_dir }}/extra/"
+
+- name: mount tinycore
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "mkdir -p /home/tinycore; \
+     mount -o loop /root/extra/core.iso /home/tinycore;"
+  ignore_errors: "yes"
+  run_once: "True"
+
+- name: import tinycore distros
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "service cobblerd restart; \
+     sleep 3; \
+     cobbler import --name {{ tinycore.DistroName }} \
+                    --arch {{ tinycore.DistroArch }} \
+                    --path /home/tinycore;"
+  register: result
+  until: result.rc == 0
+  retries: 10
+  delay: 3
+
+- name: edit tinycore profile
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "cobbler profile edit --name {{ tinycore.DistroName }}-{{ tinycore.DistroArch }} \
+                          --enable-menu True \
+                          --kopts 'owner_id={{ cluster_id }}'"
+
+- name: add default system
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "cobbler system add --name default \
+                        --profile {{ tinycore.DistroName }}-{{ tinycore.DistroArch }}"
+
+- name: cobbler sync
+  shell: |
+    docker exec compass-cobbler bash -c \
+    "cobbler sync"

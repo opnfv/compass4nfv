@@ -1,0 +1,8 @@
+---
+- name: Install Compass
+  hosts: localhost
+  sudo: "True"
+  roles:
+    # - docker
+    - compass
+    - cobbler
