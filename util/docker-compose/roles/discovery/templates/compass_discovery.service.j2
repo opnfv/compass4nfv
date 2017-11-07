@@ -1,0 +1,7 @@
+<service-group>
+    <name replace-wildcards="yes">Compass Discovery Service on %h</name>
+    <service protocol="ipv4">
+        <type>_compass-core._tcp</type>
+        <port>{{ deck_port }}</port>
+    </service>
+</service-group>

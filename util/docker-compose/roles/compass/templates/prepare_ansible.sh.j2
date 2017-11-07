@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in `ls {{ compass_adapter_dir }}/ansible | grep "openstack_"`; do
+    mkdir -p {{ docker_compose_dir }}/ansible/$i
+    cp -rf {{ compass_adapter_dir }}/ansible/openstack/* {{ docker_compose_dir }}/ansible/$i
+    cp -rf {{ compass_adapter_dir }}/ansible/$i {{ docker_compose_dir }}/ansible/
+done
+cp -rf {{ compass_adapter_dir }}/ansible/roles {{ docker_compose_dir }}/ansible/
