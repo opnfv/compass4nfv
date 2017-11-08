@@ -13,6 +13,8 @@ COMPASS_PATH=`cd ${BASH_SOURCE[0]%/*};pwd`
 WORK_DIR=$COMPASS_PATH/work/building
 export CACHE_DIR=$WORK_DIR/cache
 
+COMPASS_ARCH=$(uname -m)
+
 echo $COMPASS_PATH
 
 REDHAT_REL=${REDHAT_REL:-"false"}
@@ -23,12 +25,17 @@ mkdir -p $WORK_DIR $CACHE_DIR
 
 function install_docker_ubuntu()
 {
+    REPO_ARCH=amd64
+    if [ "$COMPASS_ARCH" = "aarch64" ]; then
+        REPO_ARCH=arm64
+    fi
+
     sudo apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual
     sudo apt-get install -y apt-transport-https ca-certificates curl \
                  software-properties-common
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo apt-key fingerprint 0EBFCD88
-    sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    sudo add-apt-repository    "deb [arch=$REPO_ARCH] https://download.docker.com/linux/ubuntu \
        $(lsb_release -cs) \
        stable"
     sudo apt-get update
