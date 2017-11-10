@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_06401ca4",
+        "filename": "deploy/prepare.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5455
+      },
+      "writtenOn": "2017-11-10T03:10:17Z",
+      "side": 1,
+      "message": "there is already a switch \"DEPLOY_HOST\" in compass4nfv to avoid destroy compass core when deploy including preserve directories. export DEPLOY_HOST\u003d\"true\" to take effect",
+      "range": {
+        "startLine": 60,
+        "startChar": 10,
+        "endLine": 60,
+        "endChar": 35
+      },
+      "revId": "a51876005281fc65d899558ed7c26d05de675b0d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
