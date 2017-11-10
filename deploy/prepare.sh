@@ -26,6 +26,12 @@ function install_docker()
        stable"
     sudo apt-get update
     sudo apt-get install -y docker-ce
+    sleep 5
+    sudo cat << EOF > /etc/docker/daemon.json
+{
+  "storage-driver": "aufs"
+}
+EOF
 
     sudo service docker start
     sudo service docker restart
@@ -134,7 +140,7 @@ function _pre_env_setup()
 
      tar -zxvf $jhpkg_url -C $WORK_DIR/prepare/
      cd $WORK_DIR/prepare/jh_env_package
-     tar -zxvf trusty-jh-ppa.tar.gz
+     tar -zxvf jh-ppa.tar.gz
 
      if [[ ! -z /etc/apt/sources.list.d ]]; then
           mv /etc/apt/sources.list.d /etc/apt/sources.list.d.bak
@@ -144,7 +150,7 @@ function _pre_env_setup()
           mv /etc/apt/apt.conf /etc/apt/apt.conf.bak
      fi
 
-     cat << EOF > /etc/apt/apt.conf
+     sudo cat << EOF > /etc/apt/apt.conf
 APT::Get::Assume-Yes "true";
 APT::Get::force-yes "true";
 Acquire::http::Proxy::127.0.0.1:9998 DIRECT;
@@ -154,11 +160,17 @@ EOF
           mv /etc/apt/sources.list /etc/apt/sources.list.bak
      fi
 
-     cat << EOF > /etc/apt/sources.list
-deb [arch=amd64] http://127.0.0.1:9998/trusty-jh-ppa trusty main
+     sudo cat << EOF > /etc/apt/sources.list
+deb [arch=amd64] http://127.0.0.1:9998/jh-ppa $(lsb_release -cs) main
 EOF
 
-     nohup python -m SimpleHTTPServer 9998 &
+     if [[ $(lsb_release -cs) == "trusty" ]]; then
+         nohup python -m SimpleHTTPServer 9998 &
+     else
+         nohup python3 -m http.server 9998 &
+     fi
+
+     http_ppa_pid=$!
 
      cd -
      sleep 5
@@ -172,12 +184,25 @@ EOF
 
      sudo docker version >/dev/null 2>&1
      if [[ $? -ne 0 ]]; then
-         install_docker
+         sudo apt-get install -y docker-ce
+         sleep 5
+         sudo cat << EOF > /etc/docker/daemon.json
+{
+  "storage-driver": "aufs"
+}
+EOF
+
+         sudo service docker start
+         sudo service docker restart
+     else
+         StorageDriver=$(sudo docker info | grep "Storage Driver" | awk '{print $3}')
+         if [[ $StorageDriver != "aufs" ]]; then
+             echo "The storage driver of docker currently only supports 'aufs'."
+             exit 1
+         fi
      fi
 
-     pid=$(ps -ef | grep SimpleHTTPServer | grep 9998 | awk '{print $2}')
-     echo $pid
-     kill -9 $pid
+     kill -9 $http_ppa_pid
 
      if [[ ! -d /etc/libvirt/hooks ]]; then
          sudo mkdir -p /etc/libvirt/hooks
@@ -210,8 +235,6 @@ function _pre_pip_setup()
           mkdir -p ~/.pip
      fi
 
-#     rm -rf ~/.pip
-#     mkdir -p ~/.pip
      rm -rf $WORK_DIR/prepare
      mkdir -p $WORK_DIR/prepare
      jhpkg_url=${JHPKG_URL:7}
@@ -223,7 +246,7 @@ function _pre_pip_setup()
 
      tar -zxvf $jhpkg_url -C $WORK_DIR/prepare/
      cd $WORK_DIR/prepare/jh_env_package
-     tar -zxvf env_trusty_pip.tar.gz
+     tar -zxvf jh_pip.tar.gz
 
      cat << EOF > ~/.pip/pip.conf
 [global]
@@ -233,7 +256,14 @@ no-index = true
 trusted-host=127.0.0.1
 EOF
 
-     nohup python -m SimpleHTTPServer 9999 &
+     if [[ $(lsb_release -cs) == "trusty" ]]; then
+         nohup python -m SimpleHTTPServer 9999 &
+     else
+         nohup python3 -m http.server 9999 &
+     fi
+
+     http_pip_pid=$!
+     echo $http_pip_pid
 
      sleep 5
 
@@ -244,25 +274,25 @@ EOF
      virtualenv $WORK_DIR/venv
      source $WORK_DIR/venv/bin/activate
 
-     #pip install --upgrade cffi
+     pip install cffi==1.10.0
+     pip install MarkupSafe==1.0
+     pip install pip==9.0.1
+     pip install cheetah==2.4.4
+     pip install pyyaml==3.12
+     pip install requests==2.18.1
+     pip install netaddr==0.7.19
+     pip install oslo.config==4.6.0
+     pip install ansible==2.3.1.0
+     sudo pip install docker-compose==1.14.0
+     sudo pip install -U pyOpenSSL
 
-     PIP="cffi MarkupSafe pip cheetah pyyaml requests netaddr oslo.config ansible"
-
-     #PIP="paramiko jinja2 PyYAML setuptools pycrypto pyasn1 cryptography MarkupSafe idna six enum34 ipaddress pycparser virtualenv cheetah requests netaddr pbr oslo.config ansible"
-     for i in ${PIP}; do
-        pip install --upgrade $i
-     done
-
-     pid=$(ps -ef | grep SimpleHTTPServer | grep 9999 | awk '{print $2}')
-     echo $pid
-     kill -9 $pid
+     kill -9 $http_pip_pid
 
      if [[ -f ~/.pip/pip.conf.bak ]]; then
           mv ~/.pip/pip.conf.bak ~/.pip/pip.conf
      else
           rm -rf ~/.pip/pip.conf
      fi
-#     rm -rf ~/.pip/pip.conf
 }
 
 function prepare_python_env()
