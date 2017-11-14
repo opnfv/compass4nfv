@@ -17,7 +17,7 @@
     ## PXE JUST ONCE
     #if $pxe_just_once in [ "1", "true", "yes", "y" ]
         #if $breed == 'redhat'
-            #set nopxe = "\nwget \"http://%s/cblr/svc/op/nopxe/system/%s\" -O /var/log/nopxe" % (srv, system_name)
+            #set nopxe = "\ncurl \"http://%s/cblr/svc/op/nopxe/system/%s\" -O /var/log/nopxe" % (srv, system_name)
         #else if $breed == 'vmware' and $os_version == 'esx4'
             #set nopxe = "\ncurl \"http://%s/cblr/svc/op/nopxe/system/%s\" -o /var/log/nopxe" % (srv, system_name)
         #else if $breed == 'vmware'
