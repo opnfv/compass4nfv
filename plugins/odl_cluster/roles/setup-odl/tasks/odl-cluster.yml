@@ -13,8 +13,6 @@
   when: inventory_hostname in groups['network_hosts']     # Todo: modify to odl_hosts
 
 - include: control-repos-1.yml
-  vars:
-    odl_pip: "{{ networking_odl_url }}"
   when: inventory_hostname == groups['repo_container'][0]
 
 - include: control-servers-1.yml

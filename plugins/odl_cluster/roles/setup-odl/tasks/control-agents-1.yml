@@ -8,7 +8,7 @@
 - name: install networking-odl
   pip:
     name: networking-odl
-    virtualenv: /openstack/venvs/neutron-15.1.4
+    virtualenv: /openstack/venvs/neutron-{{ os_ver }}
 
 - name: configure vsctl for dhcp agent
   shell: |
