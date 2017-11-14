@@ -54,6 +54,22 @@
     path: /etc/apt/apt.conf
     state: absent
 
+- name: rm sources.list
+  file:
+    path: /etc/apt/sources.list
+    state: absent
+
+- name: remove the space end of the line in the resolv.conf
+  shell: "sed -i 's/ *$//' /etc/resolv.conf"
+
+- name: change sources list
+  copy:
+    src: sources.list.official
+    dest: /etc/apt/sources.list
+
+- name: update apt cache
+  apt: update_cache=yes
+
 - name: restart ntp service
   shell: "service ntp restart"
 
