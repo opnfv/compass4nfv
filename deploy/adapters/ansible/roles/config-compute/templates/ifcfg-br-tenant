@@ -1,6 +1,6 @@
-DEVICE=br-vxlan
+DEVICE=br-tenant
 TYPE=Bridge
-IPADDR={{host_info[inventory_hostname].VXLAN_IP}}
+IPADDR={{ip_settings[inventory_hostname]["tenant"]["ip"]}}
 NETMASK=255.255.252.0
 BOOTPROTO=none
 DEFROUTE="no"

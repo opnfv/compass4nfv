@@ -44,6 +44,7 @@
   when:
     - checkresult.rc == 0
     - offline_deployment is defined and offline_deployment == "Disable"
+    - local_mirror == 'Ubuntu'
 
 # yamllint disable rule:line-length
 - name: add mariadb local repository

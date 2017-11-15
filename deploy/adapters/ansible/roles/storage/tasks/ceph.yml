@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+- include_vars: "{{ ansible_os_family }}.yml"
+
 - name: Create sparse ceph OSD files
   command: truncate -s {{ host_loopback_ceph_size }} /var/{{ item }}.img
   args:
@@ -43,6 +45,7 @@
     line: "losetup -f /var/{{ item }}.img"
     insertbefore: "{{ rc_local_insert_before }}"
   with_items: "{{ ceph_osd_images }}"
+  when: ansible_os_family == 'Debian'
 
 - name: Create ceph partitions at boot time
   lineinfile:
@@ -50,3 +53,18 @@
     line: "partprobe -s {{ item }}"
     insertbefore: "{{ rc_local_insert_before }}"
   with_items: "{{ ceph_loopback.results | map(attribute='stdout') | list }}"
+  when: ansible_os_family == 'Debian'
+
+- name: Create ceph loopback at boot time
+  lineinfile:
+    dest: "{{ rc_local }}"
+    line: "losetup -f /var/{{ item }}.img"
+  with_items: "{{ ceph_osd_images }}"
+  when: ansible_os_family == 'RedHat'
+
+- name: Create ceph partitions at boot time
+  lineinfile:
+    dest: "{{ rc_local }}"
+    line: "partprobe -s {{ item }}"
+  with_items: "{{ ceph_loopback.results | map(attribute='stdout') | list }}"
+  when: ansible_os_family == 'RedHat'

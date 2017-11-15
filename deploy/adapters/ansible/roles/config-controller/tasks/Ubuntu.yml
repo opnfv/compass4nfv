@@ -44,3 +44,7 @@
     src: apt.conf
     dest: /etc/apt/apt.conf
   when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: set fact for local mirror
+  set_fact:
+    local_mirror: "{{ ansible_distribution }}"
