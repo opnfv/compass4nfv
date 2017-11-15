@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_cace2eb4",
+        "filename": "deploy/adapters/ansible/kubernetes/roles/setup-k8s-network/handlers/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2017-11-15T02:02:37Z",
+      "side": 1,
+      "message": "why clear eth0 ip? when to run this task?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 40
+      },
+      "revId": "a9f6a2b1665a31bbdaf266c333410bde2418cf15",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_8ad42648",
+        "filename": "deploy/adapters/ansible/kubernetes/roles/setup-k8s-network/tasks/RedHat.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2017-11-15T02:02:37Z",
+      "side": 1,
+      "message": "can it be removed as this file is for redhat only?",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 37
+      },
+      "revId": "a9f6a2b1665a31bbdaf266c333410bde2418cf15",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_eacb32a3",
+        "filename": "deploy/adapters/ansible/kubernetes/roles/setup-k8s-network/tasks/RedHat.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2017-11-15T02:02:37Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "revId": "a9f6a2b1665a31bbdaf266c333410bde2418cf15",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
