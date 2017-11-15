@@ -15,20 +15,20 @@
           echo 'nfs        2049/udp' >>  /etc/services"
 
 # yamllint disable rule:line-length
-- name: generate ifcfg-if.vxlan
+- name: generate ifcfg-if.tenant
   template:
-    src: ifcfg-if.vxlan
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["mgmt"]["interface"]}}.{{sys_intf_mappings["mgmt"]["vlan_tag"]}}
+    src: ifcfg-if.tenant
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["tenant"]["interface"]}}.{{compu_sys_mappings["tenant"]["vlan_tag"]}}
 
 - name: generate ifcfg-if.storage
   template:
     src: ifcfg-if.storage
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["storage"]["interface"]}}.{{sys_intf_mappings["storage"]["vlan_tag"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["storage"]["interface"]}}.{{compu_sys_mappings["storage"]["vlan_tag"]}}
 
-- name: add br-vlan to interface script
+- name: add br-external to interface script
   lineinfile:
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ network_cfg["provider_net_mappings"][0]["interface"] }}
-    line: "BRIDGE=br-vlan"
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["external"]["interface"]}}
+    line: "BRIDGE=br-external"
 
 - name: remove eth0 ip addresss
   lineinfile:
@@ -49,13 +49,13 @@
 
 - name: add br-vlan to interface script
   lineinfile:
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["storage"]["interface"]}}.{{sys_intf_mappings["storage"]["vlan_tag"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["storage"]["interface"]}}.{{compu_sys_mappings["storage"]["vlan_tag"]}}
     line: "BRIDGE=br-storage"
 
-- name: add br-vxlan to interface script
+- name: add br-tenant to interface script
   lineinfile:
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["mgmt"]["interface"]}}.{{sys_intf_mappings["mgmt"]["vlan_tag"]}}
-    line: "BRIDGE=br-vxlan"
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["tenant"]["interface"]}}.{{compu_sys_mappings["tenant"]["vlan_tag"]}}
+    line: "BRIDGE=br-tenant"
 # yamllint enable rule:line-length
 
 - name: generate ifcfg-br-mgmt script
@@ -63,9 +63,9 @@
     src: ifcfg-br-mgmt
     dest: /etc/sysconfig/network-scripts/
 
-- name: generate ifcfg-br-vlan script
+- name: generate ifcfg-br-external script
   template:
-    src: ifcfg-br-vlan
+    src: ifcfg-br-external
     dest: /etc/sysconfig/network-scripts/
 
 - name: generate ifcfg-br-storage script
@@ -73,15 +73,15 @@
     src: ifcfg-br-storage
     dest: /etc/sysconfig/network-scripts/
 
-- name: generate ifcfg-br-vxlan script
+- name: generate ifcfg-br-tenant script
   template:
-    src: ifcfg-br-vxlan
+    src: ifcfg-br-tenant
     dest: /etc/sysconfig/network-scripts/
 
 - name: restart the network
   shell: systemctl restart network
 
-- name: Install apt packages
+- name: Install yum packages
   yum:
     pkg: "{{item}}"
     state: "present"

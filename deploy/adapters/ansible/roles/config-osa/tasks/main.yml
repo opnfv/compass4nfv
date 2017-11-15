@@ -34,6 +34,7 @@
   register: checkresult
   ignore_errors: "true"
 
+# yamllint disable rule:line-length
 - name: add mariadb local repository
   blockinfile:
     dest: /etc/openstack_deploy/user_variables.yml
@@ -44,8 +45,8 @@
   when:
     - checkresult.rc == 0
     - offline_deployment is defined and offline_deployment == "Disable"
+    - hostvars[hostvars[inventory_hostname]['groups']['controller'][0]]['local_mirror'] == 'Ubuntu'
 
-# yamllint disable rule:line-length
 - name: add mariadb local repository
   blockinfile:
     dest: /etc/openstack_deploy/user_variables.yml

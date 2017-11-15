@@ -8,7 +8,6 @@
 ##############################################################################
 ---
 host_loopback_ceph_size: "100G"
-rc_local: /etc/rc.local
 rc_local_insert_before: "^exit 0$"
 bootstrap_host_data_disk_device: null
 bootstrap_host_data_disk_device_force: "no"
