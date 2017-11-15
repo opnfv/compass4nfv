@@ -1,4 +1,4 @@
-DEVICE=br-vxlan
+DEVICE=br-tenant
 TYPE=Bridge
 BOOTPROTO=none
 DEFROUTE="no"

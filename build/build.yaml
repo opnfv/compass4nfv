@@ -1,9 +1,9 @@
 ---
 packages:
-  - name: CentOS-7-x86_64-Minimal-1611.iso
+  - name: CentOS-7-x86_64-Minimal-1708.iso
     description: "Centos ISO of each host for provisioning"
     get_method: cached
-    url: http://artifacts.opnfv.org/compass4nfv/package/master/CentOS-7-x86_64-Minimal-1611.iso
+    url: http://artifacts.opnfv.org/compass4nfv/package/master/CentOS-7-x86_64-Minimal-1708.iso
 
   - name: ubuntu-16.04.3-server-amd64.iso
     description: "Ubuntu ISO of each host for provisioning"
