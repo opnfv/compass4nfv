@@ -41,5 +41,5 @@
 - name: Wait for reboot
   local_action:
     module: wait_for
-      host={{ ansible_eth0.ipv4.address }} port=22 delay=1 timeout=300
+      host={{ ansible_eth0.ipv4.address }} port=22 delay=10 timeout=1200
   when: check_result.rc == 1
