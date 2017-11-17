@@ -70,6 +70,30 @@
       "revId": "0ea4055e4e5b7569e4a477aa86c460f4337707ba",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b29ebc52",
+        "filename": "build/build-aarch64.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2017-11-17T06:04:32Z",
+      "side": 1,
+      "message": "Strange. I installed a fresh ubuntu 14.04.5 x86 VM, it works okay.\nThough env is not expanded in console log, it is processed correctly by python os.system().",
+      "parentUuid": "9a3d3df0_121b281c",
+      "range": {
+        "startLine": 6,
+        "startChar": 10,
+        "endLine": 6,
+        "endChar": 26
+      },
+      "revId": "0ea4055e4e5b7569e4a477aa86c460f4337707ba",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
