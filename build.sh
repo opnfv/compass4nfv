@@ -9,6 +9,9 @@
 ##############################################################################
 set -ex
 
+#avoid locale issue on some environment
+export LC_ALL=en_US.UTF-8
+
 COMPASS_PATH=`cd ${BASH_SOURCE[0]%/*};pwd`
 WORK_DIR=$COMPASS_PATH/work/building
 export CACHE_DIR=$WORK_DIR/cache
