@@ -10,6 +10,26 @@
 compass_vm_dir=$WORK_DIR/vm/compass
 rsa_file=$compass_vm_dir/boot.rsa
 ssh_args="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $rsa_file"
+
+function check_container_alive() {
+    docker exec -it compass-deck bash -c "exit" 1>/dev/null 2>&1
+    local deck_state=$?
+    docker exec -it compass-tasks bash -c "exit" 1>/dev/null 2>&1
+    local tasks_state=$?
+    docker exec -it compass-cobbler bash -c "exit" 1>/dev/null 2>&1
+    local cobbler_state=$?
+    docker exec -it compass-db bash -c "exit" 1>/dev/null 2>&1
+    local db_state=$?
+    docker exec -it compass-mq bash -c "exit" 1>/dev/null 2>&1
+    local mq_state=$?
+
+    if [ $((deck_state||tasks_state||cobbler_state||db_state||mq-state)) == 0 ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
 function tear_down_compass() {
     sudo virsh destroy compass > /dev/null 2>&1
     sudo virsh undefine compass > /dev/null 2>&1

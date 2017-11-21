@@ -104,6 +104,7 @@ def export_dha_file(dha, dha_file, ofile):
             plugin_list.append(plugin_str)
         env.update({'plugins': ','.join(plugin_list)})
 
+    env.update({'CLUSTER_NAME': dha.get('NAME', "opnfv")})
     env.update({'TYPE': dha.get('TYPE', "virtual")})
     env.update({'FLAVOR': dha.get('FLAVOR', "cluster")})
     env.update({'HOSTNAMES': hostnames(dha, ',')})
