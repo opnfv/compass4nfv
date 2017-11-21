@@ -51,5 +51,8 @@
 
 - name: change sources(yum) list
   copy:
-    src: centos_base.repo
+    src: "{{ item }}"
     dest: /etc/yum.repos.d/centos_base.repo
+  with_first_found:
+    - centos_base_{{ ansible_architecture }}.repo
+    - centos_base.repo
