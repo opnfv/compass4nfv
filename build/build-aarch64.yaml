@@ -1,0 +1,41 @@
+---
+packages:
+  - name: CentOS-7-aarch64-Minimal-1611.iso
+    description: "Centos ISO of each host for provisioning"
+    get_method: cached
+    url: $COMPASS_ISO_REPO/CentOS-7-aarch64-Minimal-1611.iso
+
+  - name: ubuntu-16.04-server-arm64.iso
+    description: "Ubuntu ISO of each host for provisioning"
+    get_method: cached
+    url: $COMPASS_ISO_REPO/ubuntu-16.04-server-arm64.iso
+
+  - name: compass-deck
+    description: "RESTful API and DB Handlers for Compass"
+    get_method: docker
+    url: $COMPASS_DOCKER_REPO/compass-deck:latest
+
+  - name: compass-tasks-k8s
+    description: "compass task container for kubernets deployment via kargo"
+    get_method: docker
+    url: $COMPASS_DOCKER_REPO/compass-tasks-k8s:latest
+
+  - name: compass-cobbler
+    description: "cobbler container for compass"
+    get_method: docker
+    url: $COMPASS_DOCKER_REPO/compass-cobbler:latest
+
+  - name: compass-db
+    description: "datebase container for compass"
+    get_method: docker
+    url: $COMPASS_DOCKER_REPO/compass-db:latest
+
+  - name: compass-mq
+    description: "message queue container for compass"
+    get_method: docker
+    url: $COMPASS_DOCKER_REPO/compass-mq:latest
+
+  - name: compass-docker-compose
+    description: "containerized compass compose ansible"
+    get_method: git
+    url: $COMPASS_GIT_REPO/compass-docker-compose

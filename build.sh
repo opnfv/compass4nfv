@@ -85,7 +85,12 @@ function prepare_env()
 
 function download_packages()
 {
-    python $COMPASS_PATH/build/parser.py $COMPASS_PATH/build/build.yaml
+    build_yaml_file=build.yaml
+    if [ -f "$COMPASS_PATH/build/build-$COMPASS_ARCH.yaml" ]; then
+        build_yaml_file=build-$COMPASS_ARCH.yaml
+    fi
+
+    python $COMPASS_PATH/build/parser.py $COMPASS_PATH/build/$build_yaml_file
 }
 
 function build_tar()
