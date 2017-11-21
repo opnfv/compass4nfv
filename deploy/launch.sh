@@ -55,7 +55,8 @@ if [[ "$EXPANSION" == "false" ]]; then
 
     export machines
 
-    if [[ "$DEPLOY_COMPASS" == "true" ]]; then
+    CONTAINER_ALIVE=$(check_container_alive)
+    if [[ "$DEPLOY_COMPASS" == "true" && "$CONTAINER_ALIVE" == "false" ]]; then
         if ! prepare_env;then
             echo "prepare_env failed"
             exit 1
@@ -71,7 +72,7 @@ if [[ "$EXPANSION" == "false" ]]; then
             log_error "launch_compass failed"
             exit 1
         fi
-    else
+    elif [[ "$DEPLOY_COMPASS" == "true" && "$CONTAINER_ALIVE" == "true" ]]; then
         refresh_compass_core
     fi
 else
