@@ -12,12 +12,14 @@
     path: /etc/yum.repos.d
     state: absent
   run_once: "True"
+  when: ansible_os_family == 'RedHat'
 
 - name: create local repo conf dir
   file:
     path: /etc/yum.repos.d
     state: directory
   run_once: "True"
+  when: ansible_os_family == 'RedHat'
 
 - name: configure local mirror repo
   copy:
@@ -27,6 +29,7 @@
     - mirrors_{{ ansible_architecture }}.repo
     - mirrors.repo
   run_once: "True"
+  when: ansible_os_family == 'RedHat'
 
 - name: clean local pip conf to use official pip repo
   file:
@@ -44,6 +47,7 @@
     - openssl-devel
     - python-devel
   run_once: "True"
+  when: ansible_os_family == 'RedHat'
 
 - name: update python packages
   pip:
