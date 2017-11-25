@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_395c4325",
+        "filename": "deploy/conf/vm_environment/os-nosdn-bar-noha.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-11-25T06:55:26Z",
+      "side": 1,
+      "message": "I think we also need to add a DHA file of HA scenario.",
+      "range": {
+        "startLine": 17,
+        "startChar": 1,
+        "endLine": 17,
+        "endChar": 6
+      },
+      "revId": "4e227dce9b37cb927172f42d21fc5fb8734877e2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b98cd380",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-11-25T06:55:26Z",
+      "side": 1,
+      "message": "Add this in main.yml before including collectd.yml, the CI failed due to this.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 45
+      },
+      "revId": "4e227dce9b37cb927172f42d21fc5fb8734877e2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f9865b64",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-11-25T06:55:26Z",
+      "side": 1,
+      "message": "I think you forget \"-y\", should be \"apt-get install -y\"",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 35
+      },
+      "revId": "4e227dce9b37cb927172f42d21fc5fb8734877e2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_597e676c",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-11-25T06:55:26Z",
+      "side": 1,
+      "message": "For the lines here, you may need to add spaces before e.g. \"OS_USERNAME\", otherwise there will be no indent before it.",
+      "range": {
+        "startLine": 93,
+        "startChar": 1,
+        "endLine": 97,
+        "endChar": 61
+      },
+      "revId": "4e227dce9b37cb927172f42d21fc5fb8734877e2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_993bcfd0",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-11-25T06:55:26Z",
+      "side": 1,
+      "message": "Is there a version limitation for gnocchiclient? I am not sure.",
+      "range": {
+        "startLine": 101,
+        "startChar": 16,
+        "endLine": 101,
+        "endChar": 29
+      },
+      "revId": "4e227dce9b37cb927172f42d21fc5fb8734877e2",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
