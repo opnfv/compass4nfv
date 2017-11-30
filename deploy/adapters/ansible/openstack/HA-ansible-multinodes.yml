@@ -48,6 +48,7 @@
   remote_user: root
   roles:
     - post-osa
+    - collectd
 
 - hosts:
     - neutron_openvswitch_agent
