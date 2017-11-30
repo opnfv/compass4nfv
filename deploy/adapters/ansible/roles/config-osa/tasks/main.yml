@@ -7,10 +7,23 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # #############################################################################
 ---
+- name: remove osa log directory if exist
+  file:
+    path: /var/log/osa/
+    state: absent
+
 - name: create osa log directory
   file:
     path: /var/log/osa/
     state: directory
+
+- name: remove osa user secrets if exist
+  shell: cp -rf /opt/openstack-ansible/etc/openstack_deploy/user_secrets.yml /etc/openstack_deploy/
+
+- name: generate the osa password
+  command: python pw-token-gen.py --file /etc/openstack_deploy/user_secrets.yml
+  args:
+    chdir: "/opt/openstack-ansible/scripts"
 
 - name: disable kernel update in rt_kvm scenario
   lineinfile:
