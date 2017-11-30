@@ -1,0 +1,16 @@
+# #############################################################################
+# Copyright (c) 2017 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+openstack_passwd_file: /etc/openstack_deploy/user_secrets.yml
+
+workspace: /tmp/plugin
+
+artifacts_barometer: https://pkg.ci.collectd.org/deb/dists/xenial/collectd-5.8/binary-amd64/
+
+collectd_ver: 5.8.0.23.g576797d-1~xenial_amd64.deb
