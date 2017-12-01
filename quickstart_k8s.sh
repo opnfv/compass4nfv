@@ -19,7 +19,7 @@ CURRENT_DIR=$PWD
 #k8s only support on centos
 export OS_VERSION=centos7
 export KUBERNETES_VERSION="v1.7.3"
-SCENARIO=${SCENARIO:-os-nosdn-nofeature-ha.yml}
+SCENARIO=${SCENARIO:-k8-nosdn-nofeature-ha.yml}
 
 ./build.sh
 
