@@ -45,6 +45,7 @@
     - compute
     - utility
     - neutron_server
+    - horizon_all
   remote_user: root
   roles:
     - post-osa

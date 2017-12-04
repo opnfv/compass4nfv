@@ -14,4 +14,7 @@
 - include: install_networking_sfc.yml
   when:
     - odl_sfc is not defined or odl_sfc == "Disable"
-    - inventory_hostname not in groups['compute']
+    - inventory_hostname not in groups['horizon_all']
+
+- include: tacker_horizon.yml
+  when: inventory_hostname in groups['horizon_all']

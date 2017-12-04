@@ -11,14 +11,12 @@
   package:
     name: crudini
     state: latest
-  when:
-    - inventory_hostname in groups['neutron_server']
 
 - name: Install networking-sfc for CLI
   pip:
     name: networking-sfc
   when:
-    - inventory_hostname in groups['utility']
+    - inventory_hostname not in groups['neutron_server']
 
 - name: turn off neutron-server on control node
   service: name=neutron-server state=stopped
@@ -34,6 +32,11 @@
 - name: Configure SFC driver
   shell: crudini --merge /etc/neutron/neutron.conf < /opt/sfc.conf
   when: inventory_hostname in groups['neutron_server']
+
+- name: Configure SFC extension on compute nodes
+  shell: crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini \
+             agent extensions sfc;
+  when: inventory_hostname in groups['compute']
 
 - name: delete sfc.conf
   shell: rm -rf {{ sfc_plugins.dst }}
