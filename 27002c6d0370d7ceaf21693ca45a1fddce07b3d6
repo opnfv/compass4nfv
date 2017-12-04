@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_4684bb0b",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-12-04T01:58:58Z",
+      "side": 1,
+      "message": "I think we should use ocata here, cause we are going to push into stable euphrates.",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 28
+      },
+      "revId": "27002c6d0370d7ceaf21693ca45a1fddce07b3d6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
