@@ -278,3 +278,9 @@
 #    line: "- include: repo_fix_pandas.yml"
 
 - include: meters.yml
+
+- name: fix the python-ldap version
+  lineinfile:
+    dest: /etc/ansible/roles/os_keystone/defaults/main.yml
+    regexp: '^  - python-ldap'
+    line: '  - python-ldap==2.5.2'
