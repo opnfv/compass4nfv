@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_2e3d09df",
+        "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-06T21:57:34Z",
+      "side": 1,
+      "message": "Hi Emma, this plugin is downloaded by compass to /opt/stack. This is done in plugins/barometer/roles/collectd/tasks/collect.yml L#56\n\nWould you suggest a different path?\n\nWhen your patches merge, I can post a patch update for that.",
+      "parentUuid": "9a3d3df0_8e541522",
+      "range": {
+        "startLine": 6,
+        "startChar": 27,
+        "endLine": 6,
+        "endChar": 53
+      },
+      "revId": "51ce441ca60cd115d9e8a932203ccc9d3cebcf82",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_4e5a0d51",
         "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
         "patchSetId": 16
@@ -59,6 +83,30 @@
       "writtenOn": "2017-12-06T21:34:29Z",
       "side": 1,
       "message": "Typically, I recommend using the gnocchi/aodh user/password. \nThis is a convention because both aodh and gnocchi can be deployed standalone.\n\nI wouldn\u0027t consider this a blocking issue, as long as the ceilometer service exists in the deployment.",
+      "range": {
+        "startLine": 29,
+        "startChar": 21,
+        "endLine": 29,
+        "endChar": 31
+      },
+      "revId": "51ce441ca60cd115d9e8a932203ccc9d3cebcf82",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_ae30f901",
+        "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-06T21:57:34Z",
+      "side": 1,
+      "message": "Tried gnocchi/aodh user/password; but they were not accessible to the plugin. Ceilometer service exists in the deployment and its credentials are working to send to gnocchi/aodh.",
+      "parentUuid": "9a3d3df0_4e5a0d51",
       "range": {
         "startLine": 29,
         "startChar": 21,
