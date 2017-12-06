@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_ae59195c",
+        "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 2311
+      },
+      "writtenOn": "2017-12-06T21:34:29Z",
+      "side": 1,
+      "message": "Is this where the collectd-openstack-plugin is located?\n\nThis location is conventional for devstack.",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 53
+      },
+      "revId": "51ce441ca60cd115d9e8a932203ccc9d3cebcf82",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_8e541522",
+        "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 2311
+      },
+      "writtenOn": "2017-12-06T21:34:29Z",
+      "side": 1,
+      "message": "I have created the patches in Openstack gerrit to change the name of the repo to collectd-openstack-plugins.\n\nI have not seen where this plugin is downloaded by compass.\nThis is not a blocking issue right now, however, when the name changes, this directory name will need to change.",
+      "range": {
+        "startLine": 6,
+        "startChar": 27,
+        "endLine": 6,
+        "endChar": 53
+      },
+      "revId": "51ce441ca60cd115d9e8a932203ccc9d3cebcf82",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_4e5a0d51",
+        "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 2311
+      },
+      "writtenOn": "2017-12-06T21:34:29Z",
+      "side": 1,
+      "message": "Typically, I recommend using the gnocchi/aodh user/password. \nThis is a convention because both aodh and gnocchi can be deployed standalone.\n\nI wouldn\u0027t consider this a blocking issue, as long as the ceilometer service exists in the deployment.",
+      "range": {
+        "startLine": 29,
+        "startChar": 21,
+        "endLine": 29,
+        "endChar": 31
+      },
+      "revId": "51ce441ca60cd115d9e8a932203ccc9d3cebcf82",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
