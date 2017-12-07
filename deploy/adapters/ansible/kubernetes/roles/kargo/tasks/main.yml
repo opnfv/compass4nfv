@@ -96,9 +96,18 @@
     regexp: '^helm_enabled:'
     line: 'helm_enabled: {{ helm_flag }}'
 
+- name: copy overrided variables
+  copy:
+    src: "{{ item }}"
+    dest: /opt/kargo_k8s/extra-vars.yml
+  with_first_found:
+    - extra-vars-{{ ansible_architecture }}.yml
+    - extra-vars.yml
+
 - name: run kargo playbook
   shell: |
     cd /opt/kargo_k8s
-    ansible-playbook -i inventory/inventory.cfg cluster.yml -b -v 2>&1  | tee kargo.log
+    ansible-playbook -i inventory/inventory.cfg cluster.yml \
+                     -e "@extra-vars.yml" -b -v 2>&1  | tee kargo.log
   tags:
     - ansible
