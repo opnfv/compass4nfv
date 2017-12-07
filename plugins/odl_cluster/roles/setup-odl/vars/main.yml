@@ -9,7 +9,7 @@
 ---
 openstack_passwd_file: /etc/openstack_deploy/user_secrets.yml
 
-os_ver: 16.0.3
+os_ver: 16.0.5
 os_name: pike
 
 
