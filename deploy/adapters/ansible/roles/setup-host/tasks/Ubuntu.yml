@@ -1,0 +1,51 @@
+# #############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+- name: setup hosts
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+          export ANSIBLE_SCP_IF_SSH=y; \
+          cd /opt/openstack-ansible/playbooks; \
+          openstack-ansible setup-hosts.yml \
+             | tee -a /var/log/osa/host.log > /dev/null"
+
+- name: read the ansible log file
+  shell: cat /var/log/osa/host.log | tail -n 500 | grep failed=1 |awk '{print $1}'
+  register: failed_container
+
+- name: destroy the failed_container
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+          export ANSIBLE_SCP_IF_SSH=y; \
+          cd /opt/openstack-ansible/playbooks; \
+          openstack-ansible lxc-containers-destroy.yml \
+          -e container_name={{item}} -e force_containers_destroy=yes \
+          -e force_containers_data_destroy=yes > /dev/null;"
+  with_items:
+    - "{{ failed_container.stdout_lines }}"
+  ignore_errors: "True"
+
+- name: retry to setup failed_container
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+          export ANSIBLE_SCP_IF_SSH=y; \
+          cd /opt/openstack-ansible/playbooks; \
+          openstack-ansible setup-hosts.yml --limit {{item}} \
+             | tee -a /var/log/osa/retry-host.log > /dev/null"
+  with_items:
+    - "{{ failed_container.stdout_lines }}"
+
+- name: read the ansible log file
+  shell: cat /var/log/osa/retry-host.log | tail -n 500
+  register: setup_host_result
+
+- fail:
+    msg: "there are some task failed when setup host."
+  when: setup_host_result.stdout.find('failed=1') != -1
+
+- fail:
+    msg: "some host are unreachable."
+  when: setup_host_result.stdout.find('unreachable=1') != -1
