@@ -47,6 +47,22 @@
     - offline_deployment is defined and offline_deployment == "Disable"
     - hostvars[hostvars[inventory_hostname]['groups']['controller'][0]]['local_mirror'] == 'Ubuntu'
 
+- name: add libvirt into cinder packages # bug fix in pike
+  lineinfile:
+    dest: /etc/ansible/roles/os_cinder/vars/redhat-7.yml
+    insertafter: '^  - qemu-img-ev'
+    line: '  - libvirt'
+
+- name: remove CentOS-Base.repo after ceph-osd # bug fix in pike
+  blockinfile:
+    dest: /etc/ansible/roles/ceph-osd/tasks/start_osds.yml
+    block: |
+      - name: remove empty yum base repo
+        shell: |
+          mv /etc/yum.repos.d/CentOS-Base.repo \
+             /etc/yum.repos.d/CentOS-Base.repo.bak;
+  when: hostvars[hostvars[inventory_hostname]['groups']['controller'][0]]['local_mirror'] == 'CentOS'
+
 - name: add mariadb local repository
   blockinfile:
     dest: /etc/openstack_deploy/user_variables.yml
