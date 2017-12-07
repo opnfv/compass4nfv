@@ -1,0 +1,33 @@
+---
+
+- name: remove tacker-horizon directory
+  file:
+    path: "{{ tacker_horizon_dir }}"
+    state: absent
+
+- name: get tacker horizon (online)
+  git:
+    repo: "{{ tacker_horizon_repo }}"
+    dest: "{{ tacker_horizon_dir }}"
+    version: "{{ tacker_horizon_branch }}"
+  when: offline_deployment is defined and offline_deployment == "Disable"
+
+- name: copy installation script (offline)
+  get_url:
+    url: "http://{{ offline_repo_ip }}:{{ offline_repo_port }}/tacker-horizon.tar.gz"
+    dest: "/opt/"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: untar tacker-horizon tarball
+  command: su -s /bin/sh -c "tar xzf /opt/tacker-horizon.tar.gz -C /opt/"
+  when: offline_deployment is defined and offline_deployment == "Enable"
+
+- name: install tacker-horizon
+  shell: |
+    cd /opt/tacker-horizon/;
+    pip install -r requirements.txt;
+    sleep 30;
+    python setup.py install;
+    cp tacker_horizon/enabled/* \
+       {{ tacker_horizon_enable_path }}/;
+    service apache2 restart
