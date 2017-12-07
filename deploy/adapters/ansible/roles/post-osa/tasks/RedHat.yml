@@ -14,6 +14,12 @@
     dest: /etc/sysconfig/network-scripts/ifcfg-eth0
     line: "IPADDR={{ ip_settings[inventory_hostname][\"mgmt\"][\"ip\"] }}"
 
+- name: remove br-mgmt in ifcfg-eth0
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: "^BRIDGE=br-mgmt"
+    state: absent
+
 - name: add eth0 netmask
   lineinfile:
     dest: /etc/sysconfig/network-scripts/ifcfg-eth0
