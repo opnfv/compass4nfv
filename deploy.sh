@@ -30,6 +30,8 @@
 
 #export OPENSTACK_VERSION=${OPENSTACK_VERSION:-ocata}
 
+export OS_VERSION=centos7
+
 export OPENSTACK_VERSION=pike
 
 export COMPASS_ARCH=$(uname -m)
