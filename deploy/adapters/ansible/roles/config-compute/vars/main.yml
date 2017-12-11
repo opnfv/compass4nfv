@@ -8,3 +8,24 @@
 # #############################################################################
 ---
 LOCAL_REPOSITORY_IP: "192.168.137.222"
+
+intf_external: |-
+  {%- set intf_external = compu_sys_mappings["external"]["interface"] %}
+  {%- if compu_sys_mappings["external"]["vlan_tag"] | int %}
+  {%- set intf_external = intf_external + '.' + compu_sys_mappings["external"]["vlan_tag"]|string %}
+  {%- endif %}
+  {{- intf_external }}
+
+intf_tenant: |-
+  {%- set intf_tenant = compu_sys_mappings["tenant"]["interface"] %}
+  {%- if compu_sys_mappings["tenant"]["vlan_tag"] | int %}
+  {%- set intf_tenant = intf_tenant + '.' + compu_sys_mappings["tenant"]["vlan_tag"]|string %}
+  {%- endif %}
+  {{- intf_tenant }}
+
+intf_storage: |-
+  {%- set intf_storage = compu_sys_mappings["storage"]["interface"] %}
+  {%- if compu_sys_mappings["storage"]["vlan_tag"] | int %}
+  {%- set intf_storage = intf_storage + '.' + compu_sys_mappings["storage"]["vlan_tag"]|string %}
+  {%- endif %}
+  {{- intf_storage }}

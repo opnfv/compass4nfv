@@ -7,32 +7,30 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-# yamllint disable rule:line-length
 - name: generate tenant vlan ifcfg-if script
   template:
     src: ifcfg-if.tenant
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{contr_sys_mappings["tenant"]["interface"]}}.{{contr_sys_mappings["tenant"]["vlan_tag"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_tenant }}
 
 - name: generate storage vlan ifcfg-if script
   template:
     src: ifcfg-if.storage
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{contr_sys_mappings["storage"]["interface"]}}.{{contr_sys_mappings["storage"]["vlan_tag"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_storage }}
 
 - name: add br-external to interface script
   lineinfile:
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{contr_sys_mappings["external"]["interface"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_external }}
     line: "BRIDGE=br-external"
 
 - name: add br-storage to interface script
   lineinfile:
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{contr_sys_mappings["storage"]["interface"]}}.{{contr_sys_mappings["storage"]["vlan_tag"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_storage }}
     line: "BRIDGE=br-storage"
 
 - name: add br-tenant to interface script
   lineinfile:
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{contr_sys_mappings["tenant"]["interface"]}}.{{contr_sys_mappings["tenant"]["vlan_tag"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_tenant }}
     line: "BRIDGE=br-tenant"
-# yamllint enable rule:line-length
 
 - name: remove eth0 ip addresss
   lineinfile:

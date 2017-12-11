@@ -1,7 +1,12 @@
-DEVICE={{compu_sys_mappings["storage"]["interface"]}}.{{compu_sys_mappings["storage"]["vlan_tag"]}}
+DEVICE={{ intf_storage }}
 BOOTPROTO=none
 ONBOOT=yes
-VLAN=yes
 IPADDR={{ ip_settings[inventory_hostname]["storage"]["ip"] }}
 NETMASK=255.255.255.0
 DEFROUTE="no"
+{% if contr_sys_mappings["storage"]["vlan_tag"] | int %}
+{% set intf_vlan = "yes" %}
+{% else %}
+{% set intf_vlan = "no" %}
+{% endif %}
+VLAN={{ intf_vlan }}

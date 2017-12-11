@@ -1,0 +1,8 @@
+DEVICE={{compu_sys_mappings["external"]["interface"]}}
+ONBOOT=yes
+BOOTPROTO=static
+TYPE=Ethernet
+IPADDR={{ ip_settings[inventory_hostname]["external"]["ip"] }}
+GATEWAY={{ ip_settings[inventory_hostname]["external"]["gw"] }}
+NETMASK=255.255.255.0
+DEFROUTE=yes
