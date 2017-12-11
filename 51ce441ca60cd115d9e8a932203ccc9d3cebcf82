@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_0e0e408d",
+        "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 2311
+      },
+      "writtenOn": "2017-12-11T10:33:15Z",
+      "side": 1,
+      "message": "This is okay, for now.\n\nOnce the patch to rename merges, a follow-up patch needs to be created that will use the new name, however, this will have to wait an unspecified amount of time to merge.",
+      "parentUuid": "9a3d3df0_2e3d09df",
+      "range": {
+        "startLine": 6,
+        "startChar": 27,
+        "endLine": 6,
+        "endChar": 53
+      },
+      "revId": "51ce441ca60cd115d9e8a932203ccc9d3cebcf82",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_4e5a0d51",
         "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
         "patchSetId": 16
@@ -107,6 +131,30 @@
       "side": 1,
       "message": "Tried gnocchi/aodh user/password; but they were not accessible to the plugin. Ceilometer service exists in the deployment and its credentials are working to send to gnocchi/aodh.",
       "parentUuid": "9a3d3df0_4e5a0d51",
+      "range": {
+        "startLine": 29,
+        "startChar": 21,
+        "endLine": 29,
+        "endChar": 31
+      },
+      "revId": "51ce441ca60cd115d9e8a932203ccc9d3cebcf82",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_aee114d2",
+        "filename": "plugins/barometer/roles/collectd/templates/collectd-gnocchi.conf.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 2311
+      },
+      "writtenOn": "2017-12-11T10:33:15Z",
+      "side": 1,
+      "message": "That\u0027s fair. This is fine for me",
+      "parentUuid": "9a3d3df0_ae30f901",
       "range": {
         "startLine": 29,
         "startChar": 21,
