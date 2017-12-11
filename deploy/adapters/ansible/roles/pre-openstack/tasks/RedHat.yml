@@ -49,6 +49,30 @@
     - /tmp/ssh-keys-*
     - /root/.ssh/id_rsa.pub
 
+- name: configure BOOTPROTO to static
+  replace:
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ compu_sys_mappings["external"]["interface"] }}
+    regexp: 'BOOTPROTO=.*'
+    replace: 'BOOTPROTO=static'
+
+- name: remove default route for mgmt
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: "DEFROUTE=\"no\""
+
+- name: backup external configure
+  shell: |
+    mv /etc/sysconfig/network-scripts/ifcfg-{{ compu_sys_mappings["external"]["interface"] }} \
+       /home/ifcfg-{{ compu_sys_mappings["external"]["interface"] }}
+
+- name: configure external network
+  template:
+    src: ifcfg-external.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["external"]["interface"]}}
+
+- name: restart network
+  shell: systemctl restart network
+
 - name: change sources(yum) list
   copy:
     src: centos_base.repo
@@ -75,3 +99,17 @@
 
 - name: restart ssh service
   shell: service sshd restart
+
+- name: recovery external configure
+  shell: |
+    mv /home/ifcfg-{{ compu_sys_mappings["external"]["interface"] }} \
+       /etc/sysconfig/network-scripts/ifcfg-{{ compu_sys_mappings["external"]["interface"] }}
+
+- name: add default route for mgmt
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: "^DEFROUTE=\"no\""
+    state: absent
+
+- name: restart network
+  shell: systemctl restart network
