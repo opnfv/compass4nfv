@@ -49,6 +49,22 @@
     - /tmp/ssh-keys-*
     - /root/.ssh/id_rsa.pub
 
+- name: configure external network
+  shell: |
+    ip addr flush dev {{ ext_interface }};
+    ip addr add {{ ext_ip }}/{{ ext_mask }} dev {{ ext_con_interface }};
+    ip route delete default;
+    ip route add default via {{ ext_gateway }};
+  when: inventory_hostname in groups['controller']
+
+- name: configure external network
+  shell: |
+    ip addr flush dev {{ ext_interface }};
+    ip addr add {{ ext_ip }}/{{ ext_mask }} dev {{ ext_com_interface }};
+    ip route delete default;
+    ip route add default via {{ ext_gateway }};
+  when: inventory_hostname in groups['compute']
+
 - name: change sources(yum) list
   copy:
     src: centos_base.repo
@@ -75,3 +91,20 @@
 
 - name: restart ssh service
   shell: service sshd restart
+
+- name: delete external network
+  shell: |
+    ip addr flush dev {{ ext_con_interface }};
+    ip route delete default;
+    ip route add default via {{ mgmt_gateway }};
+  when: inventory_hostname in groups['controller']
+
+- name: delete external network
+  shell: |
+    ip addr flush dev {{ ext_com_interface }};
+    ip route delete default;
+    ip route add default via {{ mgmt_gateway }};
+  when: inventory_hostname in groups['compute']
+
+- name: restart network
+  shell: shell: systemctl restart network
