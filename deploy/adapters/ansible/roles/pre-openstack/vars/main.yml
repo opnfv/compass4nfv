@@ -1,20 +1,29 @@
 ---
 aptpackages:
-- bridge-utils
-- debootstrap
-- ifenslave
-- ifenslave-2.6
-- lsof
-- lvm2
-- ntp
-- ntpdate
-- sudo
-- vlan
-- tcpdump
+  - bridge-utils
+  - debootstrap
+  - ifenslave
+  - ifenslave-2.6
+  - lsof
+  - lvm2
+  - ntp
+  - ntpdate
+  - sudo
+  - vlan
+  - tcpdump
 
 yumpackages:
-- bridge-utils
-- iputils
-- lvm2
-- ntp
-- tcpdump
+  - bridge-utils
+  - iputils
+  - lvm2
+  - ntp
+  - tcpdump
+  - net-tools
+  - vim
+
+ext_ip: "{{ ip_settings[inventory_hostname][\"external\"][\"ip\"] }}"
+ext_mask: "{{ ip_settings[inventory_hostname][\"external\"][\"netmask\"] }}"
+ext_com_interface: "{{compu_sys_mappings[\"external\"][\"interface\"]}}"
+ext_con_interface: "{{contr_sys_mappings[\"external\"][\"interface\"]}}"
+ext_gateway: "{{ ip_settings[inventory_hostname][\"external\"][\"gw\"] }}"
+mgmt_gateway: "{{ ip_settings[inventory_hostname][\"mgmt\"][\"gw\"] }}"
