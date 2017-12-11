@@ -33,17 +33,17 @@
 - name: generate ifcfg-external
   template:
     src: ifcfg-external.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["external"]["interface"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_external }}
 
 - name: generate ifcfg-storage
   template:
     src: ifcfg-storage.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["storage"]["interface"]}}.{{compu_sys_mappings["storage"]["vlan_tag"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_storage }}
 
 - name: generate ifcfg-tenant
   template:
     src: ifcfg-tenant.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{compu_sys_mappings["tenant"]["interface"]}}.{{compu_sys_mappings["tenant"]["vlan_tag"]}}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_tenant }}
 
 # yamllint enable rule:line-length
 

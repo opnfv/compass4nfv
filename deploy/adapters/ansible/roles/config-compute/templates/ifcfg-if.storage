@@ -1,4 +1,9 @@
-DEVICE={{compu_sys_mappings["storage"]["interface"]}}.{{compu_sys_mappings["storage"]["vlan_tag"]}}
+DEVICE={{ intf_storage }}
 BOOTPROTO=none
 ONBOOT=yes
-VLAN=yes
+{% if compu_sys_mappings["storage"]["vlan_tag"] | int %}
+{% set intf_vlan = "yes" %}
+{% else %}
+{% set intf_vlan = "no" %}
+{% endif %}
+VLAN={{ intf_vlan }}
