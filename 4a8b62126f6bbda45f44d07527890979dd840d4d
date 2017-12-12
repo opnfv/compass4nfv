@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_bd4b0486",
+        "filename": "docs/release/scenarios/os-nosdn-bar-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-12T22:40:05Z",
+      "side": 1,
+      "message": "isn\u0027t this os-nosdn-bar-ha ?",
+      "revId": "4a8b62126f6bbda45f44d07527890979dd840d4d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_9d4e0095",
+        "filename": "docs/release/scenarios/os-nosdn-bar-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-12T22:40:05Z",
+      "side": 1,
+      "message": "Barometer",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 17,
+        "endChar": 21
+      },
+      "revId": "4a8b62126f6bbda45f44d07527890979dd840d4d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_fd458c70",
+        "filename": "docs/release/scenarios/os-nosdn-bar-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-12T22:40:05Z",
+      "side": 1,
+      "message": "Gnocchi",
+      "range": {
+        "startLine": 27,
+        "startChar": 46,
+        "endLine": 27,
+        "endChar": 53
+      },
+      "revId": "4a8b62126f6bbda45f44d07527890979dd840d4d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_1d5af04f",
+        "filename": "docs/release/scenarios/os-nosdn-bar-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-12T22:40:05Z",
+      "side": 1,
+      "message": "I believe it is os-nosdn-bar-ha.yml",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "4a8b62126f6bbda45f44d07527890979dd840d4d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
