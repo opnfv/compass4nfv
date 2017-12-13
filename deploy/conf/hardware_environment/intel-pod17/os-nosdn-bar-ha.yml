@@ -1,0 +1,84 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+---
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiUser: root
+ipmiVer: '2.0'
+
+plugins:
+  - barometer: "Enable"
+
+hosts:
+  - name: host1
+    mac: 'A4:BF:01:16:31:DD'
+    interfaces:
+      - eth1: 'A4:BF:01:16:31:DC'
+      - eth2: '3C:FD:FE:A4:9C:D0'
+      - eth3: '3C:FD:FE:A4:9C:D1'
+    ipmiIp: 10.10.170.11
+    ipmiPass: root
+    roles:
+      - controller
+      - ha
+      - ceph-adm
+      - ceph-mon
+
+  - name: host2
+    mac: 'A4:BF:01:14:01:13'
+    interfaces:
+      - eth1: 'A4:BF:01:14:01:12'
+      - eth2: '3C:FD:FE:A4:9D:20'
+      - eth3: '3C:FD:FE:A4:9D:21'
+    ipmiIp: 10.10.170.12
+    ipmiPass: root
+    roles:
+      - controller
+      - ha
+      - ceph-mon
+
+  - name: host3
+    mac: 'A4:BF:01:14:71:1E'
+    interfaces:
+      - eth1: 'A4:BF:01:14:71:1D'
+      - eth2: '3C:FD:FE:A4:A0:78'
+      - eth3: '3C:FD:FE:A4:A0:79'
+    ipmiIp: 10.10.170.13
+    ipmiPass: root
+    roles:
+      - controller
+      - ha
+      - ceph-mon
+
+  - name: host4
+    mac: 'A4:BF:01:16:2F:17'
+    interfaces:
+      - eth1: 'A4:BF:01:16:2F:16'
+      - eth2: '3C:FD:FE:A4:9D:00'
+      - eth3: '3C:FD:FE:A4:9D:01'
+    ipmiIp: 10.10.170.14
+    ipmiPass: root
+    roles:
+      - compute
+      - ceph-osd
+
+  - name: host5
+    mac: 'A4:BF:01:14:2B:BB'
+    interfaces:
+      - eth1: 'A4:BF:01:14:2B:BA'
+      - eth2: '3C:FD:FE:A4:A0:68'
+      - eth3: '3C:FD:FE:A4:A0:69'
+    ipmiIp: 10.10.170.15
+    ipmiPass: root
+    roles:
+      - compute
+      - ceph-osd
