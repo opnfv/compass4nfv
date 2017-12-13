@@ -37,7 +37,7 @@ function deploy_host(){
     --adapter_flavor_pattern="${ADAPTER_FLAVOR_PATTERN}" --repo_name="${REPO_NAME}" \
     --http_proxy="${PROXY}" --https_proxy="${PROXY}" --no_proxy="${IGNORE_PROXY}" \
     --ntp_server="${NTP_SERVER}" --dns_servers="${NAMESERVERS}" --domain="${DOMAIN}" \
-    --search_path="${SEARCH_PATH}" --default_gateway="${GATEWAY}" \
+    --search_path="${SEARCH_PATH}" --default_gateway="${INSTALL_GW}" \
     --server_credential="${SERVER_CREDENTIAL}" --local_repo_url="${LOCAL_REPO_URL}" \
     --os_config_json_file="${OS_CONFIG_FILENAME}" --service_credentials="${SERVICE_CREDENTIALS}" \
     --console_credentials="${CONSOLE_CREDENTIALS}" --host_networks="${HOST_NETWORKS}" \
