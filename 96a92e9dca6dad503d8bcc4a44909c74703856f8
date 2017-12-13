@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_98160ea6",
+        "filename": "docs/release/scenarios/os-nosdn-kvm-ha.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-13T04:35:17Z",
+      "side": 1,
+      "message": "Enables",
+      "range": {
+        "startLine": 26,
+        "startChar": 26,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "96a92e9dca6dad503d8bcc4a44909c74703856f8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f80d9a91",
+        "filename": "docs/release/scenarios/os-nosdn-kvm-ha.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-13T04:35:17Z",
+      "side": 1,
+      "message": "Installs kernel",
+      "range": {
+        "startLine": 26,
+        "startChar": 67,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "96a92e9dca6dad503d8bcc4a44909c74703856f8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_183b1e39",
+        "filename": "docs/release/scenarios/os-nosdn-ovs_dpdk-ha.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-13T04:35:17Z",
+      "side": 1,
+      "message": "plane",
+      "range": {
+        "startLine": 26,
+        "startChar": 56,
+        "endLine": 26,
+        "endChar": 60
+      },
+      "revId": "96a92e9dca6dad503d8bcc4a44909c74703856f8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b81312b7",
+        "filename": "docs/release/scenarios/os-nosdn-ovs_dpdk-ha.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2017-12-13T04:35:17Z",
+      "side": 1,
+      "message": "Changes the driver",
+      "range": {
+        "startLine": 27,
+        "startChar": 46,
+        "endLine": 27,
+        "endChar": 63
+      },
+      "revId": "96a92e9dca6dad503d8bcc4a44909c74703856f8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
