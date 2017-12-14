@@ -48,6 +48,11 @@
   remote_user: root
   roles:
     - post-osa
+
+- hosts:
+    - compute
+  remote_user: root
+  roles:
     - collectd
 
 - hosts:
