@@ -24,10 +24,14 @@ case $DEPLOY_SCENARIO in
         ;;
 esac
 
+if [[ "$NODE_NAME" =~ "intel-pod17" ]]; then
+    export USER_NAMESERVER=8.8.8.8
+fi
+
 if [[ $ROOT_BUILD_CAUSE == MANUALTRIGGER ]]; then
 # For manual ci trigger build, directly use the value pass from CI
     export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-xenial}
-    export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-newton}
+    export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-pike}
 
 else
 # For daily build or verify build, adjust COMPASS_OS_VERSION and OPENSTACK_VERSION
@@ -35,10 +39,10 @@ else
 
     if [[ $COMPASS_OS_VERSION == centos7 ]]; then
         export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-centos7}
-        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-newton}
+        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-pike}
     else
         export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-xenial}
-        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-newton}
+        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-pike}
     fi
 fi
 
