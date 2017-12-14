@@ -55,7 +55,7 @@
     cd /opt/stack;
     git clone https://github.com/openstack/collectd-ceilometer-plugin.git;
     cd /opt/stack/collectd-ceilometer-plugin;
-    git checkout stable/ocata
+    git checkout stable/pike
   when: stat_result.stat.exists == False
 
 - name: configure logfile conf
