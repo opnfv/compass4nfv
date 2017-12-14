@@ -1,0 +1,8 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: ramamani yeleswarapu <ramamani.yeleswarapu@intel.com>
+Code-Review+2: Yifei Xue <xueyifei@huawei.com>
+Submitted-by: Yifei Xue <xueyifei@huawei.com>
+Submitted-at: Thu, 14 Dec 2017 01:53:27 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/48785
+Project: compass4nfv
+Branch: refs/heads/stable/euphrates
