@@ -53,6 +53,18 @@
     insertafter: '^  - qemu-img-ev'
     line: '  - libvirt'
 
+- name: fix the problem of nova cell_v2 discovery
+  blockinfile:
+    dest: /etc/ansible/roles/os_nova/tasks/nova_db_post_setup.yml
+    insertafter: 'nova-manage cell_v2 discover_hosts'
+    block: |
+      # add retry
+        register: cell_v2_discovery
+        until: cell_v2_discovery == 0
+        retries: 10
+        delay: 5
+  when: hostvars[hostvars[inventory_hostname]['groups']['controller'][0]]['local_mirror'] == 'Ubuntu'
+
 - name: remove CentOS-Base.repo after ceph-osd
   blockinfile:
     dest: /etc/ansible/roles/ceph-osd/tasks/start_osds.yml
