@@ -2,7 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) Justin Chi (HUAWEI) and Yifei Xue (HUAWEI)
 
-This document introduces scenario descriptions for Euphrates 1.0 of
+This document introduces scenario descriptions for Euphrates 5.1.0 of
 deployment with the OpenDaylight controller and no feature enabled.
 
 .. contents::

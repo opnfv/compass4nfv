@@ -59,7 +59,7 @@ NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN ROOT DIRECTORY(INCLUDE SUBFOLDERS).
 
 To get stable /Euphrates release, you can use the following command:
 
-- git checkout Euphrates.1.0
+- git checkout opnfv-5.1.0
 
 Setup Requirements
 ------------------
