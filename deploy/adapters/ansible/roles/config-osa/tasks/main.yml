@@ -63,6 +63,18 @@
              /etc/yum.repos.d/CentOS-Base.repo.bak;
   when: hostvars[hostvars[inventory_hostname]['groups']['controller'][0]]['local_mirror'] == 'CentOS'
 
+- name: fix the problem in pip_install
+  blockinfile:
+    dest: /etc/ansible/roles/pip_install/tasks/pre_install_yum.yml
+    insertafter: 'pip_install_package_state'
+    block: |
+      # add retry
+        register: repo_result
+        until: repo_result | success
+        retries: 5
+        delay: 10
+  when: hostvars[hostvars[inventory_hostname]['groups']['controller'][0]]['local_mirror'] == 'CentOS'
+
 - name: add mariadb local repository
   blockinfile:
     dest: /etc/openstack_deploy/user_variables.yml
