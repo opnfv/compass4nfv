@@ -25,13 +25,13 @@ Release Data
 | **Project**                          | Compass4nfv                          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Repo/tag**                         | Compass4nfv/Euphrates.1.0            |
+| **Repo/tag**                         | Compass4nfv/opnfv-5.1.0              |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release designation**              | Euphrates.1.0                        |
+| **Release designation**              | Euphrates 5.1.0                      |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | October 2017                         |
+| **Release date**                     | December 2017                        |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | OPNFV Euphrates release              |
@@ -44,7 +44,7 @@ Deliverables
 Software deliverables
 ~~~~~~~~~~~~~~~~~~~~~
 
- - Compass4nfv/Euphrates.1.0 tarball, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
+ - Compass4nfv/opnfv-5.1.0 tarball, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
 
 .. _document-label:
 
@@ -135,7 +135,7 @@ System Limitations
 Scenario Limitations
 --------------------
 
-**ODL SFC:** In the Euphrates1.0, Compass doesn't integrate OpenStack Tacker
+**ODL SFC:** In the Euphrates 1.0, Compass doesn't integrate OpenStack Tacker
 Project yet. However, the SFC related test cases in Functest always use Tacker
 as NFVO to delivery VNFFG or SFC related requests to ODL via networking-sfc.
 So the odl-sfc scenario of Compass cannot pass the SFC testcases in Functest.
