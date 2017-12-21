@@ -1,0 +1,33 @@
+---
+# Override default kubespray variables
+
+# roles/download/defaults/main.yml
+etcd_version: v3.2.4-arm64
+flannel_version: "v0.8.0-arm64"
+flannel_cni_image_repo: "linaro/flannel-cni-arm64"
+hyperkube_image_repo: "gcr.io/google-containers/hyperkube-arm64"
+hyperkube_image_tag: "{{ kube_version }}"
+pod_infra_image_repo: "gcr.io/google_containers/pause-arm64"
+nginx_image_tag: 1.13
+kubedns_image_repo: "gcr.io/google_containers/k8s-dns-kube-dns-arm64"
+dnsmasq_nanny_image_repo: "gcr.io/google_containers/k8s-dns-dnsmasq-nanny-arm64"
+dnsmasq_sidecar_image_repo: "gcr.io/google_containers/k8s-dns-sidecar-arm64"
+kubednsautoscaler_image_repo: "gcr.io/google_containers/\
+cluster-proportional-autoscaler-arm64"
+
+# inventory/group_vars/k8s-cluster.yml
+kube_network_plugin: flannel
+helm_enabled: false
+docker_options: "--insecure-registry={{ kube_service_addresses }} \
+--graph={{ docker_daemon_graph }}  {{ docker_log_opts }} \
+--add-runtime docker-runc=/usr/libexec/docker/docker-runc-current \
+--default-runtime=docker-runc \
+--exec-opt native.cgroupdriver=systemd \
+--userland-proxy-path=/usr/libexec/docker/docker-proxy-current \
+--signature-verification=false"
+
+# roles/docker/vars/redhat.yml
+docker_package_info:
+  pkg_mgr: yum
+  pkgs:
+    - name: docker
