@@ -55,7 +55,9 @@
     state: absent
 
 - name: restart ntp service
-  shell: "service ntp restart"
+  shell: |
+    service ntp stop;
+    systemctl disable ntp;
 
 - name: add the appropriate kernel modules
   copy:

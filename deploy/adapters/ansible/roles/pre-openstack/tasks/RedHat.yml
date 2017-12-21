@@ -90,7 +90,9 @@
     dest: /etc/modules-load.d/openstack-ansible.conf
 
 - name: restart ntp service
-  shell: "systemctl enable ntpd.service && systemctl start ntpd.service"
+  shell: |
+    systemctl stop ntpd.service;
+    systemctl disable ntpd.service;
 
 - name: change the MaxSessions
   lineinfile:
