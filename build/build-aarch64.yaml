@@ -13,29 +13,25 @@ packages:
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
-    url: $COMPASS_DOCKER_REPO/compass-deck:latest
+    url: linaro/compass-deck:latest
 
-  - name: compass-tasks-k8s
+    # XXX: only supports k8s now
+  - name: compass-tasks
     description: "compass task container for kubernets deployment via kargo"
     get_method: docker
-    url: $COMPASS_DOCKER_REPO/compass-tasks-k8s:latest
+    url: linaro/compass-tasks-k8s:latest
 
   - name: compass-cobbler
     description: "cobbler container for compass"
     get_method: docker
-    url: $COMPASS_DOCKER_REPO/compass-cobbler:latest
+    url: linaro/compass-cobbler:latest
 
   - name: compass-db
     description: "datebase container for compass"
     get_method: docker
-    url: $COMPASS_DOCKER_REPO/compass-db:latest
+    url: linaro/compass-db:latest
 
   - name: compass-mq
     description: "message queue container for compass"
     get_method: docker
-    url: $COMPASS_DOCKER_REPO/compass-mq:latest
-
-  - name: compass-docker-compose
-    description: "containerized compass compose ansible"
-    get_method: git
-    url: $COMPASS_GIT_REPO/compass-docker-compose
+    url: linaro/compass-mq:latest
