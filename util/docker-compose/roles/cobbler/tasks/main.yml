@@ -44,23 +44,22 @@
     docker cp "{{ compass_dists_dir }}/{{ item.value.ppa_name }}.tar.gz" compass-cobbler:/tmp
     docker exec compass-cobbler bash -c \
     "mkdir -p /var/lib/cobbler/repo_mirror/{{ item.value.ppa_name }}"
-  with_dict: "{{ distros }}"
+  with_dict: "{{ vars['distros_' + ansible_architecture] }}"
   run_once: "True"
   ignore_errors: "True"
 
 - name: cobbler import iso
   shell: |
-    name=`basename {{ item.value.iso_name }} | \
-    sed -e 's/.iso//g' -e 's/-amd64//g' -e 's/-x86_64//g'`
+    name="{{ item.value.cobbler_name }}"
     docker exec compass-cobbler bash -c \
     "service cobblerd restart;
      sleep 3;
      cobbler import --name $name \
                     --path /mnt/{{ item.value.iso_name }} \
-                    --arch x86_64 \
+                    --arch {{ item.value.cobbler_arch }} \
                     --kickstart /var/lib/cobbler/kickstarts/{{ item.value.kickstart }} \
                     --breed {{ item.value.breed }}"
-  with_dict: "{{ distros }}"
+  with_dict: "{{ vars['distros_' + ansible_architecture] }}"
   run_once: "True"
   register: result2
   until: result2.rc == 0
@@ -73,14 +72,14 @@
     "cobbler repo add --name {{ item.value.ppa_name }} \
                       --mirror /var/lib/cobbler/repo_mirror/{{ item.value.ppa_name }} \
                       --mirror-locally True \
-                      --arch=x86_64 {{ item.value.extra | default()}}"
-  with_dict: "{{ distros }}"
+                      --arch={{ item.value.cobbler_arch }} \
+                             {{ item.value.extra | default() }}"
+  with_dict: "{{ vars['distros_' + ansible_architecture] }}"
   run_once: "True"
 
-- name: edit profiles
+- name: edit profiles for x86_64
   shell: |
-    name=`basename {{ item.value.iso_name }} | \
-    sed -e 's/.iso//g' -e 's/-amd64//g' -e 's/-x86_64//g'`-x86_64
+    name="{{ item.value.cobbler_name }}-x86_64"
     docker exec compass-cobbler bash -c \
     "cobbler profile edit --name $name \
                           --name-servers '' \
@@ -88,8 +87,37 @@
                           --ksmeta \"tree=http://{{ host_ip }}/cobbler/ks_mirror/$name\" \
                           --kopts \"{{ item.value.kopts | default('') }}\" \
                           --kopts-post \"{{ item.value.kopts_post | default('') }}\""
-  with_dict: "{{ distros }}"
+  with_dict: "{{ distros_x86_64 }}"
   run_once: "True"
+  when: ansible_architecture == "x86_64"
+
+- name: edit profile for aarch64
+  shell: |
+    # Cobbler naming on Arm is a mess
+    # Imported name:
+    # - CentOS-7-Minimal-1611
+    # - ubuntu-16.04-server
+    # Profile name:
+    # - CentOS-7-Minimal-1611-arm-arm
+    # - ubuntu-16.04-server-arm-arm64-arm
+    # Kickstart meta url name
+    # - http://x.x.x.x/cobbler/ks_mirror/CentOS-7-Minimal-1611-arm
+    # - http://x.x.x.x/cobbler/ks_mirror/ubuntu-16.04-server-arm-arm64
+    name="{{ item.value.cobbler_name }}-arm"
+    profiles=`docker exec compass-cobbler bash -c \
+              "cobbler profile list | grep $name"`
+    for profile_name in $profiles; do
+      docker exec compass-cobbler bash -c \
+      "cobbler profile edit --name $profile_name \
+                            --name-servers '' \
+                            --repos {{ item.value.ppa_name }} \
+                            --ksmeta \"tree=http://{{ host_ip }}/cobbler/ks_mirror/${profile_name%????}\" \
+                            --kopts \"{{ item.value.kopts | default('') }}\" \
+                            --kopts-post \"{{ item.value.kopts_post | default('') }}\""
+    done
+  with_dict: "{{ distros_aarch64 }}"
+  run_once: "True"
+  when: ansible_architecture == "aarch64"
 
 - name: cobbler sync
   shell: |
