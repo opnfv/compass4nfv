@@ -42,6 +42,8 @@ subnet {{ install_subnet }} netmask {{ install_netmask }} {
                   filename "grub/grub-x86.efi";
           } else if option pxe-system-type = 00:07 {
                   filename "grub/grub-x86_64.efi";
+          } else if option pxe-system-type = 00:0B {
+                  filename "grub/grub-aarch64.efi";
           } else {
                   filename "pxelinux.0";
           }
