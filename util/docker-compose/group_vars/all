@@ -19,7 +19,7 @@ install_ip_range: 10.1.0.100 10.1.0.250
 pip_pkg_name: pip-openstack.tar.gz
 feature_pkg_name: packages.tar.gz
 
-distros:
+distros_x86_64:
   ubuntu-16.04.3:
     breed: "ubuntu"
     kickstart: "default16.seed"
@@ -30,6 +30,8 @@ distros:
     version: "ubuntu"
     iso_name: ubuntu-16.04.3-server-amd64
     ppa_name: xenial-pike-ppa
+    cobbler_name: ubuntu-16.04.3-server
+    cobbler_arch: x86_64
 
   CentOS-7:
     breed: "redhat"
@@ -38,4 +40,29 @@ distros:
     version: "centos"
     iso_name: CentOS-7-x86_64-Minimal-1708
     ppa_name: centos7-pike-ppa
+    cobbler_name: CentOS-7-Minimal-1708
+    cobbler_arch: x86_64
 
+distros_aarch64:
+  ubuntu-16.04:
+    breed: "ubuntu"
+    kickstart: "default16.seed"
+    kopts: "netcfg/choose_interface=auto console=tty0 net.ifnames=0"
+    kopts_post: "console=tty0 net.ifnames=0"
+    extra: "--apt-dists=xenial --apt-components=main"
+    aliase: "xenial"
+    version: "ubuntu"
+    iso_name: ubuntu-16.04-server-arm64
+    ppa_name: xenial-pike-ppa
+    cobbler_name: ubuntu-16.04-server
+    cobbler_arch: arm
+
+  CentOS-7:
+    breed: "redhat"
+    kickstart: "default-aarch64.ks"
+    aliase: "centos7"
+    version: "centos"
+    iso_name: CentOS-7-aarch64-Minimal-1611
+    ppa_name: centos7-pike-ppa
+    cobbler_name: CentOS-7-Minimal-1611
+    cobbler_arch: arm
