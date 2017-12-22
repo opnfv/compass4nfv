@@ -1,5 +1,8 @@
 ---
-- include_vars: "{{ compass_dists_dir }}/build.yaml"
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ compass_dists_dir }}/build-{{ ansible_architecture }}.yaml"
+    - "{{ compass_dists_dir }}/build.yaml"
 
 - set_fact:
     image_name: "{{ item.name | regex_replace('-', '_') }}"
