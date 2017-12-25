@@ -314,11 +314,6 @@
   when:
     - "{{ hostvars[inventory_hostname]['groups']['controller'] | length < 2 }}"
 
-- name: copy the repo_fix_andas.yml
-  template:
-    src: repo_fix_pandas.yml
-    dest: /etc/ansible/roles/repo_build/tasks/repo_fix_pandas.yml
-
 # - name: change repore build
 #  lineinfile:
 #    dest: /etc/ansible/roles/repo_build/tasks/main.yml
@@ -327,10 +322,6 @@
 
 - include: meters.yml
 
-- name: fix the python-ldap version
-  lineinfile:
-    dest: /etc/ansible/roles/os_keystone/defaults/main.yml
-    regexp: '^  - python-ldap'
-    line: '  - python-ldap==2.5.2'
+- include: fix_pip_version.yml
 
 - include: fix_rescue.yml
