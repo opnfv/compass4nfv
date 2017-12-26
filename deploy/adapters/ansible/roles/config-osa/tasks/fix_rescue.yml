@@ -41,3 +41,13 @@
     dest: "/opt/openstack-ansible/playbooks/lxc-hosts-setup.yml"
     regexp: "max_fail_percentage*"
     state: absent
+
+- name: fix rescue problem for lxc-hosts-setup
+  blockinfile:
+    dest: "/opt/openstack-ansible/playbooks/setup-openstack.yml"
+    block: |
+      - hosts: localhost
+        user: root
+        tasks:
+          - name: Mark setup-openstack completed
+            shell: echo "Setup openstack  completed!"
