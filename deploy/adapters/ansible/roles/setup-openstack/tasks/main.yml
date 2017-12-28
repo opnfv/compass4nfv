@@ -20,7 +20,7 @@
 
 - fail:
     msg: "some task failed when setup openstack."
-  when: setup_openstack_result.stdout.find('failed=1') != -1
+  when: setup_openstack_result.stdout.find('Mark setup-openstack completed') == -1
 
 - fail:
     msg: "some host are unreachable."

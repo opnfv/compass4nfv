@@ -335,6 +335,8 @@
 
 - include: meters.yml
 
-- include: fix_pip_version.yml
+# upstream has fix this issue so somments it
+# maybe will use in the furture
+# - include: fix_pip_version.yml
 
 - include: fix_rescue.yml
