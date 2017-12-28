@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_6d9ed208",
+        "filename": "deploy/adapters/ansible/roles/config-osa/tasks/fix_rescue.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2017-12-28T08:18:01Z",
+      "side": 1,
+      "message": "set-openstack",
+      "range": {
+        "startLine": 45,
+        "startChar": 29,
+        "endLine": 45,
+        "endChar": 46
+      },
+      "revId": "00e31b0e779898f61a94b1ff422e218b3d4289d6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
