@@ -265,16 +265,18 @@
   when:
     - "{{ hostvars[inventory_hostname]['groups']['controller'] | length < 2 }}"
 
-- name: copy the repo_fix_andas.yml
+- name: copy the repo_fix_pandas.yml
   template:
     src: repo_fix_pandas.yml
     dest: /etc/ansible/roles/repo_build/tasks/repo_fix_pandas.yml
+  when: offline_deployment is defined and offline_deployment == "Disable"
 
 - name: change repore build
   lineinfile:
     dest: /etc/ansible/roles/repo_build/tasks/main.yml
     insertafter: "^- include: repo_post_build.yml"
     line: "- include: repo_fix_pandas.yml"
+  when: offline_deployment is defined and offline_deployment == "Disable"
 
 - include: meters.yml
 
@@ -283,3 +285,4 @@
     dest: /etc/ansible/roles/os_keystone/defaults/main.yml
     regexp: '^  - python-ldap'
     line: '  - python-ldap==2.5.2'
+  when: offline_deployment is defined and offline_deployment == "Disable"
