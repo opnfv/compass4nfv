@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_0bd9e921",
+        "filename": "util/docker-compose/group_vars/all",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 2997
+      },
+      "writtenOn": "2018-01-03T19:15:57Z",
+      "side": 1,
+      "message": "I\u0027d recommend \u0027console\u003dttyS0 console\u003dttyAMA0\u0027 for AArch64",
+      "range": {
+        "startLine": 50,
+        "startChar": 41,
+        "endLine": 50,
+        "endChar": 54
+      },
+      "revId": "bbc8e78ba6fdfac60127f5aa18f7e15ae3fc2708",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_ebd5a5e5",
+        "filename": "util/docker-compose/group_vars/all",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2997
+      },
+      "writtenOn": "2018-01-03T19:15:57Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 51,
+        "startChar": 25,
+        "endLine": 51,
+        "endChar": 29
+      },
+      "revId": "bbc8e78ba6fdfac60127f5aa18f7e15ae3fc2708",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
