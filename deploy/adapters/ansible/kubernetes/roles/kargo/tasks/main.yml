@@ -57,7 +57,6 @@
     - netaddr
     - jinja2
 
-
 - name: copy inventories generate script
   copy:
     src: generate_inventories.py
@@ -155,6 +154,50 @@
   with_first_found:
     - extra-vars-{{ ansible_architecture }}.yml
     - extra-vars.yml
+
+- name: copy 2flannel playbook to kargo
+  copy:
+    src: "{{ run_dir }}/roles/2flannel"
+    dest: /opt/kargo_k8s/roles/network_plugin
+
+- name: copy 2flannel-apps playbook to kargo
+  copy:
+    src: "{{ run_dir }}/roles/2flannel-apps/"
+    dest: /opt/kargo_k8s/roles/kubernetes-apps/network_plugin/2flannel
+
+- name: append 2flannel to network plugin
+  blockinfile:
+    path: /opt/kargo_k8s/roles/network_plugin/meta/main.yml
+    block: "  - role: network_plugin/2flannel\n    \
+      when: kube_network_plugin == '2flannel'\n    tags: 2flannel\n"
+
+- name: append 2flannel apps to network plugin
+  blockinfile:
+    path: /opt/kargo_k8s/roles/kubernetes-apps/network_plugin/meta/main.yml
+    block: "  - role: kubernetes-apps/network_plugin/2flannel\n    \
+      when: kube_network_plugin == '2flannel'\n    tags: 2flannel\n"
+
+- name: append 2flannel to valid kube_network_plugin list
+  replace:
+    path: "/opt/kargo_k8s/roles/kubernetes/{{ item.path }}"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - {path: 'master/templates/manifests/kube-controller-manager.manifest.j2',
+       regexp: '"cloud", "flannel"',
+       replace: '"cloud", "flannel", "2flannel"'}
+    - {path: 'node/templates/kubelet.kubeadm.env.j2',
+       regexp: '"calico", "canal", "flannel", "weave"',
+       replace: '"calico", "canal", "flannel", "weave", "2flannel"'}
+    - {path: 'node/templates/kubelet.standard.env.j2',
+       regexp: '"calico", "canal", "flannel", "weave"',
+       replace: '"calico", "canal", "flannel", "weave", "2flannel"'}
+    - {path: 'node/templates/kubelet.rkt.service.j2',
+       regexp: '"calico", "weave", "canal", "flannel"',
+       replace: '"calico", "weave", "canal", "flannel", "2flannel"'}
+    - {path: 'preinstall/tasks/main.yml',
+       regexp: '"calico", "weave", "canal", "flannel"',
+       replace: '"calico", "weave", "canal", "flannel", "2flannel"'}
 
 - name: run kargo playbook
   shell: |
