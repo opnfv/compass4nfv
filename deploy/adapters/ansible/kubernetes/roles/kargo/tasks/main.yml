@@ -199,6 +199,51 @@
        regexp: '"calico", "weave", "canal", "flannel"',
        replace: '"calico", "weave", "canal", "flannel", "2flannel"'}
 
+- name: copy sriov playbook to kargo
+  copy:
+    src: "{{ run_dir }}/roles/sriov"
+    dest: /opt/kargo_k8s/roles/network_plugin
+
+- name: copy sriov-apps playbook to kargo
+  copy:
+    src: "{{ run_dir }}/roles/sriov-apps/"
+    dest: /opt/kargo_k8s/roles/kubernetes-apps/network_plugin/sriov
+
+- name: append sriov to network plugin
+  blockinfile:
+    path: /opt/kargo_k8s/roles/network_plugin/meta/main.yml
+    block: "  - role: network_plugin/sriov\n    when: kube_network_plugin == 'sriov'\n    \
+      tags: sriov\n"
+
+- name: append sriov apps to network plugin
+  blockinfile:
+    path: /opt/kargo_k8s/roles/kubernetes-apps/network_plugin/meta/main.yml
+    block: "  - role: kubernetes-apps/network_plugin/sriov\n    \
+      when: kube_network_plugin == 'sriov'\n    tags: sriov\n"
+
+- name: append sriov to valid kube_network_plugin list
+  replace:
+    path: "{{ item.path }}"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - {path: '/opt/kargo_k8s/roles/kubernetes/master/templates/manifests/\
+          kube-controller-manager.manifest.j2',
+       regexp: '"cloud", "flannel"',
+       replace: '"cloud", "flannel", "sriov"'}
+    - {path: '/opt/kargo_k8s/roles/kubernetes/node/templates/kubelet.kubeadm.env.j2',
+       regexp: '"calico", "canal", "flannel", "weave"',
+       replace: '"calico", "canal", "flannel", "weave", "sriov"'}
+    - {path: '/opt/kargo_k8s/roles/kubernetes/node/templates/kubelet.standard.env.j2',
+       regexp: '"calico", "canal", "flannel", "weave"',
+       replace: '"calico", "canal", "flannel", "weave", "sriov"'}
+    - {path: '/opt/kargo_k8s/roles/kubernetes/node/templates/kubelet.rkt.service.j2',
+       regexp: '"calico", "weave", "canal", "flannel"',
+       replace: '"calico", "weave", "canal", "flannel", "sriov"'}
+    - {path: '/opt/kargo_k8s/roles/kubernetes/preinstall/tasks/main.yml',
+       regexp: '"calico", "weave", "canal", "flannel"',
+       replace: '"calico", "weave", "canal", "flannel", "sriov"'}
+
 - name: run kargo playbook
   shell: |
     cd /opt/kargo_k8s
