@@ -1,21 +1,21 @@
 ---
 aptpackages:
-- bridge-utils
-- debootstrap
-- ifenslave
-- ifenslave-2.6
-- lsof
-- lvm2
-- ntp
-- ntpdate
-- sudo
-- vlan
-- tcpdump
+  - bridge-utils
+  - debootstrap
+  - ifenslave
+  - ifenslave-2.6
+  - lsof
+  - lvm2
+  - ntp
+  - ntpdate
+  - sudo
+  - vlan
+  - tcpdump
 
 yumpackages:
-- bridge-utils
-- iputils
-- lvm2
-- ntp
-- tcpdump
-- vim
+  - bridge-utils
+  - iputils
+  - lvm2
+  - ntp
+  - tcpdump
+  - vim
