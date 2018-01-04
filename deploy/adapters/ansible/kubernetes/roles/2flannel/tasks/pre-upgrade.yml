@@ -1,0 +1,14 @@
+---
+- name: 2Flannel pre-upgrade | Purge legacy flannel systemd unit file
+  file:
+    path: "/etc/systemd/system/docker.service.d/flannel-options.conf"
+    state: absent
+  notify:
+    - 2Flannel | delete default docker bridge
+
+- name: 2Flannel pre-upgrade | Purge legacy Flannel static pod manifest
+  file:
+    path: "{{ kube_manifest_dir }}/flannel-pod.manifest"
+    state: absent
+  notify:
+    - 2Flannel | delete flannel interface
