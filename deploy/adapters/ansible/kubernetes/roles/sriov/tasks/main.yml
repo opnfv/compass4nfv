@@ -1,0 +1,106 @@
+# Copyright (C) 2018, ARM Limited and contributors.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+---
+- name: Sriov | Verify if br_netfilter module exists
+  shell: "modinfo br_netfilter"
+  register: modinfo_br_netfilter
+  failed_when: modinfo_br_netfilter.rc not in [0, 1]
+  changed_when: false
+
+- name: Sriov | Enable br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+  when: modinfo_br_netfilter.rc == 0
+
+# kube-proxy needs net.bridge.bridge-nf-call-iptables enabled
+# when found if br_netfilter is not a module
+- name: Sriov | Check if bridge-nf-call-iptables key exists
+  command: "sysctl net.bridge.bridge-nf-call-iptables"
+  failed_when: false
+  changed_when: false
+  register: sysctl_bridge_nf_call_iptables
+
+- name: Sriov | Enable bridge-nf-call tables
+  sysctl:
+    name: "{{ item }}"
+    state: present
+    value: 1
+    reload: "yes"
+  when: modinfo_br_netfilter.rc == 1 and sysctl_bridge_nf_call_iptables.rc == 0
+  with_items:
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-arptables
+    - net.bridge.bridge-nf-call-ip6tables
+
+- name: Sriov | Install Multus CNI
+  shell: |-
+    /usr/bin/docker run --rm --network=host -v /opt/cni/bin/:/opt/cni/bin/ golang:1.9 \
+    bash -c "git clone https://github.com/Intel-Corp/multus-cni && cd multus-cni \
+    && ./build && cp bin/multus /opt/cni/bin"
+
+- name: Sriov | Install Sriov CNI
+  shell: |-
+    /usr/bin/docker run --rm --network=host -v /opt/cni/bin/:/opt/cni/bin/ golang:1.9 \
+    bash -c "git clone https://github.com/hustcat/sriov-cni && cd sriov-cni \
+    && ./build && cp bin/sriov /opt/cni/bin"
+
+- name: Sriov | Install Flannel CNI
+  shell: |-
+    /usr/bin/docker run --rm --network=host -v /opt/cni/bin/:/host/opt/cni/bin/ \
+    {{ flannel_cni_image_repo }}:{{ flannel_cni_image_tag }} \
+    sh -c "cp /opt/cni/bin/* /host/opt/cni/bin/"
+
+- name: Sriov | Remove all file in /etc/cni/net.d
+  shell: |-
+    rm -rf /etc/cni/net.d/
+    mkdir -p /etc/cni/net.d/
+
+- name: Sriov | Generate Sriov CNI Conf
+  copy:
+    content: |
+      {
+        "name": "minion-cni-network",
+        "type": "multus",
+        "kubeconfig": "/etc/kubernetes/node-kubeconfig.yaml",
+        "delegates": [
+          {
+            "type": "flannel",
+            "masterplugin": true,
+            "delegate": {
+              "isDefaultGateway": true
+            }
+          }
+        ]
+      }
+    dest: "/etc/cni/net.d/multus-cni.conf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Sriov | Enable DHCP CNI
+  shell: /opt/cni/bin/dhcp daemon &
+
+
+- name: Sriov | Create cni-sriov-rbac manifest
+  template:
+    src: cni-sriov-rbac.yml.j2
+    dest: "{{ kube_config_dir }}/cni-sriov-rbac.yml"
+  register: sriov_rbac_manifest
+  when: inventory_hostname == groups['kube-master'][0] and rbac_enabled
+
+- name: Sriov | Create cni-sriov manifest
+  template:
+    src: cni-sriov.yml.j2
+    dest: "{{ kube_config_dir }}/cni-sriov.yml"
+  register: sriov_manifest
+  when: inventory_hostname == groups['kube-master'][0]
+
+- name: Sriov | Sriov tests manifest
+  template:
+    src: sriov-test-pod.yml
+    dest: "{{ kube_config_dir }}/sriov-test-pod.yml"
+  when: inventory_hostname == groups['kube-master'][0]
