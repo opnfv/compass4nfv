@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_0b7f29ac",
+        "filename": "util/docker-compose/group_vars/all",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2018-01-04T09:17:36Z",
+      "side": 1,
+      "message": "good idea, i\u0027ll check it",
+      "parentUuid": "9a3d3df0_0bd9e921",
+      "range": {
+        "startLine": 50,
+        "startChar": 41,
+        "endLine": 50,
+        "endChar": 54
+      },
+      "revId": "bbc8e78ba6fdfac60127f5aa18f7e15ae3fc2708",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_ebd5a5e5",
         "filename": "util/docker-compose/group_vars/all",
         "patchSetId": 3
