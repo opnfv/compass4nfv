@@ -1,0 +1,159 @@
+# Copyright (C) 2018, ARM Limited and contributors.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+---
+apiVersion: extensions/v1beta1
+kind: ThirdPartyResource
+metadata:
+  name: network.kubernetes.com
+description: "A specification of a Network obj in the kubernetes"
+versions:
+- name: v1
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flannel
+  namespace: {{system_namespace}}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kube-flannel-cfg
+  namespace: {{system_namespace}}
+  labels:
+    tier: node
+    app: flannel
+data:
+  cni-conf.json: |
+    {
+      "name": "cbr0",
+      "type": "flannel",
+      "delegate": {
+        "isDefaultGateway": true
+      }
+    }
+  net-conf.json: |
+    {
+      "Network": "10.244.0.0/16",
+      "Backend": {
+        "Type": "udp"
+      }
+    }
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: kube-flannel-ds
+  namespace: {{system_namespace}}
+  labels:
+    tier: node
+    app: flannel
+spec:
+  template:
+    metadata:
+      labels:
+        tier: node
+        app: flannel
+    spec:
+      hostNetwork: true
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      serviceAccountName: flannel
+      containers:
+      - name: kube-flannel
+        image: {{ flannel_image_repo }}:{{ flannel_image_tag }}
+        imagePullPolicy: {{ k8s_image_pull_policy }}
+        command: [ "/opt/bin/flanneld", "--ip-masq", "--kube-subnet-mgr" ]
+        securityContext:
+          privileged: true
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: run
+          mountPath: /run
+        - name: flannel-cfg
+          mountPath: /etc/kube-flannel/
+      volumes:
+        - name: run
+          hostPath:
+            path: /run
+        - name: flannel-cfg
+          configMap:
+            name: kube-flannel-cfg
+---
+apiVersion: "kubernetes.com/v1"
+kind: Network
+metadata:
+  name: flannel-conf
+  namespace: default
+plugin: flannel
+args: '[
+  {
+    "masterplugin": true,
+    "delegate": {
+      "isDefaultGateway": true
+    }
+  }
+]'
+---
+apiVersion: "kubernetes.com/v1"
+kind: Network
+metadata:
+  name: sriov-conf1
+  namespace: default
+plugin: sriov
+args: '[
+  {
+    "master": "eth1.101",
+    "pfOnly": true,
+    "ipam": {
+      "type": "host-local",
+      "subnet": "192.168.123.0/24",
+      "rangeStart": "192.168.123.11",
+      "rangeEnd": "192.168.123.21",
+      "routes": [
+        {
+          "dst": "0.0.0.0/0"
+        }
+      ],
+      "gateway": "192.168.123.1"
+    }
+  }
+]'
+---
+apiVersion: "kubernetes.com/v1"
+kind: Network
+metadata:
+  name: sriov-conf2
+  namespace: default
+plugin: sriov
+args: '[
+  {
+    "master": "eth1.101",
+    "pfOnly": true,
+    "ipam": {
+      "type": "host-local",
+      "subnet": "192.168.123.0/24",
+      "rangeStart": "192.168.123.31",
+      "rangeEnd": "192.168.123.41",
+      "routes": [
+        {
+          "dst": "0.0.0.0/0"
+        }
+      ],
+      "gateway": "192.168.123.1"
+    }
+  }
+]'
