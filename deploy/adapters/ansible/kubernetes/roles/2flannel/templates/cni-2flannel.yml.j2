@@ -1,0 +1,211 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kube-2flannel-cfg1
+  namespace: "{{system_namespace}}"
+  labels:
+    tier: node
+    app: 2flannel
+data:
+  cni-conf.json: |
+    {
+      "name": "2flannel-networks",
+      "type": "multus",
+      "delegates": [
+          {
+            "type": "flannel",
+            "name": "flannel1",
+            "subnetFile": "/run/2flannel/networks/subnet2.env",
+            "dataDir": "/var/lib/cni/flannel/2",
+            "delegate": {
+              "bridge": "kbr1",
+              "isDefaultGateway": false
+            }
+          },
+          {
+            "type": "flannel",
+            "name": "flannel0",
+            "subnetFile": "/run/2flannel/networks/subnet1.env",
+            "dataDir": "/var/lib/cni/flannel/1",
+            "masterplugin": true,
+            "delegate": {
+              "bridge": "kbr0",
+              "isDefaultGateway": true
+            }
+          }
+      ]
+    }
+  net-conf.json: |
+    {
+      "Network": {{ two_flannel_network1 }},
+      "Backend": {
+        "Type": "udp",
+        "Port": 8285
+      }
+    }
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kube-2flannel-cfg2
+  namespace: "{{system_namespace}}"
+  labels:
+    tier: node
+    app: 2flannel
+data:
+  net-conf.json: |
+    {
+      "Network": {{ two_flannel_network2 }},
+      "Backend": {
+        "Type": "udp",
+        "Port": 8286
+      }
+    }
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: kube-2flannel
+  namespace: "{{system_namespace}}"
+  labels:
+    tier: node
+    k8s-app: 2flannel
+spec:
+  template:
+    metadata:
+      labels:
+        tier: node
+        k8s-app: 2flannel
+    spec:
+{% if rbac_enabled %}
+      serviceAccountName: 2flannel
+{% endif %}
+      containers:
+      - name: kube-2flannel-1
+        image: {{ flannel_image_repo }}:{{ flannel_image_tag }}
+        imagePullPolicy: {{ k8s_image_pull_policy }}
+        resources:
+          limits:
+            cpu: {{ flannel_cpu_limit }}
+            memory: {{ flannel_memory_limit }}
+          requests:
+            cpu: {{ flannel_cpu_requests }}
+            memory: {{ flannel_memory_requests }}
+        command: [ "/opt/bin/flanneld", "--ip-masq",
+            "-etcd-endpoints={{ etcd_access_addresses }}",
+            "-etcd-prefix=/{{ cluster_name }}/2flannel.1/network",
+            "-etcd-cafile=/etc/ssl/etcd/ssl/ca.pem",
+            "-etcd-certfile=/etc/ssl/etcd/ssl/node-$(NODE_NAME).pem",
+            "-etcd-keyfile=/etc/ssl/etcd/ssl/node-$(NODE_NAME)-key.pem",
+            "-subnet-file=/run/2flannel/networks/subnet1.env" ]
+        securityContext:
+          privileged: true
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: run
+          mountPath: /run
+        - name: cni
+          mountPath: /etc/cni/net.d
+        - name: ssl
+          mountPath: /etc/ssl/etcd/ssl/
+        - name: 2flannel-cfg1
+          mountPath: /etc/kube-flannel/
+      - name: kube-2flannel-2
+        image: {{ flannel_image_repo }}:{{ flannel_image_tag }}
+        imagePullPolicy: {{ k8s_image_pull_policy }}
+        resources:
+          limits:
+            cpu: {{ flannel_cpu_limit }}
+            memory: {{ flannel_memory_limit }}
+          requests:
+            cpu: {{ flannel_cpu_requests }}
+            memory: {{ flannel_memory_requests }}
+        command: [ "/opt/bin/flanneld", "--ip-masq",
+            "-etcd-endpoints={{ etcd_access_addresses }}",
+            "-etcd-prefix=/{{ cluster_name }}/2flannel.2/network",
+            "-etcd-cafile=/etc/ssl/etcd/ssl/ca.pem",
+            "-etcd-certfile=/etc/ssl/etcd/ssl/node-$(NODE_NAME).pem",
+            "-etcd-keyfile=/etc/ssl/etcd/ssl/node-$(NODE_NAME)-key.pem",
+            "-subnet-file=/run/2flannel/networks/subnet2.env" ]
+        securityContext:
+          privileged: true
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: run
+          mountPath: /run
+        - name: cni
+          mountPath: /etc/cni/net.d
+        - name: ssl
+          mountPath: /etc/ssl/etcd/ssl/
+        - name: 2flannel-cfg2
+          mountPath: /etc/kube-flannel/
+      - name: install-cni
+        image: {{ flannel_cni_image_repo }}:{{ flannel_cni_image_tag }}
+        command: ["/install-cni.sh"]
+        env:
+        # The CNI network config to install on each node.
+        - name: CNI_NETWORK_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: kube-2flannel-cfg1
+              key: cni-conf.json
+        - name: CNI_CONF_NAME
+          value: "10-multus-2flannel.conf"
+        volumeMounts:
+        - name: cni
+          mountPath: /host/etc/cni/net.d
+        - name: host-cni-bin
+          mountPath: /host/opt/cni/bin/
+      hostNetwork: true
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      volumes:
+        - name: run
+          hostPath:
+            path: /run
+        - name: cni
+          hostPath:
+            path: /etc/cni/net.d
+        - name: ssl
+          hostPath:
+            path: /etc/ssl/etcd/ssl/
+        - name: 2flannel-cfg1
+          configMap:
+            name: kube-2flannel-cfg1
+        - name: 2flannel-cfg2
+          configMap:
+            name: kube-2flannel-cfg2
+        - name: host-cni-bin
+          hostPath:
+            path: /opt/cni/bin
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: {{ serial | default('20%') }}
+    type: RollingUpdate
