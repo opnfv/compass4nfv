@@ -1,0 +1,72 @@
+---
+- include: pre-upgrade.yml
+
+- name: 2Flannel | Verify if br_netfilter module exists
+  shell: "modinfo br_netfilter"
+  register: modinfo_br_netfilter
+  failed_when: modinfo_br_netfilter.rc not in [0, 1]
+  changed_when: false
+
+- name: 2Flannel | Enable br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+  when: modinfo_br_netfilter.rc == 0
+
+# kube-proxy needs net.bridge.bridge-nf-call-iptables enabled when found
+# if br_netfilter is not a module
+- name: 2Flannel | Check if bridge-nf-call-iptables key exists
+  command: "sysctl net.bridge.bridge-nf-call-iptables"
+  failed_when: false
+  changed_when: false
+  register: sysctl_bridge_nf_call_iptables
+
+- name: 2Flannel | Enable bridge-nf-call tables
+  sysctl:
+    name: "{{ item }}"
+    state: present
+    value: 1
+    reload: yes
+  when: modinfo_br_netfilter.rc == 1 and sysctl_bridge_nf_call_iptables.rc == 0
+  with_items:
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-arptables
+    - net.bridge.bridge-nf-call-ip6tables
+
+- name: 2Flannel | Install Multus CNI
+  shell: |-
+    /usr/bin/docker run --rm --network=host -v /opt/cni/bin/:/opt/cni/bin/ golang:1.9 \
+    bash -c \
+    "git clone https://github.com/Intel-Corp/multus-cni && cd multus-cni && ./build && cp bin/multus /opt/cni/bin"
+
+- name: 2Flannel | Create cni-flannel-rbac manifest
+  template:
+    src: cni-2flannel-rbac.yml.j2
+    dest: "{{ kube_config_dir }}/cni-2flannel-rbac.yml"
+  register: two_flannel_rbac_manifest
+  when: inventory_hostname == groups['kube-master'][0] and rbac_enabled
+
+- name: 2Flannel | Create cni-flannel manifest
+  template:
+    src: cni-2flannel.yml.j2
+    dest: "{{ kube_config_dir }}/cni-2flannel.yml"
+  register: two_flannel_manifest
+  when: inventory_hostname == groups['kube-master'][0]
+
+- name: 2Flannel | Set 2Flannel etcd configuration
+  shell: |-
+    ETCDCTL_CA_FILE=/etc/ssl/etcd/ssl/ca.pem \
+    ETCDCTL_CERT_FILE=/etc/ssl/etcd/ssl/node-{{ ansible_hostname }}.pem \
+    ETCDCTL_KEY_FILE=/etc/ssl/etcd/ssl/node-{{ ansible_hostname }}-key.pem \
+    {{ bin_dir }}/etcdctl --peers={{ etcd_access_addresses }} \
+    set /{{ cluster_name }}/{{ item.config }}/network/config \
+    '{ "Network": "{{ item.network }}", "Backend": {"Type":"udp", "Port":{{ item.port}} }}'
+  with_items:
+    - {config: "2flannel.1",
+       network: "{{ two_flannel_network1 }}",
+       port: 8285}
+    - {config: "2flannel.2",
+       network: "{{ two_flannel_network2 }}",
+       port: 8286}
+  delegate_to: "{{groups['etcd'][0]}}"
+  run_once: true
