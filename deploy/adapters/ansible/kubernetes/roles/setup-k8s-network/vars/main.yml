@@ -1,0 +1,6 @@
+intf_sriov: |-
+  {%- set intf_sriov = sys_intf_mappings["sriov"]["interface"] %}
+  {%- if sys_intf_mappings["sriov"]["vlan_tag"] | int %}
+  {%- set intf_sriov = intf_sriov + '.' + sys_intf_mappings["sriov"]["vlan_tag"]|string %}
+  {%- endif %}
+  {{- intf_sriov }}
