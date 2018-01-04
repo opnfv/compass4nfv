@@ -123,9 +123,11 @@ haproxy_hosts:
 {% endfor %}
 
 # rsyslog server
-#log_hosts:
- # log1:
- #  ip: 10.1.0.53
+log_hosts:
+{% for host in groups.controller%}
+  {{host}}:
+    ip: {{ hostvars[host]['ansible_ssh_host'] }}
+{% endfor %}
 
 ###
 ### OpenStack
