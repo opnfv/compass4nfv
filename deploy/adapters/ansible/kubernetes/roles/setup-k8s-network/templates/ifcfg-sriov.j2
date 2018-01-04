@@ -1,0 +1,17 @@
+DEVICE={{ intf_sriov }}
+BOOTPROTO=none
+ONBOOT=yes
+{% if 'sriov' in ip_settings[inventory_hostname] %}
+{% set ipaddr = ip_settings[inventory_hostname]["sriov"]["ip"] %}
+{% else %}
+{% set ipaddr = "172.16.1.2" %}
+{% endif %}
+IPADDR={{ ipaddr }}
+NETMASK=255.255.255.0
+DEFROUTE="no"
+{% if 'sriov' in sys_intf_mappings and sys_intf_mappings["sriov"]["vlan_tag"] | int %}
+{% set intf_vlan = "yes" %}
+{% else %}
+{% set intf_vlan = "no" %}
+{% endif %}
+VLAN={{ intf_vlan }}

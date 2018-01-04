@@ -1,0 +1,62 @@
+# Copyright (C) 2018, ARM Limited and contributors.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+---
+- name: Sriov | delete default docker bridge
+  command: ip link delete docker0
+  failed_when: false
+  notify: Sriov | restart docker
+
+# special cases for atomic because it defaults to live-restore: true
+# So we disable live-restore to pickup the new flannel IP.  After
+# we enable it, we have to restart docker again to pickup the new
+# setting and restore the original behavior
+- name: Sriov | restart docker
+  command: /bin/true
+  notify:
+    - Sriov | reload systemd
+    - Sriov | reload docker.socket
+    - Sriov | configure docker live-restore true (atomic)
+    - Sriov | reload docker
+    - Sriov | pause while Docker restarts
+    - Sriov | wait for docker
+
+- name: Sriov | reload systemd
+  shell: systemctl daemon-reload
+
+- name: Sriov | reload docker.socket
+  service:
+    name: docker.socket
+    state: restarted
+  when: ansible_os_family in ['CoreOS', 'Container Linux by CoreOS']
+
+- name: Sriov | configure docker live-restore true (atomic)
+  replace:
+    name: /etc/docker/daemon.json
+    regexp: '"live-restore":.*true'
+    replace: '"live-restore": false'
+  when: is_atomic
+
+- name: Sriov | reload docker
+  service:
+    name: docker
+    state: restarted
+
+- name: Sriov | pause while Docker restarts
+  pause:
+    seconds: 10
+    prompt: "Waiting for docker restart"
+
+- name: Sriov | wait for docker
+  command: "{{ docker_bin_dir }}/docker images"
+  register: docker_ready
+  retries: 10
+  delay: 5
+  until: docker_ready.rc == 0
+
+- name: Sriov | reload kubelet
+  service:
+    name: kubelet
+    state: restarted
