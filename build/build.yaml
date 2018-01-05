@@ -13,22 +13,22 @@ packages:
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
-    url: compass4nfv/compass-deck:latest
+    url: opnfv/compass-deck:latest
 
   - name: compass-tasks
     description: "compass task container integrated with openstack-ansible and kubespray"
     get_method: docker
-    url: huangxiangyu/compass-tasks:latest
+    url: opnfv/compass-tasks:latest
 
   - name: compass-cobbler
     description: "cobbler container for compass"
     get_method: docker
-    url: yifei0van0xue/compass-cobbler:latest
+    url: opnfv/compass-cobbler:latest
 
   - name: compass-db
     description: "datebase container for compass"
     get_method: docker
-    url: compass4nfv/compass-db:latest
+    url: opnfv/compass-db:latest
 
   - name: compass-mq
     description: "message queue container for compass"
