@@ -9,90 +9,105 @@
 
 ---
 
-- name: openstack-hosts-setup
+- name: setup-hosts
   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
-          openstack-ansible openstack-hosts-setup.yml \
-             | tee -a /var/log/osa/openstack-hosts-setup.log > /dev/null"
+          openstack-ansible setup-hosts.yml \
+             | tee -a /var/log/osa/setup-hosts.log > /dev/null"
 
-- name: read openstack-hosts-setup.log
-  shell: cat /var/log/osa/openstack-hosts-setup.log | tail -n 1000
-  register: openstack_hosts_setup_result
+- name: read setup-hosts.log
+  shell: cat /var/log/osa/setup-hosts.log | tail -n 1000
+  register: setup_hosts_result
 
 - fail:
-    msg: "there are some task failed when run openstack-hosts-setup."
-  when: openstack_hosts_setup_result.stdout.find('Mark openstack-hosts-setup completed') == -1
+    msg: "there are some task failed when run setup-hosts."
+  when: setup_hosts_result.stdout.find('Mark setup-hosts completed') == -1
 
-- name: security-hardening
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
-          export ANSIBLE_SCP_IF_SSH=y; \
-          cd /opt/openstack-ansible/playbooks; \
-          openstack-ansible security-hardening.yml \
-             | tee -a /var/log/osa/security-hardening.log > /dev/null"
-
-- name: read security-hardening.log
-  shell: cat /var/log/osa/security-hardening.log | tail -n 1000
-  register: security_hardening_result
-
-- fail:
-    msg: "there are some task failed when run security-hardening."
-  when: security_hardening_result.stdout.find('Mark security-hardening completed') == -1
-
-- name: lxc-hosts-setup
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
-          export ANSIBLE_SCP_IF_SSH=y; \
-          cd /opt/openstack-ansible/playbooks; \
-          openstack-ansible lxc-hosts-setup.yml \
-             | tee -a /var/log/osa/lxc-hosts-setup.log > /dev/null"
-
-- name: read lxc-hosts-setup.log
-  shell: cat /var/log/osa/lxc-hosts-setup.log | tail -n 1000
-  register: lxc_hosts_setup_result
-
-- fail:
-    msg: "there are some task failed when run lxc-hosts-setup."
-  when: lxc_hosts_setup_result.stdout.find('Mark lxc-hosts-setup completed') == -1
-
-- name: lxc-containers-create
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
-          export ANSIBLE_SCP_IF_SSH=y; \
-          cd /opt/openstack-ansible/playbooks; \
-          openstack-ansible lxc-containers-create.yml \
-             | tee -a /var/log/osa/lxc-containers-create.log > /dev/null"
-
-- name: read lxc-containers-create.log
-  shell: cat /var/log/osa/lxc-containers-create.log | tail -n 500 | grep failed=1 |awk '{print $1}'
-  register: failed_container
-
-- name: destroy the failed_container
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
-          export ANSIBLE_SCP_IF_SSH=y; \
-          cd /opt/openstack-ansible/playbooks; \
-          openstack-ansible lxc-containers-destroy.yml \
-          -e container_name={{item}} -e force_containers_destroy=yes \
-          -e force_containers_data_destroy=yes > /dev/null;"
-  with_items:
-    - "{{ failed_container.stdout_lines }}"
-  ignore_errors: "True"
-
-- name: retry to setup failed_container
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
-          export ANSIBLE_SCP_IF_SSH=y; \
-          cd /opt/openstack-ansible/playbooks; \
-          openstack-ansible lxc-containers-create.yml --limit {{item}} \
-             | tee -a /var/log/osa/retry-container.log > /dev/null"
-  with_items:
-    - "{{ failed_container.stdout_lines }}"
-
-- name: read the ansible log file
-  shell: cat /var/log/osa/retry-container.log | tail -n 500
-  register: retry_container_result
-
-- fail:
-    msg: "there are some tasks failed when create containers."
-  when: retry_container_result.stdout.find('failed=1') != -1
-
-- fail:
-    msg: "some containers are unreachable."
-  when: retry_container_result.stdout.find('unreachable=1') != -1
+# - name: openstack-hosts-setup
+#   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+#           export ANSIBLE_SCP_IF_SSH=y; \
+#           cd /opt/openstack-ansible/playbooks; \
+#           openstack-ansible openstack-hosts-setup.yml \
+#              | tee -a /var/log/osa/openstack-hosts-setup.log > /dev/null"
+# 
+# - name: read openstack-hosts-setup.log
+#   shell: cat /var/log/osa/openstack-hosts-setup.log | tail -n 1000
+#   register: openstack_hosts_setup_result
+# 
+# - fail:
+#     msg: "there are some task failed when run openstack-hosts-setup."
+#   when: openstack_hosts_setup_result.stdout.find('Mark openstack-hosts-setup completed') == -1
+# 
+# - name: security-hardening
+#   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+#           export ANSIBLE_SCP_IF_SSH=y; \
+#           cd /opt/openstack-ansible/playbooks; \
+#           openstack-ansible security-hardening.yml \
+#              | tee -a /var/log/osa/security-hardening.log > /dev/null"
+# 
+# - name: read security-hardening.log
+#   shell: cat /var/log/osa/security-hardening.log | tail -n 1000
+#   register: security_hardening_result
+# 
+# - fail:
+#     msg: "there are some task failed when run security-hardening."
+#   when: security_hardening_result.stdout.find('Mark security-hardening completed') == -1
+# 
+# - name: lxc-hosts-setup
+#   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+#           export ANSIBLE_SCP_IF_SSH=y; \
+#           cd /opt/openstack-ansible/playbooks; \
+#           openstack-ansible lxc-hosts-setup.yml \
+#              | tee -a /var/log/osa/lxc-hosts-setup.log > /dev/null"
+# 
+# - name: read lxc-hosts-setup.log
+#   shell: cat /var/log/osa/lxc-hosts-setup.log | tail -n 1000
+#   register: lxc_hosts_setup_result
+# 
+# - fail:
+#     msg: "there are some task failed when run lxc-hosts-setup."
+#   when: lxc_hosts_setup_result.stdout.find('Mark lxc-hosts-setup completed') == -1
+# 
+# - name: lxc-containers-create
+#   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+#           export ANSIBLE_SCP_IF_SSH=y; \
+#           cd /opt/openstack-ansible/playbooks; \
+#           openstack-ansible lxc-containers-create.yml \
+#              | tee -a /var/log/osa/lxc-containers-create.log > /dev/null"
+# 
+# - name: read lxc-containers-create.log
+#   shell: cat /var/log/osa/lxc-containers-create.log | tail -n 500 | grep failed=1 |awk '{print $1}'
+#   register: failed_container
+# 
+# - name: destroy the failed_container
+#   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+#           export ANSIBLE_SCP_IF_SSH=y; \
+#           cd /opt/openstack-ansible/playbooks; \
+#           openstack-ansible lxc-containers-destroy.yml \
+#           -e container_name={{item}} -e force_containers_destroy=yes \
+#           -e force_containers_data_destroy=yes > /dev/null;"
+#   with_items:
+#     - "{{ failed_container.stdout_lines }}"
+#   ignore_errors: "True"
+# 
+# - name: retry to setup failed_container
+#   shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+#           export ANSIBLE_SCP_IF_SSH=y; \
+#           cd /opt/openstack-ansible/playbooks; \
+#           openstack-ansible lxc-containers-create.yml --limit {{item}} \
+#              | tee -a /var/log/osa/retry-container.log > /dev/null"
+#   with_items:
+#     - "{{ failed_container.stdout_lines }}"
+# 
+# - name: read the ansible log file
+#   shell: cat /var/log/osa/retry-container.log | tail -n 500
+#   register: retry_container_result
+# 
+# - fail:
+#     msg: "there are some tasks failed when create containers."
+#   when: retry_container_result.stdout.find('failed=1') != -1
+# 
+# - fail:
+#     msg: "some containers are unreachable."
+#   when: retry_container_result.stdout.find('unreachable=1') != -1

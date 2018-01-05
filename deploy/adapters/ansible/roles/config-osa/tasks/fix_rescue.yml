@@ -1,46 +1,46 @@
 ---
 
-- name: fix rescue problem for openstack-hosts-setup
+- name: fix rescue problem for setup-hosts
   blockinfile:
-    dest: "/opt/openstack-ansible/playbooks/openstack-hosts-setup.yml"
+    dest: "/opt/openstack-ansible/playbooks/setup-hosts.yml"
     block: |
       - hosts: localhost
         user: root
         tasks:
-          - name: Mark openstack-hosts-setup completed
-            shell: echo "Setup openstack-hosts-setup completed!"
+          - name: Mark setup-hosts completed
+            shell: echo "Setup setup-hosts completed!"
 
-- name: delete max_fail_percentage for openstack-hosts-setup
-  lineinfile:
-    dest: "/opt/openstack-ansible/playbooks/openstack-hosts-setup.yml"
-    regexp: "max_fail_percentage*"
-    state: absent
-
-- name: fix rescue problem for security-hardening
-  blockinfile:
-    dest: "/opt/openstack-ansible/playbooks/security-hardening.yml"
-    block: |
-      - hosts: localhost
-        user: root
-        tasks:
-          - name: Mark security-hardening completed
-            shell: echo "Setup security-hardening completed!"
-
-- name: fix rescue problem for lxc-hosts-setup
-  blockinfile:
-    dest: "/opt/openstack-ansible/playbooks/lxc-hosts-setup.yml"
-    block: |
-      - hosts: localhost
-        user: root
-        tasks:
-          - name: Mark lxc-hosts-setup completed
-            shell: echo "Setup lxc-hosts-setup completed!"
-
-- name: delete max_fail_percentage for lxc-hosts-setup
-  lineinfile:
-    dest: "/opt/openstack-ansible/playbooks/lxc-hosts-setup.yml"
-    regexp: "max_fail_percentage*"
-    state: absent
+# - name: delete max_fail_percentage for openstack-hosts-setup
+#   lineinfile:
+#     dest: "/opt/openstack-ansible/playbooks/openstack-hosts-setup.yml"
+#     regexp: "max_fail_percentage*"
+#     state: absent
+# 
+# - name: fix rescue problem for security-hardening
+#   blockinfile:
+#     dest: "/opt/openstack-ansible/playbooks/security-hardening.yml"
+#     block: |
+#       - hosts: localhost
+#         user: root
+#         tasks:
+#           - name: Mark security-hardening completed
+#             shell: echo "Setup security-hardening completed!"
+# 
+# - name: fix rescue problem for lxc-hosts-setup
+#   blockinfile:
+#     dest: "/opt/openstack-ansible/playbooks/lxc-hosts-setup.yml"
+#     block: |
+#       - hosts: localhost
+#         user: root
+#         tasks:
+#           - name: Mark lxc-hosts-setup completed
+#             shell: echo "Setup lxc-hosts-setup completed!"
+# 
+# - name: delete max_fail_percentage for lxc-hosts-setup
+#   lineinfile:
+#     dest: "/opt/openstack-ansible/playbooks/lxc-hosts-setup.yml"
+#     regexp: "max_fail_percentage*"
+#     state: absent
 
 - name: fix rescue problem for setup-openstack
   blockinfile:
