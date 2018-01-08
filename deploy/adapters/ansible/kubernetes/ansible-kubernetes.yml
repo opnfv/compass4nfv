@@ -30,3 +30,9 @@
   max_fail_percentage: 0
   roles:
     - kargo
+
+- hosts: kube_master
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - post-k8s
