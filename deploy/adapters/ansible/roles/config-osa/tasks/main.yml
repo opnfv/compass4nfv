@@ -101,6 +101,11 @@
         delay: 10
   when: hostvars[hostvars[inventory_hostname]['groups']['controller'][0]]['local_mirror'] == 'CentOS'
 
+- name: copy chrony.conf
+  copy:
+    src: chrony.conf.j2
+    dest: /etc/ansible/roles/ansible-hardening/templates/
+
 - name: update the directory of chrony key
   lineinfile:
     dest: /etc/ansible/roles/ansible-hardening/templates/chrony.conf.j2
