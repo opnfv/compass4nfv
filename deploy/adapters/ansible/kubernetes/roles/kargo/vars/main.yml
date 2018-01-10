@@ -1,2 +1,5 @@
 ---
 helm_flag: true
+apiserver_loadbalancer_domain_name: "{{ public_vip.ip  }}"
+vipaddress: "{{ public_vip.ip  }}"
+exlb_port: 8383

@@ -8,6 +8,9 @@
 ##############################################################################
 ---
 packages_noarch:
-  - ntp
+  - keepalived
+  - haproxy
 
-services_noarch: []
+services_noarch:
+  - keepalived
+  - haproxy

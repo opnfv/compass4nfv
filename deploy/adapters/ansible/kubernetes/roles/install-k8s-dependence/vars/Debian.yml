@@ -2,6 +2,7 @@
 packages:
   - ubuntu-cloud-keyring
   - python-dev
+  - python-pip
   - openvswitch-switch
   - openvswitch-switch-dpdk
   - python-memcache
