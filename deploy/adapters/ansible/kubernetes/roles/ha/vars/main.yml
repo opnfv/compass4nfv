@@ -7,32 +7,10 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - pre-k8s
+packages_noarch:
+  - keepalived
+  - haproxy
 
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - setup-k8s-network
-
-- hosts: all
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - install-k8s-dependence
-
-- hosts: ha
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - ha
-
-- hosts: localhost
-  remote_user: root
-  max_fail_percentage: 0
-  roles:
-    - kargo
+services_noarch:
+  - keepalived
+  - haproxy
