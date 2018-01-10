@@ -25,6 +25,12 @@
   roles:
     - install-k8s-dependence
 
+- hosts: ha
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - ha
+
 - hosts: localhost
   remote_user: root
   max_fail_percentage: 0
