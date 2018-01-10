@@ -82,7 +82,7 @@ dashboard_host: "{{ internal_ip }}"
 haproxy_hosts:
 #for $item in $has
 #set $hostname=$item["hostname"]
-  $hostname: $ip_settings[$hostname]["mgmt"]["ip"]
+  $hostname: $ip_settings[$hostname]["external"]["ip"]
 #end for
 
 host_index:
