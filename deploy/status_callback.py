@@ -8,7 +8,7 @@
 ##############################################################################
 
 import httplib
-import json
+import simplejson as json
 import sys  # noqa:F401
 
 from ansible.plugins.callback import CallbackBase
