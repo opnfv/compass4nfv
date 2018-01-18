@@ -27,11 +27,6 @@ function install_docker()
     sudo apt-get update
     sudo apt-get install -y docker-ce
     sleep 5
-    sudo cat << EOF > /etc/docker/daemon.json
-{
-  "storage-driver": "devicemapper"
-}
-EOF
 
     sudo service docker start
     sudo service docker restart
@@ -186,20 +181,9 @@ EOF
      if [[ $? -ne 0 ]]; then
          sudo apt-get install -y docker-ce
          sleep 5
-         sudo cat << EOF > /etc/docker/daemon.json
-{
-  "storage-driver": "devicemapper"
-}
-EOF
 
          sudo service docker start
          sudo service docker restart
-     else
-         StorageDriver=$(sudo docker info | grep "Storage Driver" | awk '{print $3}')
-         if [[ $StorageDriver != "devicemapper" ]]; then
-             echo "The storage driver of docker currently only supports 'devicemapper'."
-             exit 1
-         fi
      fi
 
      kill -9 $http_ppa_pid
