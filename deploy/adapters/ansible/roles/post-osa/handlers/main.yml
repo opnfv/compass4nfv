@@ -9,3 +9,17 @@
 - name: restart network service
   shell: "/sbin/ifconfig eth0 0 &&/sbin/ifdown -a && \
           /sbin/ifup --ignore-errors -a"
+
+- name: Restart ceilometer services
+  service:
+    name: "{{ item.0.service_name }}"
+    enabled: yes
+    state: "restarted"
+  with_subelements:
+    - "{{ ceilometer_services }}"
+    - group
+  when: inventory_hostname in groups[item.1]
+  register: _restart
+  until: _restart | success
+  retries: 5
+  delay: 2
