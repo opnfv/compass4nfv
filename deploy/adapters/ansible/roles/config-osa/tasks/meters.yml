@@ -69,3 +69,15 @@
       [database]{% raw %}
       connection = mysql+pymysql://{{ ceilometer_galera_user }}:{{ ceilometer_container_db_password }}@{{ceilometer_galera_address }}/{{ ceilometer_galera_database }}?charset=utf86{% endraw %}
 # yamllint enable rule:line-length
+
+- name: make sure the directory exist
+  file:
+    dest: /etc/openstack_deploy/ceilometer
+    state: directory
+    mode: 0755
+
+- name: copy the polling.yml
+  copy:
+    dest: /etc/openstack_deploy/ceilometer/polling.yaml
+    src: polling.yaml
+    mode: 0644
