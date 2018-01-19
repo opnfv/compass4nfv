@@ -1,0 +1,28 @@
+#############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: check for gnocchi resource file
+  stat:
+    path: "/etc/ceilometer/gnocchi_resources.yaml"
+  register: gnocchi_resource_file
+
+- name: get the path of ceilometer-upgrade
+  shell: "find / -name ceilometer-upgrade 2>/dev/null || true"
+  register: ceilometer_upgrade_path
+
+- name: Initialize Gnocchi database by creating ceilometer resources
+  command: "{{ ceilometer_upgrade_path.stdout }} --skip-metering-database"
+  become: yes
+  when: gnocchi_resource_file.stat.exists
+  register: _upgrade
+  until: _upgrade | success
+  retries: 5
+  delay: 2
+  notify:
+    - Restart ceilometer services

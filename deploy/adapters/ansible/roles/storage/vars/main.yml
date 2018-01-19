@@ -7,7 +7,7 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-host_loopback_ceph_size: "100G"
+host_loopback_ceph_size: "500G"
 rc_local_insert_before: "^exit 0$"
 bootstrap_host_data_disk_device: null
 bootstrap_host_data_disk_device_force: "no"

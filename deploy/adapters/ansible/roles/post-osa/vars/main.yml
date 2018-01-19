@@ -24,3 +24,14 @@ intf_storage: |-
   {%- set intf_storage = intf_storage + '.' + compu_sys_mappings["storage"]["vlan_tag"]|string %}
   {%- endif %}
   {{- intf_storage }}
+
+ceilometer_services:
+  ceilometer-agent-notification:
+    group:
+      - ceilometer_agent_notification
+    service_name: ceilometer-agent-notification
+  ceilometer-polling:
+    group:
+      - ceilometer_agent_central
+      - ceilometer_agent_compute
+    service_name: ceilometer-polling
