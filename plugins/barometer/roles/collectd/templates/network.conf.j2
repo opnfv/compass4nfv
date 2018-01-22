@@ -11,15 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-<LoadPlugin mcelog>
-  Interval 1
-</LoadPlugin>
+LoadPlugin  network
 
-<Plugin mcelog>
-  <Memory>
-    McelogClientSocket "/var/run/mcelog-client"
-    PersistentNotification false
-  </Memory>
-##  McelogLogfile "/var/log/mcelog"
+<Plugin network>
+    Server "127.0.0.1" "25826"
 </Plugin>
 

@@ -8,9 +8,3 @@
 # #############################################################################
 ---
 openstack_passwd_file: /etc/openstack_deploy/user_secrets.yml
-
-workspace: /tmp/plugin
-
-artifacts_collectd_pkg: http://artifacts.opnfv.org/compass4nfv/package/master/collectd_pkg.tar.gz
-
-collectd_ver: 5.8.0.23.g576797d-1~xenial_amd64.deb
