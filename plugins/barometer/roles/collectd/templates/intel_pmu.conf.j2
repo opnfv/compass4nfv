@@ -11,15 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-<LoadPlugin mcelog>
-  Interval 1
-</LoadPlugin>
+LoadPlugin intel_pmu
 
-<Plugin mcelog>
-  <Memory>
-    McelogClientSocket "/var/run/mcelog-client"
-    PersistentNotification false
-  </Memory>
-##  McelogLogfile "/var/log/mcelog"
+<Plugin intel_pmu>
+  ReportHardwareCacheEvents true
+  ReportKernelPMUEvents true
+  ReportSoftwareEvents true
+#  EventList "/var/cache/pmu/GenuineIntel-6-2D-core.json"
+#  HardwareEvents "L2_RQSTS.CODE_RD_HIT,L2_RQSTS.CODE_RD_MISS" "L2_RQSTS.ALL_CODE_RD"
 </Plugin>
 

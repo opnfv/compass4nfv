@@ -11,15 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-<LoadPlugin mcelog>
+<LoadPlugin intel_rdt>
   Interval 1
 </LoadPlugin>
 
-<Plugin mcelog>
-  <Memory>
-    McelogClientSocket "/var/run/mcelog-client"
-    PersistentNotification false
-  </Memory>
-##  McelogLogfile "/var/log/mcelog"
+<Plugin "intel_rdt">
+  Cores ""
 </Plugin>
 

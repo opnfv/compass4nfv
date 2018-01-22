@@ -11,15 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-<LoadPlugin mcelog>
-  Interval 1
-</LoadPlugin>
 
-<Plugin mcelog>
-  <Memory>
-    McelogClientSocket "/var/run/mcelog-client"
-    PersistentNotification false
-  </Memory>
-##  McelogLogfile "/var/log/mcelog"
+LoadPlugin virt
+
+<Plugin virt>
+# Connection "xen:///"
+  RefreshInterval 60
+# Domain "name"
+# BlockDevice "name:device"
+# BlockDeviceFormat target
+# BlockDeviceFormatBasename false
+# InterfaceDevice "name:device"
+# IgnoreSelected false
+# HostnameFormat name
+# InterfaceFormat name
+# PluginInstanceFormat name
+# Instances 1
+  ExtraStats "cpu_util disk disk_err domain_state fs_info job_stats_background pcpu perf vcpupin"
 </Plugin>
 
