@@ -399,17 +399,20 @@ class CompassClient(object):
             except:
                 raise RuntimeError('subnet %s format is invalid' % subnet)
 
-            if CONF.expansion == "false":
+            subnet_exist = False
+            for subnet_in_db in subnets_in_db:
+                if subnet == subnet_in_db['subnet']:
+                    subnet_mapping[subnet] = subnet_in_db['id']
+                    subnet_exist = True
+                    break
+
+            if not subnet_exist:
                 status, resp = self.client.add_subnet(subnet)
                 LOG.info('add subnet %s status %s response %s',
                          subnet, status, resp)
                 if not self.is_ok(status):
                     raise RuntimeError('failed to add subnet %s' % subnet)
                 subnet_mapping[resp['subnet']] = resp['id']
-            else:
-                for subnet_in_db in subnets_in_db:
-                    if subnet == subnet_in_db['subnet']:
-                        subnet_mapping[subnet] = subnet_in_db['id']
 
         self.subnet_mapping = subnet_mapping
 
@@ -475,8 +478,8 @@ class CompassClient(object):
             if host['hostname'] in hostnames:
                 self.host_mapping[host['hostname']] = host['id']
 
-        if CONF.expansion == "false":
-            assert(len(self.host_mapping) == len(machines))
+        # if CONF.expansion == "false":
+        #     assert(len(self.host_mapping) == len(machines))
 
     def set_cluster_os_config(self, cluster_id):
         """set cluster os config."""
