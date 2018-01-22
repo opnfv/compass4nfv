@@ -361,3 +361,5 @@
     dest: /opt/openstack-ansible/playbooks/setup-openstack.yml
     insertafter: "^- include: os-trove"
     line: "- include: os-tacker-install.yml"
+
+- include: set_openstack_release.yml
