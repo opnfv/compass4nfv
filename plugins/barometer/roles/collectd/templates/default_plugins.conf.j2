@@ -11,16 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-<LoadPlugin ovs_events>
-   Interval 1
-</LoadPlugin>
+#Hostname ""
 
-<Plugin "ovs_events">
-   Port 6640
-   Address "127.0.0.1"
-   Socket "/var/run/openvswitch/db.sock"
-   Interfaces "br0" "veth0"
-   SendNotification false
-   DispatchValues true
-</Plugin>
+LoadPlugin cpufreq
+LoadPlugin disk
+#LoadPlugin ethstat
+#LoadPlugin ipc
+#LoadPlugin ipmi
+LoadPlugin load
+LoadPlugin memory
+LoadPlugin numa
+LoadPlugin processes
+#LoadPlugin df
+#LoadPlugin turbostat
+#LoadPlugin uptime
+#LoadPlugin contextswitch
+LoadPlugin irq
+LoadPlugin swap
 
