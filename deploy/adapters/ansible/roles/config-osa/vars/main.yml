@@ -11,3 +11,6 @@ LOCAL_REPOSITORY_IP: "192.168.137.222"
 ceph_host: "{{ hostvars[inventory_hostname]['groups']['ceph_osd'][0] }}"
 repo_dest_path: "/var/www/repo/os-releases/15.1.4/ubuntu-16.04-x86_64/"
 networking_sfc_version: 4.0.0
+# yamllint disable rule:line-length
+openstack_release: "{{ lookup('yamlfile', '/opt/openstack-ansible/group_vars/all/all.yml key=openstack_release') }}"
+# yamllint enable rule:line-length
