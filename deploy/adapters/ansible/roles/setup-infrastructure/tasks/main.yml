@@ -8,7 +8,7 @@
 ##############################################################################
 ---
 - name: setup infrastructure
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH={{ run_dir }}/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible setup-infrastructure.yml \
