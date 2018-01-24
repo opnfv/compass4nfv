@@ -40,6 +40,7 @@
     --subnet-range "{{ public_net_info.floating_ip_cidr }}" \
     "{{ public_net_info.subnet }}"
   when:
+    - public_net_info.enable == "True"
     - inventory_hostname == groups['utility_all'][0]
 
 - name: create openstack flavors
