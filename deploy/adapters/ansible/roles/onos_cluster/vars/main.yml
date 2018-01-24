@@ -13,8 +13,8 @@ onos_home: /opt/onos/
 karaf_dist: apache-karaf-3.0.5
 jdk8_pkg_name: jdk-8u51-linux-x64.tar.gz
 jdk8_script_name: install_jdk8.tar
-onos_driver: networking-onos.tar
-onos_sfc_driver: networking-sfc.tar
+onos_driver: networking-onos.tar.gz
+onos_sfc_driver: networking-sfc.tar.gz
 repository: repository.tar
 sfc_plugins:
   src: sfc_plugins.conf
