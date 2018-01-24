@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_b0176144",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-01-24T01:58:30Z",
+      "side": 1,
+      "message": "Hi Rama, I suggest using a script to run these commands. Add a shell script in files directory and copy it to hosts, then run it.",
+      "range": {
+        "startLine": 13,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 11
+      },
+      "revId": "c867d62cc44c6ba9200451d97fbafe432d8df8a6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_102a8d7e",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-01-24T01:58:30Z",
+      "side": 1,
+      "message": "Do we need to add a tag here (e.g. fraser)?",
+      "range": {
+        "startLine": 34,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 31
+      },
+      "revId": "c867d62cc44c6ba9200451d97fbafe432d8df8a6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_30a871da",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-01-24T01:58:30Z",
+      "side": 1,
+      "message": "Shall we have a version limitation here?",
+      "range": {
+        "startLine": 172,
+        "startChar": 3,
+        "endLine": 173,
+        "endChar": 26
+      },
+      "revId": "c867d62cc44c6ba9200451d97fbafe432d8df8a6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
