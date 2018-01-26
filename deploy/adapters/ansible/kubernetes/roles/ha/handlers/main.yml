@@ -7,7 +7,8 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-packages_noarch:
-  - ntp
+- name: restart haproxy
+  service: name=haproxy state=restarted enabled=yes
 
-services_noarch: []
+- name: restart keepalived
+  service: name=keepalived state=restarted enabled=yes

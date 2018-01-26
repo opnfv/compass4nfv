@@ -1,6 +1,7 @@
 ---
 packages:
   - python-devel
+  - python-pip
   - gcc
   - redhat-lsb-core
   - python-crypto
