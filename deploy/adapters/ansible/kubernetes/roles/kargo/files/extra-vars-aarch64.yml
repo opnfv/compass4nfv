@@ -31,3 +31,6 @@ docker_package_info:
   pkg_mgr: yum
   pkgs:
     - name: docker
+
+# roles/kubernetes/preinstall/tasks/set_facts.yml
+loadbalancer_apiserver_localhost: false
