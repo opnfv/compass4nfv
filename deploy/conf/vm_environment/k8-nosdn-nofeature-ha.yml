@@ -16,16 +16,19 @@ hosts:
     roles:
       - kube_master
       - etcd
+      - ha
 
   - name: host2
     roles:
       - kube_master
       - etcd
+      - ha
 
   - name: host3
     roles:
       - kube_master
       - etcd
+      - ha
 
   - name: host4
     roles:
