@@ -261,3 +261,14 @@ haproxy_default_services:
       haproxy_backend_options:
         - "httpchk GET /"
       haproxy_whitelist_networks: "{{ haproxy_octavia_whitelist_networks }}"
+
+  - service:
+      haproxy_service_name: tacker
+      haproxy_backend_nodes: "{{ groups['tacker_all'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 9890
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "forwardfor"
+        - "httpchk"
+        - "httplog"
