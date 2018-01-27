@@ -52,6 +52,11 @@ function launch_host_vms() {
     vm_template_file="$vm_template_dir/host.xml"
     vm_template_arch="$vm_template_dir/host-$COMPASS_ARCH.xml"
     [ -f $vm_template_arch ] && vm_template_file=$vm_template_arch
+    if [[ "$NAT_EXTERNAL"  == "false" ]]; then
+       NET_IAAS="external"
+    else
+       NET_IAAS="external_nat"
+    fi
 
     log_info "bringing up pxe boot vms"
     i=0
@@ -67,7 +72,7 @@ function launch_host_vms() {
           -e "s#REPLACE_IMAGE#$vm_dir/disk.img#g" \
           -e "s/REPLACE_BOOT_MAC/${mac_array[i]}/g" \
           -e "s/REPLACE_NET_INSTALL/install/g" \
-          -e "s/REPLACE_NET_IAAS/external_nat/g" \
+          -e "s/REPLACE_NET_IAAS/$NET_IAAS/g" \
           "$vm_template_file" \
           > $vm_dir/libvirt.xml
 

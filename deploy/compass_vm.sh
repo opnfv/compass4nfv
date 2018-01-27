@@ -23,7 +23,7 @@ function check_container_alive() {
     docker exec -it compass-mq bash -c "exit" 1>/dev/null 2>&1
     local mq_state=$?
 
-    if [ $((deck_state||tasks_state||cobbler_state||db_state||mq-state)) == 0 ]; then
+    if [ $((deck_state||tasks_state||cobbler_state||db_state||mq_state)) == 0 ]; then
         echo "true"
     else
         echo "false"
