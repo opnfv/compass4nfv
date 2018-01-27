@@ -345,3 +345,9 @@
 - include: fix_pip_version.yml
 
 - include: fix_rescue.yml
+
+- name: include tacker in setup-openstack
+  lineinfile:
+    dest: /opt/openstack-ansible/playbooks/setup-openstack.yml
+    insertafter: "^- include: os-trove"
+    line: "- include: os-tacker-install.yml"

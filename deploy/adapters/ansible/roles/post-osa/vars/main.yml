@@ -1,5 +1,17 @@
 ---
 
+os_ver: 16.0.5
+os_name: pike
+
+# yamllint disable rule:line-length
+tacker_horizon_repo: https://github.com/openstack/tacker-horizon.git
+tacker_horizon_dir: /opt/tacker-horizon
+tacker_horizon_branch: stable/{{ os_name }}
+openstack_release: {{ os_ver }}
+tacker_horizon_venv: "/openstack/venvs/horizon-{{ openstack_release }}"
+tacker_horizon_enable_path: "{{ tacker_horizon_venv }}/lib/python2.7/site-packages/openstack_dashboard/enabled"
+# yamllint enable rule:line-length
+
 sfc_plugins:
   src: sfc.conf
   dst: /opt/sfc.conf
