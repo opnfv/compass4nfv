@@ -67,7 +67,7 @@
 
 - name: copy inventoriy.json file
   copy:
-    src: /var/ansible/run/kubernetes-opnfv2/inventories/inventory.json
+    src: "{{ run_dir }}/inventories/inventory.json"
     dest: /tmp/inventory.json
   tags:
     - ansible

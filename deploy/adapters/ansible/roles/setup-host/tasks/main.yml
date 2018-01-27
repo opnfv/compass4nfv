@@ -10,7 +10,7 @@
 ---
 
 - name: openstack-hosts-setup
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH={{ run_dir }}/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible openstack-hosts-setup.yml \
@@ -25,7 +25,7 @@
   when: openstack_hosts_setup_result.stdout.find('Mark openstack-hosts-setup completed') == -1
 
 - name: security-hardening
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH={{ run_dir }}/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible security-hardening.yml \
@@ -40,7 +40,7 @@
   when: security_hardening_result.stdout.find('Mark security-hardening completed') == -1
 
 - name: lxc-hosts-setup
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH={{ run_dir }}/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible lxc-hosts-setup.yml \
@@ -55,7 +55,7 @@
   when: lxc_hosts_setup_result.stdout.find('Mark lxc-hosts-setup completed') == -1
 
 - name: lxc-containers-create
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH={{ run_dir }}/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible lxc-containers-create.yml \
@@ -66,7 +66,7 @@
   register: failed_container
 
 - name: destroy the failed_container
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH={{ run_dir }}/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible lxc-containers-destroy.yml \
@@ -77,7 +77,7 @@
   ignore_errors: "True"
 
 - name: retry to setup failed_container
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH={{ run_dir }}/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible lxc-containers-create.yml --limit {{item}} \
