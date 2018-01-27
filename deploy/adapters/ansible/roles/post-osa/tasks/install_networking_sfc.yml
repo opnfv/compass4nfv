@@ -3,7 +3,7 @@
 - name: install networking-sfc
   pip:
     name: networking-sfc
-    virtualenv: /openstack/venvs/neutron-15.1.4
+    virtualenv: /openstack/venvs/neutron-{{ os_ver }}
   when:
     - inventory_hostname in groups['neutron_server']
 
@@ -11,14 +11,12 @@
   package:
     name: crudini
     state: latest
-  when:
-    - inventory_hostname in groups['neutron_server']
 
 - name: Install networking-sfc for CLI
   pip:
     name: networking-sfc
   when:
-    - inventory_hostname in groups['utility']
+    - inventory_hostname not in groups['neutron_server']
 
 - name: turn off neutron-server on control node
   service: name=neutron-server state=stopped
@@ -35,13 +33,18 @@
   shell: crudini --merge /etc/neutron/neutron.conf < /opt/sfc.conf
   when: inventory_hostname in groups['neutron_server']
 
+- name: Configure SFC extension on compute nodes
+  shell: crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini \
+             agent extensions sfc;
+  when: inventory_hostname in groups['compute']
+
 - name: delete sfc.conf
   shell: rm -rf {{ sfc_plugins.dst }}
   when: inventory_hostname in groups['neutron_server']
 
 - name: Perform a Neutron DB online upgrade
   command: |
-    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+    /openstack/venvs/neutron-{{ os_ver }}/bin/neutron-db-manage
                       --config-file /etc/neutron/neutron.conf
                       --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
                       upgrade --expand
@@ -51,7 +54,7 @@
 
 - name: Perform a Neutron DB offline upgrade
   command: |
-    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+    /openstack/venvs/neutron-{{ os_ver }}/bin/neutron-db-manage
                       --config-file /etc/neutron/neutron.conf
                       --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
                       upgrade --contract
@@ -61,7 +64,7 @@
 
 - name: SFC DB upgrade
   command: |
-    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+    /openstack/venvs/neutron-{{ os_ver }}/bin/neutron-db-manage
                       --subproject networking-sfc
                       upgrade head
   become: "yes"
