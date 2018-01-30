@@ -332,6 +332,16 @@
   when:
     - "{{ hostvars[inventory_hostname]['groups']['controller'] | length < 2 }}"
 
+- name: copy collect-log.sh to /opt
+  copy:
+    src: collect-log.sh
+    dest: /opt/collect-log.sh
+
+- name: copy collect-log.yml to /opt
+  copy:
+    src: collect-log.yml
+    dest: /opt/collect-log.yml
+
 # - name: change repore build
 #  lineinfile:
 #    dest: /etc/ansible/roles/repo_build/tasks/main.yml
