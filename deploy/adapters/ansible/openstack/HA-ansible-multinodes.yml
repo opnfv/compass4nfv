@@ -45,6 +45,7 @@
     - compute
     - utility
     - neutron_server
+    - ceilometer_all
   remote_user: root
   roles:
     - post-osa
