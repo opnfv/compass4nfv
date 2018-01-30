@@ -56,6 +56,13 @@
     - collectd
 
 - hosts:
+    - controller
+  remote_user: root
+  roles:
+    - influxdb
+    - grafana
+
+- hosts:
     - neutron_openvswitch_agent
     - compute
   remote_user: root

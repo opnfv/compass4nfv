@@ -1,0 +1,28 @@
+# #############################################################################
+# Copyright (c) 2018 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+- name: copy install_influxdb script
+  remote_user: root
+  copy:
+    src: install_influxdb.sh
+    dest: /opt/install_influxdb.sh
+    mode: 0777
+
+- name: install influxdb
+  command: su -s /bin/sh -c "/opt/install_influxdb.sh"
+
+- name: configure /etc/influxdb/influxdb.conf
+  remote_user: root
+  template:
+    src: influxdb.conf.j2
+    dest: /etc/influxdb/influxdb.conf
+
+- name: start influxdb service
+  remote_user: root
+  shell: service influxdb start
