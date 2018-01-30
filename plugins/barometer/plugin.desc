@@ -15,6 +15,7 @@ plugin:
 
   maintainers:
     - john.hinman@intel.com
+    - ramamani.yeleswarapu@intel.com
 
   # host os type: ubuntu/centos
   os_version: ubuntu
@@ -49,3 +50,13 @@ plugin:
         phrase: post_openstack
         inventory:
           - compute
+
+      - role: influxdb
+        phrase: post_openstack
+        inventory:
+          - controller
+
+     - role: grafana
+        phrase: post_openstack
+        inventory:
+          - controller
