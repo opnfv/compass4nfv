@@ -1,0 +1,32 @@
+---
+##############################################################################
+# Copyright (c) 2018 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+- name: Collect log
+  hosts: rsyslog[0]
+  user: root
+  tasks:
+    - name: ensure log directory exist
+      stat:
+        path: /var/log/log-storage
+      register: log_dir
+
+    - name: compress log directory
+      archive:
+        path: "{{ log_dir.stat.path }}"
+        dest: "{{ log_dir.stat.path }}/log.tar.gz"
+        format: gz
+      when: log_dir.stat.exists is defined and log_dir.stat.exists
+
+    - name: fetch the log tarball
+      fetch:
+        src: "{{ log_dir.stat.path }}/log.tar.gz"
+        dest: /opt/log.tar.gz
+        flat: "yes"
+      when: log_dir.stat.exists is defined and log_dir.stat.exists
