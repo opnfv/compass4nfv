@@ -95,6 +95,11 @@
              "{{ docker_compose_dir }}"/ansible/$i
     done
 
+- name: copy ansible plugins
+  copy:
+    src: "{{ compass_dir }}/deploy/ansible_plugins"
+    dest: "{{ docker_compose_dir }}"
+
 - name: create run dir
   file:
     path: "{{ docker_compose_dir }}/ansible/run"
@@ -122,16 +127,6 @@
   delay: 2
   tags:
     - redploy
-
-- name: add ansible callback
-  shell: |
-    docker cp "{{ item }}" \
-    compass-deck:/root/compass-deck/bin/ansible_callbacks
-    docker cp "{{ item }}" \
-    compass-tasks:/opt/ansible_callbacks
-  with_items:
-    - "{{ compass_dir }}/deploy/status_callback.py"
-    - "{{ compass_dir }}/deploy/playbook_done.py"
 
 - name: rm ansible run
   shell: |

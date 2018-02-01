@@ -43,6 +43,7 @@ services:
     volumes:
     - {{ docker_compose_dir }}/compass_conf:/etc/compass
     - {{ docker_compose_dir }}/ansible:/var/ansible
+    - {{ docker_compose_dir }}/ansible_plugins:/opt/ansible_plugins
     command:
     - /usr/local/bin/start.sh
 {% endif %}
