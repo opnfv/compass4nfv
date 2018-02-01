@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_7845ae41",
+        "filename": "plugins/barometer/roles/grafana/files/configure_grafana.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2311
+      },
+      "writtenOn": "2018-02-01T15:44:11Z",
+      "side": 1,
+      "message": "nit: whitespace",
+      "range": {
+        "startLine": 34,
+        "startChar": 54,
+        "endLine": 34,
+        "endChar": 55
+      },
+      "revId": "8060d3560fff5e99f7c26a40e5a7da564c59564d",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
