@@ -17,6 +17,8 @@
 """Ansible playbook callback after a playbook run has completed."""
 import sys
 
+from distutils.version import LooseVersion
+from ansible import __version__ as __ansible_version__
 from ansible.plugins.callback import CallbackBase
 
 compass_bin = "/opt/compass/bin"
@@ -85,7 +87,10 @@ class CallbackModule(CallbackBase):
         return
 
     def v2_playbook_on_stats(self, stats):
-        all_vars = self.play.get_variable_manager().get_vars(self.loader)
+        if LooseVersion(__ansible_version__) < LooseVersion("2.4"):
+            all_vars = self.play.get_variable_manager().get_vars(self.loader)
+        else
+            all_vars = self.play.get_variable_manager().get_vars()
         host_vars = all_vars["hostvars"]
         hosts = sorted(stats.processed.keys())
         cluster_name = host_vars[hosts[0]]['cluster_name']

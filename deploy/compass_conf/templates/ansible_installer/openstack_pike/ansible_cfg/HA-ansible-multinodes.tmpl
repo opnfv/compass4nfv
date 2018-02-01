@@ -3,7 +3,7 @@
 log_path = /var/ansible/run/openstack_pike-$cluster_name/ansible.log
 host_key_checking = False
 callback_whitelist = playbook_done, status_callback
-callback_plugins = /opt/ansible_callbacks
+callback_plugins = /opt/ansible_plugins/callback
 forks=100
 
 [ssh_connection]

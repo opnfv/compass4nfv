@@ -11,6 +11,8 @@ import httplib
 import simplejson as json
 import sys  # noqa:F401
 
+from distutils.version import LooseVersion
+from ansible import __version__ as __ansible_version__
 from ansible.plugins.callback import CallbackBase
 
 COMPASS_HOST = "compass-deck"
@@ -101,7 +103,10 @@ class CallbackModule(CallbackBase):
 
     def v2_playbook_on_stats(self, stats):
         self._display.display("playbook_on_stats enter")
-        all_vars = self.play.get_variable_manager().get_vars(self.loader)
+        if LooseVersion(__ansible_version__) < LooseVersion("2.4"):
+            all_vars = self.play.get_variable_manager().get_vars(self.loader)
+        else
+            all_vars = self.play.get_variable_manager().get_vars()
         host_vars = all_vars["hostvars"]
         hosts = sorted(stats.processed.keys())
         cluster_name = host_vars[hosts[0]]['cluster_name']
