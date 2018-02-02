@@ -1,0 +1,56 @@
+---
+project: 'Compass4nfv'
+project_creation_date: ''
+project_category: 'Integration and testing'
+lifecycle_state: 'Proposal approved'
+project_lead: &opnfv_compass4nfv_ptl
+    name: 'Justin chi'
+    email: 'chigang@huawei.com'
+    id: 'chigang'
+    company: 'huawei.com'
+    timezone: 'Unknown'
+primary_contact: *opnfv_compass4nfv_ptl
+issue_tracking:
+    type: 'jira'
+    url: 'https://jira.opnfv.org/projects/COMPASS'
+    key: 'COMPASS'
+mailing_list:
+    type: 'mailman2'
+    url: 'opnfv-tech-discuss@lists.opnfv.org'
+    tag: '[compass4nfv]'
+realtime_discussion:
+    type: irc
+    server: 'freenode.net'
+    channel: '#opnfv-compass4nfv'
+meetings:
+    - type: 'gotomeeting+irc'
+      agenda:  # eg: 'https://wiki.opnfv.org/display/'
+      url:  # eg: 'https://global.gotomeeting.com/join/819733085'
+      server: 'freenode.net'
+      channel: '#opnfv-meeting'
+      repeats: 'weekly'
+      time:  # eg: '16:00 UTC'
+repositories:
+    - 'compass4nfv'
+committers:
+    - <<: *opnfv_compass4nfv_ptl
+    - name: 'Prakash Ramchandran'
+      email: 'prakash.ramchandran@huawei.com'
+      company: 'huawei.com'
+      id: 'rprakash'
+    - name: 'shuai chen'
+      email: 'chenshuai@huawei.com'
+      company: 'huawei.com'
+      id: 'chenshuai'
+    - name: 'Yifei Xue'
+      email: 'xueyifei@huawei.com'
+      company: 'huawei.com'
+      id: 'xueyifei1988'
+    - name: 'HU Xinhui'
+      email: 'xinhui_hu@foxmail.com'
+      company: 'foxmail.com'
+      id: 'huxinhui'
+tsc:
+    # yamllint disable rule:line-length
+    approval: 'http//ircbot.wl.linuxfoundation.org/meetings/opnfv-meeting/2015/opnfv-meeting.2015-07-21-14.02.html'
+    # yamllint enable rule:line-length
