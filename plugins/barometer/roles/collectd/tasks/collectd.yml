@@ -1,5 +1,5 @@
 # #############################################################################
-# Copyright (c) 2017 Intel Corp.
+# Copyright (c) 2017-18 Intel Corp.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Apache License, Version 2.0
@@ -7,120 +7,162 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # #############################################################################
 ---
-- name: install dependencies
-  apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - libltdl7
-    - init-system-helpers
-    - mcelog
-    - rrdtool
-    - libc6
-    - librrd4
-    - libvirt-bin
-    - libvirt-dev
-    - gcc
-    - git
-    - python3-pip
+- name: copy install_docker script
+  remote_user: root
+  copy:
+    src: install_docker.sh
+    dest: /opt/install_docker.sh
+    mode: 0777
 
-- name: create workspace directory
-  file:
-    path: "{{ workspace }}"
-    state: directory
-    mode: 0755
+- name: install docker
+  command: su -s /bin/sh -c "/opt/install_docker.sh"
 
-- name: download, unarchive and install collectd packages
+- name: create collectd_sample_configs dir
+  remote_user: root
   shell: |
-    cd "{{ workspace }}";
-    wget "{{ artifacts_collectd_pkg }}";
-    su -s /bin/sh -c \
-        "tar xzf collectd_pkg.tar.gz -C {{ workspace }} --strip-components 1";
-    apt-get install ./libcollectd*.deb -y;
-    apt-get install ./collectd*.deb -y
+    rm -rf /root/collectd_sample_configs;
+    mkdir /root/collectd_sample_configs;
 
-- name: make stack dir
-  file:
-    path: /opt/stack
-    state: directory
-    mode: 0755
-
-- name: check plugin dir exists
-  stat:
-    path: /opt/stack/collectd-ceilometer-plugin
-  register: stat_result
-
-- name: fetch collectd plugin source code
+- name: docker pull opnfv/barometer-collectd
+  remote_user: root
   shell: |
-    cd /opt/stack;
-    git clone https://github.com/openstack/collectd-ceilometer-plugin.git;
-    cd /opt/stack/collectd-ceilometer-plugin;
-    git checkout stable/pike
-  when: stat_result.stat.exists == False
+    docker pull opnfv/barometer-collectd;
+    sleep 5
 
 - name: configure logfile conf
+  remote_user: root
   template:
     src: logfile.conf.j2
-    dest: /etc/collectd/collectd.conf.d/logfile.conf
+    dest: /root/collectd_sample_configs/logfile.conf
 
-- name: configure collectd-aodh plugin conf
+- name: configure csv conf
+  remote_user: root
   template:
-    src: collectd-aodh.conf.j2
-    dest: /etc/collectd/collectd.conf.d/collectd-aodh-plugin.conf
+    src: csv.conf.j2
+    dest: /root/collectd_sample_configs/csv.conf
 
-- name: configure collectd-gnocchi plugin conf
-  template:
-    src: collectd-gnocchi.conf.j2
-    dest: /etc/collectd/collectd.conf.d/collectd-gnocchi-plugin.conf
+- name: check if vswitchd on host
+  shell: ps -ef | grep vswitchd | grep -v grep > /dev/null
+  register: vswitchd_result
+  ignore_errors: "true"
 
-- name: configure hugepages conf
+- name: check if db.sock exists
+  stat:
+    path: /var/run/openvswitch/db.sock
+  register: dbsock_result
+  ignore_errors: "true"
+
+- name: configure ovs_stats conf and ovs_events conf
+  remote_user: root
   template:
-    src: hugepages.conf.j2
-    dest: /etc/collectd/collectd.conf.d/hugepages.conf
+    src: "{{ item }}.conf.j2"
+    dest: "/root/collectd_sample_configs/{{ item }}.conf"
+  when: vswitchd_result|succeeded and dbsock_result|succeeded
+  with_items:
+    - ovs_stats
+    - ovs_events
+
+- name: check if mcelog running on host
+  shell: ps -ef | grep mcelog | grep -v grep > /dev/null
+  register: mcelog_running
+  ignore_errors: "true"
+
+- name: check if mcelog exists
+  shell: which mcelog > /dev/null
+  register: mcelog_exists
+  ignore_errors: "true"
+
+- name: check if mcelog-client exists
+  stat:
+    path: /var/run/mcelog-client
+  register: mcelog_client_exists
+  ignore_errors: "true"
 
 - name: configure mcelog conf
+  remote_user: root
   template:
     src: mcelog.conf.j2
-    dest: /etc/collectd/collectd.conf.d/mcelog.conf
+    dest: /root/collectd_sample_configs/mcelog.conf
+  when: mcelog_running|succeeded and mcelog_exists|succeeded and mcelog_client_exists|succeeded
 
-- name: configure ovs_stats conf
+- name: configure collectd-aodh plugin conf
+  remote_user: root
   template:
-    src: ovs_stats.conf.j2
-    dest: /etc/collectd/collectd.conf.d/ovs_stats.conf
+    src: collectd-aodh.conf.j2
+    dest: /root/collectd_sample_configs/collectd-aodh-plugin.conf
 
-- name: configure ovs_events conf
+- name: configure collectd-gnocchi plugin conf
+  remote_user: root
   template:
-    src: ovs_events.conf.j2
-    dest: /etc/collectd/collectd.conf.d/ovs_events.conf
+    src: collectd-gnocchi.conf.j2
+    dest: /root/collectd_sample_configs/collectd-gnocchi-plugin.conf
 
-- name: configure collectd conf
-  lineinfile:
-    dest: /etc/collectd/collectd.conf
-    regexp: '{{ item.regexp }}'
-    line: '{{ item.line }}'
+- name: check if hugepages folders exist on host
+  stat:
+    path: "{{ item }}"
+  register: hugepages_result
+  ignore_errors: "true"
   with_items:
-    - regexp: '#LoadPlugin numa'
-      line: 'LoadPlugin numa'
-    - regexp: '#LoadPlugin virt'
-      line: 'LoadPlugin virt'
-    - regexp: '#LoadPlugin cpufreq'
-      line: 'LoadPlugin cpufreq'
-    - regexp: '#LoadPlugin cpusleep'
-      line: 'LoadPlugin cpusleep'
+    /sys/devices/system/node
+    /sys/kernel/mm/hugepages
 
-- name: configure mcelog conf
-  lineinfile:
-    dest: /etc/mcelog/mcelog.conf
-    regexp: '{{ item.regexp }}'
-    line: '{{ item.line }}'
-  with_items:
-    - regexp: '#socket-path = /var/run/mcelog-client'
-      line: 'socket-path = /var/run/mcelog-client'
+- name: configure hugepages conf
+  remote_user: root
+  template:
+    src: hugepages.conf.j2
+    dest: /root/collectd_sample_configs/hugepages.conf
+  when: hugepages_result|succeeded
 
-- name: install gnocchiclient, aodhclient, set ovs manager, restart mcelog, collectd
+- name: check if rdt on host
   shell: |
-    pip install gnocchiclient;
-    pip install aodhclient;
-    ovs-vsctl set-manager ptcp:6640:127.0.0.1;
-    systemctl restart mcelog;
-    systemctl restart collectd
+    grep -q cqm* "/proc/cpuinfo"
+  register: rdt_result
+  ignore_errors: "true"
+
+- name: configure rdt conf
+  remote_user: root
+  template:
+    src: rdt.conf.j2
+    dest: /root/collectd_sample_configs/rdt.conf
+  when: rdt_result|succeeded
+
+- name: load msr kernel module
+  modprobe:
+    name: msr
+    state: present
+
+- name: check if libvirtd on host
+  shell: ps -ef | grep libvirtd | grep -v grep > /dev/null
+  register: libvirt_result
+  ignore_errors: "true"
+
+- name: configure virt conf
+  remote_user: root
+  template:
+    src: virt.conf.j2
+    dest: /root/collectd_sample_configs/virt.conf
+  when: libvirt_result|succeeded
+
+- name: configure intel_pmu conf
+  remote_user: root
+  template:
+    src: intel_pmu.conf.j2
+    dest: /root/collectd_sample_configs/intel_pmu.conf
+
+- name: configure network conf
+  remote_user: root
+  template:
+    src: network.conf.j2
+    dest: /root/collectd_sample_configs/network.conf
+
+- name: configure default plugins
+  remote_user: root
+  template:
+    src: default_plugins.conf.j2
+    dest: /root/collectd_sample_configs/default_plugins.conf
+
+- name: run barometer collectd container
+  remote_user: root
+  shell: |
+    docker run -dti --net=host -v /root/collectd_sample_configs:/opt/collectd/etc/collectd.conf.d \
+        -v /var/run:/var/run -v /tmp:/tmp --privileged opnfv/barometer-collectd /run_collectd.sh

@@ -49,4 +49,3 @@ plugin:
         phrase: post_openstack
         inventory:
           - compute
-
