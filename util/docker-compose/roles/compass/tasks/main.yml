@@ -19,7 +19,11 @@
       {% for item in compass_images.results %}
       {% if "ansible_facts" in item %}
       {% set facts = item.ansible_facts %}
-      {% set _ = image_dict.update({facts.image_name: facts.image_repo}) %}
+      {% set image_name = facts.image_name %}
+      {% if "compass_tasks" in image_name %}
+      {% set image_name = "compass_tasks" %}
+      {% endif %}
+      {% set _ = image_dict.update({image_name: facts.image_repo}) %}
       {% endif %}
       {% endfor %}
       {% for key in image_dict %}
