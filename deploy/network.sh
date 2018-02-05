@@ -76,9 +76,9 @@ function setup_bridge_external()
     sudo virsh net-destroy external
     sudo virsh net-undefine external
 
-    #save_network_info
+    save_network_info
     sed -e "s/REPLACE_NAME/external/g" \
-        -e "s/REPLACE_OVS/br-external_nat/g" \
+        -e "s/REPLACE_OVS/br-external/g" \
     $COMPASS_DIR/deploy/template/network/bridge_ovs.xml \
     > $WORK_DIR/network/external.xml
 
@@ -86,14 +86,12 @@ function setup_bridge_external()
     sudo virsh net-start external
     sudo virsh net-autostart external
 
-    python $COMPASS_DIR/deploy/setup_vnic.py
 }
 
 function recover_bridge_external()
 {
     sudo virsh net-start external
 
-    python $COMPASS_DIR/deploy/setup_vnic.py
 }
 
 function setup_nat_net() {
@@ -128,7 +126,12 @@ function recover_nat_net() {
 
 function setup_virtual_net() {
   setup_nat_net install $INSTALL_GW $INSTALL_NETMASK
-  setup_nat_net external_nat $EXT_NAT_GW $EXT_NAT_MASK $EXT_NAT_IP_START $EXT_NAT_IP_END
+
+  if [[ "$NAT_EXTERNAL"  == "false" ]]; then
+     setup_bridge_external
+  else
+      setup_nat_net external_nat $EXT_NAT_GW $EXT_NAT_MASK $EXT_NAT_IP_START $EXT_NAT_IP_END
+  fi
 }
 
 function recover_virtual_net() {
