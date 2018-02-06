@@ -3,7 +3,7 @@
 - name: configure odl l3 driver
   shell: |
     crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins \
-        odl-router,metering;
+        odl-router_v2,metering,trunk;
   when: odl_l3_agent == "Enable"
 
 - name: configure opendaylight -> ml2

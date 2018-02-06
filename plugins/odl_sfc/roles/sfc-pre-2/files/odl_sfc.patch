@@ -1,0 +1,90 @@
+diff --git a/defaults/main.yml b/defaults/main.yml
+index fd6fc37..3ae4bce 100644
+--- a/defaults/main.yml
++++ b/defaults/main.yml
+@@ -381,3 +381,9 @@ dragonflow_ex_peer_patch_port: patch-int
+ dragonflow_int_peer_patch_port: patch-ex
+ dragonflow_external_network_bridge: br-ex
+ dragonflow_publisher_bind_address: "*"
++
++# Install Openvswitch without NSH support
++ovs_nsh_support: True
++#
++# # Set higher priority to mardim PPA when ovs_nsh_support is True
++ovs_nsh_apt_pinned_packages: [{ package: "*", release: "LP-PPA-mardim-mardim-ppa"}]
+diff --git a/meta/main.yml b/meta/main.yml
+index 418b4a9..7a6739a 100644
+--- a/meta/main.yml
++++ b/meta/main.yml
+@@ -39,7 +39,10 @@ galaxy_info:
+     - openstack
+ dependencies:
+   - pip_install
+-  - apt_package_pinning
++  - role: apt_package_pinning
++    apt_pinned_packages: "{{ ovs_nsh_support | ternary(ovs_nsh_apt_pinned_packages, omit) }}"
++    when:
++      - ansible_pkg_mgr == 'apt'
+   - galera_client
+   - openstack_openrc
+   - role: etcd
+diff --git a/tasks/neutron_pre_install.yml b/tasks/neutron_pre_install.yml
+index 59fd87f..1162a2b 100644
+--- a/tasks/neutron_pre_install.yml
++++ b/tasks/neutron_pre_install.yml
+@@ -79,3 +79,12 @@
+     mode: "0440"
+     owner: "root"
+     group: "root"
++
++- name: add ovs-nsh repo
++  apt_repository:
++    repo: "ppa:mardim/mardim-ppa"
++    update_cache: True
++    state: present
++  when:
++    - ansible_pkg_mgr == 'apt'
++    - ovs_nsh_support | bool
+diff --git a/vars/main.yml b/vars/main.yml
+index dec0e36..afdff3f 100644
+--- a/vars/main.yml
++++ b/vars/main.yml
+@@ -27,8 +27,12 @@ neutron_package_list: |-
+   {% if (neutron_services['neutron-openvswitch-agent']['group'] in group_names and neutron_services['neutron-openvswitch-agent'].service_en | bool)
+       or (neutron_services['dragonflow-controller-agent']['group'] in group_names and neutron_services['dragonflow-controller-agent'].service_en | bool)
+       or (neutron_services['dragonflow-l3-agent']['group'] in group_names and neutron_services['dragonflow-l3-agent'].service_en | bool) %}
++  {% if (ovs_nsh_support and ansible_pkg_mgr in ['apt', 'zypper']) %}
++  {% set _ = packages.extend(neutron_ovs_nsh_required_packages) %}
++  {% else %}
+   {% set _ = packages.extend(neutron_ovs_distro_packages) %}
+   {% endif %}
++  {% endif %}
+   {% if neutron_services['neutron-linuxbridge-agent']['group'] in group_names and neutron_services['neutron-linuxbridge-agent'].service_en | bool %}
+   {% set _ = packages.extend(neutron_lxb_distro_packages) %}
+   {% endif %}
+@@ -50,6 +54,8 @@ calico_felix_bin: /usr/local/bin/calico-felix
+ ### Python code details
+ ###
+ 
++neutron_ovs_nsh_distro_packages: []
++
+ neutron_requires_pip_packages:
+   - virtualenv
+   - virtualenv-tools
+diff --git a/vars/ubuntu-16.04.yml b/vars/ubuntu-16.04.yml
+index eb52ebf..a2c6275 100644
+--- a/vars/ubuntu-16.04.yml
++++ b/vars/ubuntu-16.04.yml
+@@ -25,6 +25,12 @@ neutron_vpnaas_service_provider: VPN:strongswan:neutron_vpnaas.services.vpn.serv
+ ## APT Cache options
+ cache_timeout: 600
+ 
++neutron_ovs_nsh_required_packages:
++  - openvswitch-datapath-dkms
++  - openvswitch-common
++  - openvswitch-switch
++  - python-openvswitch
++
+ neutron_distro_packages:
+   - conntrack
+   - dnsmasq-base

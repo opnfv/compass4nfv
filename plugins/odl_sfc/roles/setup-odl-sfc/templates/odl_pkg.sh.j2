@@ -1,0 +1,19 @@
+#!/bin/bash
+
+rm -rf /home/networking
+rm -rf /home/tmp
+
+mkdir -p /home/networking
+mkdir -p /home/tmp
+
+cd /home/networking
+
+git clone https://github.com/openstack/networking-odl.git -b stable/{{ os_name }}
+git clone https://github.com/openstack/networking-sfc.git -b stable/{{ os_name }}
+
+pip wheel /home/networking/networking-odl/ -w /home/tmp/
+pip wheel /home/networking/networking-sfc/ -w /home/tmp/
+
+cp /home/tmp/networking* /var/www/repo/os-releases/{{ os_ver }}/ubuntu-16.04-x86_64/
+
+sleep 30
