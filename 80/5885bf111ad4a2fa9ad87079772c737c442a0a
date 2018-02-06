@@ -1,0 +1,8 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: Harry Huang <huangxiangyu5@huawei.com>
+Code-Review+2: Yifei Xue <xueyifei@huawei.com>
+Submitted-by: Yifei Xue <xueyifei@huawei.com>
+Submitted-at: Tue, 06 Feb 2018 01:46:56 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/51109
+Project: compass4nfv
+Branch: refs/heads/master
