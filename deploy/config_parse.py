@@ -13,8 +13,6 @@ import yaml
 import sys
 from Cheetah.Template import Template
 
-PXE_INTF = "eth0"
-
 
 def init(file):
     with open(file) as fd:
@@ -64,9 +62,10 @@ def hostmacs(s, seq, host=None):
 
 
 def export_network_file(dha, network, ofile):
-    env = {}
-
-    mgmt_net = [item for item in network['ip_settings']
+    install_network_env = {}
+    host_network_env = {}
+    ip_settings = network['ip_settings']
+    mgmt_net = [item for item in ip_settings
                 if item['name'] == 'mgmt'][0]
     mgmt_gw = mgmt_net['gw']
     mgmt_cidr = mgmt_net['cidr']
@@ -74,12 +73,15 @@ def export_network_file(dha, network, ofile):
     mgmt_netmask = '.'.join([str((0xffffffff << (32 - prefix) >> i) & 0xff)
                              for i in [24, 16, 8, 0]])
     dhcp_ip_range = ' '.join(mgmt_net['dhcp_ranges'][0])
-    env.update({'INSTALL_GW': mgmt_gw})
-    env.update({'INSTALL_CIDR': mgmt_cidr})
-    env.update({'INSTALL_NETMASK': mgmt_netmask})
-    env.update({'INSTALL_IP_RANGE': dhcp_ip_range})
-    export_env_dict(env, ofile)
+    internal_vip = network['internal_vip']['ip']
+    install_network_env.update({'INSTALL_GW': mgmt_gw})
+    install_network_env.update({'INSTALL_CIDR': mgmt_cidr})
+    install_network_env.update({'INSTALL_NETMASK': mgmt_netmask})
+    install_network_env.update({'INSTALL_IP_RANGE': dhcp_ip_range})
+    install_network_env.update({'VIP': internal_vip})
+    export_env_dict(install_network_env, ofile)
 
+    pxe_nic = os.environ['PXE_NIC']
     host_ip_range = mgmt_net['ip_ranges'][0]
     host_ips = netaddr.iter_iprange(host_ip_range[0], host_ip_range[1])
     host_networks = []
@@ -87,8 +89,11 @@ def export_network_file(dha, network, ofile):
         host_name = host['name']
         host_ip = str(host_ips.next())
         host_networks.append(
-            "{0}:{1}={2}|is_mgmt".format(host_name, PXE_INTF, host_ip))
-    host_network_env = {"HOST_NETWORKS": ';'.join(host_networks)}
+            '{0}:{1}={2}|is_mgmt'.format(host_name, pxe_nic, host_ip))
+    host_subnets = [item['cidr'] for item in ip_settings]
+    host_network_env.update({'NETWORK_MAPPING': "install=" + pxe_nic})
+    host_network_env.update({'HOST_NETWORKS': ';'.join(host_networks)})
+    host_network_env.update({'SUBNETS': ','.join(host_subnets)})
     export_env_dict(host_network_env, ofile, True)
 
 
