@@ -9,6 +9,9 @@
 ---
 openstack_passwd_file: /etc/openstack_deploy/user_secrets.yml
 
+os_ver: 16.0.5
+os_name: pike
+
 odl_username: admin
 odl_password: admin
 odl_api_port: 8181
@@ -18,8 +21,8 @@ sfc_plugins:
   src: sfc.conf
   dst: /opt/sfc.conf
 
-odl_pkg_url: karaf-0.7.0.tar.gz
-odl_pkg_name: karaf-0.7.0.tar.gz
+odl_pkg_url: karaf-0.7.1.tar.gz
+odl_pkg_name: karaf-0.7.1.tar.gz
 odl_home: "/opt/opendaylight/"
 odl_base_features:
   - config
@@ -49,19 +52,9 @@ odl_extra_features:
 
 odl_features: "{{ odl_base_features + odl_extra_features }}"
 
-sdn_package: http://artifacts.opnfv.org/compass4nfv/packages/master/sdn_package.tar.gz
-
-# yamllint disable rule:line-length
-networking_odl_url: https://launchpad.net/networking-odl/4.0-ocata/4.0.0/+download/networking-odl-4.0.0.tar.gz
-# yamllint enable rule:line-length
+sdn_package: http://artifacts.opnfv.org/compass4nfv/package/master/sdn_package.tar.gz
 
 jdk8_pkg_name: jdk-8u51-linux-x64.tar.gz
 jdk8_script_name: install_jdk8.tar
 
 common_packages_noarch: []
-
-odl_pip: networking-odl-3.2.0
-
-networking_odl_version: 4.0.0
-
-networking_odl_pkg_name: networking-odl-3.2.0.tar.gz
