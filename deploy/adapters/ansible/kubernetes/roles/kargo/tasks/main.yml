@@ -126,6 +126,13 @@
     regexp: '^#loadbalancer_apiserver_localhost: true'
     line: 'loadbalancer_apiserver_localhost: true'
 
+- name: use the user name and password login the dashboard
+  lineinfile:
+    dest: /opt/kargo_k8s/inventory/group_vars/k8s-cluster.yml
+    regexp: '^#kube_basic_auth: false'
+    line: 'kube_basic_auth: true'
+
+
 - name: add vip to ssl keys
   lineinfile:
     dest: /opt/kargo_k8s/inventory/group_vars/k8s-cluster.yml
