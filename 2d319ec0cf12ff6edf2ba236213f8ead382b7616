@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_e9ff2d32",
+        "filename": "plugins/barometer/roles/collectd/templates/default_plugins.conf.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 304
+      },
+      "writtenOn": "2018-02-06T15:32:41Z",
+      "side": 1,
+      "message": "if you don\u0027t populate the Hostname - are you getting the right hostname when you look up the stats in CSV/gnocchi?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 12
+      },
+      "revId": "2d319ec0cf12ff6edf2ba236213f8ead382b7616",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_c9e7c9aa",
+        "filename": "plugins/barometer/roles/collectd/templates/virt.conf.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 304
+      },
+      "writtenOn": "2018-02-06T15:32:41Z",
+      "side": 1,
+      "message": "Hi Ramamani\nCan we do an update here to make sure ExtraStats is disabled if RDT stats are enabled.\nPlease see: \nhttp://docs.opnfv.org/en/latest/submodules/barometer/docs/release/userguide/feature.userguide.html#virt-plugin\n\n\"Additionally perf metrics cannot be collected if Intel RDT plugin is enabled.\"\nThis will probably require a change in the ansible task...",
+      "revId": "2d319ec0cf12ff6edf2ba236213f8ead382b7616",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
