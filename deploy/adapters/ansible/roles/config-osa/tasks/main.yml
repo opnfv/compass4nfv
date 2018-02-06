@@ -361,3 +361,8 @@
     dest: /opt/openstack-ansible/playbooks/setup-openstack.yml
     insertafter: "^- include: os-trove"
     line: "- include: os-tacker-install.yml"
+
+- name: add variables file of tacker for centos
+  copy:
+    src: redhat-7.yml
+    dest: /etc/ansible/roles/os_tacker/vars/redhat-7.yml
