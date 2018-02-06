@@ -8,12 +8,12 @@
 - name: install networking-odl
   pip:
     name: networking-odl
-    virtualenv: /openstack/venvs/neutron-15.1.4    # Todo: hardcode, need to modify
+    virtualenv: /openstack/venvs/neutron-{{ os_ver }}
 
 - name: install networking-sfc
   pip:
     name: networking-sfc
-    virtualenv: /openstack/venvs/neutron-15.1.4
+    virtualenv: /openstack/venvs/neutron-{{ os_ver }}
   when: odl_sfc == "Enable"
 
 - name: turn off neutron-server on control node

@@ -3,6 +3,5 @@
 - name: upgrade networking-sfc
   pip:
     name: networking-sfc
-    extra_args: -U
-    virtualenv: /openstack/venvs/tacker-15.1.4
+    virtualenv: /openstack/venvs/tacker-{{ os_ver }}
   when: odl_sfc == "Enable"

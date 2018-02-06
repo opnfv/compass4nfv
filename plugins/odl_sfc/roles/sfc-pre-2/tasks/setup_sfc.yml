@@ -7,28 +7,14 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: add ovs package in neutron
-  lineinfile:
-    dest: /etc/ansible/roles/os_neutron/vars/ubuntu-16.04.yml
-    insertbefore: 'openvswitch-common'
-    line: '  - openvswitch-datapath-dkms'
 
-- name: add ovs package in neutron
-  lineinfile:
-    dest: /etc/ansible/roles/os_neutron/vars/ubuntu-16.04.yml
-    insertafter: 'openvswitch-switch'
-    line: '  - python-openvswitch'
+- name: copy patch file
+  copy:
+    src: odl_sfc.patch
+    dest: /opt/odl_sfc.patch
 
-- name: modify ovs installation in neutron
-  blockinfile:
-    dest: /etc/ansible/roles/os_neutron/tasks/neutron_install.yml
-    insertafter: '^# limitations'
-    block: |
-      - name: add ovs-nsh repo
-        apt_repository:
-          repo: "ppa:mardim/mardim-ppa"
-          update_cache: True
-          state: present
-        when:
-          - inventory_hostname in groups['neutron_openvswitch_agent']
-          - inventory_hostname not in groups['nova_compute']
+- name: apply odl_sfc patch to os_neutron
+  shell: |
+    cd /etc/ansible/roles/os_neutron;
+    patch -p1 < /opt/odl_sfc.patch;
+    cd -
