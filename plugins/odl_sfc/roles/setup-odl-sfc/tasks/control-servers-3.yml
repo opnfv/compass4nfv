@@ -2,7 +2,7 @@
 
 - name: Perform a Neutron DB online upgrade
   command: |
-    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+    /openstack/venvs/neutron-{{ os_ver }}/bin/neutron-db-manage
                       --config-file /etc/neutron/neutron.conf
                       --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
                       upgrade --expand
@@ -11,7 +11,7 @@
 
 - name: Perform a Neutron DB offline upgrade
   command: |
-    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+    /openstack/venvs/neutron-{{ os_ver }}/bin/neutron-db-manage
                       --config-file /etc/neutron/neutron.conf
                       --config-file /etc/neutron/plugins/ml2/ml2_conf.ini
                       upgrade --contract
@@ -20,7 +20,7 @@
 
 - name: SFC DB upgrade
   command: |
-    /openstack/venvs/neutron-15.1.4/bin/neutron-db-manage
+    /openstack/venvs/neutron-{{ os_ver }}/bin/neutron-db-manage
                       --subproject networking-sfc
                       upgrade head
   become: "yes"
