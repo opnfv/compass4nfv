@@ -1,0 +1,5 @@
+---
+
+tacker_distro_packages:
+  - rsync
+  - git-core
