@@ -1,4 +1,12 @@
 ---
+- name: install chrony
+  apt:
+    name: "chrony"
+    state: present
+
+- name: restart chrony
+  service: name=chrony state=restarted
+
 - name: remove bridge ubuntu
   template:
     src: compute.j2
