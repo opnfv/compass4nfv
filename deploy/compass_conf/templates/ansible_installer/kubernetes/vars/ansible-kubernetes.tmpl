@@ -40,6 +40,7 @@ deploy_type: $getVar('deploy_type', 'virtual')
 public_cidr: $kube_nodes[0]['install']['subnet']
 storage_cidr: "{{ ip_settings[inventory_hostname]['storage']['cidr'] }}"
 mgmt_cidr: "{{ ip_settings[inventory_hostname]['mgmt']['cidr'] }}"
+external_cidr: "{{ ip_settings[inventory_hostname]['external']['cidr'] }}"
 
 public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
