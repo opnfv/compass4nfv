@@ -1,0 +1,9 @@
+[controllers]
+{% for controller in hostvars[inventory_hostname]['groups']['kube_master'] %}
+localhost ansible_ssh_host={{ hostvars[controller]['ansible_ssh_host'] }}
+{% endfor %}
+
+[docks]
+{% for dock in hostvars[inventory_hostname]['groups']['storage_node'] %}
+localhost ansible_ssh_host={{ hostvars[dock]['ansible_ssh_host'] }}
+{% endfor %}
