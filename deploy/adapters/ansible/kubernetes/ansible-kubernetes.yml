@@ -42,3 +42,9 @@
   max_fail_percentage: 0
   roles:
     - post-k8s
+
+- hosts: localhost
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - stor4nfv
