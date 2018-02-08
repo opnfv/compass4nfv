@@ -37,6 +37,12 @@
   roles:
     - kargo
 
+- hosts: localhost
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - stor4nfv
+
 - hosts: kube_master
   remote_user: root
   max_fail_percentage: 0
