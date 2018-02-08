@@ -1,0 +1,14 @@
+[mons]
+{% for controller in hostvars[inventory_hostname]['groups']['kube_master'] %}
+localhost ansible_ssh_host={{ hostvars[controller]['ansible_ssh_host'] }}
+{% endfor %}
+
+[osds]
+{% for controller in hostvars[inventory_hostname]['groups']['storage_node'] %}
+localhost ansible_ssh_host={{ hostvars[controller]['ansible_ssh_host'] }}
+{% endfor %}
+
+[mgrs]
+{% for controller in hostvars[inventory_hostname]['groups']['kube_master'] %}
+localhost ansible_ssh_host={{ hostvars[controller]['ansible_ssh_host'] }}
+{% endfor %}
