@@ -42,3 +42,15 @@
   max_fail_percentage: 0
   roles:
     - post-k8s
+
+- hosts: kube_node
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - storage
+
+- hosts: storage_master
+  remote_user: root
+  max_fail_percentage: 0
+  roles:
+    - stor4nfv
