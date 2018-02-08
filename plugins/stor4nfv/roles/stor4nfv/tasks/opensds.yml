@@ -1,0 +1,44 @@
+- name: install prerequisites package
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - make
+    - openssh-server
+    - gcc
+
+- name: copy install_ansible script
+  remote_user: root
+  copy:
+    src: install_ansible.sh
+    dest: /opt/install_ansible.sh
+    mode: 0777
+
+- name: install ansible
+  command: su -s /bin/sh -c "/opt/install_ansible.sh"
+
+- name: fetch stor4nfv source code
+  remote_user: root
+  shell: |
+    mkdir -p $HOME/gopath/src/github.com/stor4nfv && cd $HOME/gopath/src/github.com/stor4nfv;
+    git clone https://gerrit.opnfv.org/gerrit/stor4nfv.git;
+    cd stor4nfv/ci/ansible
+
+- name: render ceph inventory
+  remote_user: root
+  template:
+    src: ceph.hosts.j2
+    dest: $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible/group_vars/ceph/ceph.hosts
+
+- name: render opensds inventory
+  remote_user: root
+  template:
+    src: opensds.hosts.j2
+    dest: $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible/local.hosts
+
+- name: run playbook
+  remote_user: root
+  shell: |
+    cd $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible;
+    ansible-playbook site.yml -i local.hosts
