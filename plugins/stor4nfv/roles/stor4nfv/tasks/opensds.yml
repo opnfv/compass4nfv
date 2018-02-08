@@ -1,0 +1,59 @@
+---
+
+- name: install prerequisites package
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - make
+    - gcc
+
+- name: copy install_ansible script
+  remote_user: root
+  copy:
+    src: install_ansible.sh
+    dest: /opt/install_ansible.sh
+    mode: 0777
+
+- name: install ansible
+  command: su -s /bin/sh -c "/opt/install_ansible.sh"
+
+- name: install ceph-ansible code
+  remote_user: root
+  shell: |
+    cd /opt;
+    git clone https://github.com/ceph/ceph-ansible.git
+
+- name: fetch stor4nfv source code
+  remote_user: root
+  shell: |
+    mkdir -p $HOME/gopath/src/github.com/stor4nfv && cd $HOME/gopath/src/github.com/stor4nfv;
+    git clone https://gerrit.opnfv.org/gerrit/stor4nfv.git
+
+- name: copy configure_vars script
+  remote_user: root
+  copy:
+    src: configure_vars.sh
+    dest: /opt/configure_vars.sh
+    mode: 0777
+
+- name: configure variables for ceph, opensds
+  command: su -s /bin/sh -c "/opt/configure_vars.sh"
+
+- name: render ceph inventory
+  remote_user: root
+  template:
+    src: ceph.hosts.j2
+    dest: $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible/group_vars/ceph/ceph.hosts
+
+- name: render opensds inventory
+  remote_user: root
+  template:
+    src: opensds.hosts.j2
+    dest: $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible/local.hosts
+
+- name: run playbook
+  remote_user: root
+  shell: |
+    cd $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible;
+    ansible-playbook site.yml -i local.hosts | tee /var/log/stor4nfv.log
