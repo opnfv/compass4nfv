@@ -1,0 +1,3 @@
+---
+- include: opensds.yml
+  when: stor4nfv is defined and stor4nfv == "Enable"

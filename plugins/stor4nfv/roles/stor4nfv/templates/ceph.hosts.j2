@@ -1,0 +1,8 @@
+[mons]
+localhost ansible_connection="{{ storage_master }}"
+
+[osds]
+localhost ansible_connection="{{ storage_node }}"
+
+[mgrs]
+localhost ansible_connection="{{ storage_master }}"

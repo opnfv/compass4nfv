@@ -1,0 +1,71 @@
+- name: install prerequisites package
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - make
+    - openssh-server
+    - gcc
+
+- name: Configure /etc/ssh/sshd_config
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: '^{{ item.key }}='
+    line: "{{ item.key }}={{ item.value }}"
+  with_items:
+    - key: PermitRootLogin
+      value: yes
+
+- name: generate ssh keys
+  shell: if [ ! -f ~/.ssh/id_rsa.pub ]; \
+         then ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""; \
+         else echo "already gen ssh key!"; fi;
+
+- name: fetch ssh keys
+  fetch:
+    src: /root/.ssh/id_rsa.pub
+    dest: /tmp/ssh-keys-{{ ansible_hostname }}
+    flat: "yes"
+
+- authorized_key:
+    user: root
+    key: "{{ lookup('file', item) }}"
+  with_fileglob:
+    - /tmp/ssh-keys-*
+    - /root/.ssh/id_rsa.pub
+
+- name: copy install_docker_ansible script
+  remote_user: root
+  copy:
+    src: install_docker_ansible.sh
+    dest: /opt/install_docker_ansible.sh
+    mode: 0777
+
+- name: install docker, ansible
+  command: su -s /bin/sh -c "/opt/install_docker_ansible.sh"
+
+- name: fetch stor4nfv source code
+  remote_user: root
+  shell: |
+    mkdir -p $HOME/gopath/src/github.com/stor4nfv && cd $HOME/gopath/src/github.com/stor4nfv;
+    git clone https://gerrit.opnfv.org/gerrit/stor4nfv.git;
+    cd stor4nfv/ci/ansible
+
+- name: render ceph inventory
+  remote_user: root
+  template:
+    src: ceph.hosts.j2
+    dest: $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible/group_vars/ceph/ceph.hosts
+
+- name: render opensds inventory
+  remote_user: root
+  template:
+    src: opensds.hosts.j2
+    dest: $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible/local.hosts
+
+- name: run playbook
+  remote_user: root
+  shell: |
+    cd $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible;
+    ansible-playbook site.yml -i local.hosts
