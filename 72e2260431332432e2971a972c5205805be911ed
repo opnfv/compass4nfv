@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_cff6a4d6",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-02-09T04:52:12Z",
+      "side": 1,
+      "message": "Yes; will update that.",
+      "parentUuid": "9a3d3df0_8f701ca5",
+      "range": {
+        "startLine": 3,
+        "startChar": 9,
+        "endLine": 3,
+        "endChar": 52
+      },
+      "revId": "72e2260431332432e2971a972c5205805be911ed",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_ef6a88b1",
         "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2018-02-09T02:30:13Z",
       "side": 1,
       "message": "Before running kargo I think compass should configure all the ssh related configurations, so you don\u0027t need to add them here.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 27
+      },
+      "revId": "72e2260431332432e2971a972c5205805be911ed",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_effba8be",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-02-09T04:52:12Z",
+      "side": 1,
+      "message": "Yes; this and docker are not needed here.",
+      "parentUuid": "9a3d3df0_ef6a88b1",
       "range": {
         "startLine": 11,
         "startChar": 0,
