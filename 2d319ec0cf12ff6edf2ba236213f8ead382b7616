@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_4f3734ff",
+        "filename": "plugins/barometer/roles/collectd/templates/default_plugins.conf.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2311
+      },
+      "writtenOn": "2018-02-09T09:57:09Z",
+      "side": 1,
+      "message": "It will revert to the default, AFAIK.\nThe default is the value of gethostname()",
+      "parentUuid": "9a3d3df0_e9ff2d32",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 12
+      },
+      "revId": "2d319ec0cf12ff6edf2ba236213f8ead382b7616",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_c9e7c9aa",
         "filename": "plugins/barometer/roles/collectd/templates/virt.conf.j2",
         "patchSetId": 4
