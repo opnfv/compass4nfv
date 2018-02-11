@@ -22,6 +22,30 @@
       "revId": "04a59993224784b4dd893e86694d7dc792877b3b",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_2fbd9002",
+        "filename": "deploy/adapters/ansible/kubernetes/roles/pre-k8s/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6829
+      },
+      "writtenOn": "2018-02-11T02:15:04Z",
+      "side": 1,
+      "message": "thanks,i will fix it",
+      "parentUuid": "9a3d3df0_2c2e3ea5",
+      "range": {
+        "startLine": 16,
+        "startChar": 23,
+        "endLine": 16,
+        "endChar": 31
+      },
+      "revId": "04a59993224784b4dd893e86694d7dc792877b3b",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
