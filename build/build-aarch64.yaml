@@ -15,8 +15,7 @@ packages:
     get_method: docker
     url: linaro/compass-deck:latest
 
-    # XXX: only supports k8s now
-  - name: compass-tasks
+  - name: compass-tasks-k8s
     description: "compass task container for kubernets deployment via kargo"
     get_method: docker
     url: linaro/compass-tasks-k8s:latest
