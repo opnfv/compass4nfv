@@ -159,6 +159,13 @@ CONGRESS_PASS: $congress_pass
 DEMO_PASS: $demo_pass
 ADMIN_PASS: $admin_pass
 
+#set plugins = $getVar('plugins', [])
+#for item in plugins
+#set keys = $item.keys()
+#set values = $item.values()
+$keys[0]: $values[0]
+#end for
+
 #set neutron_service_plugins=['router']
 
 #if $getVar('enable_fwaas', True)
