@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_4b79c492",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6829
+      },
+      "writtenOn": "2018-02-21T01:15:53Z",
+      "side": 1,
+      "message": "ansible has been installed in the compass-task.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 53
+      },
+      "revId": "41873190e38aaf3a8235281a0bd1663ad44c5c28",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
