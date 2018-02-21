@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5a3f45e8_eb67f0e8",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/files/configure_vars.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6829
+      },
+      "writtenOn": "2018-02-21T01:32:19Z",
+      "side": 1,
+      "message": "configure_vars.sh,Can not find where this file is used?",
+      "revId": "41873190e38aaf3a8235281a0bd1663ad44c5c28",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a3f45e8_4b79c492",
         "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
         "patchSetId": 4
