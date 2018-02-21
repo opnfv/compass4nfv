@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_4531d558",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/files/install_ansible.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6829
+      },
+      "writtenOn": "2018-02-21T01:15:53Z",
+      "side": 1,
+      "message": "Ansible has  been installed with the version 2.4.2 ,so it is on need to install angin",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "06906a2de692dec3487fb547a5b7bcdb1585aaf7",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_a534214a",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6829
+      },
+      "writtenOn": "2018-02-21T01:15:53Z",
+      "side": 1,
+      "message": "git had been installed",
+      "range": {
+        "startLine": 6,
+        "startChar": 6,
+        "endLine": 6,
+        "endChar": 9
+      },
+      "revId": "06906a2de692dec3487fb547a5b7bcdb1585aaf7",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
