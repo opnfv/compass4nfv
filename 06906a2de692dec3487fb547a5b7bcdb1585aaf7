@@ -45,6 +45,30 @@
       "revId": "06906a2de692dec3487fb547a5b7bcdb1585aaf7",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_0b8dfc7b",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-02-21T06:39:21Z",
+      "side": 1,
+      "message": "git and openssh-server are not needed.",
+      "parentUuid": "9a3d3df0_a534214a",
+      "range": {
+        "startLine": 6,
+        "startChar": 6,
+        "endLine": 6,
+        "endChar": 9
+      },
+      "revId": "06906a2de692dec3487fb547a5b7bcdb1585aaf7",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
