@@ -1,0 +1,61 @@
+---
+- name: 2Flannel | delete default docker bridge
+  command: ip link delete docker0
+  failed_when: false
+  notify: 2Flannel | restart docker
+
+- name: 2Flannel | delete 2flannel interface
+  command: ip link delete flannel0 && ip link delete flannel1
+  failed_when: false
+
+# special cases for atomic because it defaults to live-restore: true
+# So we disable live-restore to pickup the new flannel IP.  After
+# we enable it, we have to restart docker again to pickup the new
+# setting and restore the original behavior
+- name: 2Flannel | restart docker
+  command: /bin/true
+  notify:
+    - 2Flannel | reload systemd
+    - 2Flannel | reload docker.socket
+    - 2Flannel | configure docker live-restore true (atomic)
+    - 2Flannel | reload docker
+    - 2Flannel | pause while Docker restarts
+    - 2Flannel | wait for docker
+
+- name: 2Flannel | reload systemd
+  shell: systemctl daemon-reload
+
+- name: 2Flannel | reload docker.socket
+  service:
+    name: docker.socket
+    state: restarted
+  when: ansible_os_family in ['CoreOS', 'Container Linux by CoreOS']
+
+- name: 2Flannel | configure docker live-restore true (atomic)
+  replace:
+    name: /etc/docker/daemon.json
+    regexp: '"live-restore":.*true'
+    replace: '"live-restore": false'
+  when: is_atomic
+
+- name: 2Flannel | reload docker
+  service:
+    name: docker
+    state: restarted
+
+- name: 2Flannel | pause while Docker restarts
+  pause:
+    seconds: 10
+    prompt: "Waiting for docker restart"
+
+- name: 2Flannel | wait for docker
+  command: "{{ docker_bin_dir }}/docker images"
+  register: docker_ready
+  retries: 10
+  delay: 5
+  until: docker_ready.rc == 0
+
+- name: 2Flannel | reload kubelet
+  service:
+    name: kubelet
+    state: restarted
