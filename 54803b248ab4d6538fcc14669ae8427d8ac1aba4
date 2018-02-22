@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_51905695",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/templates/opensds.hosts.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6629
+      },
+      "writtenOn": "2018-02-22T07:25:00Z",
+      "side": 1,
+      "message": "The docks section should be deployed in the same node (suggest kube_master) with controllers so that they can share the same etcd cluster. Besides, you should only deploy one kube_master node or else controller and dock would be confused with each other.\n\nBesides inside `site.yml` under stor4nfv repo, I didn\u0027t specify the relationship between roles and hosts, so your suggestions are greatly required to fix the gaps, Thanks!",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 12
+      },
+      "revId": "54803b248ab4d6538fcc14669ae8427d8ac1aba4",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
