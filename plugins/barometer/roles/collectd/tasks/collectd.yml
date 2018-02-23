@@ -143,6 +143,17 @@
     dest: /root/collectd_sample_configs/virt.conf
   when: libvirt_result|succeeded
 
+- name: configure virt conf extra stats when rdt is present
+  remote_user: root
+  shell: |
+    sed -i '/ExtraStats/s/^#//g' /root/collectd_sample_configs/virt.conf
+  when: rdt_result|failed and libvirt_result|succeeded
+
+- name: configure rrdtool conf
+  template:
+    src: rrdtool.conf.j2
+    dest: /root/collectd_sample_configs/rrdtool.conf
+
 - name: configure intel_pmu conf
   remote_user: root
   template:

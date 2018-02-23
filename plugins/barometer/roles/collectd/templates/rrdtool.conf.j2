@@ -11,21 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-Hostname "{{ inventory_hostname }}"
+Loadplugin rrdtool
 
-LoadPlugin cpufreq
-LoadPlugin disk
-LoadPlugin ethstat
-LoadPlugin ipc
-LoadPlugin ipmi
-LoadPlugin load
-LoadPlugin memory
-LoadPlugin numa
-LoadPlugin processes
-LoadPlugin df
-LoadPlugin turbostat
-LoadPlugin uptime
-LoadPlugin contextswitch
-LoadPlugin irq
-LoadPlugin swap
+<Plugin rrdtool>
+  DataDir "/tmp/collectd/rrd"
+  CacheFlush 120
+  WritesPerSecond 50
+</Plugin>
 
