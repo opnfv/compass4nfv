@@ -199,6 +199,26 @@
        regexp: '"calico", "weave", "canal", "flannel"',
        replace: '"calico", "weave", "canal", "flannel", "2flannel"'}
 
+# yamllint disable rule:line-length
+- name: enable CSI plugin feature
+  lineinfile:
+    dest: "/opt/kargo_k8s/roles/kubespray-defaults/defaults/main.yaml"
+    regexp: "{% raw %}[\'Initializers={{ istio_enabled|string }}\', \'PersistentLocalVolumes={{ local_volumes_enabled|string }}\']{% endraw %}"
+    line: "{% raw %}kube_feature_gates: [\'Initializers={{ istio_enabled|string }}\', \'PersistentLocalVolumes={{ local_volumes_enabled|string }}\',\'CSIPersistentVolume=True\',\'MountPropagation=True\']{% endraw %}"
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - stor4nfv is defined and stor4nfv == "Enable"
+# yamllint enable rule:line-length
+
+- name: enable CSI plugin runtime_config
+  lineinfile:
+    dest: /opt/kargo_k8s/roles/kubernetes/master/defaults/main.yml
+    insertafter: '^  - admissionregistration.k8s.io/v1alpha1'
+    line: '  - storage.k8s.io/v1alpha1'
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - stor4nfv is defined and stor4nfv == "Enable"
+
 - name: run kargo playbook
   shell: |
     cd /opt/kargo_k8s
