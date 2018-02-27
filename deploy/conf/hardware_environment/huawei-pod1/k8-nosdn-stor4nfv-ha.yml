@@ -1,0 +1,71 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+---
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiUser: root
+ipmiVer: '2.0'
+
+plugins:
+  - stor4nfv: "Enable"
+
+hosts:
+  - name: host1
+    mac: 'F8:4A:BF:55:A2:8D'
+    interfaces:
+      - eth1: 'F8:4A:BF:55:A2:8E'
+    ipmiIp: 172.16.130.26
+    ipmiPass: Opnfv@pod1
+    roles:
+      - kube_master
+      - etcd
+      - ha
+
+  - name: host2
+    mac: 'D8:49:0B:DA:5A:B7'
+    interfaces:
+      - eth1: 'D8:49:0B:DA:5A:B8'
+    ipmiIp: 172.16.130.27
+    ipmiPass: Opnfv@pod1
+    roles:
+      - kube_master
+      - etcd
+      - ha
+
+  - name: host3
+    mac: '78:D7:52:A0:B1:99'
+    interfaces:
+      - eth1: '78:D7:52:A0:B1:9A'
+    ipmiIp: 172.16.130.29
+    ipmiPass: Opnfv@pod1
+    roles:
+      - kube_master
+      - etcd
+      - ha
+
+  - name: host4
+    mac: 'D8:49:0B:DA:5B:5D'
+    interfaces:
+      - eth1: 'D8:49:0B:DA:5B:5E'
+    ipmiIp: 172.16.130.30
+    ipmiPass: Opnfv@pod1
+    roles:
+      - kube_node
+
+  - name: host5
+    mac: 'D8:49:0B:DA:56:85'
+    interfaces:
+      - eth1: 'D8:49:0B:DA:56:86'
+    ipmiIp: 172.16.130.31
+    ipmiPass: Opnfv@pod1
+    roles:
+      - kube_node
