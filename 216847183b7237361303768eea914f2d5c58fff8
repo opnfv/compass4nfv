@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_88ee2421",
+        "filename": "plugins/barometer/roles/collectd/tasks/collectd.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-02-27T08:22:38Z",
+      "side": 1,
+      "message": "For sed, I will prefer to use ansible lineinfile, Because if we re-run the playbook, it will run \"sed\" command again. Sometimes, this may cause problems.",
+      "range": {
+        "startLine": 149,
+        "startChar": 4,
+        "endLine": 149,
+        "endChar": 72
+      },
+      "revId": "216847183b7237361303768eea914f2d5c58fff8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
