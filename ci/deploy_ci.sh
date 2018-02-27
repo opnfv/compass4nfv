@@ -18,11 +18,12 @@ case $DEPLOY_SCENARIO in
         echo "os-onos-sfc-ha scenario supports mitaka only"
         exit 1
         ;;
-    k8-nosdn-nofeature-ha)
-        export COMPASS_OS_VERSION=centos7
-        export KUBERNETES_VERSION="v1.7.3"
-        ;;
 esac
+
+if [[ "$DEPLOY_SCENARIO" =~ "k8-" ]]; then
+        export KUBERNETES_VERSION="v1.7.3"
+fi
+
 
 if [[ "$NODE_NAME" =~ "intel-pod17" ]]; then
     export USER_NAMESERVER=8.8.8.8
