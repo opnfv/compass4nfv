@@ -27,6 +27,7 @@ hosts:
     roles:
       - kube_master
       - etcd
+      - ha
 
   - name: host2
     mac: 'A4:BF:01:14:01:13'
@@ -39,6 +40,7 @@ hosts:
     roles:
       - kube_master
       - etcd
+      - ha
 
   - name: host3
     mac: 'A4:BF:01:14:71:1E'
@@ -51,6 +53,7 @@ hosts:
     roles:
       - kube_master
       - etcd
+      - ha
 
   - name: host4
     mac: 'A4:BF:01:16:2F:17'
