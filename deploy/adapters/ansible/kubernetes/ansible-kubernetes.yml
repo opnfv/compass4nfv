@@ -47,7 +47,8 @@
   remote_user: root
   max_fail_percentage: 0
   roles:
-    - storage
+    - role: storage
+      when: stor4nfv is defined and stor4nfv == "Enable"
 
 - hosts: storage_master
   remote_user: root
