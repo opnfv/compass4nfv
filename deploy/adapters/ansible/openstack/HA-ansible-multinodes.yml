@@ -106,6 +106,7 @@
 - hosts:
     - utility_all[0]
     - network_hosts[0]
+    - horizon
   remote_user: root
   roles:
     - post-openstack
