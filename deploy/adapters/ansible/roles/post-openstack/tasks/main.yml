@@ -77,7 +77,7 @@
     regexp: "^HORIZON_IMAGES_UPLOAD_MODE"
     line: "HORIZON_IMAGES_UPLOAD_MODE = 'legacy'"
   when:
-    - inventory_hostname in groups['dashboard_containers']
+    - inventory_hostname in groups['horizon']
 # yamllint enable rule:line-length
 
 - name: restart apache2
@@ -85,4 +85,4 @@
     name: apache2
     state: restarted
   when:
-    - inventory_hostname in groups['dashboard_containers']
+    - inventory_hostname in groups['horizon']
