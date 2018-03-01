@@ -17,105 +17,106 @@
   roles:
     - config-controller
 
-- hosts: compute
-  remote_user: root
-  roles:
-    - config-compute
-    - storage
-    - rt_kvm
-    - ins_dpdk
-    - ins_ovs
-
-- hosts: all
-  remote_user: root
-  roles:
-    - sfc-pre
-
-- hosts: localhost
-  remote_user: root
-  roles:
-    - sfc-pre-2
-    - config-osa
-    - setup-host
-    - setup-infrastructure
-    - setup-openstack
-    - sync-inventory
-
-- hosts:
-    - compute
-    - utility
-    - neutron_server
-    - ceilometer_all
-    - horizon_all
-  remote_user: root
-  roles:
-    - post-osa
-
-- hosts:
-    - compute
-  remote_user: root
-  roles:
-    - collectd
-
-- hosts:
-    - controller
-  remote_user: root
-  roles:
-    - influxdb
-    - grafana
-
-- hosts:
-    - neutron_openvswitch_agent
-    - compute
-  remote_user: root
-  roles:
-    - config-dpdk
-
-- hosts: neutron_openvswitch_agent
-  remote_user: root
-  roles:
-    - setup-openvswitch
-
-- hosts:
-    - localhost
-    - neutron_all
-    - galera_container
-    - network_hosts
-    - repo_container
-    - utility
-  remote_user: root
-  roles:
-    - setup-odl
-  tags:
-    - odl
-
-- hosts:
-    - localhost
-    - neutron_all
-    - galera_container
-    - network_hosts
-    - repo_container
-    - utility
-    - tacker_all
-  remote_user: root
-  roles:
-    - setup-odl-sfc
-  tags:
-    - odl_sfc
-
-- hosts:
-    - utility_all[0]
-    - network_hosts[0]
-  remote_user: root
-  roles:
-    - post-openstack
-
-- hosts: localhost
-  remote_user: root
-  roles:
-    - process-openrc
-
-- hosts: moon
-  remote_user: root
-  roles:
-    - moon
+#- hosts: compute
+#  remote_user: root
+#  roles:
+#    - config-compute
+#    - storage
+#    - rt_kvm
+#    - ins_dpdk
+#    - ins_ovs
+#
+#- hosts: all
+#  remote_user: root
+#  roles:
+#    - sfc-pre
+#
+#- hosts: localhost
+#  remote_user: root
+#  roles:
+#    - sfc-pre-2
+#    - config-osa
+#    - setup-host
+#    - setup-infrastructure
+#    - setup-openstack
+#    - sync-inventory
+#
+#- hosts:
+#    - compute
+#    - utility
+#    - neutron_server
+#    - ceilometer_all
+#    - horizon_all
+#  remote_user: root
+#  roles:
+#    - post-osa
+#
+#- hosts:
+#    - compute
+#  remote_user: root
+#  roles:
+#    - collectd
+#
+#- hosts:
+#    - controller
+#  remote_user: root
+#  roles:
+#    - influxdb
+#    - grafana
+#
+#- hosts:
+#    - neutron_openvswitch_agent
+#    - compute
+#  remote_user: root
+#  roles:
+#    - config-dpdk
+#
+#- hosts: neutron_openvswitch_agent
+#  remote_user: root
+#  roles:
+#    - setup-openvswitch
+#
+#- hosts:
+#    - localhost
+#    - neutron_all
+#    - galera_container
+#    - network_hosts
+#    - repo_container
+#    - utility
+#  remote_user: root
+#  roles:
+#    - setup-odl
+#  tags:
+#    - odl
+#
+#- hosts:
+#    - localhost
+#    - neutron_all
+#    - galera_container
+#    - network_hosts
+#    - repo_container
+#    - utility
+#    - tacker_all
+#  remote_user: root
+#  roles:
+#    - setup-odl-sfc
+#  tags:
+#    - odl_sfc
+#
+#- hosts:
+#    - utility_all[0]
+#    - network_hosts[0]
+#    - horizon
+#  remote_user: root
+#  roles:
+#    - post-openstack
+#
+#- hosts: localhost
+#  remote_user: root
+#  roles:
+#    - process-openrc
+#
+#- hosts: moon
+#  remote_user: root
+#  roles:
+#    - moon

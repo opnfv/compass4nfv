@@ -1,6 +1,8 @@
 ---
 
-os_ver: 16.0.5
+# yamllint disable rule:line-length
+os_ver: "{{ lookup('yamlfile', '/opt/openstack-ansible/group_vars/all/all.yml key=openstack_release') }}"
+# yamllint enable rule:line-length
 os_name: pike
 
 # yamllint disable rule:line-length
