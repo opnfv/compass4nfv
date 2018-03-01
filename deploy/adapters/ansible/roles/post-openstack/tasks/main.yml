@@ -73,7 +73,7 @@
 # yamllint disable rule:line-length
 - name: fix horizon upload image issue
   lineinfile:
-    dest: "/openstack/venvs/horizon-{{ openstack_release }}/lib/python2.7/site-packages/openstack_dashboard/local/local_settings.py"
+    dest: "/openstack/venvs/horizon-{{ hostvars['localhost']['openstack_release'] }}/lib/python2.7/site-packages/openstack_dashboard/local/local_settings.py"
     regexp: "^HORIZON_IMAGES_UPLOAD_MODE"
     line: "HORIZON_IMAGES_UPLOAD_MODE = 'legacy'"
   when:
