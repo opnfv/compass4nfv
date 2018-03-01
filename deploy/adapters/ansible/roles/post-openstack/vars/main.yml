@@ -43,3 +43,7 @@ flavors:
     vcpus: 8
     ram: 16384
     disk: 160
+
+# yamllint disable rule:line-length
+openstack_release: "{{ lookup('yamlfile', '/opt/openstack-ansible/group_vars/all/all.yml key=openstack_release') }}"
+# yamllint enable rule:line-length
