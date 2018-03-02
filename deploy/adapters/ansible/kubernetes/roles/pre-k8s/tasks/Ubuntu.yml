@@ -67,9 +67,6 @@
     src: sources.list.official
     dest: /etc/apt/sources.list
 
-- name: update apt cache
-  apt: update_cache=yes
-
 - name: restart ntp service
   shell: "service ntp restart"
 
