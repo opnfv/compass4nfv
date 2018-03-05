@@ -1,0 +1,39 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+---
+
+TYPE: baremetal
+FLAVOR: cluster
+POWER_TOOL: ipmitool
+
+ipmiVer: '2.0'
+
+hosts:
+  - name: host1
+    mac: '14:30:04:F2:24:CB'
+    ipmiUser: root
+    ipmiPass: Opnfv@podarm
+    ipmiIp: 172.16.130.81
+    interfaces:
+      - eth1: '14:30:04:F2:24:CC'
+    roles:
+      - kube_master
+      - etcd
+      - ha
+
+  - name: host2
+    mac: '14:30:04:F2:24:3B'
+    ipmiIp: 172.16.130.82
+    ipmiUser: root
+    ipmiPass: Opnfv@podarm
+    interfaces:
+      - eth1: '14:30:04:F2:24:3C'
+    roles:
+      - kube_node
