@@ -9,6 +9,7 @@ packages:
   - python-iniparse
   - python-lxml
   - python-crypto
+  - git
 
 pip_packages:
   - crudini
