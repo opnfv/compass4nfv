@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_3410fd4d",
+        "filename": "deploy/adapters/ansible/kubernetes/roles/kargo/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2018-03-06T05:12:46Z",
+      "side": 1,
+      "message": "should change to \", otherwise an extra space is appended between two lines.",
+      "range": {
+        "startLine": 248,
+        "startChar": 13,
+        "endLine": 248,
+        "endChar": 14
+      },
+      "revId": "b634c8a24ad8cfa9a0e4994aeda29f9f640941e6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_941d9169",
+        "filename": "deploy/adapters/ansible/kubernetes/roles/kargo/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2018-03-06T05:12:46Z",
+      "side": 1,
+      "message": "change to \"",
+      "range": {
+        "startLine": 249,
+        "startChar": 35,
+        "endLine": 249,
+        "endChar": 36
+      },
+      "revId": "b634c8a24ad8cfa9a0e4994aeda29f9f640941e6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
