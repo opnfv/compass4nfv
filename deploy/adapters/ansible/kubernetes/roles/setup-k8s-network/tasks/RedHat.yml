@@ -36,6 +36,17 @@
     src: ifcfg-eth.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-{{sys_intf_mappings["external"]["interface"]}}
 
+- name: generate ifcfg-sriov
+  template:
+    src: ifcfg-sriov.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ intf_sriov }}
+  when: intf_sriov|length > 0
+
+- name: remove ifcfg-br-sriov script
+  file:
+    path: /etc/sysconfig/network-scripts/ifcfg-br-sriov
+    state: absent
+
 - name: remove defualt gw
   lineinfile:
     dest: /etc/sysconfig/network
