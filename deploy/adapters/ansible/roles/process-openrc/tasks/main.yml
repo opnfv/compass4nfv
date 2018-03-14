@@ -24,3 +24,9 @@
     dest: /opt/openrc
     regexp: "internalURL"
     replace: "publicURL"
+
+- name: add the IP of SDN controller
+  lineinfile:
+    dest: /opt/openrc
+    state: present
+    line: "export SDN_CONTROLLER_IP={{ public_vip['ip'] }}"
