@@ -26,3 +26,9 @@
   become: "yes"
   become_user: "neutron"
   when: odl_sfc == "Enable"
+
+- name: fetch ml2_conf.ini to compass-tasks
+  fetch:
+    src: /etc/neutron/plugins/ml2/ml2_conf.ini
+    dest: /tmp/ml2_conf.ini
+  when: odl_sfc == "Enable"

@@ -32,3 +32,21 @@
 - name: restart opendaylight
   shell: sleep 60; service opendaylight restart; sleep 60;
   when: inventory_hostname in groups['network_hosts']
+
+- name: creat ml2 directory on ODL hosts
+  file:
+    path: /etc/neutron/plugins/ml2/
+    state: directory
+    mode: 0755
+  when:
+    - inventory_hostname in groups['network_hosts']
+    - odl_sfc == "Enable"
+
+- name: copy ml2_conf.ini to ODL hosts
+  copy:
+    src: /tmp/ml2_conf.ini
+    dest: /etc/neutron/plugins/ml2/ml2_conf.ini
+    mode: 0755
+  when:
+    - inventory_hostname in groups['network_hosts']
+    - odl_sfc == "Enable"
