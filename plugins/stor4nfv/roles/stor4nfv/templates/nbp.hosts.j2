@@ -1,4 +1,0 @@
-[worker-nodes]
-{% for worker in hostvars[inventory_hostname]['groups']['storage_master'] %}
-{{ worker }} ansible_ssh_host={{ hostvars[worker]['ansible_ssh_host'] }}
-{% endfor %}

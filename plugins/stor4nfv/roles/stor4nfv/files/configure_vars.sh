@@ -10,11 +10,17 @@
 
 cd $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible
 
+sed -i 's/^opensds_release.*/opensds_release: v0.1.5/g' group_vars/common.yml
+
+sed -i 's/^nbp_release.*/nbp_release: v0.1.0/g' group_vars/common.yml
+
+sed -i 's/^container_enabled.*/container_enabled: false/g' group_vars/common.yml
+
+sed -i 's/^nbp_plugin_type.*/nbp_plugin_type: csi/g' group_vars/common.yml
+
 sed -i 's/^workplace.*/workplace: \/root/g' group_vars/common.yml
 
 sed -i 's/^enabled_backend.*/enabled_backend: ceph/g' group_vars/osdsdock.yml
-
-sed -i 's/^ceph_pool_name.*/ceph_pool_name: "rbd"/g' group_vars/osdsdock.yml
 
 sed -i 's/^ceph_origin.*/ceph_origin: repository/g' group_vars/ceph/all.yml
 
@@ -33,6 +39,8 @@ sed -i 's/^devices:.*/devices: [\/dev\/loop0, \/dev\/loop1, \/dev\/loop2]/g' gro
 sed -i 's/^osd_scenario.*/osd_scenario: collocated/g' group_vars/ceph/osds.yml
 
 sed -i 's/^db_endpoint.*/db_endpoint: localhost:62379,localhost:62380/g' group_vars/osdsdb.yml
+
+sed -i 's/^etcd_host.*/etcd_host: 127.0.0.1/g' group_vars/osdsdb.yml
 
 sed -i 's/^etcd_port.*/etcd_port: 62379/g' group_vars/osdsdb.yml
 

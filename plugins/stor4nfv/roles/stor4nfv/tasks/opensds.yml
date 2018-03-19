@@ -57,10 +57,10 @@
     src: ceph.hosts.j2
     dest: $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible/group_vars/ceph/ceph.hosts
 
-- name: render opensds inventory
+- name: render opensds, nbp inventory
   remote_user: root
   template:
-    src: opensds.hosts.j2
+    src: opensds-nbp.hosts.j2
     dest: $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible/local.hosts
 
 - name: force to run the second etcd cluster

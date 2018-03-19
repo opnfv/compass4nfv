@@ -7,3 +7,8 @@
 {% for dock in hostvars[inventory_hostname]['groups']['storage_master'] %}
 {{ dock }} ansible_ssh_host={{ hostvars[dock]['ansible_ssh_host'] }}
 {% endfor %}
+
+[worker-nodes]
+{% for worker in hostvars[inventory_hostname]['groups']['storage_master'] %}
+{{ worker }} ansible_ssh_host={{ hostvars[worker]['ansible_ssh_host'] }}
+{% endfor %}
