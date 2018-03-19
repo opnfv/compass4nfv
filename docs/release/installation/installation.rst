@@ -6,7 +6,7 @@ Compass4nfv configuration
 =========================
 
 This document describes providing guidelines on how to install and
-configure the Euphrates release of OPNFV when using Compass4nfv as a
+configure the Fraser release of OPNFV when using Compass4nfv as a
 deployment tool including required software and hardware
 configurations.
 
@@ -21,7 +21,7 @@ networking and Unix/Linux administration.
 Preconditions
 -------------
 
-Before starting the installation of the Euphrates release of OPNFV,
+Before starting the installation of the Fraser release of OPNFV,
 some planning must be done.
 
 
@@ -37,10 +37,10 @@ The daily build tarball can be retrieved via OPNFV artifacts repository:
 
 http://artifacts.opnfv.org/compass4nfv.html
 
-NOTE: Search the keyword "compass4nfv/Euphrates" to locate the ISO image.
+NOTE: Search the keyword "compass4nfv/Fraser" to locate the ISO image.
 
 E.g.
-compass4nfv/Euphrates/opnfv-2017-09-18_08-15-13.tar.gz
+compass4nfv/Fraser/opnfv-2017-09-18_08-15-13.tar.gz
 
 The name of tarball includes the time of iso building, you can get the daily
 ISO according the building time.
@@ -57,9 +57,9 @@ To retrieve the repository of Compass4nfv on Jumphost use the following command:
 
 NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN ROOT DIRECTORY(INCLUDE SUBFOLDERS).
 
-To get stable /Euphrates release, you can use the following command:
+To get stable /Fraser release, you can use the following command:
 
-- git checkout Euphrates.1.0
+- git checkout Fraser.1.0
 
 Setup Requirements
 ------------------

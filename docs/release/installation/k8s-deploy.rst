@@ -20,7 +20,7 @@ If you want to deploy noha with1 controller and 1 compute, run the following com
 
     export SCENARIO=k8-nosdn-nofeature-noha.yml
     export VIRT_NUMBER=2
-    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/euphrates/quickstart_k8s.sh | bash
+    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/fraser/quickstart_k8s.sh | bash
 
 Installation of K8s on Bare Metal
 =================================

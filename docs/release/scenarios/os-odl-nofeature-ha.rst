@@ -2,7 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) Justin Chi (HUAWEI) and Yifei Xue (HUAWEI)
 
-This document introduces scenario descriptions for Euphrates 1.0 of
+This document introduces scenario descriptions for Fraser 1.0 of
 deployment with the OpenDaylight controller and no feature enabled.
 
 .. contents::
@@ -13,7 +13,7 @@ deployment with the OpenDaylight controller and no feature enabled.
 os-odl-nofeature-ha
 ===================
 
-This scenario is used to deploy an Ocata OpenStack deployment with
+This scenario is used to deploy an Pike OpenStack deployment with
 OpenDaylight Nitrogen, Ceph Jewel, and without any NFV feature enabled.
 
 Scenario components and composition
@@ -39,5 +39,5 @@ Limitations, Issues and Workarounds
 References
 ==========
 
-For more information on the OPNFV Euphrates release, please visit
-http://www.opnfv.org/euphrates
+For more information on the OPNFV Fraser release, please visit
+http://www.opnfv.org/fraser
