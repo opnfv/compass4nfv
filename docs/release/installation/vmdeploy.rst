@@ -12,7 +12,7 @@ Only 1 command to try virtual deployment, if you have Internet access. Just Past
 
 .. code-block:: bash
 
-    curl https://raw.githubusercontent.com/opnfv/compass4nfv/euphrates/quickstart.sh | bash
+    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/fraser/quickstart.sh | bash
 
 If you want to deploy noha with1 controller and 1 compute, run the following command
 
@@ -20,7 +20,7 @@ If you want to deploy noha with1 controller and 1 compute, run the following com
 
     export SCENARIO=os-nosdn-nofeature-noha.yml
     export VIRT_NUMBER=2
-    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/euphrates/quickstart.sh | bash
+    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/fraser/quickstart.sh | bash
 
 Nodes Configuration (Virtual Deployment)
 ----------------------------------------
@@ -146,7 +146,7 @@ Start Deployment (Virtual Deployment)
 1. Edit deploy.sh
 
 1.1. Set OS version for deployment nodes.
-     Compass4nfv supports ubuntu and centos based openstack ocata.
+     Compass4nfv supports ubuntu and centos based openstack pike.
 
 E.g.
 

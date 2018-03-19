@@ -2,7 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) Justin Chi (HUAWEI),Yifei Xue (HUAWEI)and Xinhui Hu (FIBERHOME)
 
-This document introduces scenario descriptions for Euphrates 1.0 of
+This document introduces scenario descriptions for Fraser 1.0 of
 deployment with no SDN controller and no feature enabled.
 
 .. contents::
@@ -35,5 +35,5 @@ Limitations, Issues and Workarounds
 References
 ==========
 
-For more information on the OPNFV Euphrates release, please visit
-http://www.opnfv.org/euphrates
+For more information on the OPNFV Fraser release, please visit
+http://www.opnfv.org/fraser
