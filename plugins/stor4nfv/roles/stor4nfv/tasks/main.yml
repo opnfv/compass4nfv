@@ -8,7 +8,6 @@
 # #############################################################################
 ---
 - include: opensds.yml
-- include: nbp.yml
   when:
     - ansible_distribution == 'Ubuntu'
     - stor4nfv is defined and stor4nfv == "Enable"
