@@ -366,5 +366,3 @@
   copy:
     src: redhat-7.yml
     dest: /etc/ansible/roles/os_tacker/vars/redhat-7.yml
-
-- include: set_openstack_release.yml
