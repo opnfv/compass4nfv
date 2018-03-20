@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_37bd7a69",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/files/configure_vars.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-03-20T08:57:42Z",
+      "side": 1,
+      "message": "There is an issue here. By default, it\u0027s \"rbd\" now. You don\u0027t need to set it again. If set again, the deployment would succeed but both ceph and opensds would not be installed.",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 40
+      },
+      "revId": "0f58d324371b4938786febe0de037f83365aa7fa",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
