@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_d921dffc",
+        "filename": "docs/release/scenarios/os-nosdn-nofeature-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-03-25T02:13:55Z",
+      "side": 1,
+      "message": "nit: a",
+      "range": {
+        "startLine": 16,
+        "startChar": 32,
+        "endLine": 16,
+        "endChar": 34
+      },
+      "revId": "9a45da46b914ebb592b36cb797667bf9158684b6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_b91cd3c2",
+        "filename": "docs/release/scenarios/os-nosdn-nofeature-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-03-25T02:13:55Z",
+      "side": 1,
+      "message": "It is Luminous, right?",
+      "range": {
+        "startLine": 17,
+        "startChar": 5,
+        "endLine": 17,
+        "endChar": 10
+      },
+      "revId": "9a45da46b914ebb592b36cb797667bf9158684b6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_197b47f6",
+        "filename": "docs/release/scenarios/os-odl-nofeature-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-03-25T02:13:55Z",
+      "side": 1,
+      "message": "nit: a",
+      "range": {
+        "startLine": 16,
+        "startChar": 32,
+        "endLine": 16,
+        "endChar": 34
+      },
+      "revId": "9a45da46b914ebb592b36cb797667bf9158684b6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_f97dbbe8",
+        "filename": "docs/release/scenarios/os-odl-nofeature-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-03-25T02:13:55Z",
+      "side": 1,
+      "message": "Luminous?",
+      "range": {
+        "startLine": 17,
+        "startChar": 28,
+        "endLine": 17,
+        "endChar": 33
+      },
+      "revId": "9a45da46b914ebb592b36cb797667bf9158684b6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_5985cfce",
+        "filename": "docs/release/scenarios/os-odl-sfc-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-03-25T02:13:55Z",
+      "side": 1,
+      "message": "nit: a",
+      "range": {
+        "startLine": 16,
+        "startChar": 32,
+        "endLine": 16,
+        "endChar": 34
+      },
+      "revId": "9a45da46b914ebb592b36cb797667bf9158684b6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_3988c3e6",
+        "filename": "docs/release/scenarios/os-odl-sfc-ha.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-03-25T02:13:55Z",
+      "side": 1,
+      "message": "Luminous?",
+      "range": {
+        "startLine": 17,
+        "startChar": 28,
+        "endLine": 17,
+        "endChar": 33
+      },
+      "revId": "9a45da46b914ebb592b36cb797667bf9158684b6",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
