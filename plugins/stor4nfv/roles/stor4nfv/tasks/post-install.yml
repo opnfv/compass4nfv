@@ -1,0 +1,64 @@
+# #############################################################################
+# Copyright (c) 2018 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+
+- name: ensure ceph-ansible dir exists
+  stat:
+    path: /opt/ceph-ansible
+  ignore_errors: "true"
+  register: ceph_ansible_exists
+
+- name: copy post-install.yml to /opt/ceph-ansible
+  remote_user: root
+  template:
+    src: post-install.yml.j2
+    dest: /opt/ceph-ansible/post-install.yml
+  when:
+    - ceph_ansible_exists.stat.exists is defined and ceph_ansible_exists.stat.exists
+
+- name: run post-install playbook
+  shell: ansible-playbook post-install.yml -i ceph.hosts
+  become: true
+  args:
+    chdir: /opt/ceph-ansible
+  when:
+    - ceph_ansible_exists.stat.exists is defined and ceph_ansible_exists.stat.exists
+
+- name: remove post-install.yml
+  file:
+    path: /opt/ceph-ansible/post-install.yml
+    state: absent
+  when:
+    - ceph_ansible_exists.stat.exists is defined and ceph_ansible_exists.stat.exists
+
+- name: ensure osdsctl exists
+  stat:
+    path: /opt/opensds-v0.1.5-linux-amd64/bin/osdsctl
+  ignore_errors: "true"
+  register: osdsctl_exists
+
+- name: ensure opensds csi directory exists
+  stat:
+    path: /opt/opensds-k8s-v0.1.0-linux-amd64
+  ignore_errors: "true"
+  register: csi_dir_exists
+
+- name: create opensds default profile, csi pods
+  remote_user: root
+  shell: |
+    cp /opt/opensds-v0.1.5-linux-amd64/bin/osdsctl /usr/local/bin;
+    export OPENSDS_ENDPOINT=http://{{ public_vip.ip }}:50040;
+    export OPENSDS_AUTH_STRATEGY=noauth;
+    osdsctl profile create '{"name": "default", "description": "default policy"}'
+    cd /opt/opensds-k8s-v0.1.0-linux-amd64;
+    kubectl create -f csi/deploy/kubernetes;
+  ignore_errors: "true"
+  when:
+    - osdsctl_exists.stat.exists is defined and osdsctl_exists.stat.exists
+    - csi_dir_exists.stat.exists is defined and csi_dir_exists.stat.exists
