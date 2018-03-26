@@ -8,7 +8,7 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # #############################################################################
 
-add-apt-repository ppa:ansible/ansible
+add-apt-repository ppa:ansible/ansible-2.4
 
 apt-get update
 apt-get install -y ansible
