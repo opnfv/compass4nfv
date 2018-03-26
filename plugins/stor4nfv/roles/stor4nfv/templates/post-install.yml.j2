@@ -7,8 +7,14 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # #############################################################################
 ---
-- include: opensds.yml
-- include: post-install.yml
-  when:
-    - ansible_distribution == 'Ubuntu'
-    - stor4nfv is defined and stor4nfv == "Enable"
+
+- hosts:
+  - mons
+  - osds
+  - mgrs
+
+  tasks:
+    - name: run modprobe rbd
+      remote_user: root
+      command: modprobe rbd
+      ignore_errors: "true"
