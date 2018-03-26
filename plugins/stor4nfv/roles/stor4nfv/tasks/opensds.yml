@@ -77,8 +77,11 @@
     ansible-playbook site.yml -i local.hosts | tee /var/log/stor4nfv.log
   register: stor4nfv_result
 
-- name: export opensds endpoint
+- name: create opensds default profile
   remote_user: root
   shell: |
-    export OPENSDS_ENDPOINT=http://127.0.0.1:50040
+    cp /opt/opensds-v0.1.5-linux-amd64/bin/osdsctl /usr/local/bin;
+    export OPENSDS_ENDPOINT=http://{{ public_vip.ip }}:50040;
+    export OPENSDS_AUTH_STRATEGY=noauth;
+    osdsctl profile create '{"name": "default", "description": "default policy"}'
   when: stor4nfv_result|succeeded
