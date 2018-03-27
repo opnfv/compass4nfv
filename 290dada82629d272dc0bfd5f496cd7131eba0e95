@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_5fa12f46",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/files/install_ansible.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-03-27T01:17:14Z",
+      "side": 1,
+      "message": "Should it be 2.4.2? Or just 2.4 is fine?",
+      "range": {
+        "startLine": 11,
+        "startChar": 31,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "290dada82629d272dc0bfd5f496cd7131eba0e95",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_ff991b20",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-03-27T01:17:14Z",
+      "side": 1,
+      "message": "I suggest using public VIP here. Because CSI plugin containers are running on kube nodes. During my local testing, I always use public VIP.",
+      "range": {
+        "startLine": 84,
+        "startChar": 35,
+        "endLine": 84,
+        "endChar": 45
+      },
+      "revId": "290dada82629d272dc0bfd5f496cd7131eba0e95",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
