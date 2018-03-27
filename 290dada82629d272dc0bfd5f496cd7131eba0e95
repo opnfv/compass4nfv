@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "5a3f45e8_5f3dafdd",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/files/install_ansible.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-03-27T06:52:59Z",
+      "side": 1,
+      "message": "OK",
+      "parentUuid": "5a3f45e8_9f8a97bd",
+      "range": {
+        "startLine": 11,
+        "startChar": 31,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "290dada82629d272dc0bfd5f496cd7131eba0e95",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a3f45e8_ff991b20",
         "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
         "patchSetId": 1
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "Right. I will change it.",
       "parentUuid": "5a3f45e8_ff991b20",
+      "range": {
+        "startLine": 84,
+        "startChar": 35,
+        "endLine": 84,
+        "endChar": 45
+      },
+      "revId": "290dada82629d272dc0bfd5f496cd7131eba0e95",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_3f40a355",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 605
+      },
+      "writtenOn": "2018-03-27T06:52:59Z",
+      "side": 1,
+      "message": "One more thing, we also need add \u0027modprobe rbd\u0027 on all the nodes. Should we add it here?",
+      "parentUuid": "5a3f45e8_7f850bac",
       "range": {
         "startLine": 84,
         "startChar": 35,
