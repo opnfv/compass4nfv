@@ -141,6 +141,30 @@
       "revId": "290dada82629d272dc0bfd5f496cd7131eba0e95",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_82219cb6",
+        "filename": "plugins/stor4nfv/roles/stor4nfv/tasks/opensds.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 7063
+      },
+      "writtenOn": "2018-03-27T19:29:36Z",
+      "side": 1,
+      "message": "Added post-install tasks (modprobe rbd, csi pods).",
+      "parentUuid": "5a3f45e8_3f40a355",
+      "range": {
+        "startLine": 84,
+        "startChar": 35,
+        "endLine": 84,
+        "endChar": 45
+      },
+      "revId": "290dada82629d272dc0bfd5f496cd7131eba0e95",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
