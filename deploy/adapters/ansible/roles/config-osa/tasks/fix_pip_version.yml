@@ -18,8 +18,8 @@
     regexp: '^  - python-ldap'
     line: '  - python-ldap==2.5.2'
 
-- name: add pkgconfig in gnocchi requires pip packages
+- name: add pbr in gnocchi requires pip packages
   lineinfile:
     dest: /etc/ansible/roles/repo_build/defaults/main.yml
     insertafter: "repo_pip_packages:"
-    line: '  - pkgconfig'
+    line: '  - pbr'
