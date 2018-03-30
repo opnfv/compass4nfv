@@ -22,4 +22,4 @@
   lineinfile:
     dest: /etc/ansible/roles/repo_build/defaults/main.yml
     insertafter: "repo_pip_packages:"
-    line: '  - pkgconfig'
+    line: '  - pbr'
