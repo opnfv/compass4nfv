@@ -22,6 +22,30 @@
       "revId": "61536db00b6ac5509dd5617c4ef83f9003d6e456",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_022e2743",
+        "filename": "deploy/adapters/ansible/roles/config-osa/tasks/fix_pip_version.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2018-03-31T01:43:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a3f45e8_221403f4",
+      "range": {
+        "startLine": 21,
+        "startChar": 12,
+        "endLine": 21,
+        "endChar": 21
+      },
+      "revId": "61536db00b6ac5509dd5617c4ef83f9003d6e456",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
