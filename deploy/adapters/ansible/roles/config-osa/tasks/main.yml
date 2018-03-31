@@ -286,3 +286,9 @@
     regexp: '^  - python-ldap'
     line: '  - python-ldap==2.5.2'
   when: offline_deployment is defined and offline_deployment == "Disable"
+
+- name: add pbr in gnocchi requires pip packages
+  lineinfile:
+    dest: /etc/ansible/roles/repo_build/defaults/main.yml
+    insertafter: "repo_pip_packages:"
+    line: '  - pbr'
