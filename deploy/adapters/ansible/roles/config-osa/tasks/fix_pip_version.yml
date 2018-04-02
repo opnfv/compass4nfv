@@ -23,3 +23,10 @@
     dest: /etc/ansible/roles/repo_build/defaults/main.yml
     insertafter: "repo_pip_packages:"
     line: '  - pbr'
+
+- name: create user config file to control pip version
+  copy:
+    content: |
+      pip_packages:
+        - pip==9.0.1
+    dest: /etc/openstack_deploy/user_fixpip.yml
