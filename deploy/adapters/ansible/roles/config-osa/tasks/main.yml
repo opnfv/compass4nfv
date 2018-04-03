@@ -286,3 +286,10 @@
     regexp: '^  - python-ldap'
     line: '  - python-ldap==2.5.2'
   when: offline_deployment is defined and offline_deployment == "Disable"
+
+- name: create user config file to control pip version
+  copy:
+    content: |
+      pip_packages:
+        - pip==9.0.1
+    dest: /etc/openstack_deploy/user_fixpip.yml
