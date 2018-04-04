@@ -46,9 +46,9 @@ distros_x86_64:
 distros_aarch64:
   ubuntu-16.04:
     breed: "ubuntu"
-    kickstart: "default16.seed"
-    kopts: "netcfg/choose_interface=auto console=ttyS0 console=ttyAMA0 console=tty0 net.ifnames=0"
-    kopts_post: "console=ttyS0 console=ttyAMA0 console=tty0 net.ifnames=0"
+    kickstart: "default16-aarch64.seed"
+    kopts: "netcfg/choose_interface=auto console=ttyS0 console=ttyAMA0 net.ifnames=0"
+    kopts_post: "console=ttyS0 console=ttyAMA0 net.ifnames=0"
     extra: "--apt-dists=xenial --apt-components=main"
     aliase: "xenial"
     version: "ubuntu"
