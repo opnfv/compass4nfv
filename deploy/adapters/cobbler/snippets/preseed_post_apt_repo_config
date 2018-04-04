@@ -29,6 +29,8 @@ $SNIPPET($repos_snippet)
 
 #if $arch == "x86_64"
     #set $rarch = "[arch=amd64]"
+#elif $arch == "arm"
+    #set $rarch = "[arch=arm64]"
 #else
     #set $rarch = "[arch=%s]" % $arch
 #end if

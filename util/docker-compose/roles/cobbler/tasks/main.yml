@@ -102,7 +102,7 @@
     # - ubuntu-16.04-server-arm-arm64-arm
     # Kickstart meta url name
     # - http://x.x.x.x/cobbler/ks_mirror/CentOS-7-Minimal-1611-arm
-    # - http://x.x.x.x/cobbler/ks_mirror/ubuntu-16.04-server-arm-arm64
+    # - http://x.x.x.x/cobbler/ks_mirror/ubuntu-16.04-server-arm
     name="{{ item.value.cobbler_name }}-arm"
     profiles=`docker exec compass-cobbler bash -c \
               "cobbler profile list | grep $name"`
@@ -112,7 +112,7 @@
          --name $profile_name \
          --name-servers '' \
          --repos {{ item.value.ppa_name }} \
-         --ksmeta \"tree=http://{{ host_ip }}/cobbler/ks_mirror/${profile_name%????}\" \
+         --ksmeta \"tree=http://{{ host_ip }}/cobbler/ks_mirror/$name\" \
          --kopts \"{{ item.value.kopts | default('') }}\" \
          --kopts-post \"{{ item.value.kopts_post | default('') }}\""
     done
