@@ -14,3 +14,42 @@
     dest: /opt/admin.conf
     flat: "yes"
   when: inventory_hostname == groups['kube_master'][0]
+
+- name: Create  heapster dest directory
+  file:
+    path: "{{local_release_dir}}/heapster"
+    state: directory
+    recurse: yes
+  when:
+    - heapster.enabled
+    - inventory_hostname == groups['kube_master'][0]
+
+- name: get the package of heapster 
+  get_url:
+    url: "{{heapster_download_url}}"
+    dest: "{{local_release_dir}}/heapster"
+    owner: "{{ heapster.owner|default(omit) }}"
+    mode: "{{ heapster.mode|default(omit) }}"
+  register: get_url_result
+  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  when:
+    - heapster.enabled
+    - inventory_hostname == groups['kube_master'][0]
+
+- name:  untar the file of heapster
+  shell: | 
+    cd  "{{ local_release_dir }}/heapster"; 
+    tar  zxvf "heapster-{{ heapster.version }}.tar.gz"
+  when:
+    - heapster.enabled
+    - inventory_hostname == groups['kube_master'][0]
+    
+- name: install the heapster
+  shell: |
+    cd "{{ local_release_dir }}/heapster/heapster-{{ heapster.version }}/deploy/";
+    ./kube.sh start
+  when:
+    - heapster.enabled
+    - inventory_hostname == groups['kube_master'][0]
