@@ -1,0 +1,11 @@
+---
+
+local_release_dir: "/tmp/releases"
+heapster_enable: true
+retry_stagger: 5
+heapster:
+    enabled: true
+    owner: "root"
+    mode: "0755"
+    version: "1.5.2"
+heapster_download_url: https://github.com/kubernetes/heapster/archive/v{{ heapster.version }}.tar.gz
