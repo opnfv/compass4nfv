@@ -1,10 +1,21 @@
 ---
-packages:
+packages_x86_64:
   - ubuntu-cloud-keyring
   - python-dev
   - python-pip
   - openvswitch-switch
   - openvswitch-switch-dpdk
+  - python-memcache
+  - python-iniparse
+  - python-lxml
+  - python-crypto
+  - git
+
+packages_aarch64:
+  - ubuntu-cloud-keyring
+  - python-dev
+  - python-pip
+  - openvswitch-switch
   - python-memcache
   - python-iniparse
   - python-lxml

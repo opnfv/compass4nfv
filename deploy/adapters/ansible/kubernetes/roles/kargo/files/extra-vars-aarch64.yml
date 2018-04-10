@@ -18,16 +18,3 @@ cluster-proportional-autoscaler-arm64"
 # inventory/group_vars/k8s-cluster.yml
 kube_network_plugin: flannel
 helm_enabled: false
-docker_options: "--insecure-registry={{ kube_service_addresses }} \
---graph={{ docker_daemon_graph }}  {{ docker_log_opts }} \
---add-runtime docker-runc=/usr/libexec/docker/docker-runc-current \
---default-runtime=docker-runc \
---exec-opt native.cgroupdriver=systemd \
---userland-proxy-path=/usr/libexec/docker/docker-proxy-current \
---signature-verification=false"
-
-# roles/docker/vars/redhat.yml
-docker_package_info:
-  pkg_mgr: yum
-  pkgs:
-    - name: docker
