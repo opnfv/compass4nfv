@@ -62,10 +62,17 @@
 - name: remove the space end of the line in the resolv.conf
   shell: "sed -i 's/ *$//' /etc/resolv.conf"
 
+- name: remove estuary overlay and update apt cache
+  shell: rm -f /etc/apt/sources.list.d/estuary.list && apt-get update
+  when: ansible_architecture == "aarch64"
+
 - name: change sources list
   copy:
-    src: sources.list.official
+    src: "{{ item }}"
     dest: /etc/apt/sources.list
+  with_first_found:
+    - sources.list.official.{{ ansible_architecture }}
+    - sources.list.official
 
 - name: restart ntp service
   shell: "service ntp restart"
