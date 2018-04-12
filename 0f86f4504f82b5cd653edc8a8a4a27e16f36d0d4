@@ -22,6 +22,30 @@
       "revId": "0f86f4504f82b5cd653edc8a8a4a27e16f36d0d4",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_735368e2",
+        "filename": "deploy/adapters/ansible/kubernetes/roles/pre-k8s/tasks/Ubuntu.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2018-04-12T06:49:27Z",
+      "side": 1,
+      "message": "Thanks.\n\nThis estuary.list points to hisilicon private repo which contains some obsolete packages and breaks installation steps afterwards.\n\nThe obsolete info is already in apt cache. So I\u0027m removing this file and run \"apt-get update\" to clean up apt caches.",
+      "parentUuid": "5a3f45e8_b33970a6",
+      "range": {
+        "startLine": 66,
+        "startChar": 51,
+        "endLine": 66,
+        "endChar": 69
+      },
+      "revId": "0f86f4504f82b5cd653edc8a8a4a27e16f36d0d4",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
