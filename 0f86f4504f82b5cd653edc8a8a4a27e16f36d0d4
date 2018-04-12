@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_b33970a6",
+        "filename": "deploy/adapters/ansible/kubernetes/roles/pre-k8s/tasks/Ubuntu.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2018-04-12T06:35:10Z",
+      "side": 1,
+      "message": "why update apt cache after removing the sources list, would it be better to update after changing?",
+      "range": {
+        "startLine": 66,
+        "startChar": 51,
+        "endLine": 66,
+        "endChar": 69
+      },
+      "revId": "0f86f4504f82b5cd653edc8a8a4a27e16f36d0d4",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
