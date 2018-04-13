@@ -16,3 +16,11 @@
 - name: close the swap partition
   shell: |
     swapoff -a
+
+- name : add the global http_proxy for download
+  shell: |
+    echo "export http_proxy={{ proxy }}" >> /etc/profile.d/http_proxy.sh
+    echo "export https_proxy={{ proxy }}" >> /etc/profile.d/http_proxy.sh
+    echo "export no_proxy={{ ignore_proxy }}" >> /etc/profile.d/http_proxy.sh
+    source /etc/profile
+  when: proxy != ''

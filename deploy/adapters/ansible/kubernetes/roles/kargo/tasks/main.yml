@@ -125,6 +125,20 @@
     regexp: '^#loadbalancer_apiserver_localhost: true'
     line: 'loadbalancer_apiserver_localhost: true'
 
+- name: enable http proxy
+  lineinfile:
+    dest: /opt/kargo_k8s/inventory/group_vars/all.yml
+    regexp: '^#http_proxy:'
+    line: 'http_proxy: {{ http_proxy }}'
+  when: http_proxy != ''
+
+- name: enable https proxy
+  lineinfile:
+    dest: /opt/kargo_k8s/inventory/group_vars/all.yml
+    regexp: '^#https_proxy:'
+    line: 'https_proxy: {{ https_proxy }}'
+  when: https_proxy !=''
+
 - name: use the user name and password login the dashboard
   lineinfile:
     dest: /opt/kargo_k8s/inventory/group_vars/k8s-cluster.yml
