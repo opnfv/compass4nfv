@@ -56,6 +56,9 @@
 - name: restart the network
   shell: systemctl restart network
 
+- name: install python lib
+  shell: yum install -y python-yaml python-netaddr
+
 - name: make sure python lib exist
   action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
   with_items:
