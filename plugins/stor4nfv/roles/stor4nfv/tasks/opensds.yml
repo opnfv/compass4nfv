@@ -75,10 +75,3 @@
   shell: |
     cd $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible;
     ansible-playbook site.yml -i local.hosts | tee /var/log/stor4nfv.log
-  register: stor4nfv_result
-
-- name: export opensds endpoint
-  remote_user: root
-  shell: |
-    export OPENSDS_ENDPOINT=http://127.0.0.1:50040
-  when: stor4nfv_result|succeeded
