@@ -22,6 +22,30 @@
       "revId": "6ba47fe473fc030ea8ee5d6fe14c6c0c6022c76a",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_2c0b362b",
+        "filename": "deploy/adapters/cobbler/kickstarts/default16-aarch64.seed",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2018-04-16T07:54:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a3f45e8_cc4c52a1",
+      "range": {
+        "startLine": 160,
+        "startChar": 50,
+        "endLine": 160,
+        "endChar": 51
+      },
+      "revId": "6ba47fe473fc030ea8ee5d6fe14c6c0c6022c76a",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
