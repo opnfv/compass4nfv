@@ -1,0 +1,8 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+2: wutianwei <wutianwei1@huawei.com>
+Code-Review+2: Harry Huang <huangxiangyu5@huawei.com>
+Submitted-by: wutianwei <wutianwei1@huawei.com>
+Submitted-at: Mon, 16 Apr 2018 06:44:47 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/55193
+Project: compass4nfv
+Branch: refs/heads/stable/euphrates
