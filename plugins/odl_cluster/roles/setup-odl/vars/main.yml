@@ -12,7 +12,7 @@ openstack_passwd_file: /etc/openstack_deploy/user_secrets.yml
 # yamllint disable rule:line-length
 os_ver: "{{ lookup('yamlfile', '/opt/openstack-ansible/group_vars/all/all.yml key=openstack_release') }}"
 # yamllint enable rule:line-length
-os_name: pike
+os_name: queens
 
 
 odl_username: admin

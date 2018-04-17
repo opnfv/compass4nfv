@@ -163,7 +163,7 @@
 
 - name: remove repo_build_pip_no_binary
   lineinfile:
-    dest: /opt/openstack-ansible/group_vars/repo_all.yml
+    dest: /opt/openstack-ansible/inventory/group_vars/repo_all.yml
     state: absent
     regexp: "{{ item }}"
   with_items: ['^repo_build_pip_no_binary:', '^  - libvirt-python']
