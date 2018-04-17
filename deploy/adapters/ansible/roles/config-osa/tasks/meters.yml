@@ -9,7 +9,7 @@
 ---
 - name: modify the aodh haproxy config
   copy:
-    dest: /opt/openstack-ansible/group_vars/all/haproxy.yml
+    dest: /opt/openstack-ansible/inventory/group_vars/all/haproxy.yml
     src: haproxy.yml
     mode: 0664
 

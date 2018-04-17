@@ -89,7 +89,7 @@ function  _prepare_python_env() {
                 sudo apt-get install -y --force-yes libxslt-dev libxml2-dev libvirt-dev build-essential qemu-utils qemu-kvm libvirt-bin virtinst libmysqld-dev
                 sudo apt-get install -y --force-yes libffi-dev libssl-dev
             else
-                sudo yum install -y centos-release-openstack-pike
+                sudo yum install -y centos-release-openstack-queens
                 sudo yum install -y epel-release
                 sudo yum install openvswitch -y --nogpgcheck
                 sudo yum install -y git python-devel python-pip figlet sshpass mkisofs bc curl ipmitool
