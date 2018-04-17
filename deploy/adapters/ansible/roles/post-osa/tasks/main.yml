@@ -29,3 +29,6 @@
 
 - include: tacker_horizon.yml
   when: inventory_hostname in groups['horizon_all']
+
+- include: novaclient_workaround.yml
+  when: inventory_hostname in groups['utility']

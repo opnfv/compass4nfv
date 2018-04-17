@@ -1,0 +1,88 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# Physical interface
+auto eth0
+iface eth0 inet manual
+
+# external interface
+{% set intf_external = contr_sys_mappings["external"]["interface"] %}
+{% if contr_sys_mappings["external"]["vlan_tag"] | int %}
+{% set intf_external = intf_external + '.' + contr_sys_mappings["external"]["vlan_tag"]|string %}
+{% endif %}
+auto {{ intf_external }}
+iface {{ intf_external }} inet manual
+{% if contr_sys_mappings["external"]["vlan_tag"] | int %}
+    vlan-raw-device {{ intf_external }}
+{% endif %}
+
+# tenant interface
+{% set intf_tenant = contr_sys_mappings["tenant"]["interface"] %}
+{% if contr_sys_mappings["tenant"]["vlan_tag"] | int %}
+{% set intf_tenant = intf_tenant + '.' + contr_sys_mappings["tenant"]["vlan_tag"]|string %}
+{% endif %}
+auto {{ intf_tenant }}
+iface {{ intf_tenant }} inet static
+{% if contr_sys_mappings["tenant"]["vlan_tag"] | int %}
+    vlan-raw-device {{ intf_tenant }}
+{% endif %}
+
+# storage interface
+{% set intf_storage = contr_sys_mappings["storage"]["interface"] %}
+{% if contr_sys_mappings["storage"]["vlan_tag"] | int %}
+{% set intf_storage = intf_storage + '.' + contr_sys_mappings["storage"]["vlan_tag"]|string %}
+{% endif %}
+auto {{ intf_storage }}
+iface {{ intf_storage }} inet manual
+{% if contr_sys_mappings["storage"]["vlan_tag"] | int %}
+    vlan-raw-device {{ intf_storage }}
+{% endif %}
+
+# Container/Host management bridge
+auto br-mgmt
+iface br-mgmt inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports eth0
+    address {{ ip_settings[inventory_hostname]["mgmt"]["ip"] }}
+    netmask 255.255.255.0
+
+# OpenStack Networking VLAN bridge
+auto br-provider
+iface br-provider inet static
+    address {{ ip_settings[inventory_hostname]["external"]["ip"] }}
+    netmask 255.255.255.0
+    gateway {{ ip_settings[inventory_hostname]["external"]["gw"] }}
+    pre-up ifconfig br-external down || true
+    pre-up brctl delbr br-external || true
+
+# OpenStack Networking VXLAN (tunnel/overlay) bridge
+#
+# Only the COMPUTE and NETWORK nodes must have an IP address
+# on this bridge. When used by infrastructure nodes, the
+# IP addresses are assigned to containers which use this
+# bridge.
+#
+auto br-tenant
+iface br-tenant inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports {{ intf_tenant }}
+    address {{ ip_settings[inventory_hostname]["tenant"]["ip"] }}
+    netmask 255.255.255.0
+
+# Storage bridge
+auto br-storage
+iface br-storage inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports {{ intf_storage }}
+    address {{ ip_settings[inventory_hostname]["storage"]["ip"] }}
+    netmask 255.255.255.0

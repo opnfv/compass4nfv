@@ -50,7 +50,7 @@
   when:
     - compute in item["role"]
 
-- name: start neutron-openvswitch-agent
+- name: restart neutron-openvswitch-agent
   service:
     name: neutron-openvswitch-agent
-    state: started
+    state: restarted

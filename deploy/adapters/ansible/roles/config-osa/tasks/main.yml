@@ -163,7 +163,7 @@
 
 - name: remove repo_build_pip_no_binary
   lineinfile:
-    dest: /opt/openstack-ansible/group_vars/repo_all.yml
+    dest: /opt/openstack-ansible/inventory/group_vars/repo_all.yml
     state: absent
     regexp: "{{ item }}"
   with_items: ['^repo_build_pip_no_binary:', '^  - libvirt-python']
@@ -348,21 +348,4 @@
 #    insertafter: "^- include: repo_post_build.yml"
 #    line: "- include: repo_fix_pandas.yml"
 
-- include: meters.yml
-
-# upstream has fix this issue so somments it
-# maybe will use in the furture
-- include: fix_pip_version.yml
-
 - include: fix_rescue.yml
-
-- name: include tacker in setup-openstack
-  lineinfile:
-    dest: /opt/openstack-ansible/playbooks/setup-openstack.yml
-    insertafter: "^- include: os-trove"
-    line: "- include: os-tacker-install.yml"
-
-- name: add variables file of tacker for centos
-  copy:
-    src: redhat-7.yml
-    dest: /etc/ansible/roles/os_tacker/vars/redhat-7.yml
