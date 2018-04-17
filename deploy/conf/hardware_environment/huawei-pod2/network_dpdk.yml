@@ -14,7 +14,7 @@ bond_mappings: []
 provider_net_mappings:
   - name: br-provider
     network: physnet
-    interface: eth10
+    interface: eth1
     type: ovs
     role:
       - controller
