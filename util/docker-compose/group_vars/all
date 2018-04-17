@@ -29,7 +29,7 @@ distros_x86_64:
     aliase: "xenial"
     version: "ubuntu"
     iso_name: ubuntu-16.04.3-server-amd64
-    ppa_name: xenial-pike-ppa
+    ppa_name: xenial-queens-ppa
     cobbler_name: ubuntu-16.04.3-server
     cobbler_arch: x86_64
 
@@ -39,7 +39,7 @@ distros_x86_64:
     aliase: "centos7"
     version: "centos"
     iso_name: CentOS-7-x86_64-Minimal-1708
-    ppa_name: centos7-pike-ppa
+    ppa_name: centos7-queens-ppa
     cobbler_name: CentOS-7-Minimal-1708
     cobbler_arch: x86_64
 
@@ -53,7 +53,7 @@ distros_aarch64:
     aliase: "xenial"
     version: "ubuntu"
     iso_name: ubuntu-16.04-server-arm64
-    ppa_name: xenial-pike-ppa
+    ppa_name: xenial-queens-ppa
     cobbler_name: ubuntu-16.04-server
     cobbler_arch: arm
 
@@ -63,6 +63,6 @@ distros_aarch64:
     aliase: "centos7"
     version: "centos"
     iso_name: CentOS-7-aarch64-Minimal-1611
-    ppa_name: centos7-pike-ppa
+    ppa_name: centos7-queens-ppa
     cobbler_name: CentOS-7-Minimal-1611
     cobbler_arch: arm
