@@ -1,0 +1,6 @@
+---
+
+- name: use python-novaclient version 9.0.0 to replace 10.2.0
+  pip:
+    name: python-novaclient
+    version: 9.0.0

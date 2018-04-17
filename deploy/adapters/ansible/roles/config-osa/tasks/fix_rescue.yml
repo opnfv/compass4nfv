@@ -28,7 +28,7 @@
 
 - name: fix rescue problem for lxc-hosts-setup
   blockinfile:
-    dest: "/opt/openstack-ansible/playbooks/lxc-hosts-setup.yml"
+    dest: "/opt/openstack-ansible/playbooks/containers-lxc-host.yml"
     block: |
       - hosts: localhost
         user: root
@@ -38,7 +38,7 @@
 
 - name: delete max_fail_percentage for lxc-hosts-setup
   lineinfile:
-    dest: "/opt/openstack-ansible/playbooks/lxc-hosts-setup.yml"
+    dest: "/opt/openstack-ansible/playbooks/containers-lxc-host.yml"
     regexp: "max_fail_percentage*"
     state: absent
 
