@@ -8,7 +8,7 @@
 # #############################################################################
 ---
 - name: setup hosts
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_queens-opnfv2/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible setup-hosts.yml \
@@ -19,7 +19,7 @@
   register: failed_container
 
 - name: destroy the failed_container
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_queens-opnfv2/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible lxc-containers-destroy.yml \
@@ -30,7 +30,7 @@
   ignore_errors: "True"
 
 - name: retry to setup failed_container
-  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_pike-opnfv2/ansible.log; \
+  shell: "export ANSIBLE_LOG_PATH=/var/ansible/run/openstack_queens-opnfv2/ansible.log; \
           export ANSIBLE_SCP_IF_SSH=y; \
           cd /opt/openstack-ansible/playbooks; \
           openstack-ansible setup-hosts.yml --limit {{item}} \
