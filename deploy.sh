@@ -30,7 +30,7 @@
 
 #export OPENSTACK_VERSION=${OPENSTACK_VERSION:-ocata}
 
-export OPENSTACK_VERSION=pike
+export OPENSTACK_VERSION=queens
 
 export COMPASS_ARCH=$(uname -m)
 
