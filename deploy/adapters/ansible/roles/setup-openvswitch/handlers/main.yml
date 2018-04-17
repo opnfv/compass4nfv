@@ -6,6 +6,11 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ############################################################################
 ---
+- name: restart network service
+  service:
+    name: networking
+    state: restarted
+
 - name: restart neutron-openvswitch-agent
   service:
     name: neutron-openvswitch-agent

@@ -26,7 +26,7 @@ iface {{ intf_external }} inet manual
 {% set intf_tenant = intf_tenant + '.' + contr_sys_mappings["tenant"]["vlan_tag"]|string %}
 {% endif %}
 auto {{ intf_tenant }}
-iface {{ intf_tenant }} inet manual
+iface {{ intf_tenant }} inet static
 {% if contr_sys_mappings["tenant"]["vlan_tag"] | int %}
     vlan-raw-device {{ intf_tenant }}
 {% endif %}
@@ -53,15 +53,13 @@ iface br-mgmt inet static
     netmask 255.255.255.0
 
 # OpenStack Networking VLAN bridge
-auto br-external
-iface br-external inet static
-    bridge_stp off
-    bridge_waitport 0
-    bridge_fd 0
-    bridge_ports {{ intf_external }}
+auto br-provider
+iface br-provider inet static
     address {{ ip_settings[inventory_hostname]["external"]["ip"] }}
     netmask 255.255.255.0
     gateway {{ ip_settings[inventory_hostname]["external"]["gw"] }}
+    pre-up ifconfig br-external down || true
+    pre-up brctl delbr br-external || true
 
 # OpenStack Networking VXLAN (tunnel/overlay) bridge
 #
