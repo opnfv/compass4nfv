@@ -71,11 +71,13 @@ iface br-external inet static
 # bridge.
 #
 auto br-tenant
-iface br-tenant inet manual
+iface br-tenant inet static
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
     bridge_ports {{ intf_tenant }}
+    address {{ ip_settings[inventory_hostname]["tenant"]["ip"] }}
+    netmask 255.255.255.0
 
 # Storage bridge
 auto br-storage
