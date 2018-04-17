@@ -32,7 +32,7 @@ fi
 if [[ $ROOT_BUILD_CAUSE == MANUALTRIGGER ]]; then
 # For manual ci trigger build, directly use the value pass from CI
     export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-xenial}
-    export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-pike}
+    export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-queens}
 
 else
 # For daily build or verify build, adjust COMPASS_OS_VERSION and OPENSTACK_VERSION
@@ -40,10 +40,10 @@ else
 
     if [[ $COMPASS_OS_VERSION == centos7 ]]; then
         export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-centos7}
-        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-pike}
+        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-queens}
     else
         export COMPASS_OS_VERSION=${COMPASS_OS_VERSION:-xenial}
-        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-pike}
+        export COMPASS_OPENSTACK_VERSION=${COMPASS_OPENSTACK_VERSION:-queens}
     fi
 fi
 
