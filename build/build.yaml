@@ -18,7 +18,8 @@ packages:
   - name: compass-tasks-osa
     description: "compass task container integrated with openstack-ansible"
     get_method: docker
-    url: huangxiangyu/compass-tasks-osa:latest
+    # url: huangxiangyu/compass-tasks-osa:latest
+    url: ramay1/compass-tasks-osa:queens
 
   - name: compass-tasks-k8s
     description: "compass task container integrated with kubespray"

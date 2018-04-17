@@ -50,7 +50,25 @@
   when:
     - controller in item["role"]
 
+- name: configure interfaces ubuntu
+  template:
+    src: controller.j2
+    dest: /etc/network/interfaces
+  notify:
+    - restart network service
+
 - name: start neutron-openvswitch-agent
   service:
     name: neutron-openvswitch-agent
-    state: started
+    state: restarted
+
+- name: update keepalived
+  replace:
+    dest: /etc/keepalived/keepalived.conf
+    regexp: 'br-external'
+    replace: 'br-provider'
+
+- name: restart keepalived
+  service:
+    name: keepalived
+    state: restarted

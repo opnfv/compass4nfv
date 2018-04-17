@@ -20,7 +20,7 @@ gnocchi_ceph_pool: "metrics"
 ceph_extra_components:
   - component: gnocchi_api
     package:
-      - "{{ python_ceph_package }}"
+      - "{{ python_ceph_packages }}"
     client:
       - '{{ gnocchi_ceph_client }}'
     service: '{{ ceph_gnocchi_service_names }}'
