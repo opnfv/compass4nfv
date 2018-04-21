@@ -264,7 +264,7 @@ haproxy_default_services:
 
   - service:
       haproxy_service_name: tacker
-      haproxy_backend_nodes: "{{ groups['tacker_all'] | default([]) }}"
+      haproxy_backend_nodes: "{{ groups['tacker_all'][0] }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
       haproxy_port: 9890
       haproxy_balance_type: http
