@@ -5,3 +5,9 @@
     name: networking-sfc
     virtualenv: /openstack/venvs/tacker-{{ os_ver }}
   when: odl_sfc == "Enable"
+
+- name: stop the other two tacker servers
+  service:
+    name: tacker-server
+    state: stopped
+  when: inventory_hostname != groups['tacker_all'][0]
