@@ -45,6 +45,10 @@ external_cidr: "{{ ip_settings[inventory_hostname]['external']['cidr'] }}"
 public_net_info: "{{ network_cfg.public_net_info }}"
 host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
 
+proxy: $getVar('http_proxy', '')
+#set no_proxy = ','.join($getVar('no_proxy', []))
+ignore_proxy: $no_proxy
+
 ntp_server: $ntp_server
 internal_vip:
   ip: $network_cfg["internal_vip"]["ip"]
