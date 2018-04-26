@@ -62,7 +62,7 @@ distros_aarch64:
     kickstart: "default-aarch64.ks"
     aliase: "centos7"
     version: "centos"
-    iso_name: CentOS-7-aarch64-Minimal-1611
+    iso_name: CentOS-7-aarch64-Minimal-1708
     ppa_name: centos7-pike-ppa
-    cobbler_name: CentOS-7-Minimal-1611
+    cobbler_name: CentOS-7-Minimal-1708
     cobbler_arch: arm
