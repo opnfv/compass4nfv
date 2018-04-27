@@ -31,6 +31,10 @@ cinder_cinder_conf_overrides:
   oslo_middleware:
     enable_proxy_headers_parsing: True
 
+neutron_neutron_conf_overrides:
+  oslo_middleware:
+    enable_proxy_headers_parsing: True
+
 nfs_file_gw: False
 
 {% if "openvswitch" == NEUTRON_MECHANISM_DRIVERS[0] or
