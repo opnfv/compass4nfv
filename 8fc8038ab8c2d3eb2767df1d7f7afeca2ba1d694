@@ -22,6 +22,30 @@
       "revId": "8fc8038ab8c2d3eb2767df1d7f7afeca2ba1d694",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_4ed5b61a",
+        "filename": "deploy/conf/base.conf",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7203
+      },
+      "writtenOn": "2018-04-28T01:51:00Z",
+      "side": 1,
+      "message": "The local_proxy is used for os and docker. but there is a bug in compass to generate no_prxoy?so i do not set proxy in os, only in docker.",
+      "parentUuid": "5a3f45e8_f17bd4bb",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 41
+      },
+      "revId": "8fc8038ab8c2d3eb2767df1d7f7afeca2ba1d694",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
