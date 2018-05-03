@@ -362,6 +362,18 @@
     insertafter: "^- include: os-trove"
     line: "- include: os-tacker-install.yml"
 
+- name: rm command "rm -f /etc/resolv.conf" in cache_prep_commands
+  lineinfile:
+    dest: /etc/ansible/roles/lxc_hosts/vars/ubuntu-16.04.yml
+    regexp: 'rm -f /etc/resolv.conf$'
+    line: '      echo "ok"'
+
+- name: add command "rm /etc/resolv.conf || true" in cache_prep_commands
+  lineinfile:
+    dest: /etc/ansible/roles/lxc_hosts/vars/ubuntu-16.04.yml
+    insertafter: '^  cache_prep_commands:'
+    line: '    rm /etc/resolv.conf || true'
+
 - name: add variables file of tacker for centos
   copy:
     src: redhat-7.yml
