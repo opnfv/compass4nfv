@@ -90,6 +90,13 @@ else
     log_info "deploy host macs: $machines"
 fi
 
+if [[ "$DEPLOY_HARBOR" == "true" ]]; then 
+   if ! launch_harbor;then
+       log_error "launch_harbor failed"
+       exit 1
+   fi
+fi
+
 if [[ "$REDEPLOY_HOST" != "true" ]]; then
     if ! set_compass_machine; then
         log_error "set_compass_machine fail"
