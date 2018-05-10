@@ -13,24 +13,24 @@ packages:
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
-    url: linaro/compass-deck:latest
+    url: opnfv/compass-deck:latest
 
   - name: compass-tasks-k8s
     description: "compass task container for kubernets deployment via kargo"
     get_method: docker
-    url: linaro/compass-tasks-k8s:latest
+    url: opnfv/compass-tasks-k8s:latest
 
   - name: compass-cobbler
     description: "cobbler container for compass"
     get_method: docker
-    url: linaro/compass-cobbler:latest
+    url: opnfv/compass-cobbler:latest
 
   - name: compass-db
     description: "datebase container for compass"
     get_method: docker
-    url: linaro/compass-db:latest
+    url: opnfv/compass-db:latest
 
   - name: compass-mq
     description: "message queue container for compass"
     get_method: docker
-    url: linaro/compass-mq:latest
+    url: rabbitmq:3.6.12
