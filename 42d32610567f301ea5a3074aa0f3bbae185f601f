@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_32c6bf68",
+        "filename": "deploy.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5391
+      },
+      "writtenOn": "2018-05-10T01:40:41Z",
+      "side": 1,
+      "message": "could we build this tarball into our compass.tar.gz?",
+      "range": {
+        "startLine": 23,
+        "startChar": 1,
+        "endLine": 23,
+        "endChar": 141
+      },
+      "revId": "42d32610567f301ea5a3074aa0f3bbae185f601f",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
