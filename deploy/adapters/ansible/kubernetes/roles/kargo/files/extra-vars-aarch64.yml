@@ -3,7 +3,7 @@
 
 # roles/download/defaults/main.yml
 etcd_version: v3.2.4-arm64
-flannel_version: "v0.8.0-arm64"
+flannel_version: "v0.9.1-arm64"
 flannel_cni_image_repo: "linaro/flannel-cni-arm64"
 hyperkube_image_repo: "gcr.io/google-containers/hyperkube-arm64"
 hyperkube_image_tag: "{{ kube_version }}"
