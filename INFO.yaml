@@ -4,9 +4,9 @@ project_creation_date: ''
 project_category: 'Integration and testing'
 lifecycle_state: 'Proposal approved'
 project_lead: &opnfv_compass4nfv_ptl
-    name: 'Justin chi'
-    email: 'chigang@huawei.com'
-    id: 'chigang'
+    name: 'Harry Huang'
+    email: 'huangxiangyu5@huawei.com'
+    id: 'huangxiangyu'
     company: 'huawei.com'
     timezone: 'UTC+8'
 primary_contact: *opnfv_compass4nfv_ptl
@@ -55,10 +55,10 @@ committers:
       email: 'wutianwei1@huawei.com'
       company: 'huawei.com'
       id: 'wutianwei'
-    - name: 'Harry Huang'
-      email: 'huangxiangyu5@huawei.com'
+    - name: 'Justin chi'
+      email: 'chigang@huawei.com'
       company: 'huawei.com'
-      id: 'huangxiangyu'
+      id: 'chigang'
 tsc:
     # yamllint disable rule:line-length
     approval: 'http//ircbot.wl.linuxfoundation.org/meetings/opnfv-meeting/2015/opnfv-meeting.2015-07-21-14.02.html'
