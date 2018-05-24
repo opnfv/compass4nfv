@@ -22,6 +22,30 @@
       "revId": "13fa1c31d2f29f817fbf7e0ac52d244a53299968",
       "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a494da4_70310ca2",
+        "filename": "deploy/conf/hardware_environment/huawei-pod8/network-sriov.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 6613
+      },
+      "writtenOn": "2018-05-24T02:07:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a494da4_49871062",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 17
+      },
+      "revId": "13fa1c31d2f29f817fbf7e0ac52d244a53299968",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
     }
   ]
 }
