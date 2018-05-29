@@ -30,7 +30,8 @@
   remote_user: root
   shell: |
     cd /opt;
-    git clone https://github.com/ceph/ceph-ansible.git
+    git clone https://github.com/ceph/ceph-ansible.git;
+    [ -f ceph-ansible/requirements.txt ] && pip install -r ceph-ansible/requirements.txt
 
 - name: fetch stor4nfv source code
   remote_user: root
