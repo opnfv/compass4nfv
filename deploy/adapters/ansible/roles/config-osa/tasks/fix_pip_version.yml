@@ -30,3 +30,15 @@
       pip_packages:
         - pip==9.0.1
     dest: /etc/openstack_deploy/user_fixpip.yml
+
+- name: fix cmd2 version in rally requires pip packages
+  lineinfile:
+    dest: /etc/ansible/roles/os_rally/defaults/main.yml
+    insertafter: "rally_pip_packages:"
+    line: '  - cmd2==0.7.9'
+
+- name: fix cmd2 version in tempest requires pip packages
+  lineinfile:
+    dest: /etc/ansible/roles/os_tempest/defaults/main.yml
+    insertafter: "tempest_pip_packages:"
+    line: '  - cmd2==0.7.9'
