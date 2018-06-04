@@ -4,13 +4,20 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ---
-apiVersion: extensions/v1beta1
-kind: ThirdPartyResource
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
 metadata:
   name: network.kubernetes.com
-description: "A specification of a Network obj in the kubernetes"
-versions:
-- name: v1
+spec:
+  group: kubernetes.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: networks
+    singular: network
+    kind: Network
+    shortNames:
+    - net
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -43,7 +50,7 @@ data:
       }
     }
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: kube-flannel-ds
