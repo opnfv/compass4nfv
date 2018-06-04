@@ -26,6 +26,7 @@ haproxy_keepalived_internal_vip_cidr: "{{ internal_vip.ip }}/32"
 haproxy_keepalived_external_interface: br-external
 haproxy_keepalived_internal_interface: br-mgmt
 keepalived_ping_address: "{{ ntp_server }}"
+lxc_host_machine_volume_size: 16
 
 cinder_cinder_conf_overrides:
   oslo_middleware:
