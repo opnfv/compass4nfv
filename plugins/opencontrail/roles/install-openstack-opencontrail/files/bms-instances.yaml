@@ -1,0 +1,32 @@
+---
+provider_config:
+  bms:
+    ssh_pwd: root
+    ssh_user: root
+    ssh_public_key: /root/.ssh/id_rsa.pub
+    ssh_private_key: /root/.ssh/id_rsa
+    domainsuffix: local
+instances:
+  bms1:
+    provider: bms
+    roles:
+      config_database:
+      config:
+      control:
+      analytics_database:
+      analytics:
+      webui:
+      k8s_master:
+      kubemanager:
+    ip: 192.16.1.211
+  bms2:
+    provider: bms
+    roles:
+      k8s_node:
+      vrouter:
+    ip: 192.16.1.212
+
+contrail_configuration:
+  CONTAINER_REGISTRY: opencontrailnightly
+  CONTRAIL_VERSION: latest
+  KUBERNETES_CLUSTER_PROJECT: {}

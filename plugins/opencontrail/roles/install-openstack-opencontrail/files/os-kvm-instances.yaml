@@ -1,0 +1,55 @@
+---
+provider_config:
+  kvm:
+    ssh_pwd: root
+    ssh_user: root
+    ssh_public_key: /root/.ssh/id_rsa.pub
+    ssh_private_key: /root/.ssh/id_rsa
+    domainsuffix: local
+instances:
+  kvm1:
+    provider: kvm
+    ip: 10.1.0.50
+    roles:
+      config_database:
+      config:
+      control:
+      analytics_database:
+      analytics:
+      webui:
+      openstack:
+      openstack_compute:
+      vrouter:
+        VROUTER_GATEWAY: 192.16.1.1
+  kvm2:
+    provider: kvm
+    ip: 10.1.0.51
+    roles:
+      openstack_compute:
+      vrouter:
+        VROUTER_GATEWAY: 192.16.1.1
+global_configuration:
+  CONTAINER_REGISTRY: opencontrailnightly
+contrail_configuration:
+  CONTRAIL_VERSION: latest
+  CLOUD_ORCHESTRATOR: openstack
+  RABBITMQ_NODE_PORT: 5673
+  AUTH_MODE: keystone
+  KEYSTONE_AUTH_URL_VERSION: /v3
+  KEYSTONE_AUTH_ADMIN_PASSWORD: contrail123
+  UPGRADE_KERNEL: true
+  VROUTER_GATEWAY: 192.16.1.1
+kolla_config:
+  kolla_globals:
+    openstack_release: "ocata"
+    kolla_base_distro: "centos"
+    network_interface: "eth0"
+    neutron_external_interface: "eth1"
+    kolla_internal_vip_address: "10.1.0.50"
+    contrail_api_interface_address: "10.1.0.50"
+    enable_haproxy: "no"
+    enable_ironic: "no"
+    enable_swift: "no"
+    enable_barbican: "no"
+  kolla_passwords:
+    keystone_admin_password: contrail123
