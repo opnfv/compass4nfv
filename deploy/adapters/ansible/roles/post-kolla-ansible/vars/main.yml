@@ -1,0 +1,49 @@
+##############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+flavors:
+  - id: 0
+    name: m1.nano
+    vcpus: 1
+    ram: 64
+    disk: 1
+
+  - id: 1
+    name: m1.tiny
+    vcpus: 1
+    ram: 512
+    disk: 1
+
+  - id: 2
+    name: m1.small
+    vcpus: 1
+    ram: 2048
+    disk: 20
+
+  - id: 3
+    name: m1.medium
+    vcpus: 2
+    ram: 4096
+    disk: 40
+
+  - id: 4
+    name: m1.large
+    vcpus: 4
+    ram: 8192
+    disk: 80
+
+  - id: 5
+    name: m1.xlarge
+    vcpus: 8
+    ram: 16384
+    disk: 160
+
+# yamllint disable rule:line-length
+openstack_release: "{{ lookup('yamlfile', '/opt/openstack-ansible/inventory/group_vars/all/all.yml key=openstack_release') }}"
+# yamllint enable rule:line-length

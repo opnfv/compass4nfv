@@ -1,0 +1,88 @@
+#############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: create external net
+  shell: |
+    . /etc/kolla/admin-openrc.sh;
+    openstack network create --external \
+    --provider-physical-network {{ public_net_info.provider_network }} \
+    --provider-network-type {{ public_net_info.type }}  {{ public_net_info.network }};
+  when:
+    - public_net_info.enable == "True"
+    - public_net_info.type == "flat"
+    - inventory_hostname == groups['utility_all'][0]
+
+- name: create external net
+  shell: |
+    . /root/openrc;
+    openstack network create --external \
+    --network-segment {{ public_net_info.segment_id }} \
+    --provider-physical-network {{ public_net_info.provider_network }} \
+    --provider-network-type {{ public_net_info.type }}  {{ public_net_info.network }};
+  when:
+    - public_net_info.enable == "True"
+    - public_net_info.type == "vlan"
+    - inventory_hostname == groups['utility_all'][0]
+
+- name: create external subnet
+  shell: |
+    . /root/openrc;
+    openstack subnet create --network "{{ public_net_info.network }}" \
+    --allocation-pool \
+    start={{ public_net_info.floating_ip_start }},end={{ public_net_info.floating_ip_end }} \
+    --gateway "{{ public_net_info.external_gw }}" \
+    --subnet-range "{{ public_net_info.floating_ip_cidr }}" \
+    "{{ public_net_info.subnet }}"
+  when:
+    - public_net_info.enable == "True"
+    - inventory_hostname == groups['utility_all'][0]
+
+- name: create openstack flavors
+  shell: |
+    . /root/openrc;
+    openstack flavor create {{ item.name }} \
+    --id {{ item.id }} --ram {{ item.ram }} \
+    --disk {{ item.disk }} --vcpus {{ item.vcpus }} || true
+  with_items: "{{ flavors }}"
+  when:
+    - inventory_hostname == groups['utility_all'][0]
+
+
+- name: fetch openrc
+  fetch:
+    src: /root/openrc
+    dest: /opt/openrc
+    flat: "yes"
+  when:
+    - inventory_hostname == groups['utility_all'][0]
+
+- name: fetch haproxy.cert
+  fetch:
+    src: /etc/ssl/certs/haproxy.cert
+    dest: /opt/os_cacert
+    flat: "yes"
+  when:
+    - inventory_hostname == groups['network_hosts'][0]
+
+# yamllint disable rule:line-length
+- name: fix horizon upload image issue
+  lineinfile:
+    dest: "/openstack/venvs/horizon-{{ openstack_release }}/lib/python2.7/site-packages/openstack_dashboard/local/local_settings.py"
+    regexp: "^HORIZON_IMAGES_UPLOAD_MODE"
+    line: "HORIZON_IMAGES_UPLOAD_MODE = 'legacy'"
+  when:
+    - inventory_hostname in groups['horizon']
+# yamllint enable rule:line-length
+
+- name: restart apache2
+  service:
+    name: apache2
+    state: restarted
+  when:
+    - inventory_hostname in groups['horizon']

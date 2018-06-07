@@ -1,0 +1,53 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: ensure script dir exist
+  shell: mkdir -p /opt/setup_networks
+
+- name: copy scripts
+  copy: src={{ item }} dest=/opt/setup_networks
+  with_items:
+    - setup_networks/log.py
+    - setup_networks/setup_networks.py
+    - setup_networks/check_network.py
+  tags:
+    - network_check
+
+- name: copy config files
+  template: src=network.cfg dest=/opt/setup_networks
+
+- name: backup  network config file
+  shell: mv /etc/network/interfaces /etc/network/interfaces.bak
+
+- name: config  network
+  template:
+    src: ubuntu_network.j2
+    dest: /etc/network/interfaces
+  notify:
+    - restart network service
+
+- meta: flush_handlers
+
+- name: make sure python lib exist
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  with_items:
+    - python-yaml
+    - python-netaddr
+
+- name: check basic network connectivity
+  shell: >
+    python /opt/setup_networks/check_network.py \
+           "{{ inventory_hostname }}" \
+           "{{ ip_settings | to_json }}"
+  register: result
+  until: result.stderr.find('unreachable')==-1
+  retries: 3
+  delay: 2
+  tags:
+    - network_check

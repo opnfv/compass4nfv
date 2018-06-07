@@ -1,0 +1,23 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# mgnt and deploy interface
+{% set intf_mgmt = sys_intf_mappings["mgmt"]["interface"] %}
+auto {{ intf_mgmt }}
+iface {{ intf_mgmt }} inet static
+    address {{ ip_settings[inventory_hostname]["mgmt"]["ip"] }}
+    netmask 255.255.255.0
+
+# external interface
+{% set intf_external = sys_intf_mappings["external"]["interface"] %}
+auto {{ intf_external }}
+iface {{ intf_external }} inet static
+    address {{ ip_settings[inventory_hostname]["external"]["ip"] }}
+    netmask 255.255.255.0
+    gateway {{ ip_settings[inventory_hostname]["external"]["gw"] }}
+    nameserver 8.8.8.8
+
