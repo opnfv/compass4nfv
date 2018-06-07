@@ -1,0 +1,224 @@
+#from random import randint
+#set cluster_name = $getVar('name', '')
+#set network_cfg = $getVar('network_cfg', {})
+#set ntp_server = $getVar('ntp_server', "")
+#set ceph_disk = $getVar('ceph_disk',"")
+#set controllers = $getVar('controller', [])
+#set computes = $getVar('compute', [])
+#set $contr_sys_mappings= {}
+#set $compu_sys_mappings= {}
+#for $intf_info in $network_cfg.sys_intf_mappings
+#if "controller" in $intf_info["role"]
+#set $contr_sys_mappings[$intf_info["name"]] = $intf_info
+#end if
+#if "compute" in $intf_info["role"]
+#set $compu_sys_mappings[$intf_info["name"]] = $intf_info
+#end if
+#end for
+
+#set ip_settings={}
+#for k,v in $getVar('ip_settings', {}).items()
+#set host_ip_settings={}
+#for intf in v
+#set $host_ip_settings[$intf["alias"]]=intf
+#end for
+#set $ip_settings[$k]=$host_ip_settings
+#end for
+
+#for item in $network_cfg["ip_settings"]
+#if $item["name"] == "mgmt"
+#set mgmt_cfg = $item
+#end if
+#if $item["name"] == "external"
+#set external_cfg = $item
+#end if
+#if $item["name"] == "tenant"
+#set tenant_cfg = $item
+#end if
+#if $item["name"] == "storage"
+#set storage_cfg = $item
+#end if
+#end for
+
+#set provider_net_mappings = $network_cfg["provider_net_mappings"]
+#set contr_prv_mappings = {}
+#set compu_prv_mappings = {}
+#for item in $provider_net_mappings
+#if "controller" in $item["role"]
+#set $contr_prv_mappings[$item["network"]] = {"bridge":$item["name"],"interface":$item["interface"]}
+#end if
+#if "compute" in $item["role"]
+#set $compu_prv_mappings[$item["network"]] = {"bridge":$item["name"],"interface":$item["interface"]}
+#end if
+#end for
+
+#set neutron_cfg = $getVar('neutron_config', {})
+#set ovs_config = $neutron_cfg.openvswitch
+#set has = $getVar('ha', [])
+#set ha_vip = $getVar('ha_vip', [])
+
+run_dir: $getVar('run_dir', '')
+
+enable_secgroup: $getVar('enable_secgroup', True)
+enable_fwaas: $getVar('enable_fwaas', True)
+enable_vpnaas: $getVar('enable_vpnaas', True)
+odl_l3_agent: $getVar('odl_l3_agent', 'Disable')
+ha_network: $getVar('ha_network', 'Disable')
+onos_nic: $getVar('onos_nic', 'eth2')
+onos_sfc: $getVar('onos_sfc', 'Disable')
+ip_settings: $ip_settings
+network_cfg: $network_cfg
+
+provider_net_mappings: $network_cfg["provider_net_mappings"]
+
+contr_sys_mappings: $contr_sys_mappings
+compu_sys_mappings: $compu_sys_mappings
+
+contr_prv_mappings: $contr_prv_mappings
+compu_prv_mappings: $compu_prv_mappings
+
+deploy_type: $getVar('deploy_type', 'virtual')
+
+mgmt_cidr: $mgmt_cfg["cidr"]
+external_cidr: $external_cfg["cidr"]
+tenant_cidr: $tenant_cfg["cidr"]
+storage_cidr: $storage_cfg["cidr"]
+
+tenant_net_info: "{{ network_cfg.tenant_net_info }}"
+public_net_info: "{{ network_cfg.public_net_info }}"
+host_ip_settings: "{{ ip_settings[inventory_hostname] }}"
+
+ntp_server: $ntp_server
+
+offline_deployment: $getVar('offline_deployment', 'Disable')
+offline_repo_ip: $getVar('compass_ip', '')
+offline_repo_port: $getVar('offline_repo_port', '5151')
+
+internal_vip:
+  ip: $network_cfg["internal_vip"]["ip"]
+  netmask: $network_cfg["internal_vip"]["netmask"]
+#if "vlan_tag" in $contr_sys_mappings[$network_cfg["internal_vip"]["interface"]]
+  interface: $contr_sys_mappings[$network_cfg["internal_vip"]["interface"]]["name"]
+#else
+  interface: $contr_sys_mappings[$network_cfg["internal_vip"]["interface"]]["interface"]
+#end if
+
+public_vip:
+  ip: $network_cfg["public_vip"]["ip"]
+  netmask: $network_cfg["public_vip"]["netmask"]
+#if "vlan_tag" in $contr_sys_mappings[$network_cfg["public_vip"]["interface"]]
+  interface: $contr_sys_mappings[$network_cfg["public_vip"]["interface"]]["name"]
+#else
+  interface: $contr_sys_mappings[$network_cfg["public_vip"]["interface"]]["interface"]
+#end if
+
+db_host: "{{ internal_vip.ip }}"
+rabbit_host: "{{ internal_vip.ip }}"
+
+internal_ip: "{{ ip_settings[inventory_hostname]['tenant']['ip'] }}"
+internal_nic: tenant
+
+#set random_id = randint(1, 255)
+vrouter_id_internal: $random_id
+vrouter_id_public: $random_id
+
+identity_host: "{{ internal_ip }}"
+controllers_host: "{{ internal_ip }}"
+storage_controller_host: "{{ internal_ip }}"
+compute_controller_host: "{{ internal_ip }}"
+image_host: "{{ internal_ip }}"
+network_server_host: "{{ internal_ip }}"
+dashboard_host: "{{ internal_ip }}"
+
+haproxy_hosts:
+#for $item in $has
+#set $hostname=$item["hostname"]
+  $hostname: $ip_settings[$hostname]["tenant"]["ip"]
+#end for
+
+host_index:
+#for $index, $item in enumerate($has)
+  $item["hostname"]: $index
+#end for
+
+ERLANG_TOKEN: YOWSJSJIGGAUFZTIBRAD
+
+cluster_name: $cluster_name
+
+odl_controller: 10.1.0.15
+
+DEBUG: true
+VERBOSE: true
+NTP_SERVER_LOCAL: "{{ controllers_host }}"
+DB_HOST: "{{ db_host }}"
+MQ_BROKER: rabbitmq
+
+OPENSTACK_REPO: cloudarchive-pike.list
+pike_cloud_archive: deb http://ubuntu-cloud.archive.canonical.com/ubuntu xenial-updates/pike main
+ADMIN_TOKEN: admin
+CEILOMETER_TOKEN: c095d479023a0fd58a54
+erlang.cookie: DJJVECFMCJPVYQTJTDWG
+
+#set plugins = $getVar('plugins', [])
+#for item in plugins
+#set keys = $item.keys()
+#set values = $item.values()
+$keys[0]: $values[0]
+#end for
+
+#set neutron_service_plugins=['router']
+#if $getVar('enable_fwaas', True)
+#neutron_service_plugins.append('firewall')
+#end if
+#if $getVar('enable_vpnaas', True)
+#neutron_service_plugins.append('vpnaas')
+#end if
+
+NEUTRON_SERVICE_PLUGINS: $neutron_service_plugins
+NEUTRON_TYPE_DRIVERS: ['flat', 'gre', 'vxlan', 'vlan']
+NEUTRON_TENANT_NETWORK_TYPES: ['$ovs_config["tenant_network_type"]']
+NEUTRON_OVS_BRIDGE_MAPPINGS: $ovs_config['bridge_mappings']
+#if 'vlan_ranges' in $ovs_config
+NEUTRON_VLAN_RANGES: $ovs_config['vlan_ranges']
+#else
+NEUTRON_VLAN_RANGES: []
+#end if
+#if 'tunnel_id_ranges' in $ovs_config
+NEUTRON_TUNNEL_ID_RANGES: $ovs_config['tunnel_id_ranges']
+#else
+NEUTRON_TUNNEL_ID_RANGES: []
+#end if
+
+#NEUTRON_MECHANISM_DRIVERS: ['opendaylight']
+NEUTRON_MECHANISM_DRIVERS: ['openvswitch']
+NEUTRON_TUNNEL_TYPES: ['vxlan']
+METADATA_SECRET: metadata_secret
+WSREP_SST_USER: wsrep_sst
+WSREP_SST_PASS: wsrep_sst_sercet
+
+INSTANCE_TUNNELS_INTERFACE_IP_ADDRESS: "{{ internal_ip }}"
+
+#build_in_image: http://download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img
+build_in_image: http://192.168.121.12:9999/img/cirros-0.3.3-x86_64-disk.img
+build_in_image_name: cirros-0.3.3-x86_64-disk.img
+
+api_workers: 1
+
+physical_device: /dev/sdb
+
+odl_api_port: 8080
+
+odl_pkg_url: https://nexus.opendaylight.org/content/groups/public/org/opendaylight/integration/distribution-karaf/0.2.2-Helium-SR2/distribution-karaf-0.2.2-Helium-SR2.tar.gz
+odl_pkg_name: karaf.tar.gz
+odl_home: "/opt/opendaylight-0.2.2/"
+odl_base_features: ['config', 'standard', 'region', 'package', 'kar', 'ssh', 'management', 'http', 'odl-base-all','odl-aaa-authn','odl-restconf','odl-nsf-all','odl-adsal-northbound','odl-mdsal-apidocs', 'odl-openflowplugin-all']
+odl_extra_features: ['odl-l2switch-switch', 'odl-ovsdb-plugin', 'odl-ovsdb-openstack', 'odl-ovsdb-northbound','odl-dlux-core', 'odl-restconf-all', 'odl-mdsal-clustering', 'odl-openflowplugin-flow-services', 'odl-netconf-connector', 'odl-netconf-connector-ssh', 'jolokia-osgi']
+odl_features: "{{ odl_base_features + odl_extra_features }}"
+odl_api_port: 8080
+
+#set moon_cfg = $getVar('moon_cfg', {})
+moon_master: $moon_cfg.master.flag
+moon_slave: $moon_cfg.slave.flag
+moon_slave_name: $moon_cfg.slave.name
+moon_master_ip: $moon_cfg.slave.master_ip
+

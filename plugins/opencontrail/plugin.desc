@@ -1,0 +1,43 @@
+# Plugin for opencontrail service for Compass4nfv.
+# opencontrail provides a sdn network for k8s.
+#
+# More details can be found in the development document.
+# ##############################################################
+---
+plugin:
+  # plugin name,it is also as the switch to enable/disable plugin in scenario
+  # files
+  name: opencontrail
+
+  description: provide a sdn solution for k8s
+
+  maintainers:
+
+  # host os type: centos
+  os_version: centos
+
+  # true: this plugin is deployed separately on a new node
+  # false: this plugin is deployed on controller or compute node
+  independent_hosts: false
+
+  # artifact: package download url for this plugin
+  artifacts:
+    url:
+
+  # orchestration
+  # A plugin can have mutiple components, each component may need to be
+  # installed on different inventory or have its own configuration.
+  # due to Compass4nfv currently only supports ansible, so each component
+  # of the installation and configuration script need to be use ansible.
+  # cm : congfiguration management tool : only ansible support
+  # role: each component corresponds to ansible script that locates in the same
+  # directory as plugin.desc.
+  # phrase:
+  # inventory:
+  orchestration:
+    cm: ansible
+    roles:
+      - role: opencontrail
+        phrase: post_k8s
+        inventory:
+          - localhost
