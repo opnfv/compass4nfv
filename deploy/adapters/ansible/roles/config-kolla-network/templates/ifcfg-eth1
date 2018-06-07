@@ -1,0 +1,11 @@
+DEVICE=eth1
+TYPE=Ethernet
+IPADDR={{ ip_settings[inventory_hostname]["external"]["ip"] }}
+PREFIX=24
+BOOTPROTO=static
+ONBOOT=yes
+DELAY=0
+DEFROUTE="yes"
+GATEWAY={{ ip_settings[inventory_hostname]["external"]["gw"] }}
+DNS1=8.8.8.8
+DNS2=8.8.4.4
