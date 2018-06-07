@@ -1,0 +1,8 @@
+DEVICE=eth0
+TYPE=Ethernet
+IPADDR={{ip_settings[inventory_hostname]["mgmt"]["ip"]}}
+PREFIX=24
+BOOTPROTO=none
+ONBOOT=yes
+DELAY=0
+DEFROUTE="no"
