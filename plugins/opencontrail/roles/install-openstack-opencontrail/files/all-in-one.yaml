@@ -1,0 +1,50 @@
+provider_config:
+  kvm:
+    ssh_pwd: root
+    ssh_user: root
+    ssh_public_key: /root/.ssh/id_rsa.pub
+    ssh_private_key: /root/.ssh/id_rsa
+    gateway: 192.16.1.1
+    nameserver: 8.8.8.8
+    ntpserver: 192.16.1.1
+    domainsuffix: local
+instances:
+  kvm1:
+    provider: kvm
+    ip: 192.16.1.210
+    roles:
+      config_database:
+      config:
+      control:
+      analytics_database:
+      analytics:
+      webui:
+      vrouter:
+      openstack:
+      openstack_compute:
+global_configuration:
+  CONTAINER_REGISTRY: opencontrailnightly
+contrail_configuration:
+  CONTRAIL_VERSION: latest
+  CLOUD_ORCHESTRATOR: openstack
+  VROUTER_GATEWAY: 192.16.1.1
+  RABBITMQ_NODE_PORT: 5673
+  AUTH_MODE: keystone
+  KEYSTONE_AUTH_URL_VERSION: /v3
+  KEYSTONE_AUTH_ADMIN_PASSWORD: contrail123
+  CLOUD_ORCHESTRATOR: openstack
+kolla_config:
+  customize:
+    nova.conf: |
+      [libvirt]
+      virt_type=qemu
+      cpu_mode=none
+  kolla_globals:
+    network_interface: "eth1"     #Do not change – this is the VM interface and not the host interface
+    kolla_internal_vip_address: "192.16.1.210"
+    contrail_api_interface_address: "192.16.1.210"
+    enable_haproxy: "no"
+    enable_ironic: "no"
+    enable_swift: "no"
+  kolla_passwords:
+    keystone_admin_password: contrail123

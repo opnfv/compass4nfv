@@ -23,20 +23,5 @@ hosts:
 
   - name: host2
     roles:
-      - controller
-      - ha
-      - opencontrail
-
-  - name: host3
-    roles:
-      - controller
-      - ha
-      - opencontrail
-
-  - name: host4
-    roles:
       - compute
 
-  - name: host5
-    roles:
-      - compute
