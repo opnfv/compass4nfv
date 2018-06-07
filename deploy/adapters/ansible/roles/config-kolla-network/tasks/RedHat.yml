@@ -1,0 +1,21 @@
+##############################################################################
+# Copyright (c) 2017 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: generate new ifcfg-eth0 script for mgmt
+  template:
+    src: ifcfg-eth0
+    dest: /etc/sysconfig/network-scripts/
+
+- name: generate new ifcfg-eth1 script for external, storate and tenant
+  template:
+    src: ifcfg-eth1
+    dest: /etc/sysconfig/network-scripts/
+
+- name: restart the network
+  shell: systemctl restart network
