@@ -8,6 +8,10 @@
 # #############################################################################
 ---
 
+- name: define image architecture
+  set_fact:
+    imgarch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
+
 - name: ensure ceph-ansible dir exists
   stat:
     path: /opt/ceph-ansible
@@ -39,24 +43,24 @@
 
 - name: ensure osdsctl exists
   stat:
-    path: /opt/opensds-v0.1.5-linux-amd64/bin/osdsctl
+    path: /opt/opensds-v0.1.5-linux-{{ imgarch }}/bin/osdsctl
   ignore_errors: "true"
   register: osdsctl_exists
 
 - name: ensure opensds csi directory exists
   stat:
-    path: /opt/opensds-k8s-v0.1.0-linux-amd64
+    path: /opt/opensds-k8s-v0.1.0-linux-{{ imgarch }}
   ignore_errors: "true"
   register: csi_dir_exists
 
 - name: create opensds default profile, csi pods
   remote_user: root
   shell: |
-    cp /opt/opensds-v0.1.5-linux-amd64/bin/osdsctl /usr/local/bin;
+    cp /opt/opensds-v0.1.5-linux-{{ imgarch }}/bin/osdsctl /usr/local/bin;
     export OPENSDS_ENDPOINT=http://{{ public_vip.ip }}:50040;
     export OPENSDS_AUTH_STRATEGY=noauth;
     osdsctl profile create '{"name": "default", "description": "default policy"}'
-    cd /opt/opensds-k8s-v0.1.0-linux-amd64;
+    cd /opt/opensds-k8s-v0.1.0-linux-{{ imgarch }};
     kubectl create -f csi/deploy/kubernetes;
   ignore_errors: "true"
   when:
