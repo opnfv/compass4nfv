@@ -11,7 +11,7 @@ metadata:
   namespace: "{{system_namespace}}"
 ---
 kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: sriov
 rules:
@@ -36,7 +36,7 @@ rules:
       - patch
 ---
 kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: sriov
 roleRef:
