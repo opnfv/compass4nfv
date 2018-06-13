@@ -1,14 +1,14 @@
 ---
 packages:
-  - name: CentOS-7-aarch64-Minimal-1611.iso
+  - name: CentOS-7-aarch64-Minimal-1708.iso
     description: "Centos ISO of each host for provisioning"
     get_method: cached
-    url: $COMPASS_ISO_REPO/CentOS-7-aarch64-Minimal-1611.iso
+    url: http://artifacts.opnfv.org/compass4nfv/package/master/CentOS-7-aarch64-Minimal-1708.iso
 
   - name: ubuntu-16.04-server-arm64.iso
     description: "Ubuntu ISO of each host for provisioning"
     get_method: cached
-    url: $COMPASS_ISO_REPO/ubuntu-16.04-server-arm64.iso
+    url: http://artifacts.opnfv.org/compass4nfv/package/master/ubuntu-16.04-server-arm64.iso
 
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
