@@ -1,0 +1,92 @@
+##############################################################################
+# Copyright (c) 2016 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+- name: clean local repo conf
+  file:
+    path: /etc/yum.repos.d
+    state: absent
+  run_once: "True"
+  when: ansible_os_family == 'RedHat'
+
+- name: create local repo conf dir
+  file:
+    path: /etc/yum.repos.d
+    state: directory
+  run_once: "True"
+  when: ansible_os_family == 'RedHat'
+
+- name: configure local mirror repo
+  copy:
+    src: "{{ item }}"
+    dest: /etc/yum.repos.d/mirrors.repo
+  with_first_found:
+    - mirrors_{{ ansible_architecture }}.repo
+    - mirrors.repo
+  run_once: "True"
+  when: ansible_os_family == 'RedHat'
+
+- name: clean local pip conf to use official pip repo
+  file:
+    path: /root/.pip/pip.conf
+    state: absent
+  run_once: "True"
+
+- name: install dependency for ansible update
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - git
+    - libffi-devel
+    - openssl-devel
+    - python-devel
+  run_once: "True"
+  when: ansible_os_family == 'RedHat'
+
+- name: update python packages
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - netaddr
+    - jinja2
+
+- name: git clone contrail-ansible-deployer repo
+  shell: |
+    rm -rf /opt/contrail-ansible-deployer
+    git clone https://github.com/Juniper/contrail-ansible-deployer.git \
+    /opt/contrail-ansible-deployer
+
+- name: copy overrided variables
+  copy:
+    src: "{{ item }}"
+    dest: /opt/contrail-ansible-deployer/config/instances.yaml
+  with_first_found:
+    - kvm-instances.yaml
+
+- name: do not restart network
+  shell: |
+    cd /opt/contrail-ansible-deployer
+    sed -i '9, 13d' playbooks/roles/configure_instances/tasks/RedHat.yml
+
+- name: run config playbook
+  shell: |
+    cd /opt/contrail-ansible-deployer
+    ansible-playbook -i inventory/ playbooks/configure_instances.yml \
+                     -b -v 2>&1  | tee config-contrail.log
+  tags:
+    - ansible
+
+- name: run install playbook
+  shell: |
+    cd /opt/contrail-ansible-deployer
+    ansible-playbook -e orchestrator=kubernetes -i inventory/ playbooks/install_contrail.yml \
+                     -b -v 2>&1  | tee install-contrail.log
+  tags:
+    - ansible

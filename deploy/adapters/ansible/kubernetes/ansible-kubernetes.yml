@@ -35,7 +35,10 @@
   remote_user: root
   max_fail_percentage: 0
   roles:
-    - kargo
+    - role: kargo
+      when: opencontrail is not defined
+    - role: install-k8s-opencontrail
+      when: opencontrail is defined and opencontrail == "Enable"
 
 - hosts: kube_master
   remote_user: root
