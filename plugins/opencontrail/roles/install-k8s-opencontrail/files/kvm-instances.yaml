@@ -18,15 +18,19 @@ instances:
       webui:
       k8s_master:
       kubemanager:
-    ip: 10.1.0.50
+    ip: 192.16.1.210
   kvm2:
     provider: kvm
     roles:
-      k8s_node:
       vrouter:
-    ip: 10.1.0.51
+      k8s_node:
+    ip: 192.16.1.211
 
 contrail_configuration:
   CONTAINER_REGISTRY: opencontrailnightly
   CONTRAIL_VERSION: latest
+  CLOUD_ORCHESTRATOR: kubernetes
+  VROUTER_GATEWAY: 192.16.1.1
+  UPGRADE_KERNEL: true
+  PHYSICAL_INTERFACE: eth1
   KUBERNETES_CLUSTER_PROJECT: {}
