@@ -70,6 +70,18 @@
   with_first_found:
     - kvm-instances.yaml
 
+- name: copy config file for ha scenario
+  copy:
+    src: "{{ item }}"
+    dest: /opt/contrail-ansible-deployer/config/instances.yaml
+  with_first_found:
+    - ha-kvm-instances.yaml
+  when:
+    - hostvars[inventory_hostname]['groups']['kube_master'] is defined and
+      "{{ hostvars[inventory_hostname]['groups']['kube_master'] | length > 1 }}"
+    - hostvars[inventory_hostname]['groups']['opencontrail'] is defined and
+      "{{ hostvars[inventory_hostname]['groups']['opencontrail'] | length > 1 }}"
+
 - name: do not restart network
   shell: |
     cd /opt/contrail-ansible-deployer
