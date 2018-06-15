@@ -15,6 +15,7 @@ mkdir -p $WORK_DIR/script
 export DEPLOY_FIRST_TIME=${DEPLOY_FIRST_TIME:-"true"}
 export DEPLOY_RECOVERY=${DEPLOY_RECOVERY:-"false"}
 
+source ${COMPASS_DIR}/deploy/conf/base.conf
 source ${COMPASS_DIR}/deploy/prepare.sh
 prepare_python_env
 source ${COMPASS_DIR}/util/log.sh
@@ -24,7 +25,6 @@ check_input_para
 source $(process_default_para $*) || exit 1
 source ${COMPASS_DIR}/deploy/conf/${FLAVOR}.conf
 source ${COMPASS_DIR}/deploy/conf/${TYPE}.conf
-source ${COMPASS_DIR}/deploy/conf/base.conf
 source ${COMPASS_DIR}/deploy/conf/compass.conf
 source ${COMPASS_DIR}/deploy/network.sh
 source ${COMPASS_DIR}/deploy/host_${TYPE}.sh
@@ -66,7 +66,7 @@ if [[ "$EXPANSION" == "false" ]]; then
             log_error "create_nets failed"
             exit 1
         fi
-
+        exit 1
         if ! launch_compass;then
             log_error "launch_compass failed"
             exit 1
