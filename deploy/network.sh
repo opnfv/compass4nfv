@@ -143,6 +143,7 @@ function setup_baremetal_net() {
     exit 1
   fi
   sudo ifconfig $INSTALL_NIC up
+  sudo ifconfig $INSTALL_NIC promisc
   sudo ifconfig $INSTALL_NIC $INSTALL_GW netmask $INSTALL_NETMASK
 }
 
