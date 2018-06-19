@@ -10,6 +10,10 @@
 function clear_forward_rejct_rules()
 {
     while sudo iptables -nL FORWARD --line-number|grep -E 'REJECT +all +-- +0.0.0.0/0 +0.0.0.0/0 +reject-with icmp-port-unreachable'|head -1|awk '{print $1}'|xargs sudo iptables -D FORWARD; do :; done
+    ip_forward=$(cat /proc/sys/net/ipv4/ip_forward)
+    if [ $ip_forward -eq 0 ]; then
+        sysctl -w net.ipv4.ip_forward=1
+    fi
 }
 
 function setup_bridge_net()
