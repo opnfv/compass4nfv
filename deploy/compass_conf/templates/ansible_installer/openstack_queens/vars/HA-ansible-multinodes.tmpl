@@ -166,6 +166,14 @@ erlang.cookie: DJJVECFMCJPVYQTJTDWG
 $keys[0]: $values[0]
 #end for
 
+cluster_param:
+#set cluster_param = $getVar('cluster_param', [])
+#for item in cluster_param
+#set keys = $item.keys()
+#set values = $item.values()
+  $keys[0]: $values[0]
+#end for
+
 #set neutron_service_plugins=['router']
 #if $getVar('enable_fwaas', True)
 #neutron_service_plugins.append('firewall')

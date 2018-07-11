@@ -48,8 +48,9 @@ function deploy_host(){
     --cluster_vip="${VIP}" --network_cfg="$NETWORK" --neutron_cfg="$NEUTRON" \
     --enable_secgroup="${ENABLE_SECGROUP}" --enable_fwaas="${ENABLE_FWAAS}" --expansion="${EXPANSION}" \
     --rsa_file="$rsa_file" --enable_vpnaas="${ENABLE_VPNAAS}" --odl_l3_agent="${odl_l3_agent}" \
-    --moon_cfg="${MOON_CFG}" --onos_sfc="${onos_sfc}" --plugins="$plugins" \
-    --offline_repo_port="${COMPASS_REPO_PORT}" --offline_deployment="${OFFLINE_DEPLOY}"
+    --moon_cfg="${MOON_CFG}" --onos_sfc="${onos_sfc}" --plugins="${plugins}" \
+    --cluster_param="${cluster_param}" --offline_repo_port="${COMPASS_REPO_PORT}" \
+    --offline_deployment="${OFFLINE_DEPLOY}"
 
     RET=$?
     sleep $((AYNC_TIMEOUT+5))

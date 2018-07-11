@@ -259,6 +259,9 @@ opts = [
     cfg.StrOpt('plugins',
                help='plugin dict',
                default='{}'),
+    cfg.StrOpt('cluster_param',
+               help='cluster dict',
+               default='{}'),
     cfg.StrOpt('offline_deployment',
                help='offline_deployment',
                default='Disable'),
@@ -803,10 +806,16 @@ class CompassClient(object):
         package_config['odl_l3_agent'] = "Enable" if CONF.odl_l3_agent == "Enable" else "Disable"   # noqa
         package_config['onos_sfc'] = "Enable" if CONF.onos_sfc == "Enable" else "Disable"   # noqa
         package_config['plugins'] = []
+        package_config['cluster_param'] = []
         if CONF.plugins:
             for item in CONF.plugins.split(','):
                 key, value = item.split(':')
                 package_config['plugins'].append({key: value})
+
+        if CONF.cluster_param:
+            for item in CONF.cluster_param.split(','):
+                key, value = item.split(':')
+                package_config['cluster_param'].append({key: value})
 
         status, resp = self.client.update_cluster_config(
             cluster_id, package_config=package_config)
