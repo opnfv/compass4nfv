@@ -10,6 +10,12 @@
     name: networking-odl
     virtualenv: /openstack/venvs/neutron-{{ os_ver }}
 
+- name: install neutron-lib
+  pip:
+    name: neutron-lib
+    version: 1.14.0
+    virtualenv: /openstack/venvs/neutron-{{ os_ver }}
+
 - name: configure vsctl for dhcp agent
   shell: |
     crudini --set /etc/neutron/dhcp_agent.ini OVS \
