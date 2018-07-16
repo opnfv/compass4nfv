@@ -62,6 +62,15 @@ iface br-external inet static
     address {{ ip_settings[inventory_hostname]["external"]["ip"] }}
     netmask 255.255.255.0
     gateway {{ ip_settings[inventory_hostname]["external"]["gw"] }}
+    offload-sg off
+    # Create veth pair, don't bomb if already exists
+    pre-up ip link add br-external-veth type veth peer name external-nic || true
+    # Set both ends UP
+    pre-up ip link set br-external-veth up
+    pre-up ip link set external-nic up
+    # Delete veth pair on DOWN
+    post-down ip link del br-external-veth || true
+    bridge_ports br-external-veth
 
 # OpenStack Networking VXLAN (tunnel/overlay) bridge
 #
