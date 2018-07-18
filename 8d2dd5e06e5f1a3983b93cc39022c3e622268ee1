@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a561d44_60878810",
+        "filename": "plugins/opencontrail/roles/install-k8s-opencontrail/files/kvm-instances.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6829
+      },
+      "writtenOn": "2018-07-18T02:47:09Z",
+      "side": 0,
+      "message": "Is this hard code?",
+      "range": {
+        "startLine": 27,
+        "startChar": 8,
+        "endLine": 27,
+        "endChar": 17
+      },
+      "revId": "8d2dd5e06e5f1a3983b93cc39022c3e622268ee1",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
