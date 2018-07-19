@@ -362,3 +362,9 @@
     dest: /etc/ansible/roles/lxc_hosts/vars/ubuntu-16.04.yml
     insertafter: '^  cache_prep_commands:'
     line: '    rm /etc/resolv.conf || true'
+
+- name: set ansible cache to 30
+  lineinfile:
+    dest: /usr/local/bin/openstack-ansible.rc
+    regexp: '^export ANSIBLE_CACHE_PLUGIN_TIMEOUT'
+    line: 'export ANSIBLE_CACHE_PLUGIN_TIMEOUT="${ANSIBLE_CACHE_PLUGIN_TIMEOUT:-30}"'
