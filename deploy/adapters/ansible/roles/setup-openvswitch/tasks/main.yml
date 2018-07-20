@@ -10,9 +10,17 @@
 - include: controller.yml
   when:
     - inventory_hostname not in groups['nova_compute']
-    - NEUTRON_MECHANISM_DRIVERS[0] == "openvswitch" or "opendaylight"
+    - NEUTRON_MECHANISM_DRIVERS[0] == "openvswitch"
 
 - include: compute.yml
   when:
     - inventory_hostname in groups['nova_compute']
-    - NEUTRON_MECHANISM_DRIVERS[0] == "openvswitch" or "opendaylight"
+    - NEUTRON_MECHANISM_DRIVERS[0] == "openvswitch"
+
+- include_vars: "{{ ansible_os_family }}.yml"
+  when:
+    - NEUTRON_MECHANISM_DRIVERS[0] == "opendaylight"
+
+- include: odl.yml
+  when:
+    - NEUTRON_MECHANISM_DRIVERS[0] == "opendaylight"

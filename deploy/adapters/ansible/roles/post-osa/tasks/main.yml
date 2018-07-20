@@ -11,6 +11,7 @@
   when:
     - inventory_hostname in groups['compute']
     - ansible_distribution == 'Ubuntu'
+    - NEUTRON_MECHANISM_DRIVERS[0] == "openvswitch"
 
 # install networking-sfc for non odl scenarios
 - include: install_networking_sfc.yml
