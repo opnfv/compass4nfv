@@ -35,9 +35,8 @@
       {% set _ = compu_l2_list.append(l2_mapping) %}
       {% set _ = compu_l3_list.append(l3_mapping) %}
       {% endfor %}
-      {% set pub_l3_mapping = pub_l3_mapping[0].replace(pub_intf[0], compu_pub_intf) %}
       {% set _ = compu_l2_list.append(pub_l2_mapping[0]) %}
-      {% set _ = compu_l3_list.append(pub_l3_mapping) %}
+      {% set _ = compu_l3_list.append(pub_l3_mapping[0]) %}
       public_bridge: "{{ pub_bridge[0] }}"
       contr_public_intf: "{{ pub_intf[0] }}"
       contr_l2_mappings: "{{ ','.join(contr_l2_list) }}"
