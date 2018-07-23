@@ -160,18 +160,21 @@ CEILOMETER_TOKEN: c095d479023a0fd58a54
 erlang.cookie: DJJVECFMCJPVYQTJTDWG
 
 #set plugins = $getVar('plugins', [])
+#set odl_enable = False
 #for item in plugins
-#set keys = $item.keys()
-#set values = $item.values()
-$keys[0]: $values[0]
+#set key = $item.keys()[0]
+#set value = $item.values()[0]
+#if $key == "opendaylight" and $value == "Enable"
+#set odl_enable = True
+#end if
+$key: $value
 #end for
 
-cluster_param:
 #set cluster_param = $getVar('cluster_param', [])
 #for item in cluster_param
-#set keys = $item.keys()
-#set values = $item.values()
-  $keys[0]: $values[0]
+#set key = $item.keys()[0]
+#set value = $item.values()[0]
+$key: $value
 #end for
 
 #set neutron_service_plugins=['router']
@@ -197,8 +200,11 @@ NEUTRON_TUNNEL_ID_RANGES: $ovs_config['tunnel_id_ranges']
 NEUTRON_TUNNEL_ID_RANGES: []
 #end if
 
-#NEUTRON_MECHANISM_DRIVERS: ['opendaylight']
+#if odl_enable == True
+NEUTRON_MECHANISM_DRIVERS: ['opendaylight']
+#else
 NEUTRON_MECHANISM_DRIVERS: ['openvswitch']
+#end if
 NEUTRON_TUNNEL_TYPES: ['vxlan']
 METADATA_SECRET: metadata_secret
 WSREP_SST_USER: wsrep_sst
