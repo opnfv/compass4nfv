@@ -39,6 +39,8 @@
 - name: Stop the Open vSwitch service and clear existing OVSDB
   shell: >
     service {{ service_ovs_name }} stop ;
+    sleep 3;
     rm -rf /var/log/openvswitch/* ;
     rm -rf /etc/openvswitch/conf.db ;
+    sleep 3;
     service {{ service_ovs_name }} start ;
