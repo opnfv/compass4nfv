@@ -19,8 +19,6 @@
 #export DEPLOY_HARBOR="true"
 #export HABOR_VERSION="1.5.0"
 
-# Set url for download the tar file of harbor
-#export HABOR_DOWNLOAD_URL=https://storage.googleapis.com/harbor-releases/release-$HABOR_VERSION/harbor-offline-installer-v$HABOR_VERSION.tgz
 # Set hardware deploy jumpserver PXE NIC
 # You need to comment out it when virtual deploy.
 #export INSTALL_NIC=eth1
