@@ -101,7 +101,7 @@ function build_tar()
     cd $CACHE_DIR
     sudo rm -rf compass_dists
     mkdir -p compass_dists
-    sudo cp -f *.tar *.iso compass_dists
+    sudo cp -f *.tar *.iso *.tgz compass_dists
     sudo cp $COMPASS_PATH/build/build*.yaml compass_dists
     sudo cp -rf $COMPASS_PATH/util/docker-compose ./
     sudo tar -zcf compass.tar.gz docker-compose compass_dists

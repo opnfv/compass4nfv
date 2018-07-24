@@ -190,11 +190,12 @@ function launch_harbor() {
 
     local harbor_cfg=$harbor_install_dir/harbor/harbor.cfg
     local harbor_docker_compose=$harbor_install_dir/harbor/docker-compose.yml
+    local harbor_tar=$harbor_install_dir/compass_dists/harbor-offline-installer-v$HABOR_VERSION.tgz
     rm -f $WORK_DIR/cache/harbor-offline-installer-v$HABOR_VERSION.tgz
-    curl --connect-timeout 10 -o $WORK_DIR/cache/harbor-offline-installer-v$HABOR_VERSION.tgz  $HABOR_DOWNLOAD_URL
+    curl --connect-timeout 10 -o $WORK_DIR/cache/harbor-offline-installer-v$HABOR_VERSION.tgz  file://$harbor_tar
     tar -zxf $WORK_DIR/cache/harbor-offline-installer-v$HABOR_VERSION.tgz -C $harbor_install_dir
 
-    sed "s/^hostname = .*/hostname = $INSTALL_IP/g" -i $harbor_cfg
+    sed "s/^hostname = .*/hostname = $INSTALL_IP:8080/g" -i $harbor_cfg
     sed "s/80:80/8080:80/g" -i $harbor_docker_compose
     sed "s/443:443/8443:443/g" -i $harbor_docker_compose
     cd $harbor_install_dir/harbor/

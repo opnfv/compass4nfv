@@ -10,6 +10,11 @@ packages:
     get_method: cached
     url: http://artifacts.opnfv.org/compass4nfv/package/master/ubuntu-16.04.3-server-amd64.iso
 
+  - name: harbor-offline-installer-v1.5.0.tgz
+    description: "Ubuntu ISO of each host for provisioning"
+    get_method: cached
+    url: http://artifacts.opnfv.org/compass4nfv/package/master/harbor-offline-installer-v1.5.0.tgz
+
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
