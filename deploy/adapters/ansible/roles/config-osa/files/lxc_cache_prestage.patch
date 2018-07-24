@@ -1,0 +1,11 @@
+--- lxc_cache_prestage.yml      2018-07-24 07:56:22.480369360 +0000
++++ /tmp/lxc_cache_prestage.yml 2018-07-24 08:17:44.665880308 +0000
+@@ -66,7 +66,7 @@
+     --dir=/tmp
+     --out=rootfs.tar.xz
+     --check-certificate={{ (lxc_hosts_validate_certs | bool) | lower }}
+-    {% for server in lxc_image_cache_server_mirrors %}{{ server }}{{ lxc_images[0].split(';')[-1] }}rootfs.tar.xz {% endfor %}
++    http://192.168.137.222/download/rootfs.tar.xz
+     > /var/log/aria2c-image-prestage.log 2>&1
+   args:
+     warn: no

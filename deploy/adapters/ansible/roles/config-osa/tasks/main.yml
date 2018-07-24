@@ -368,3 +368,14 @@
     dest: /etc/ansible/roles/lxc_hosts/tasks/lxc_cache_preparation_systemd_new.yml
     regexp: '^  retries: 60'
     replace: '  retries: 120'
+
+- name: copy lxc_cache_prestage.patch
+  copy:
+    src: lxc_cache_prestage.patch
+    dest: /etc/ansible/roles/lxc_hosts/tasks/lxc_cache_prestage.patch
+
+- name: patch lxc_cache_prestage.yml
+  shell:
+    patch -p0 < lxc_cache_prestage.patch
+  args:
+    chdir: /etc/ansible/roles/lxc_hosts/tasks/
