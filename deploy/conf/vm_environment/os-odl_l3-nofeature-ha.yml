@@ -11,7 +11,8 @@
 TYPE: virtual
 FLAVOR: cluster
 
-odl_l3_agent: "Enable"
+cluster_param:
+  - odl_l3_agent: "Enable"
 plugins:
   - opendaylight: "Enable"
 

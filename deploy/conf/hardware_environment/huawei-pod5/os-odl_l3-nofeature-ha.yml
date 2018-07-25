@@ -15,7 +15,10 @@ POWER_TOOL: ipmitool
 ipmiUser: root
 ipmiVer: '2.0'
 
-odl_l3_agent: "Enable"
+cluster_param:
+  - odl_l3_agent: "Enable"
+plugins:
+  - opendaylight: "Enable"
 
 hosts:
   - name: host1
