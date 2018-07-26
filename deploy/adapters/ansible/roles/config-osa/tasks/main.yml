@@ -379,3 +379,14 @@
     patch -p0 < lxc_cache_prestage.patch
   args:
     chdir: /etc/ansible/roles/lxc_hosts/tasks/
+
+- name: add cache refresh
+  blockinfile:
+    dest: /opt/openstack-ansible/playbooks/setup-infrastructure.yml
+    insertbefore: '^- include: unbound-install.yml'
+    block: |
+      - hosts: all
+        user: root
+        tasks:
+          - name: refresh
+            setup:
