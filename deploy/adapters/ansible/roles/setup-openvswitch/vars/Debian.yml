@@ -7,10 +7,10 @@ ovs_pkgs:
   - openvswitch-common:
     name: openvswitch-common
     package: openvswitch-common.deb
-    url: http://archive.ubuntu.com/ubuntu/pool/main/o/openvswitch/openvswitch-common_2.5.4-0ubuntu0.16.04.1_amd64.deb
+    url: http://archive.ubuntu.com/ubuntu/pool/main/o/openvswitch/openvswitch-common_2.8.0-0ubuntu2_amd64.deb
 
   - openvswitch-switch:
     name: openvswitch-switch
     package: openvswitch-switch.deb
-    url: http://archive.ubuntu.com/ubuntu/pool/main/o/openvswitch/openvswitch-switch_2.5.4-0ubuntu0.16.04.1_amd64.deb
+    url: http://archive.ubuntu.com/ubuntu/pool/main/o/openvswitch/openvswitch-switch_2.8.0-0ubuntu2_amd64.deb
 # yamllint enable rule:line-length
