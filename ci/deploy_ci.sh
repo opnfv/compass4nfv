@@ -18,10 +18,6 @@ case $DEPLOY_SCENARIO in
         echo "os-onos-sfc-ha scenario supports mitaka only"
         exit 1
         ;;
-    os-odl_l3-nofeature-ha)
-        echo "stop running os-odl_l3-nofeature-ha scenario temporarily"
-        exit 1
-        ;;
 esac
 
 if [[ "$DEPLOY_SCENARIO" =~ "k8-" ]]; then
