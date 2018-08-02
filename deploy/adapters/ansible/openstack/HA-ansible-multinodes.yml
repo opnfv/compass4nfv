@@ -120,3 +120,9 @@
   remote_user: root
   roles:
     - moon
+
+- hosts:
+    - network_hosts[0]
+  remote_user: root
+  roles:
+    - os-stor4nfv
