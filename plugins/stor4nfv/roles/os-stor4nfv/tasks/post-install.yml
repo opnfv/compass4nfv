@@ -1,0 +1,59 @@
+# #############################################################################
+# Copyright (c) 2018 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+
+- name: configure ceph.yaml, opensds.conf
+  remote_user: root
+  shell: |
+    cd /root/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible
+    cp group_vars/ceph/ceph.yaml /etc/opensds/driver/
+
+    sed -i 's/^ enabled_backends.*/ enabled_backends: ceph/g' /etc/opensds/opensds.conf
+
+    sudo cat >> /etc/opensds/opensds.conf << OPENSDS_GLOABL_CONFIG_DOC
+
+    [ceph]
+     name = ceph
+     description = Ceph Test
+     driver_name = ceph
+     config_path = /etc/opensds/driver/ceph.yaml
+    OPENSDS_GLOABL_CONFIG_DOC
+
+- name: copy ceph.conf from ceph-mon container
+  remote_user: root
+  shell: |
+    mkdir -p /etc/ceph
+    cp /proc/$(lxc-info -n $(lxc-ls --line | grep ceph-mon) -p -H)/root/etc/ceph/ceph.conf \
+       /etc/ceph/ceph.conf
+
+- name: start osdsdock daemon
+  remote_user: root
+  shell: |
+    /opt/opensds-hotpot-linux-amd64/bin/osdsdock -daemon
+
+- name: ensure osdsctl exists
+  stat:
+    path: /opt/opensds-hotpot-linux-amd64/bin/osdsctl
+  ignore_errors: "true"
+  register: osdsctl_exists
+
+- name: run cinder-compatible-api, create opensds default profile
+  remote_user: root
+  shell: |
+    cd $HOME/gopath/src/github.com/stor4nfv/stor4nfv/ci/ansible;
+    export OPENSDS_ENDPOINT=http://{{ public_vip.ip }}:50040;
+    export CINDER_ENDPOINT=http://{{ internal_vip.ip }}:8776/v3;
+    chmod +x ../bin/cindercompatibleapi;
+    ( ( nohup ../bin/cindercompatibleapi > /var/log/cindercompatibleapi.log 2>&1 ) & );
+    cp /opt/opensds-hotpot-linux-amd64/bin/osdsctl /usr/local/bin;
+    export OPENSDS_AUTH_STRATEGY=noauth;
+    osdsctl profile create '{"name": "default", "description": "default policy"}'
+  ignore_errors: "true"
+  when:
+    - osdsctl_exists.stat.exists
