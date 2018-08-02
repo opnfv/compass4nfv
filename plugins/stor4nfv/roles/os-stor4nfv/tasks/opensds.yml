@@ -1,0 +1,71 @@
+# #############################################################################
+# Copyright (c) 2018 Intel Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+# #############################################################################
+---
+
+- name: install prerequisites package
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - gawk
+    - curl
+    - wget
+    - software-properties-common
+
+- name: copy install_ansible script
+  remote_user: root
+  copy:
+    src: install_ansible.sh
+    dest: /opt/install_ansible.sh
+    mode: 0777
+
+- name: install ansible
+  command: su -s /bin/sh -c "/opt/install_ansible.sh"
+  ignore_errors: "true"
+
+- name: disable cinder
+  remote_user: root
+  shell: |
+    lxc-stop -n $(lxc-ls --line | grep cinder_api)
+    lxc-stop -n $(lxc-ls --line | grep cinder_scheduler)
+  ignore_errors: "true"
+
+- name: modify haproxy.cfg and restart haproxy
+  remote_user: root
+  shell: |
+    sed -i \
+        '/frontend cinder_api-front/,/host1_cinder_api_container/ s/^/#/' /etc/haproxy/haproxy.cfg
+    systemctl restart haproxy
+  ignore_errors: "true"
+
+- name: fetch stor4nfv source code
+  remote_user: root
+  shell: |
+    mkdir -p $HOME/gopath/src/github.com/os-stor4nfv && cd $HOME/gopath/src/github.com/os-stor4nfv;
+    git clone https://gerrit.opnfv.org/gerrit/stor4nfv.git
+
+- name: copy os_configure_vars script
+  remote_user: root
+  copy:
+    src: os_configure_vars.sh
+    dest: /opt/os_configure_vars.sh
+    mode: 0777
+
+- name: configure variables for opensds
+  remote_user: root
+  shell: |
+    cd /opt;
+    ./os_configure_vars.sh {{ public_vip.ip }}
+
+- name: run playbook
+  remote_user: root
+  shell: |
+    cd $HOME/gopath/src/github.com/os-stor4nfv/stor4nfv/ci/ansible;
+    ansible-playbook site.yml -i local.hosts | tee /var/log/os-stor4nfv.log
