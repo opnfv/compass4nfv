@@ -68,6 +68,8 @@
     regexp: 'br-external'
     replace: 'br-provider'
 
+- meta: flush_handlers
+
 - name: restart keepalived
   service:
     name: keepalived
