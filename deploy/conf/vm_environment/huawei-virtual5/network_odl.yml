@@ -12,7 +12,7 @@ nic_mappings: []
 bond_mappings: []
 
 provider_net_mappings:
-  - name: br-provider
+  - name: br-int
     network: physnet
     interface: external-nic
     type: ovs
