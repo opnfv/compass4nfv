@@ -127,6 +127,9 @@ def export_dha_file(dha, dha_file, ofile):
     if len(value) > 0:
         env.update({'HOST_MACS': value})
 
+    if dha.get('TYPE', "virtual") == "virtual":
+        env.update({'VIRT_NUMBER': len(dha['hosts'])})
+
     export_env_dict(env, ofile)
 
 
