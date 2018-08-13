@@ -46,6 +46,15 @@
     - heapster.enabled
     - inventory_hostname == groups['kube_master'][0]
 
+- name: replace the cpu architecture for aarch64
+  shell: |
+    cd "{{ local_release_dir }}/heapster/heapster-{{ heapster.version }}/deploy/";
+    find ./kube-config -name "*.yaml" -exec sed -i "s/amd64/arm64/g" {} \;
+  when:
+    - heapster.enabled
+    - inventory_hostname == groups['kube_master'][0]
+    - ansible_architecture == "aarch64"
+
 - name: install the heapster
   shell: |
     cd "{{ local_release_dir }}/heapster/heapster-{{ heapster.version }}/deploy/";
