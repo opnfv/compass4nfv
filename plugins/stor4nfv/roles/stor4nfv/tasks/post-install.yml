@@ -31,6 +31,7 @@
   become: true
   args:
     chdir: /opt/ceph-ansible
+  ignore_errors: "true"
   when:
     - ceph_ansible_exists.stat.exists is defined and ceph_ansible_exists.stat.exists
 
@@ -43,26 +44,17 @@
 
 - name: ensure osdsctl exists
   stat:
-    path: /opt/opensds-v0.1.5-linux-{{ imgarch }}/bin/osdsctl
+    path: /opt/opensds-hotpot-linux-{{ imgarch }}/bin/osdsctl
   ignore_errors: "true"
   register: osdsctl_exists
 
-- name: ensure opensds csi directory exists
-  stat:
-    path: /opt/opensds-k8s-v0.1.0-linux-{{ imgarch }}
-  ignore_errors: "true"
-  register: csi_dir_exists
-
-- name: create opensds default profile, csi pods
+- name: create opensds default profile
   remote_user: root
   shell: |
-    cp /opt/opensds-v0.1.5-linux-{{ imgarch }}/bin/osdsctl /usr/local/bin;
+    cp /opt/opensds-hotpot-linux-{{ imgarch }}/bin/osdsctl /usr/local/bin;
     export OPENSDS_ENDPOINT=http://{{ public_vip.ip }}:50040;
     export OPENSDS_AUTH_STRATEGY=noauth;
     osdsctl profile create '{"name": "default", "description": "default policy"}'
-    cd /opt/opensds-k8s-v0.1.0-linux-{{ imgarch }};
-    kubectl create -f csi/deploy/kubernetes;
   ignore_errors: "true"
   when:
     - osdsctl_exists.stat.exists is defined and osdsctl_exists.stat.exists
-    - csi_dir_exists.stat.exists is defined and csi_dir_exists.stat.exists
