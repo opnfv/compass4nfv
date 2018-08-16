@@ -15,6 +15,9 @@
   with_items:
     - make
     - gcc
+    - gawk
+    - librados-dev
+    - librbd-dev
 
 - name: copy install_ansible script
   remote_user: root
@@ -31,7 +34,8 @@
   shell: |
     cd /opt;
     git clone https://github.com/ceph/ceph-ansible.git;
-    [ -f ceph-ansible/requirements.txt ] && pip install -r ceph-ansible/requirements.txt
+    [ -f ceph-ansible/requirements.txt ] && pip install -r ceph-ansible/requirements.txt;
+    git checkout stable-3.1
 
 - name: fetch stor4nfv source code
   remote_user: root
