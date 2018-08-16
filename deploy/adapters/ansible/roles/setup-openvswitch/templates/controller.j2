@@ -26,7 +26,7 @@ iface {{ intf_external }} inet manual
 {% set intf_tenant = intf_tenant + '.' + contr_sys_mappings["tenant"]["vlan_tag"]|string %}
 {% endif %}
 auto {{ intf_tenant }}
-iface {{ intf_tenant }} inet static
+iface {{ intf_tenant }} inet manual
 {% if contr_sys_mappings["tenant"]["vlan_tag"] | int %}
     vlan-raw-device {{ intf_tenant }}
 {% endif %}
