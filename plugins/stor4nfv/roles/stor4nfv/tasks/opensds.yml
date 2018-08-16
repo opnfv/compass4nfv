@@ -15,6 +15,7 @@
   with_items:
     - make
     - gcc
+    - gawk
 
 - name: copy install_ansible script
   remote_user: root
@@ -25,13 +26,6 @@
 
 - name: install ansible
   command: su -s /bin/sh -c "/opt/install_ansible.sh"
-
-- name: install ceph-ansible code
-  remote_user: root
-  shell: |
-    cd /opt;
-    git clone https://github.com/ceph/ceph-ansible.git;
-    [ -f ceph-ansible/requirements.txt ] && pip install -r ceph-ansible/requirements.txt
 
 - name: fetch stor4nfv source code
   remote_user: root
