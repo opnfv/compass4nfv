@@ -396,3 +396,28 @@
         tasks:
           - name: refresh
             setup:
+
+- name: create openstack git directory
+  file:
+    path: /opt/git/openstack
+    state: directory
+  when:
+    - checkresult.rc == 0
+    - offline_deployment is defined and offline_deployment == "Disable"
+
+- name: download openstack git package
+  get_url:
+    url: "http://192.168.137.222/download/openstack-queens-git.tar.gz"
+    dest: "/opt/git/openstack"
+  when:
+    - checkresult.rc == 0
+    - offline_deployment is defined and offline_deployment == "Disable"
+
+- name: extract openstack git repo
+  shell:
+    tar zxf openstack-queens-git.tar.gz
+  args:
+    chdir: "/opt/git/openstack"
+  when:
+    - checkresult.rc == 0
+    - offline_deployment is defined and offline_deployment == "Disable"
