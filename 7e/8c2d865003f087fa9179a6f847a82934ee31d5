@@ -1,0 +1,8 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: ramamani yeleswarapu <ramamani.yeleswarapu@intel.com>
+Code-Review+2: Harry Huang <huangxiangyu5@huawei.com>
+Submitted-by: Harry Huang <huangxiangyu5@huawei.com>
+Submitted-at: Tue, 21 Aug 2018 02:22:11 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/60983
+Project: compass4nfv
+Branch: refs/heads/master
