@@ -1,0 +1,9 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: Hui Wang <wanghui71@huawei.com>
+Code-Review+1: Qiaowei Ren <qiaowei.ren@intel.com>
+Code-Review+2: Harry Huang <huangxiangyu5@huawei.com>
+Submitted-by: Harry Huang <huangxiangyu5@huawei.com>
+Submitted-at: Thu, 23 Aug 2018 07:00:31 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/60499
+Project: compass4nfv
+Branch: refs/heads/master
