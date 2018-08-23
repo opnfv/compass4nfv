@@ -43,3 +43,7 @@ plugin:
         phrase: post_k8s
         inventory:
           - localhost
+      - role: os-stor4nfv
+        phrase: post_openstack
+        inventory:
+          - localhost
