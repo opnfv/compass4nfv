@@ -2,7 +2,7 @@
 
 - name: install networking-sfc
   pip:
-    name: networking-sfc
+    name: networking-sfc==6.0.0.0rc1
     virtualenv: /openstack/venvs/neutron-{{ os_ver }}
   when:
     - inventory_hostname in groups['neutron_server']
