@@ -385,6 +385,7 @@
   when:
     - checkresult.rc == 0
     - offline_deployment is defined and offline_deployment == "Disable"
+  ignore_errors: "true"
 
 - name: add cache refresh
   blockinfile:
