@@ -7,7 +7,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 # #############################################################################
 ---
-- include: stor4nfv
-  when:
-    - ansible_distribution == 'Ubuntu'
-    - stor4nfv is defined and stor4nfv == "Enable"
+- include: opensds.yml
+
+- include: post-install.yml
