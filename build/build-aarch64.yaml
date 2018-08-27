@@ -10,6 +10,12 @@ packages:
     get_method: cached
     url: http://artifacts.opnfv.org/compass4nfv/package/master/ubuntu-16.04-server-arm64.iso
 
+    # XXX: For now, it's only an empty file to satisfy build.sh
+  - name: harbor-empty.tgz
+    description: "The package of harbor offline installer"
+    get_method: cached
+    url: http://people.linaro.org/~yibo.cai/compass/harbor-empty.tgz
+
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
