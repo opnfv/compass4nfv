@@ -378,3 +378,21 @@
   copy:
     src: redhat-7.yml
     dest: /etc/ansible/roles/os_tacker/vars/redhat-7.yml
+
+- name: copy lxc_cache_prestage.patch
+  copy:
+    src: lxc_cache_prestage.patch
+    dest: /etc/ansible/roles/lxc_hosts/tasks/lxc_cache_prestage.patch
+  when:
+    - checkresult.rc == 0
+    - offline_deployment is defined and offline_deployment == "Disable"
+
+- name: patch lxc_cache_prestage.yml
+  shell:
+    patch -p0 < lxc_cache_prestage.patch
+  args:
+    chdir: /etc/ansible/roles/lxc_hosts/tasks/
+  when:
+    - checkresult.rc == 0
+    - offline_deployment is defined and offline_deployment == "Disable"
+  ignore_errors: "true"
