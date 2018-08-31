@@ -282,3 +282,16 @@ kube-controller-manager.manifest.j2",
                      -e "@extra-vars.yml" -b -v 2>&1  | tee kargo.log
   tags:
     - ansible
+
+- name: read the ansible log file
+  shell: "cat /opt/kargo_k8s/kargo.log | tail -n 1000"
+  register: setup_kargo_result
+
+- fail:
+    msg: "some task failed when setup kargo."
+  when: setup_kargo_result.stdout.find('failed=1') != -1
+
+- fail:
+    msg: "some host are unreachable."
+  when: setup_kargo_result.stdout.find('unreachable=1') != -1
+  run_once: true
