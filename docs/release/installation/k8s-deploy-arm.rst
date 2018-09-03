@@ -5,19 +5,15 @@
 Validated platform
 ==================
 
-================  =========  ================  ========
-        Jump server                     Node
----------------------------  --------------------------
-distro            libvirt    distro            k8s
-================  =========  ================  ========
-ubuntu 16.04.3    1.3.1      centos7 1708      1.7.5
-================  =========  ================  ========
+Jump server: Baremetal, Ubuntu 16.04
+
+Node: VM / Baremetal, CentOS 7 / Ubuntu 16.04, K8s 1.9.1
 
 Prepare jump server
 ===================
-This document assumes you are using a baremetal Arm server as Compass4NFV jump server. It's possible to deploy jump server inside a virtual machine, this case is not covered here.
+A baremetal Arm server is required as Compass4NFV jump server.
 
-#. Install Ubuntu 16.04.3 aarch64 on jump server.
+#. Install Ubuntu 16.04 aarch64 on jump server.
 
 #. Install required packages.
 
@@ -65,14 +61,14 @@ Clone Compass4NFV code. Run below command to build deployment tarball for Arm.
 
 .. code-block:: bash
 
-   $ COMPASS_ISO_REPO='http://people.linaro.org/~yibo.cai/compass' ./build.sh
+   $ ./build.sh
 
 It downloads and archives Ubuntu/CentOS installation ISO and Compass core docker images for later deployment.
 
 
-Deploy K8s in VM
-================
-This section introduces the steps to deploy K8s cluster in virtual machines running on jump server. Two VM nodes will be created, one master and one minion, with flannel networking.
+Deploy K8s
+==========
+This section introduces the steps to deploy K8s cluster in VM and baremetal nodes.
 
 Clear old Compass core
 ----------------------
@@ -93,14 +89,28 @@ Run below command to remove running Compass containers for a clean deployment.
 
 Deploy OS and K8s
 -----------------
-To deploy OS and K8s on two virtual nodes, run:
+To deploy CentOS and K8s on two virtual nodes, run:
 
 .. code-block:: bash
 
    $ ADAPTER_OS_PATTERN='(?i)CentOS-7.*arm.*' \
      OS_VERSION=centos7 \
-     KUBERNETES_VERSION=v1.7.5 \
-     DHA=${PWD}/deploy/conf/vm_environment/k8-nosdn-nofeature-noha.yml \
-     NETWORK=${PWD}/deploy/conf/vm_environment/network.yml \
+     KUBERNETES_VERSION=v1.9.1 \
+     DHA=deploy/conf/vm_environment/k8-nosdn-nofeature-noha.yml \
+     NETWORK=deploy/conf/vm_environment/network.yml \
      VIRT_NUMBER=2 VIRT_CPUS=4 VIRT_MEM=8192 VIRT_DISK=50G \
      ./deploy.sh
+
+To deploy on baremetal nodes, reference below DHA and NETWORK files:
+
+.. code-block:: bash
+
+   DHA="deploy/conf/hardware_environment/huawei-pod8/k8-nosdn-nofeature-noha.yml"
+   NETWORK="deploy/conf/hardware_environment/huawei-pod8/network.yml"
+
+To deploy Ubuntu, set:
+
+.. code-block:: bash
+
+   ADAPTER_OS_PATTERN='(?i)ubuntu-16.*arm.*'
+   OS_VERSION=xenial
