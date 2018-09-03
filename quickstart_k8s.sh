@@ -7,6 +7,15 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
+
+COMPASS_ARCH=$(uname -m)
+if [ "$COMPASS_ARCH" = "aarch64" ]; then
+    echo "Running on aarch64 host, make sure your jump host is configured okay"
+    echo "Please reference docs/release/installation/k8s-deploy-arm.rst"
+    export ADAPTER_OS_PATTERN='(?i)CentOS-7.*arm.*'
+    SCENARIO=${SCENARIO:-k8-nosdn-nofeature-noha.yml}
+fi
+
 sudo apt-get update
 sudo apt-get install -y git
 
