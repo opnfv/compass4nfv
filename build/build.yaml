@@ -13,7 +13,7 @@ packages:
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
-    url: opnfv/compass-deck:latest
+    url: compass4nfv/compass-deck:7.0.0
 
   - name: compass-tasks-osa
     description: "compass task container integrated with openstack-ansible"
