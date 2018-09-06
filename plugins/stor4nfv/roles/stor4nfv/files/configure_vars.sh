@@ -49,3 +49,12 @@ sed -i 's/^opensds_auth_strategy.*/opensds_auth_strategy: noauth/g' group_vars/a
 sed -i  '/check_ansible_version/a \  ignore_errors: yes\' roles/common/tasks/main.yml
 
 sed -i '/- dashboard-installer/s/^/#/g' site.yml
+
+# comment csi create pods in Stor4nfv
+sed -i '/kubectl create/s/^/#/g' roles/nbp-installer/scenarios/csi.yml
+
+sed -i 's/^opensds_endpoint.*/opensds_endpoint: http:\/\/'"$1"':50040/g' group_vars/common.yml
+
+sed -i '/and service_ceph_osd_status.rc == 0/s/^/#/g' roles/osdsdock/scenarios/ceph.yml
+sed -i  '/and service_ceph_osd_status.rc == 0/a \  when: service_ceph_mon_status.rc == 0\' \
+       roles/osdsdock/scenarios/ceph.yml

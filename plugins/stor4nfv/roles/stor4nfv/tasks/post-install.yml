@@ -48,13 +48,22 @@
   ignore_errors: "true"
   register: osdsctl_exists
 
-- name: create opensds default profile
+- name: ensure opensds csi directory exists
+  stat:
+    path: /opt/opensds-sushi-linux-{{ imgarch }}
+  ignore_errors: "true"
+  register: csi_dir_exists
+
+- name: create opensds default profile, create csi pods
   remote_user: root
   shell: |
     cp /opt/opensds-hotpot-linux-{{ imgarch }}/bin/osdsctl /usr/local/bin;
     export OPENSDS_ENDPOINT=http://{{ public_vip.ip }}:50040;
     export OPENSDS_AUTH_STRATEGY=noauth;
-    osdsctl profile create '{"name": "default", "description": "default policy"}'
+    osdsctl profile create '{"name": "default", "description": "default policy"}';
+    cd /opt/opensds-sushi-linux-{{ imgarch }};
+    kubectl create -f csi/deploy/kubernetes
   ignore_errors: "true"
   when:
     - osdsctl_exists.stat.exists is defined and osdsctl_exists.stat.exists
+    - csi_dir_exists.stat.exists is defined and csi_dir_exists.stat.exists
