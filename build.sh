@@ -22,7 +22,7 @@ echo $COMPASS_PATH
 
 REDHAT_REL=${REDHAT_REL:-"false"}
 
-PACKAGES="curl python-pip"
+PACKAGES="curl python-pip aria2"
 
 mkdir -p $WORK_DIR $CACHE_DIR
 
