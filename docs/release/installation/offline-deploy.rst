@@ -1,3 +1,5 @@
+.. This work is licensed under a Creative Commons Attribution 4.0 International Licence.
+.. http://creativecommons.org/licenses/by/4.0
 .. two dots create a comment. please leave this logo at the top of each of your rst files.
 
 Offline Deploy
