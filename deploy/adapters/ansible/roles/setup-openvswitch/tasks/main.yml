@@ -19,8 +19,10 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
   when:
+    - odl_sfc is not defined or odl_sfc != "Enable"
     - NEUTRON_MECHANISM_DRIVERS[0] == "opendaylight"
 
 - include: odl.yml
   when:
+    - odl_sfc is not defined or odl_sfc != "Enable"
     - NEUTRON_MECHANISM_DRIVERS[0] == "opendaylight"
