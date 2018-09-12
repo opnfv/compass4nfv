@@ -63,7 +63,7 @@
   remote_user: root
   shell: |
     cd /opt;
-    ./os_configure_vars.sh {{ public_vip.ip }}
+    ./os_configure_vars.sh {{ public_vip.ip }} {{ internal_vip.ip }}
 
 - name: run playbook
   remote_user: root

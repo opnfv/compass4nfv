@@ -8,5 +8,7 @@
 # #############################################################################
 ---
 - include: opensds.yml
+  when:
+    - inventory_hostname in groups['ceph_adm']
 
 - include: post-install.yml

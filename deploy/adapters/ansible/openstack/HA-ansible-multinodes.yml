@@ -123,6 +123,7 @@
 
 - hosts:
     - ceph_adm
+    - ceph-mon
   remote_user: root
   roles:
     - os-stor4nfv

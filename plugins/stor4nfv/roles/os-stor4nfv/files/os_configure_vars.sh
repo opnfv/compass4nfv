@@ -23,3 +23,6 @@ sed -i 's/^opensds_auth_strategy.*/opensds_auth_strategy: noauth/g' group_vars/a
 
 # opensds_endpoint
 sed -i 's/^opensds_endpoint.*/opensds_endpoint: http:\/\/'"$1"':50040/g' group_vars/common.yml
+
+# etcd_host
+sed -i 's/^etcd_host.*/etcd_host: '"$2"'/g' group_vars/osdsdb.yml

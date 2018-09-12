@@ -11,17 +11,16 @@
 - name: ensure opensds.conf exists
   stat:
     path: /etc/opensds/opensds.conf
-  ignore_errors: "true"
   register: opensds_exists
+  when:
+    - inventory_hostname in groups['ceph_adm']
 
 - name: configure ceph.yaml, opensds.conf
   remote_user: root
   shell: |
     cd /root/gopath/src/github.com/os-stor4nfv/stor4nfv/ci/ansible
     cp group_vars/ceph/ceph.yaml /etc/opensds/driver/
-
     sed -i 's/^ enabled_backends.*/ enabled_backends: ceph/g' /etc/opensds/opensds.conf
-
     sudo cat >> /etc/opensds/opensds.conf << OPENSDS_GLOABL_CONFIG_DOC
 
     [ceph]
@@ -31,36 +30,96 @@
      config_path = /etc/opensds/driver/ceph.yaml
     OPENSDS_GLOABL_CONFIG_DOC
   when:
-    - opensds_exists.stat.exists
+    - inventory_hostname in groups['ceph_adm']
+
+- name: modify osdsdock endpoint
+  remote_user: root
+  shell:
+    _raw_params: |
+      function _modify_osdsdock_endpoint {
+          local ip_addr=(lxc-info -n $(lxc-ls --line | grep ceph-mon) -iH)|grep "10.1"
+          if [ ! -z "${ip_addr}" ]; then
+              sed -i 's/^50050.*/api_endpoint = $ip_addr:50050/g' /etc/opensds/opensds.conf
+          fi
+      }
+      _modify_osdsdock_endpoint
+  args:
+    executable: /bin/bash
+  become: true
+  when:
+    - inventory_hostname in groups['ceph_adm']
 
 - name: copy ceph.conf from ceph-mon container
   remote_user: root
   shell: |
-    mkdir -p /etc/ceph
+    mkdir -p /etc/ceph;
     cp /proc/$(lxc-info -n $(lxc-ls --line | grep ceph-mon) -p -H)/root/etc/ceph/ceph.conf \
        /etc/ceph/ceph.conf
   when:
-    - opensds_exists.stat.exists
+    - inventory_hostname in groups['ceph_adm']
+
+- name: copy osdsdock executable to ceph-mon container
+  remote_user: root
+  shell: |
+    cd /opt;
+    tar -C opensds-hotpot-linux-amd64 -c . | lxc-attach -n \
+    $(lxc-ls --line | grep ceph-mon) -- /bin/sh -c "tar -C /opt/ -vx; chmod 1777 /opt;"
+  when:
+    - inventory_hostname in groups['ceph_adm']
+
+- name: copy opensds conf files to ceph-mon container
+  remote_user: root
+  shell: |
+    cd /etc;
+    tar -C opensds -c . | lxc-attach -n \
+    $(lxc-ls --line | grep ceph-mon) -- /bin/sh -c "tar -C /tmp/ -vx; chmod 1777 /tmp;"
+  when:
+    - inventory_hostname in groups['ceph_adm']
+
+- name: ensure opensds driver exists
+  stat:
+    path: /tmp/driver
+  register: opensds_driver_exists
+  when:
+    - inventory_hostname in groups['ceph-mon']
+
+- name: copy opensds conf
+  remote_user: root
+  shell: |
+    mkdir -p /etc/opensds;
+    cp /tmp/opensds.conf /etc/opensds;
+    cp /tmp/policy.json /etc/opensds;
+    cp -r /tmp/driver /etc/opensds;
+  when:
+    - inventory_hostname in groups['ceph-mon']
+
+- name: create ceph pool
+  remote_user: root
+  shell: |
+    ceph osd pool create rbd 24 && ceph osd pool set rbd size 1
+  when:
+    - inventory_hostname in groups['ceph-mon']
 
 - name: ensure osdsdock exists
   stat:
-    path: /opt/opensds-hotpot-linux-amd64/bin/osdsdock
-  ignore_errors: "true"
-  register: osdsdock_exists
+    path: /opt/bin/osdsdock
+  register: opensds_exists
+  when:
+    - inventory_hostname in groups['ceph-mon']
 
 - name: start osdsdock daemon
   remote_user: root
   shell: |
-    /opt/opensds-hotpot-linux-amd64/bin/osdsdock -daemon
-  ignore_errors: "true"
+    cd /opt && ./bin/osdsdock -daemon
   when:
-    - osdsdock_exists.stat.exists
+    - inventory_hostname in groups['ceph-mon']
 
 - name: ensure osdsctl exists
   stat:
     path: /opt/opensds-hotpot-linux-amd64/bin/osdsctl
-  ignore_errors: "true"
   register: osdsctl_exists
+  when:
+    - inventory_hostname in groups['ceph_adm']
 
 - name: run cinder-compatible-api, create opensds default profile
   remote_user: root
@@ -73,6 +132,5 @@
     cp /opt/opensds-hotpot-linux-amd64/bin/osdsctl /usr/local/bin;
     export OPENSDS_AUTH_STRATEGY=noauth;
     osdsctl profile create '{"name": "default", "description": "default policy"}'
-  ignore_errors: "true"
   when:
-    - osdsctl_exists.stat.exists
+    - inventory_hostname in groups['ceph_adm']
