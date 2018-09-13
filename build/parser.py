@@ -20,28 +20,33 @@ def load_env():
 
 def get_from_cache(cache, package):
     filename = package.get("name")
-    remotefile = package.get("url")
+    remotefile = list(package.get("url"))
     localfile = cache + "/" + filename
     localmd5file = localfile + ".md5"
-    remotemd5file = remotefile + ".md5"
     print "removing local md5 file...."
     cmd = "rm -f " + localmd5file
     os.system(cmd)
     print "downloading remote md5 file to local...."
-    cmd = "curl --connect-timeout 10 -o " + localmd5file + " " + remotemd5file
-    os.system(cmd)
-    if os.path.exists(localmd5file):
-        print "calculate md5sum of local file"
-        cmd = "md5sum " + localfile + "|cut -d ' ' -f 1"
-        localmd5sum = os.popen(cmd).readlines()
-        cmd = "cat " + localmd5file + "|cut -d ' ' -f 1"
-        remotemd5sum = os.popen(cmd).readlines()
-        print "md5 local %s remote %s" % (localmd5sum, remotemd5sum)
-        if (remotemd5sum == localmd5sum):
-            print "Same with remote, no need to download...."
-            return
+    for file in remotefile:
+        remotemd5file = file + ".md5"
+        cmd = "curl --connect-timeout 10 -o {0} {1}".format(
+            localmd5file, remotemd5file)
+        rc = os.system(cmd)
+        if os.path.exists(localfile):
+            print "calculate md5sum of local file"
+            cmd = "md5sum " + localfile + "|cut -d ' ' -f 1"
+            localmd5sum = os.popen(cmd).readlines()
+            cmd = "cat " + localmd5file + "|cut -d ' ' -f 1"
+            remotemd5sum = os.popen(cmd).readlines()
+            print "md5 local %s remote %s" % (localmd5sum, remotemd5sum)
+            if (remotemd5sum == localmd5sum):
+                print "Same with remote, no need to download...."
+                return
+        if rc == 0:
+            break
     print "downloading remote file to local...."
-    cmd = "curl --connect-timeout 10 -o " + localfile + " " + remotefile
+    cmd = "aria2c --max-connection-per-server=4 --allow-overwrite=true --dir={0} \
+          --out={1} {2}".format(cache, filename, " ".join(remotefile))
     print cmd
     rc = os.system(cmd)
     if rc != 0:
