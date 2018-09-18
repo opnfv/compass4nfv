@@ -1,0 +1,8 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: Yibo Cai <yibo.cai@arm.com>
+Code-Review+2: HU Xinhui <xinhui_hu@foxmail.com>
+Submitted-by: HU Xinhui <xinhui_hu@foxmail.com>
+Submitted-at: Tue, 18 Sep 2018 01:34:15 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/61619
+Project: compass4nfv
+Branch: refs/heads/master
