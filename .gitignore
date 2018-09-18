@@ -7,7 +7,6 @@
 *.o
 *.so
 *.pyc
-/docs_build/
 /docs_output/
 /releng/
 /work
@@ -59,3 +58,4 @@ Thumbs.db
 *.bak
 *.swp
 
+docs/_build/*
