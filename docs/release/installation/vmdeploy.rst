@@ -19,7 +19,6 @@ If you want to deploy noha with1 controller and 1 compute, run the following com
 .. code-block:: bash
 
     export SCENARIO=os-nosdn-nofeature-noha.yml
-    export VIRT_NUMBER=2
     curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/fraser/quickstart.sh | bash
 
 Nodes Configuration (Virtual Deployment)
@@ -27,8 +26,6 @@ Nodes Configuration (Virtual Deployment)
 
 virtual machine setting
 ~~~~~~~~~~~~~~~~~~~~~~~
-
-        - VIRT_NUMBER -- the number of nodes for virtual deployment.
 
         - VIRT_CPUS -- the number of CPUs allocated per virtual machine.
 
@@ -38,7 +35,6 @@ virtual machine setting
 
 .. code-block:: bash
 
-    export VIRT_NUMBER=${VIRT_NUMBER:-5}
     export VIRT_CPUS=${VIRT_CPU:-4}
     export VIRT_MEM=${VIRT_MEM:-16384}
     export VIRT_DISK=${VIRT_DISK:-200G}
