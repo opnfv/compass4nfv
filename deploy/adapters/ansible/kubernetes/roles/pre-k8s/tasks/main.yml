@@ -15,4 +15,6 @@
 
 - name: close the swap partition
   shell: |
+    systemctl disable swap.target
+    systemctl mask swap.target
     swapoff -a
