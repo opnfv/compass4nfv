@@ -54,7 +54,7 @@ packages:
   - name: yardstick
     description: "yardstick container for compass"
     get_method: docker
-    url: opnfv/yardstick:latest
+    url: opnfv/yardstick:stable
 
   - name: compass-repo-osa-ubuntu
     description: "compass repo container for deployment"
