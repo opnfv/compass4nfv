@@ -37,9 +37,10 @@
   shell:
     _raw_params: |
       function _modify_osdsdock_endpoint {
-          local ip_addr=(lxc-info -n $(lxc-ls --line | grep ceph-mon) -iH)|grep "10.1"
+          local ip_addr=$((lxc-info -n $(lxc-ls --line | grep ceph-mon) -iH)|grep "10.1")
           if [ ! -z "${ip_addr}" ]; then
-              sed -i 's/^50050.*/api_endpoint = $ip_addr:50050/g' /etc/opensds/opensds.conf
+              sed -i 's/api_endpoint = localhost:50050/api_endpoint = '"$ip_addr"':50050/g' \
+                  /etc/opensds/opensds.conf
           fi
       }
       _modify_osdsdock_endpoint
