@@ -34,7 +34,7 @@ packages:
   - name: compass-tasks-k8s
     description: "compass task container integrated with kubespray"
     get_method: docker
-    url: compass4nfv/compass-tasks-k8s:7.0.0
+    url: huxinhui/compass-tasks-k8s:7.0.0
 
   - name: compass-cobbler
     description: "cobbler container for compass"
