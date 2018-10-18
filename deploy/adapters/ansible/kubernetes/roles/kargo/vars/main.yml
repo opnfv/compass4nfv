@@ -1,9 +1,3 @@
 ---
-helm_flag: true
-apiserver_loadbalancer_domain_name: "{{ public_vip.ip  }}"
-vipaddress: "{{ public_vip.ip  }}"
-exlb_port: 8383
-kubelet_fail_swap_on: false
-
 http_proxy: "{{ proxy }}"
 https_proxy: "{{ proxy }}"

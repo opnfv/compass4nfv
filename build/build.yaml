@@ -15,7 +15,7 @@ packages:
       - http://artifacts.opnfv.org/compass4nfv/package/master/ubuntu-16.04.3-server-amd64.iso
 
   - name: harbor-offline-installer-v1.5.0.tgz
-    description: "The package of harbor v1.5.5"
+    description: "The package of harbor v1.5.0"
     get_method: cached
     url:
       - http://192.168.137.222/download/harbor-offline-installer-v1.5.0.tgz
@@ -34,7 +34,7 @@ packages:
   - name: compass-tasks-k8s
     description: "compass task container integrated with kubespray"
     get_method: docker
-    url: huxinhui/compass-tasks-k8s:7.0.0
+    url: huxinhui/compass-tasks-k8s:7.0.1
 
   - name: compass-cobbler
     description: "cobbler container for compass"

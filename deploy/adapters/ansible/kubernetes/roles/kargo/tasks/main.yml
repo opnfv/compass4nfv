@@ -7,166 +7,39 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 ---
-- name: clean local repo conf
-  file:
-    path: /etc/yum.repos.d
-    state: absent
-  run_once: "True"
-  when: ansible_os_family == 'RedHat'
+- name: check the kubespray sample path
+  stat: path=/opt/kargo_k8s/inventory/sample
+  register: sample_stat
 
-- name: create local repo conf dir
-  file:
-    path: /etc/yum.repos.d
-    state: directory
-  run_once: "True"
-  when: ansible_os_family == 'RedHat'
+- name: Move kubespray group_vars folder
+  command: mv /opt/kargo_k8s/inventory/sample/group_vars /opt/kargo_k8s/inventory/
+  when: sample_stat.stat.exists
 
-- name: configure local mirror repo
-  copy:
-    src: "{{ item }}"
-    dest: /etc/yum.repos.d/mirrors.repo
-  with_first_found:
-    - mirrors_{{ ansible_architecture }}.repo
-    - mirrors.repo
-  run_once: "True"
-  when: ansible_os_family == 'RedHat'
-
-- name: clean local pip conf to use official pip repo
-  file:
-    path: /root/.pip/pip.conf
-    state: absent
-  run_once: "True"
-
-- name: install dependency for ansible update
-  yum:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - git
-    - libffi-devel
-    - openssl-devel
-    - python-devel
-  run_once: "True"
-  when: ansible_os_family == 'RedHat'
-
-- name: update python packages
-  pip:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - netaddr
-    - jinja2
-
-- name: copy inventories generate script
-  copy:
-    src: generate_inventories.py
-    dest: /tmp/generate_inventories.py
+- name: generate kubespray inventory configure file
+  template:
+    src: "inventory.j2"
+    dest: "/opt/kargo_k8s/inventory/inventory.cfg"
   tags:
     - ansible
 
-- name: copy inventoriy.json file
-  copy:
-    src: "{{ run_dir }}/inventories/inventory.json"
-    dest: /tmp/inventory.json
-  tags:
-    - ansible
-
-- name: generate kargo inventories
-  shell: >
-    python /tmp/generate_inventories.py \
-           "/opt/kargo_k8s/inventory/inventory.cfg" \
-           "/tmp/inventory.json"
-  tags:
-    - ansible
-
-- name: configure target hosts
-  shell: |
-    cd /opt/kargo_k8s
-    ansible -i inventory/inventory.cfg -m ping all
-    ansible -i inventory/inventory.cfg all -m shell -a "rm /etc/yum.repos.d/*"
-    ansible -i inventory/inventory.cfg all -m copy -a \
-        "src=/etc/yum.repos.d/mirrors.repo dest=/etc/yum.repos.d"
-  tags:
-    - ansible
-
-- name: enable helm
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/k8s-cluster.yml
-    regexp: '^helm_enabled:'
-    line: 'helm_enabled: {{ helm_flag }}'
-
-- name: enable external lb | set lb domain_nam
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/all.yml
-    regexp: '^## apiserver_loadbalancer_domain_name:'
-    line: 'apiserver_loadbalancer_domain_name: {{ apiserver_loadbalancer_domain_name }}'
-
-- name: enable external lb |
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/all.yml
-    regexp: '^#loadbalancer_apiserver:'
-    line: 'loadbalancer_apiserver:'
-
-- name: enable external lb | set vip address
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/all.yml
-    regexp: '^#  address: 1.2.3.4'
-    line: '  address: {{ vipaddress }}'
-
-- name: enable external lb | set vip port
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/all.yml
-    regexp: '^#  port: 1234'
-    line: '  port: {{ exlb_port }}'
-
-- name: enable internal lb
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/all.yml
-    regexp: '^#loadbalancer_apiserver_localhost: true'
-    line: 'loadbalancer_apiserver_localhost: true'
-
-- name: enable http proxy
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/all.yml
-    regexp: '^#http_proxy:'
-    line: 'http_proxy: {{ http_proxy }}'
-  when: http_proxy != ''
-
-- name: enable https proxy
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/all.yml
-    regexp: '^#https_proxy:'
-    line: 'https_proxy: {{ https_proxy }}'
-  when: https_proxy !=''
-
-- name: use the user name and password login the dashboard
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/k8s-cluster.yml
-    regexp: '^#kube_basic_auth: false'
-    line: 'kube_basic_auth: true'
-
-- name: add vip to ssl keys
-  lineinfile:
-    dest: /opt/kargo_k8s/inventory/sample/group_vars/k8s-cluster.yml
-    line: 'supplementary_addresses_in_ssl_keys: [{{ vipaddress }}]'
-
-- name: rm openssl file
-  file:
-    path: /opt/kargo_k8s/roles/kubernetes/secrets/templates/openssl.conf.j2
-    state: absent
-
-- name: copy openssl.conf.j2
-  copy:
-    src: openssl.conf.j2
-    dest: /opt/kargo_k8s/roles/kubernetes/secrets/templates/openssl.conf.j2
-
-- name: copy overrided variables
+- name: copy overrided variables for arm architecture
   copy:
     src: "{{ item }}"
     dest: /opt/kargo_k8s/extra-vars.yml
   with_first_found:
     - extra-vars-{{ ansible_architecture }}.yml
     - extra-vars.yml
+    - skip: true
+
+- name: copy overrided variables for kubespray
+  template:
+    src: "{{ item }}"
+    dest: "/opt/kargo_k8s/extra-vars.yml"
+  with_first_found:
+    - extra-vars-{{ ansible_architecture }}.yml.j2
+    - extra-vars.yml.j2
+  tags:
+    - ansible
 
 - name: copy 2flannel playbook to kargo
   copy:
@@ -277,9 +150,10 @@ kube-controller-manager.manifest.j2",
 
 - name: run kargo playbook
   shell: |
-    cd /opt/kargo_k8s
     ansible-playbook -i inventory/inventory.cfg cluster.yml \
                      -e "@extra-vars.yml" -b -v 2>&1  | tee kargo.log
+  args:
+    chdir: "/opt/kargo_k8s"
   tags:
     - ansible
 

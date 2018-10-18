@@ -1,0 +1,40 @@
+---
+# Override default kubespray variables
+
+#dashboard_port: "{{dashboard_port|default('31746')}}"
+
+# kubespray configure
+apiserver_loadbalancer_domain_name: "{{ public_vip.ip  }}"
+loadbalancer_apiserver:
+  address: "{{ public_vip.ip  }}"
+  port: {{ loadbalancer_apiserver_port|default(8383) }}
+loadbalancer_apiserver_localhost: {{ loadbalancer_apiserver_localhost|default(true) }}
+
+kube_basic_auth: {{ kube_basic_auth |default(true) }}
+kube_network_plugin: {{ kube_network_plugin|default('calico') }}
+# Monitoring apps for k8s
+efk_enabled: {{ efk_enabled |default(true)}}
+# Helm deployment
+helm_enabled: {{ helm_enabled |default(true)}}
+# Istio deployment
+istio_enabled: {{ istio_enabled |default(false)}}
+supplementary_addresses_in_ssl_keys: ["{{ public_vip.ip  }}"]
+#storage
+local_volume_provisioner_enabled: {{local_volume_provisioner_enabled |default(false) }}
+# local_volume_provisioner_namespace: "system_namespace"
+# local_volume_provisioner_base_dir: /mnt/disks
+# local_volume_provisioner_mount_dir: /mnt/disks
+# local_volume_provisioner_storage_class: local-storage
+
+# CephFS provisioner deployment
+cephfs_provisioner_enabled: {{ cephfs_provisioner_enabled |default(false)}}
+# cephfs_provisioner_namespace: "cephfs-provisioner"
+# cephfs_provisioner_cluster: ceph
+# cephfs_provisioner_monitors: "172.24.0.1:6789,172.24.0.2:6789,172.24.0.3:6789"
+# cephfs_provisioner_admin_id: admin
+# cephfs_provisioner_secret: secret
+# cephfs_provisioner_storage_class: cephfs
+# cephfs_provisioner_reclaim_policy: Delete
+# cephfs_provisioner_claim_root: /volumes
+# cephfs_provisioner_deterministic_names: true
+
