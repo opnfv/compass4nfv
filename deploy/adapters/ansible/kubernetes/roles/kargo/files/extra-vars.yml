@@ -1,7 +1,0 @@
----
-# Override default kubespray variables
-
-# Just a placeholder to satisfy ansible
-dummy_var: 0
-
-# helm_enabled: true
