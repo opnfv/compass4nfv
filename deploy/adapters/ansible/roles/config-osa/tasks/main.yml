@@ -363,6 +363,19 @@
     insertafter: '^  cache_prep_commands:'
     line: '    rm /etc/resolv.conf || true'
 
+- name: fix apt prompt issue
+  blockinfile:
+    dest: /etc/ansible/roles/lxc_hosts/vars/ubuntu-16.04.yml
+    insertafter: '^  cache_prep_commands:'
+    block: |
+      # add apt local
+          cat << EOF > /etc/apt/apt.conf.d/local
+          Dpkg::Options {
+          "--force-confdef";
+          "--force-confold";
+          }
+          EOF
+
 - name: set pre-staged retry to 120
   replace:
     dest: /etc/ansible/roles/lxc_hosts/tasks/lxc_cache_preparation_systemd_new.yml
