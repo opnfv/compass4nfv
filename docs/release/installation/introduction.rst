@@ -5,8 +5,6 @@
 Abstract
 ========
 
-This document describes how to install the Fraser release of OPNFV when
+This document describes how to install the Gambia release of OPNFV when
 using Compass4nfv as a deployment tool covering it's limitations, dependencies
 and required system resources.
-
-

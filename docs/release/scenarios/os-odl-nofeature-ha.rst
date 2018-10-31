@@ -2,7 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) Justin Chi (HUAWEI) and Yifei Xue (HUAWEI)
 
-This document introduces scenario descriptions for Fraser 1.0 of
+This document introduces scenario descriptions for Gambia 1.0 of
 deployment with the OpenDaylight controller and no feature enabled.
 
 .. contents::
@@ -39,5 +39,5 @@ Limitations, Issues and Workarounds
 References
 ==========
 
-For more information on the OPNFV Fraser release, please visit
-http://www.opnfv.org/fraser
+For more information on the OPNFV Gambia release, please visit
+http://www.opnfv.org/gambia

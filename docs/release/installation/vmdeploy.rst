@@ -12,14 +12,14 @@ Only 1 command to try virtual deployment, if you have Internet access. Just Past
 
 .. code-block:: bash
 
-    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/fraser/quickstart.sh | bash
+    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/gambia/quickstart.sh | bash
 
 If you want to deploy noha with1 controller and 1 compute, run the following command
 
 .. code-block:: bash
 
     export SCENARIO=os-nosdn-nofeature-noha.yml
-    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/fraser/quickstart.sh | bash
+    curl https://raw.githubusercontent.com/opnfv/compass4nfv/stable/gambia/quickstart.sh | bash
 
 Nodes Configuration (Virtual Deployment)
 ----------------------------------------
