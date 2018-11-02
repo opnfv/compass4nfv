@@ -428,3 +428,16 @@
   when:
     - checkresult.rc == 0
     - offline_deployment is defined and offline_deployment == "Disable"
+
+- name: Add sleep in host_power_action
+  blockinfile:
+    dest: /etc/ansible/roles/repo_build/tasks/repo_clone_git.yml
+    block: |
+      {% raw %}
+      - name: Add sleep in host_power_action
+        shell:
+          sed -i '/return self.driver.host_power_action/i\        time.sleep(2)' manager.py
+        args:
+          chdir: "{{ repo_build_git_dir}}/nova/nova/compute"
+        ignore_errors: true
+      {% endraw %}
