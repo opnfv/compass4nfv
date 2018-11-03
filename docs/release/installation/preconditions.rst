@@ -21,7 +21,7 @@ networking and Unix/Linux administration.
 Preconditions
 -------------
 
-Before starting the installation of the Fraser release of OPNFV,
+Before starting the installation of the Gambia release of OPNFV,
 some planning must be done.
 
 
@@ -38,10 +38,10 @@ The daily build tarball can be retrieved via OPNFV artifacts repository:
 
 http://artifacts.opnfv.org/compass4nfv.html
 
-NOTE: Search the keyword "compass4nfv/Fraser" to locate the tarball.
+NOTE: Search the keyword "compass4nfv/Gambia" to locate the tarball.
 
 E.g.
-compass4nfv/fraser/opnfv-2017-03-29_08-55-09.tar.gz
+compass4nfv/gambia/opnfv-2017-03-29_08-55-09.tar.gz
 
 The name of tarball includes the time of tarball building, you can get the daily
 tarball according the building time.
@@ -58,9 +58,9 @@ To retrieve the repository of Compass4nfv on Jumphost use the following command:
 
 NOTE: PLEASE DO NOT GIT CLONE COMPASS4NFV IN ROOT DIRECTORY(INCLUDE SUBFOLDERS).
 
-To get stable/fraser release, you can use the following command:
+To get stable/gambia release, you can use the following command:
 
-- git checkout Fraser.1.0
+- git checkout Gambia.1.0
 
 Setup Requirements
 ------------------

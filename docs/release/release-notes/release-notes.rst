@@ -2,7 +2,7 @@
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) Weidong Shao (HUAWEI) and Justin Chi (HUAWEI)
 
-Release Note for the Fraser release of OPNFV when using Compass4nfv as a deployment tool.
+Release Note for the Gambia release of OPNFV when using Compass4nfv as a deployment tool.
 
 Abstract
 ========
@@ -25,16 +25,16 @@ Release Data
 | **Project**                          | Compass4nfv                          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Repo/tag**                         | Compass4nfv/Fraser.1.0               |
+| **Repo/tag**                         | Compass4nfv/Gambia.1.0               |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release designation**              | Fraser.1.0                           |
+| **Release designation**              | Gambia.1.0                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | March 2018                           |
+| **Release date**                     | November 2018                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Purpose of the delivery**          | OPNFV Fraser release                 |
+| **Purpose of the delivery**          | OPNFV Gambia release                 |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
@@ -44,16 +44,16 @@ Deliverables
 Software deliverables
 ~~~~~~~~~~~~~~~~~~~~~
 
- - Compass4nfv/Fraser.1.0 tarball, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
+ - Compass4nfv/Gambia.1.0 tarball, please get it from `OPNFV software download page <https://www.opnfv.org/software/>`_
 
 .. _document-label:
 
 Documentation deliverables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- - OPNFV(Fraser) Compass4nfv installation instructions
+ - OPNFV(Gambia) Compass4nfv installation instructions
 
- - OPNFV(Fraser) Compass4nfv Release Notes
+ - OPNFV(Gambia) Compass4nfv Release Notes
 
 Version change
 --------------
@@ -62,12 +62,12 @@ Version change
 Module version change
 ~~~~~~~~~~~~~~~~~~~~~
 
-This is the Fraser release of compass4nfv as a deployment toolchain in OPNFV, the following
+This is the Gambia release of compass4nfv as a deployment toolchain in OPNFV, the following
 upstream components supported with this release.
 
  - Ubuntu 16.04.3/Centos 7.4
 
- - Openstack (Pike release)
+ - Openstack (Queens release)
 
  - Kubernates (1.9)
 
@@ -142,8 +142,8 @@ Known issues
 
 Test Result
 ===========
-The Fraser release with the Compass4nfv deployment toolchain has undergone QA test
+The Gambia release with the Compass4nfv deployment toolchain has undergone QA test
 runs with the following results:
 
-Functest: http://testresults.opnfv.org/reporting/fraser/functest/status-compass.html
+Functest: http://testresults.opnfv.org/reporting/gambia/functest/status-compass.html
 
