@@ -18,6 +18,14 @@ def load_env():
     return cache_dir
 
 
+def exec_command(cmd, ignore_error=False):
+    rc = os.system(cmd)
+    if not ignore_error and rc != 0:
+        sys.exit(1)
+    else:
+        return rc
+
+
 def get_from_cache(cache, package):
     filename = package.get("name")
     remotefile = list(package.get("url"))
@@ -25,13 +33,13 @@ def get_from_cache(cache, package):
     localmd5file = localfile + ".md5"
     print "removing local md5 file...."
     cmd = "rm -f " + localmd5file
-    os.system(cmd)
+    exec_command(cmd)
     print "downloading remote md5 file to local...."
     for file in remotefile:
         remotemd5file = file + ".md5"
         cmd = "curl --connect-timeout 10 -o {0} {1}".format(
             localmd5file, remotemd5file)
-        rc = os.system(cmd)
+        rc = exec_command(cmd, True)
         if os.path.exists(localfile):
             print "calculate md5sum of local file"
             cmd = "md5sum " + localfile + "|cut -d ' ' -f 1"
@@ -45,43 +53,38 @@ def get_from_cache(cache, package):
         if rc == 0:
             break
     print "downloading remote file to local...."
-    cmd = "aria2c --max-connection-per-server=4 --allow-overwrite=true --dir={0} \
-          --out={1} {2}".format(cache, filename, " ".join(remotefile))
+    cmd = "aria2c --max-tries 1 --max-connection-per-server=4 \
+          --allow-overwrite=true --dir={0} --out={1} {2}".format(
+          cache, filename, " ".join(remotefile))
     print cmd
-    rc = os.system(cmd)
-    if rc != 0:
-        sys.exit(1)
+    exec_command(cmd)
 
 
 def get_from_git(cache, package):
     localfile = cache + "/" + package.get("name")
     cmd = "rm -rf " + localfile
     print cmd
-    os.system(cmd)
+    exec_command(cmd)
     cmd = "git clone " + package.get("url") + " " + localfile
     print cmd
-    rc = os.system(cmd)
-    if rc != 0:
-        sys.exit(1)
+    exec_command(cmd)
 
 
 def get_from_docker(cache, package):
+    package_ouput = cache+"/"+package.get("name")+".tar"
     cmd = "sudo docker pull "+package.get("url")
-    os.system(cmd)
-    cmd = "sudo docker save "+package.get("url")+" -o "+cache+"/"
-    cmd += package.get("name")+".tar"
-    rc = os.system(cmd)
-    if rc != 0:
-        sys.exit(1)
+    exec_command(cmd)
+    cmd = "sudo docker save "+package.get("url")+" -o "+package_ouput
+    exec_command(cmd)
+    cmd = "user=$(whoami); sudo chown -R $user:$user "+package_ouput
+    exec_command(cmd)
 
 
 def get_from_curl(cache, package):
     cmd = "curl --connect-timeout 10 -o " + cache + "/"
     cmd += package.get("name") + " " + package.get("url")
     print cmd
-    rc = os.system(cmd)
-    if rc != 0:
-        sys.exit(1)
+    exec_command(cmd)
 
 
 def usage():
