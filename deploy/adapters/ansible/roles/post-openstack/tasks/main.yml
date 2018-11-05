@@ -86,3 +86,12 @@
     state: restarted
   when:
     - inventory_hostname in groups['horizon']
+
+- name: add sleep in nova
+  shell:
+    sed -i '/return self.driver.host_power_action/i\        time.sleep(2)' manager.py
+  args:
+    chdir: /openstack/venvs/nova-{{ openstack_release }}/lib/python2.7/site-packages/nova/compute
+  ignore_errors: true
+  when:
+    - inventory_hostname in groups['compute']
