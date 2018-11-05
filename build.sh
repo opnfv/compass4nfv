@@ -99,13 +99,13 @@ function download_packages()
 function build_tar()
 {
     cd $CACHE_DIR
-    sudo rm -rf compass_dists
+    sudo rm -rf compass_dists $TAR_DIR/$TAR_NAME
     mkdir -p compass_dists
-    sudo cp -f *.tar *.iso *.tgz compass_dists
-    sudo cp $COMPASS_PATH/build/build*.yaml compass_dists
-    sudo cp -rf $COMPASS_PATH/util/docker-compose ./
-    sudo tar -zcf compass.tar.gz docker-compose compass_dists
-    sudo mv compass.tar.gz $TAR_DIR/$TAR_NAME
+    cp -f *.tar *.iso *.tgz compass_dists
+    cp $COMPASS_PATH/build/build*.yaml compass_dists
+    cp -rf $COMPASS_PATH/util/docker-compose ./
+    tar -zcf compass.tar.gz docker-compose compass_dists
+    mv compass.tar.gz $TAR_DIR/$TAR_NAME
     cd -
 }
 
