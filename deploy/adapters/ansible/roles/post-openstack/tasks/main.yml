@@ -53,7 +53,6 @@
   when:
     - inventory_hostname == groups['utility_all'][0]
 
-
 - name: fetch openrc
   fetch:
     src: /root/openrc
@@ -86,3 +85,7 @@
     state: restarted
   when:
     - inventory_hostname in groups['horizon']
+
+- include: nova_patch.yml
+  when:
+    - inventory_hostname in groups['compute']
