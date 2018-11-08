@@ -83,6 +83,7 @@
   register: opensds_driver_exists
   when:
     - inventory_hostname in groups['ceph-mon']
+    - groups['ceph_adm'][0] in inventory_hostname
 
 - name: copy opensds conf
   remote_user: root
@@ -93,6 +94,7 @@
     cp -r /tmp/driver /etc/opensds;
   when:
     - inventory_hostname in groups['ceph-mon']
+    - groups['ceph_adm'][0] in inventory_hostname
 
 - name: create ceph pool
   remote_user: root
@@ -100,6 +102,7 @@
     ceph osd pool create rbd 24 && ceph osd pool set rbd size 1
   when:
     - inventory_hostname in groups['ceph-mon']
+    - groups['ceph_adm'][0] in inventory_hostname
 
 - name: ensure osdsdock exists
   stat:
@@ -107,6 +110,7 @@
   register: opensds_exists
   when:
     - inventory_hostname in groups['ceph-mon']
+    - groups['ceph_adm'][0] in inventory_hostname
 
 - name: start osdsdock daemon
   remote_user: root
@@ -114,6 +118,7 @@
     cd /opt && ./bin/osdsdock -daemon
   when:
     - inventory_hostname in groups['ceph-mon']
+    - groups['ceph_adm'][0] in inventory_hostname
 
 - name: ensure osdsctl exists
   stat:
