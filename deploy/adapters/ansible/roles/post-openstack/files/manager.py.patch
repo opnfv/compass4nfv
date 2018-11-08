@@ -6,7 +6,7 @@
              # here, but this is what we use for our default error case
 -            raise exception.NovaException('In shutdown, no new events '
 -                                          'can be scheduled')
-+            pass
++            self._events = {}
 
          @utils.synchronized(self._lock_name(instance))
          def _create_or_get_event():
