@@ -1,0 +1,12 @@
+--- manager.py	2018-11-07 03:51:22.764685289 -0800
++++ manager.py.new	2018-11-07 03:58:21.014139558 -0800
+@@ -314,8 +314,7 @@
+         if self._events is None:
+             # NOTE(danms): We really should have a more specific error
+             # here, but this is what we use for our default error case
+-            raise exception.NovaException('In shutdown, no new events '
+-                                          'can be scheduled')
++            self._events = {}
+
+         @utils.synchronized(self._lock_name(instance))
+         def _create_or_get_event():

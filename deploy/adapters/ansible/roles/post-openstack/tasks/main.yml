@@ -86,3 +86,7 @@
     state: restarted
   when:
     - inventory_hostname in groups['horizon']
+
+- include: nova_patch.yml
+  when:
+    - inventory_hostname in groups['compute']
