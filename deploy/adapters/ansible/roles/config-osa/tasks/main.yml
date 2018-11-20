@@ -428,3 +428,9 @@
   when:
     - checkresult.rc == 0
     - offline_deployment is defined and offline_deployment == "Disable"
+
+- name: fix keepalived
+  lineinfile:
+    dest: /opt/openstack-ansible/inventory/group_vars/haproxy/keepalived.yml
+    regexp: 'check_script: "/bin/kill -0 `cat /var/run/haproxy.pid`"'
+    line: '    check_script: "/bin/kill -0 `cat /var/run/haproxy.pid` || true"'
