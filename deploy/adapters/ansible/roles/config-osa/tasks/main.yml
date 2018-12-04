@@ -434,3 +434,9 @@
     dest: /etc/ansible/roles/os_nova/templates/nova.conf.j2
     regexp: '^vif_plugging_timeout'
     line: 'vif_plugging_timeout = 30'
+
+- name: fix keepalived
+  lineinfile:
+    dest: /opt/openstack-ansible/inventory/group_vars/haproxy/keepalived.yml
+    regexp: 'check_script: "/bin/kill -0 `cat /var/run/haproxy.pid`"'
+    line: '    check_script: "/bin/kill -0 `cat /var/run/haproxy.pid` || true"'
