@@ -25,20 +25,21 @@ function tear_down_machines() {
 }
 
 function reboot_hosts() {
+    echo "reboot"
     # We do need it for aarch64
-    if [ "$COMPASS_ARCH" = "aarch64" ]; then
-        old_ifs=$IFS
-        IFS=,
-        for i in $HOSTNAMES; do
-            sudo virsh destroy $i
-            sleep 3
-            sudo virsh start $i
-            sleep 3
-        done
-        IFS=$old_ifs
-    else
-        log_warn "reboot_hosts do nothing"
-    fi
+#    if [ "$COMPASS_ARCH" = "aarch64" ]; then
+#        old_ifs=$IFS
+#        IFS=,
+#        for i in $HOSTNAMES; do
+#            sudo virsh destroy $i
+#            sleep 3
+#            sudo virsh start $i
+#            sleep 3
+#        done
+#        IFS=$old_ifs
+#    else
+#        log_warn "reboot_hosts do nothing"
+#    fi
 }
 
 function launch_host_vms() {
@@ -97,37 +98,7 @@ function recover_host_vms() {
 }
 
 function get_host_macs() {
-    local mac_generator=${COMPASS_DIR}/deploy/mac_generator.sh
-    local machines=
-
-    if [[ $REDEPLOY_HOST == "true" ]]; then
-        mac_array=`cat $WORK_DIR/switch_machines`
-        machines=`echo $mac_array|sed 's/ /,/g'`
-    else
-        if [[ -z $HOST_MACS ]]; then
-            if [[ "$EXPANSION" == "false" ]]; then
-                chmod +x $mac_generator
-                mac_array=`$mac_generator $VIRT_NUMBER`
-                echo $mac_array > $WORK_DIR/switch_machines
-                machines=`echo $mac_array|sed 's/ /,/g'`
-            else
-                machines_old=`cat $WORK_DIR/switch_machines`
-                chmod +x $mac_generator
-                machines_add=`$mac_generator $VIRT_NUMBER`
-                echo $machines_add $machines_old > $WORK_DIR/switch_machines
-                machines=`echo $machines_add $machines_old|sed 's/ /,/g'`
-            fi
-        else
-            if [[ "$EXPANSION" == "false" ]]; then
-                machines=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
-            else
-                machines_old=`cat $WORK_DIR/switch_machines`
-                machines_add=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
-                echo $machines_add $machines_old > $WORK_DIR/switch_machines
-                machines=`echo $machines_add $machines_old|sed 's/ /,/g'`
-            fi
-        fi
-    fi
+    local machines=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
     echo $machines
 }
 

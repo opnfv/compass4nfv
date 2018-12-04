@@ -100,7 +100,7 @@ function process_default_para()
            "$DHA" "$NETWORK" \
            "${COMPASS_DIR}/deploy/template" \
            "${WORK_DIR}/script" \
-           "deploy_config.sh"
+           "deploy_config.sh" machine
 
     echo ${WORK_DIR}/script/deploy_config.sh
 }

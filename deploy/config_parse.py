@@ -11,27 +11,44 @@ import os
 import netaddr
 import yaml
 import sys
+import random
 from Cheetah.Template import Template
 
 
-def init(file):
+def load_yaml(file):
     with open(file) as fd:
         return yaml.safe_load(fd)
 
 
-def export_env_dict(env_dict, ofile, direct=False):
-    if not os.path.exists(ofile):
-        raise IOError("output file: %s not exist" % ofile)
+def dump_yaml(data, file):
+    with open(file, "w") as fd:
+        yaml.safe_dump(data, fd, default_flow_style=False)
+
+
+def mac_generator():
+    def random_hex():
+        return random.choice("0123456789ABCDEF")
+    mac = "00:00"
+    for i in xrange(4):
+        mac += ":{0}{1}".format(random_hex(), random_hex())
+    return mac
+
+
+def export_env_dict(env_dict, output_path, direct=False):
+    if not os.path.exists(output_path):
+        raise IOError("output file: %s not exist" % output_path)
     if direct:
         for k, v in env_dict.items():
-            os.system("echo 'export %s=\"%s\"' >> %s" % (k, v, ofile))
+            os.system("echo 'export %s=\"%s\"' >> %s" %
+                      (k, v, output_path))
     else:
         for k, v in env_dict.items():
-            os.system("echo 'export %s=${%s:-%s}' >> %s" % (k, k, v, ofile))
+            os.system("echo 'export %s=${%s:-%s}' >> %s" %
+                      (k, k, v, output_path))
 
 
 def decorator(func):
-    def wrapter(s, seq):
+    def wrapter(s, seq=None):
         host_list = s.get('hosts', [])
         result = []
         for host in host_list:
@@ -41,8 +58,10 @@ def decorator(func):
             result.append(s)
         if len(result) == 0:
             return ""
-        else:
+        elif seq:
             return "\"" + seq.join(result) + "\""
+        else:
+            return result
     return wrapter
 
 
@@ -57,11 +76,15 @@ def hostroles(s, seq, host=None):
 
 
 @decorator
-def hostmacs(s, seq, host=None):
-    return host.get('mac', '')
+def hostmachines(s, seq, host=None):
+    return {'mac': host.get('interfaces', {}),
+            'power_type': host.get('power_type', ''),
+            'power_ip': host.get('power_ip', ''),
+            'power_user': host.get('power_user', ''),
+            'power_pass': host.get('power_pass', '')}
 
 
-def export_network_file(dha, network, ofile):
+def export_network_file(dha, network, output_path):
     install_network_env = {}
     host_network_env = {}
     ip_settings = network['ip_settings']
@@ -79,7 +102,7 @@ def export_network_file(dha, network, ofile):
     install_network_env.update({'INSTALL_NETMASK': mgmt_netmask})
     install_network_env.update({'INSTALL_IP_RANGE': dhcp_ip_range})
     install_network_env.update({'VIP': internal_vip})
-    export_env_dict(install_network_env, ofile)
+    export_env_dict(install_network_env, output_path)
 
     pxe_nic = os.environ['PXE_NIC']
     host_ip_range = mgmt_net['ip_ranges'][0]
@@ -94,10 +117,10 @@ def export_network_file(dha, network, ofile):
     host_network_env.update({'NETWORK_MAPPING': "install=" + pxe_nic})
     host_network_env.update({'HOST_NETWORKS': ';'.join(host_networks)})
     host_network_env.update({'SUBNETS': ','.join(host_subnets)})
-    export_env_dict(host_network_env, ofile, True)
+    export_env_dict(host_network_env, output_path, True)
 
 
-def export_dha_file(dha, dha_file, ofile):
+def export_dha_file(dha, output_path, machine_path):
     env = {}
     env.update(dha)
     if env.get('hosts', []):
@@ -121,19 +144,28 @@ def export_dha_file(dha, dha_file, ofile):
     env.update({'FLAVOR': dha.get('FLAVOR', "cluster")})
     env.update({'HOSTNAMES': hostnames(dha, ',')})
     env.update({'HOST_ROLES': hostroles(dha, ';')})
-    env.update({'DHA': dha_file})
 
-    value = hostmacs(dha, ',')
-    if len(value) > 0:
-        env.update({'HOST_MACS': value})
+    machine = []
+    if dha.get('TYPE') == "virtual":
+        virtual_mac = []
+        for host in dha.get('hosts'):
+            mac = mac_generator()
+            machine.append({"mac": {"eth0": mac}, "power_type": "libvirt"})
+            virtual_mac.append(mac)
+        env.update({'HOST_MACS': ",".join(virtual_mac)})
+    else:
+        value = hostmachines(dha)
+        for item in value:
+            machine.append(item)
+    dump_yaml(machine, machine_path)
 
     if dha.get('TYPE', "virtual") == "virtual":
         env.update({'VIRT_NUMBER': len(dha['hosts'])})
 
-    export_env_dict(env, ofile)
+    export_env_dict(env, output_path)
 
 
-def export_reset_file(dha, tmpl_dir, output_dir, ofile):
+def export_reset_file(dha, tmpl_dir, output_dir, output_path):
     tmpl_file_name = dha.get('POWER_TOOL', '')
     if not tmpl_file_name:
         return
@@ -151,28 +183,31 @@ def export_reset_file(dha, tmpl_dir, output_dir, ofile):
         f.write(tmpl.respond())
 
     power_manage_env = {'POWER_MANAGE': reset_file_name}
-    export_env_dict(power_manage_env, ofile, True)
+    export_env_dict(power_manage_env, output_path, True)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 6:
-        print("parameter wrong%d %s" % (len(sys.argv), sys.argv))
+    if len(sys.argv) != 7:
+        print("parameter wrong %d %s" % (len(sys.argv), sys.argv))
         sys.exit(1)
 
-    _, dha_file, network_file, tmpl_dir, output_dir, output_file = sys.argv
+    _, dha_file, network_file, tmpl_dir, output_dir, output_file,\
+        machine_file = sys.argv
 
     if not os.path.exists(dha_file):
         print("%s is not exist" % dha_file)
         sys.exit(1)
 
-    ofile = os.path.join(output_dir, output_file)
-    os.system("touch %s" % ofile)
-    os.system("echo \#config file deployment parameter > %s" % ofile)
+    output_path = os.path.join(output_dir, output_file)
+    machine_path = os.path.join(output_dir, machine_file)
+    os.system("touch %s" % output_path)
+    os.system("echo \#config file deployment parameter > %s" % output_path)
+    os.system("touch %s" % machine_path)
 
-    dha_data = init(dha_file)
-    network_data = init(network_file)
+    dha_data = load_yaml(dha_file)
+    network_data = load_yaml(network_file)
 
-    export_dha_file(dha_data, dha_file, ofile)
-    export_network_file(dha_data, network_data, ofile)
-    export_reset_file(dha_data, tmpl_dir, output_dir, ofile)
+    export_dha_file(dha_data, output_path, machine_path)
+    export_network_file(dha_data, network_data, output_path)
+    export_reset_file(dha_data, tmpl_dir, output_dir, output_path)
 
     sys.exit(0)
