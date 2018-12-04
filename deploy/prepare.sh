@@ -48,6 +48,13 @@ function extract_tar()
 function prepare_env() {
     sudo sed -i -e 's/^#user =.*/user = "root"/g' /etc/libvirt/qemu.conf
     sudo sed -i -e 's/^#group =.*/group = "root"/g' /etc/libvirt/qemu.conf
+    sudo sed -i 's/^.\?listen_tls.*/listen_tls = 0/g' /etc/libvirt/libvirtd.conf
+    sudo sed -i 's/^.\?listen_tcp.*/listen_tcp = 1/g' /etc/libvirt/libvirtd.conf
+    sudo sed -i 's/^.\?tcp_port.*/tcp_port = "16509"/g' /etc/libvirt/libvirtd.conf
+    sudo sed -i 's/^.\?listen_addr.*/listen_addr = "0.0.0.0"/g' /etc/libvirt/libvirtd.conf
+    sudo sed -i 's/^.\?auth_tcp.*/auth_tcp = "none"/g' /etc/libvirt/libvirtd.conf
+    sudo sed -i 's#\(exec /usr/sbin/libvirtd \$libvirtd_opts\)$#\1 -l#g' /etc/init/libvirt-bin.conf
+
     sudo service libvirt-bin restart
     if sudo service openvswitch-switch status|grep stop; then
         sudo service openvswitch-switch start
