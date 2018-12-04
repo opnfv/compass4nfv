@@ -98,25 +98,19 @@ def check_dha_file(dha):
     invalid = False
     if dha['TYPE'] == 'baremetal':
         for i in dha['hosts']:
-            if not is_valid_mac(i['mac']):
-                err_print('''invalid address:
-                hosts:
-                 - name: %s
-                   mac: %s''' % (i['name'], i['mac']))
-                invalid = True
             for j in i['interfaces']:
-                if not is_valid_mac(j.values()[0]):
+                if not is_valid_mac(i['interfaces'].get(j)):
                     err_print('''invalid address:
                     hosts:
                         - name: %s
                           interfaces:
-                            - %s: %s''' % (i['name'], j.keys()[0], j.values()[0]))  # noqa: E501
+                            - %s: %s''' % (i['name'], j, i['interfaces'].get(j)))  # noqa: E501
                     invalid = True
-            if not is_valid_ip(i['ipmiIp']):
+            if not is_valid_ip(i['power_ip']):
                 err_print('''invalid address:
                 hosts:
                  - name: %s
-                   ipmiIp: %s''' % (i['name'], i['ipmiIp']))
+                   power_ip: %s''' % (i['name'], i['power_ip']))
                 invalid = True
 
     if not invalid:

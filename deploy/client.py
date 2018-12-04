@@ -79,8 +79,8 @@ opts = [
     cfg.BoolOpt('poll_switches',
                 help='if the client polls switches',
                 default=True),
-    cfg.StrOpt('machines',
-               help='comma separated mac addresses of machines',
+    cfg.StrOpt('machine_file',
+               help='mac addresses and ipmi info of machines',
                default=''),
     cfg.StrOpt('subnets',
                help='comma seperated subnets',
@@ -327,12 +327,12 @@ class CompassClient(object):
                 'get all machines status: %s, resp: %s', status, resp)
             raise RuntimeError('failed to get machines')
 
-        machines_to_add = list(set([
-            machine for machine in CONF.machines.split(',')
-            if machine
-        ]))
+        with open(CONF.machine_file) as fd:
+            machines_to_add = [str(m["mac"]) for m in yaml.load(fd)]
 
+        resp = byteify(resp)
         machines_db = [str(m["mac"]) for m in resp]
+
         LOG.info(
             'machines in db: %s\n to add: %s',
             machines_db,
