@@ -53,6 +53,7 @@ if [[ "$EXPANSION" == "false" ]]; then
         exit 1
     fi
 
+    export machine_file=$WORK_DIR/script/machine
     export machines
 
     CONTAINER_ALIVE=$(check_container_alive)

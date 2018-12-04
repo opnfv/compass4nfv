@@ -24,12 +24,12 @@ packages:
   - name: compass-deck
     description: "RESTful API and DB Handlers for Compass"
     get_method: docker
-    url: compass4nfv/compass-deck:7.0.0
+    url: opnfv/compass-deck:latest
 
   - name: compass-tasks-osa
     description: "compass task container integrated with openstack-ansible"
     get_method: docker
-    url: compass4nfv/compass-tasks-osa:7.0.0
+    url: opnfv/compass-tasks-osa:latest
 
   - name: compass-tasks-k8s
     description: "compass task container integrated with kubespray"
