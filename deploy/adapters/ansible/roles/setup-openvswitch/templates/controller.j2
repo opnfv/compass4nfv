@@ -86,3 +86,5 @@ iface br-storage inet static
     bridge_ports {{ intf_storage }}
     address {{ ip_settings[inventory_hostname]["storage"]["ip"] }}
     netmask 255.255.255.0
+
+source /etc/network/interfaces.d/*.cfg
