@@ -1,0 +1,7 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+2: Harry Huang <huangxiangyu5@huawei.com>
+Submitted-by: Harry Huang <huangxiangyu5@huawei.com>
+Submitted-at: Wed, 05 Dec 2018 01:17:10 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/65549
+Project: compass4nfv
+Branch: refs/heads/stable/gambia
