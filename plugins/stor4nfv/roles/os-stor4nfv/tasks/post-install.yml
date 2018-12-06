@@ -140,3 +140,4 @@
     osdsctl profile create '{"name": "default", "description": "default policy"}'
   when:
     - inventory_hostname in groups['ceph_adm']
+  ignore_errors: "true"
