@@ -12,15 +12,15 @@ rsa_file=$compass_vm_dir/boot.rsa
 ssh_args="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $rsa_file"
 
 function check_container_alive() {
-    docker exec -it compass-deck bash -c "exit" 1>/dev/null 2>&1
+    sudo docker exec -it compass-deck bash -c "exit"
     local deck_state=$?
-    docker exec -it compass-tasks bash -c "exit" 1>/dev/null 2>&1
+    sudo docker exec -it compass-tasks bash -c "exit"
     local tasks_state=$?
-    docker exec -it compass-cobbler bash -c "exit" 1>/dev/null 2>&1
+    sudo docker exec -it compass-cobbler bash -c "exit"
     local cobbler_state=$?
-    docker exec -it compass-db bash -c "exit" 1>/dev/null 2>&1
+    sudo docker exec -it compass-db bash -c "exit"
     local db_state=$?
-    docker exec -it compass-mq bash -c "exit" 1>/dev/null 2>&1
+    sudo docker exec -it compass-mq bash -c "exit"
     local mq_state=$?
 
     if [ $((deck_state||tasks_state||cobbler_state||db_state||mq_state)) == 0 ]; then
