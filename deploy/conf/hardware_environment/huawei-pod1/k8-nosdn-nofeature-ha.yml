@@ -31,7 +31,7 @@ hosts:
     mac: 'D8:49:0B:DA:5A:B7'
     interfaces:
       - eth1: 'D8:49:0B:DA:5A:B8'
-    ipmiIp: 172.16.130.27
+    ipmiIp: 172.16.130.29
     ipmiPass: Opnfv@pod1
     roles:
       - kube_master
@@ -39,10 +39,10 @@ hosts:
       - ha
 
   - name: host3
-    mac: '78:D7:52:A0:B1:99'
+    mac: '70:7B:E8:77:7B:60'
     interfaces:
-      - eth1: '78:D7:52:A0:B1:9A'
-    ipmiIp: 172.16.130.29
+      - eth1: '70:7B:E8:77:7B:5F'
+    ipmiIp: 172.16.130.27
     ipmiPass: Opnfv@pod1
     roles:
       - kube_master
