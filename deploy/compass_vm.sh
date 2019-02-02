@@ -47,9 +47,7 @@ function install_compass_core() {
 }
 
 function set_compass_machine() {
-    local config_file=$WORK_DIR/installer/docker-compose/group_vars/all
-    sed -i '/pxe_boot_macs/d' $config_file
-    echo "pxe_boot_macs: [${machines}]" >> $config_file
+    cp $WORK_DIR/script/machine $WORK_DIR/docker/
 
     ansible-playbook $WORK_DIR/installer/docker-compose/add_machine.yml
 }

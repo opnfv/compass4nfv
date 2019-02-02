@@ -15,14 +15,6 @@ function reboot_hosts() {
 }
 
 function get_host_macs() {
-    if [[ "$EXPANSION" == "false" ]]; then
-        machines=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
-        echo $machines > $WORK_DIR/switch_machines
-    else
-        machines_old=`cat $WORK_DIR/switch_machines`
-        machines_add=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
-        echo $machines_add $machines_old > $WORK_DIR/switch_machines
-        machines=`echo $machines_add $machines_old|sed 's/ /,/g'`
-    fi
+    local machines=`echo $HOST_MACS | sed -e 's/,/'\',\''/g' -e 's/^/'\''/g' -e 's/$/'\''/g'`
     echo $machines
 }
