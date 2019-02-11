@@ -53,7 +53,7 @@ function prepare_env() {
     sudo sed -i 's/^.\?tcp_port.*/tcp_port = "16509"/g' /etc/libvirt/libvirtd.conf
     sudo sed -i 's/^.\?listen_addr.*/listen_addr = "0.0.0.0"/g' /etc/libvirt/libvirtd.conf
     sudo sed -i 's/^.\?auth_tcp.*/auth_tcp = "none"/g' /etc/libvirt/libvirtd.conf
-    sudo sed -i 's#\(exec /usr/sbin/libvirtd \$libvirtd_opts\)$#\1 -l#g' /etc/init/libvirt-bin.conf
+    sudo sed -i 's/^.\?libvirtd_opts.*/libvirtd_opts = "-l"/g' /etc/default/libvirt-bin
 
     sudo service libvirt-bin restart
     if sudo service openvswitch-switch status|grep stop; then
