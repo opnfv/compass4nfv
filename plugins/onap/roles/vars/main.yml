@@ -1,0 +1,13 @@
+#############################################################################
+# Copyright (c) 2019 HUAWEI TECHNOLOGIES CO.,LTD and others.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+---
+helm_url: https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz
+oom_repo: https://gerrit.onap.org/r/oom
+oom_dest: /home/oom
+oom_version: casablanca
