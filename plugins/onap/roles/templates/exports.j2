@@ -1,0 +1,1 @@
+/dockerdata-nfs{% for host in groups.all %}{% if host != groups.kube_master[0] %} {{ ip_settings[host]['external']['ip'] }}(rw,sync,no_root_squash,no_subtree_check){% endif %}{% endfor %}
