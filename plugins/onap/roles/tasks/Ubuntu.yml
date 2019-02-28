@@ -1,0 +1,115 @@
+---
+- name: download helm
+  get_url:
+    url: "{{ helm_url }}"
+    dest: /tmp/helm.tar.gz
+  when: inventory_hostname == groups['kube_master'][0]
+  run_once: true
+
+- name: prepare helm
+  shell:
+    tar -zxf /tmp/helm.tar.gz -C /tmp;
+    mv /tmp/linux-amd64/helm /usr/local/bin/helm
+  when: inventory_hostname == groups['kube_master'][0]
+  run_once: true
+
+- name: install tiller
+  shell: >
+    kubectl create serviceaccount --namespace kube-system tiller;
+    kubectl create clusterrolebinding tiller-cluster-rule
+        --clusterrole=cluster-admin
+        --serviceaccount=kube-system:tiller;
+    helm init --service-account tiller
+  when: inventory_hostname == groups['kube_master'][0]
+  run_once: true
+
+- name: git clone oom
+  git:
+    repo: "{{ oom_repo }}"
+    dest: "{{ oom_dest }}"
+    version: "{{ oom_version }}"
+  when: inventory_hostname == groups['kube_master'][0]
+  run_once: true
+
+- name: prepare local repo
+  shell:
+    nohup /bin/sh -c "helm serve &"
+    while true; do curl -s 127.0.0.1:8879 > /dev/null; if [ $? -eq 0 ]; then break; fi; done
+    helm repo add local http://127.0.0.1:8879
+  when: inventory_hostname == groups['kube_master'][0]
+  run_once: true
+
+- name: add helm plugin
+  shell:
+    cp -rf "{{ oom_dest }}/kubernetes/helm/plugins" ~/.helm/
+  when: inventory_hostname == groups['kube_master'][0]
+  run_once: true
+
+- name: make
+  shell:
+    make all
+  args:
+    chdir: "{{ oom_dest }}/kubernetes"
+  when: inventory_hostname == groups['kube_master'][0]
+
+- name: install nfs master
+  apt:
+    pkg: "nfs-kernel-server"
+    state: "present"
+    update_cache: "yes"
+  when: inventory_hostname == groups['kube_master'][0]
+
+- name: create /dockerdata-nfs
+  file:
+    path: /dockerdata-nfs
+    owner: nobody
+    group: nogroup
+    state: directory
+    mode: 0777
+  when: inventory_hostname == groups['kube_master'][0]
+
+- name: install nfs slave
+  apt:
+    pkg: "nfs-common"
+    state: "present"
+    update_cache: "yes"
+  when: inventory_hostname != groups['kube_master'][0]
+
+- name: create /dockerdata-nfs
+  file:
+    path: /dockerdata-nfs
+    state: directory
+  when: inventory_hostname != groups['kube_master'][0]
+
+- name: render /etc/exports
+  template:
+    src: exports.j2
+    dest: /etc/exports
+  when: inventory_hostname == groups['kube_master'][0]
+
+- name: restart nfs service
+  shell:
+    exportfs -a;
+    systemctl restart nfs-kernel-server
+  when: inventory_hostname == groups['kube_master'][0]
+
+- name: register master hostname
+  debug:
+    msg: "{{ ip_settings[groups['kube_master'][0]]['external']['ip'] }}"
+  register: master_ip
+
+- name:
+  shell:
+    mount {{ master_ip.msg }}:/dockerdata-nfs /dockerdata-nfs/
+  when: inventory_hostname != groups['kube_master'][0]
+
+- name: add mount info
+  lineinfile:
+    path: /etc/fstab
+    line: "{{ master_ip.msg }}:/dockerdata-nfs /dockerdata-nfs  nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0"
+  when: inventory_hostname != groups['kube_master'][0]
+
+- name: deploy onap
+  shell:
+    helm deploy dev local/onap --namespace onap
+  when: inventory_hostname == groups['kube_master'][0]
