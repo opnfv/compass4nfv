@@ -166,7 +166,7 @@ positional==1.1.1
 posix_spawn==0.2.post7
 prettytable==0.7.2
 prometheus_client==0.0.20
-psutil==5.0.1
+psutil==5.6.6
 pyasn1==0.1.9
 pyasn1_modules==0.0.8
 pycadf==2.5.0
