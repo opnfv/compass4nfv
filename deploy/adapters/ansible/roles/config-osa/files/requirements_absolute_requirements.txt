@@ -25,7 +25,7 @@ contextlib2==0.5.4
 cotyledon==1.6.8
 crc16==0.1.1
 croniter==0.3.14
-cryptography==1.7.1
+cryptography==3.2
 cursive==0.1.1
 cython==0.26
 datrie==0.7.1
