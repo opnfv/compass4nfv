@@ -88,7 +88,7 @@ libvirt_python==2.5.0
 linecache2==1.0.0
 logutils==0.3.3
 lxc_python2==0.1
-lxml==3.7.2
+lxml==4.6.2
 lz4==0.8.2
 magnum_ui==2.2.1.dev4
 mako==1.0.6
