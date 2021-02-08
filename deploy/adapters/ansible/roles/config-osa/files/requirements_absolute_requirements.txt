@@ -63,7 +63,7 @@ greenlet==0.4.11
 heat==8.0.2.dev4
 heat_translator==0.7.0
 horizon==11.0.2.dev21
-httplib2==0.9.2
+httplib2==0.19.0
 idna==2.2
 ijson==2.3
 ipaddress==1.0.18
