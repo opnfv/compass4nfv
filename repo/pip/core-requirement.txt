@@ -39,7 +39,7 @@ python_daemon==2.0.4
 redis==2.7.1
 billiard==3.3.0.20
 kombu==3.0.26
-Jinja2==2.8
+Jinja2==2.11.3
 aniso8601==0.85
 anyjson==0.3.3
 ordereddict==1.0
