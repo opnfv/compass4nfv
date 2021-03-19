@@ -69,7 +69,7 @@ ijson==2.3
 ipaddress==1.0.18
 ironic_ui==2.2.1.dev6
 iso8601==0.1.11
-jinja2==2.8.1
+jinja2==2.11.3
 jmespath==0.9.0
 jsonpatch==1.15
 jsonpath_rw==1.4.0
