@@ -219,7 +219,7 @@ python_watcherclient==1.0.0
 python_zaqarclient==1.4.0
 pytz==2016.10
 pyudev==0.21.0
-pyyaml==3.12
+pyyaml==5.4
 pyzmq==16.0.2
 rally==0.8.2.dev10
 rcssmin==1.0.6
