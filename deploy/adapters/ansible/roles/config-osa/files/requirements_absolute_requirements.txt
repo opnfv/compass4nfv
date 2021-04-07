@@ -1,7 +1,7 @@
 alabaster==0.7.9
 alembic==0.8.10
 amqp==1.4.9
-ansible==2.3.2.0
+ansible==2.10.0
 anyjson==0.3.3
 aodh==4.0.1.dev5
 aodhclient==0.8.0
