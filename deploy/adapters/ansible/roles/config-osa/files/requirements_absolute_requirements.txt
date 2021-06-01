@@ -272,7 +272,7 @@ ujson==1.35
 unicodecsv==0.14.1
 unittest2==1.1.0
 uritemplate==3.0.0
-urllib3==1.20
+urllib3==1.26.5
 uwsgi==2.0.15
 virtualenv==15.1.0
 virtualenv_tools==1.0
