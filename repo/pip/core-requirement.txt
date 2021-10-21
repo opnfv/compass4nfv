@@ -50,7 +50,7 @@ crudini==0.7
 python-keyczar==0.715
 pyasn1==0.1.9
 cliff==1.15.0
-Babel==2.3.4
+Babel==2.9.1
 tosca-parser==0.5.0
 heat-translator==0.5.0
 yang2tosca==0.13
