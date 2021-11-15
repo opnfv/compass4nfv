@@ -2,7 +2,7 @@
 # download format pip wheel
 
 python-cloudfoundryclient==1.0.2
-pip==9.0.1
+pip==21.1
 oslosphinx==4.5.0
 policy2tosca==1.0
 yang2tosca==0.13
