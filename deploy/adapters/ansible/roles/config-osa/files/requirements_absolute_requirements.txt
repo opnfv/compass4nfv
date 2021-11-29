@@ -198,7 +198,7 @@ python_glanceclient==2.6.0
 python_heatclient==1.8.0
 python_ironicclient==1.11.1
 python_keystoneclient==3.10.0
-python_ldap==2.4.41
+python_ldap==3.4.0
 python_magnumclient==2.5.0
 python_manilaclient==1.14.0
 python_memcached==1.58
