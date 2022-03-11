@@ -113,7 +113,7 @@ neutron_lbaas_dashboard==2.0.1.dev7
 neutron_lib==1.1.0
 neutron_vpnaas==10.0.1.dev5
 nose==1.3.7
-nova==15.0.4
+nova==21.2.3
 nova_lxd==15.0.1
 nova_powervm==4.0.1.dev9
 numpy==1.12.0
