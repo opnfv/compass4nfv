@@ -34,7 +34,7 @@ Flask-SQLAlchemy==0.10
 pytz==2014.3
 ecdsa==0.12
 itsdangerous==0.24
-paramiko==1.12.3
+paramiko==2.10.1
 python_daemon==2.0.4
 redis==2.7.1
 billiard==3.3.0.20
