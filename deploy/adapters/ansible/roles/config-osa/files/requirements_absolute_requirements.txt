@@ -268,7 +268,7 @@ tosca_parser==0.7.0
 traceback2==1.4.0
 trollius==2.1
 trove_dashboard==8.0.1.dev1
-ujson==1.35
+ujson==5.4.0
 unicodecsv==0.14.1
 unittest2==1.1.0
 uritemplate==3.0.0
