@@ -284,7 +284,7 @@ webob==1.6.3
 websockify==0.8.0
 webtest==2.0.24
 werkzeug==0.11.15
-wheel==0.29.0
+wheel==0.38.1
 wrapt==1.10.8
 ws4py==0.3.4
 wsme==0.9.1
