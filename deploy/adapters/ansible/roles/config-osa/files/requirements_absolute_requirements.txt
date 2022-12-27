@@ -239,7 +239,7 @@ sahara_dashboard==6.0.1.dev7
 scipy==0.18.1
 semantic_version==2.6.0
 setproctitle==1.1.10
-setuptools==33.1.1
+setuptools==65.5.1
 shade==1.22.2
 simplegeneric==0.8.1
 simplejson==3.10.0
