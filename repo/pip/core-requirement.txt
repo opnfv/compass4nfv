@@ -1,7 +1,7 @@
 # python packages used to install compass-core
 
 ez_setup
-setuptools==18.2
+setuptools==65.5.1
 ansible==2.2.0.0
 virtualenv==13.1.2
 pexpect==3.3
